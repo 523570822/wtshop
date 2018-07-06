@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>倒拍测试页面</title>
+</head>
+<body>
+<div id="gameDiv"></div>
+
+<script type="text/javascript" src="./protobuf.min.js"></script>
+<script type="text/javascript">
+
+    /*  -------------------  初始化protobuf、初始化websocket 开始   -------------------   */
+    //  倒拍类型游戏为1
+    var kAuctionMsgType = 1;
+    //  移动端发送上行消息
+    var kMsg_SEND_QUERY_PRODUCT = 1000, //  查询当前商品状态
+        kMsg_SEND_AUCTION = 1001;   //  发送抢拍请求
+    //  服务发送下行消息
+    var kMsg_REC_QUERY_PRODUCT = 2000,  //  商品状态
+        kMsg_REC_AUCTION = 2001,    //  抢拍状态
+        kMsg_REC_AUCTION_NEWS = 2002,   //  抢拍完成消息
+        kMsg_REC_REFRESH = 2003;    //  状态变化消息
+
+    var RxmProtos = null;
+        protobuf.load(" ", function (err, root) {
+        if (err)
+            throw err;
+        console.log('protobuf.load success', root);
+        RxmProtos = root.lookupType("games.RxmCmd");
+        console.log('RxmProtos success', RxmProtos);
+        onInit();
+    });
+
+    var sock = null;
+    function onInit() {
+        sock = new WebSocket('ws://101.201.106.61:16000/auction');
+        sock.onopen = function () {
+            console.log('连接打开 open');
+            sock.binaryType = 'arraybuffer';    //  指定数据类型为arraybuffer
+        };
+        sock.onmessage = function (e) {
+            var data = e.data;
+            var message = RxmProtos.decode(new Uint8Array(data));
+
+            handleAuctionMessage(message);
+        };
+        sock.onclose = function () {
+            console.log('连接关闭 close');
+        };
+    }
+    /*  -------------------  初始化protobuf、初始化websocket 完成   -------------------   */
+
+
+    /*  -------------------  使用protobuf发送数据 开始   -------------------   */
+    function sendMessage(action) {
+        var value = document.getElementById("textInput").value;
+        var payload = { type: 1, action: action, resourceId: value };
+        console.log('payload ->' , payload);
+        var message = RxmProtos.create(payload); // or use .fromObject if conversion is necessary
+        var buffer = RxmProtos.encode(message).finish();
+        sock.send(buffer);
+    }
+    /*  -------------------  使用protobuf发送数据 结束   -------------------   */
+
+
+    /*  -------------------  处理倒拍业务 下行消息 开始   -------------------   */
+    function handleAuctionMessage(message){
+        if (message.type != kAuctionMsgType){   //  非倒拍类型游戏
+            return;
+        }
+        switch (message.action){
+            case kMsg_REC_QUERY_PRODUCT:
+                handleREC_QUERY_PRODUCT(message);
+                break;
+            case kMsg_REC_AUCTION:
+                handleREC_AUCTION(message);
+                break;
+            case kMsg_REC_AUCTION_NEWS:
+                handleREC_AUCTION_NEWS(message);
+                break;
+            case kMsg_REC_REFRESH:
+                handleREC_REFRESH(message);
+                break;
+            default :
+                break;
+        }
+    }
+    //	接收查询商品消息
+    function handleREC_QUERY_PRODUCT(message) {
+        console.log('handleREC_QUERY_PRODUCT ->', JSON.stringify(message), message);
+        var content = "<h3>倒拍ID: "+message.resourceId+"</h3>";
+        for (var i = 0 ; i < message.productResults.length ; i ++){
+            var productResult = message.productResults[i];
+            var auctionBtn = productResult.state == 1 ? '<input type="button" value="抢拍" onclick="auction(\''+message.resourceId+'\',\''+productResult.resultId+'\')">' : '-';
+            content += ("<p>商品ID: " + productResult.productId +  "\t,\t当前价格: " + productResult.currentPrice / 100.0 + "\t,\t当前状态: " + auctionBtn + "</p>");
+        }
+        document.getElementById("gameDiv").innerHTML = content;
+    }
+    //	接收抢拍结果消息
+    function handleREC_AUCTION(message){
+        console.log('handleREC_AUCTION ->', JSON.stringify(message),message);
+    }
+    //	接收抢拍完成消息
+    function handleREC_AUCTION_NEWS(message){
+        console.log('kMsg_REC_AUCTION_NEWS ->', JSON.stringify(message),message);
+    }
+    //	接收抢拍刷新消息
+    function handleREC_REFRESH(message){
+        console.log('kMsg_REC_REFRESH ->', JSON.stringify(message),message);
+        document.getElementById("gameDiv").innerHTML = "接收到刷新消息"
+    }
+    /*  -------------------  处理倒拍业务消息 下行消息 结束   -------------------   */
+
+
+    /*  -------------------  发送倒拍业务消息 上行消息 开始   -------------------   */
+    function sendQueryProduct(){
+        sendMessage(1000);
+    }
+    function sendAuction(){
+        sendMessage(1001);
+    }
+    /*  -------------------  发送倒拍业务消息 上行消息 结束   -------------------   */
+
+
+
+    /*  ------------------- 页面按钮方法 开始   -------------------   */
+    function auction(resourceId, resultId){
+        var payload = { type: kAuctionMsgType, action: kMsg_SEND_AUCTION, resourceId: resourceId, ext: resultId };
+        console.log('payload ->' , payload);
+        var message = RxmProtos.create(payload); // or use .fromObject if conversion is necessary
+        var buffer = RxmProtos.encode(message).finish();
+        sock.send(buffer);
+    }
+    /*  -------------------  页面按钮方法 开始   -------------------   */
+
+</script>
+</body>
+</html>

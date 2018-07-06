@@ -1,0 +1,9 @@
+# Created by .ignore support plugin (hsz.mobi)
+/wtshop-web/target/
+
+/.idea/
+/wtshop-api/target/
+/wtshop-common/target/
+/wtshop-core/target/
+/wtshop-dao/target/
+/wtshop-model/target/

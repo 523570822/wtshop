@@ -1,0 +1,98 @@
+
+/*app下载 start*/
+.download-background{background: url("images/bg_content.png");margin: 0}
+.download-top{display: flex;flex-direction: column;align-items: center;}
+.download-top p{color: white;text-align: center;font-size: 18px}
+.download-center{display: flex;flex-direction: column;align-items: center;margin-top: 50px}
+.download-center img{width: 122px; height: 122px}
+.download-center p{font-size: 12px}
+.line{background: white;height: 1px;width: 250px}
+.download-app{display: flex;flex-direction: row;width: 100%;}
+.download-item{flex-grow: 1;display: flex; align-items: center;justify-content: center;margin-top: 60px}
+.download-img{width: 125px;}
+.download-pannel {
+    position: fixed;
+    background: white;
+    display: flex;
+    width: 100%;
+    height: 50px;
+    font-size: 0;
+    line-height: 50px;
+    flex-direction: row;
+}
+.download-close {
+    margin-left: 3.5%;
+    width: 16px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.download-close img{
+    width: 16px;
+    height: 16px;
+}
+.download-logo {
+    margin-right: 2.5%;
+    margin-left: 3.5%;
+    width: 35px;
+    height: 100%;
+        display: flex;
+    align-items: center;
+}
+.download-logo img{
+    width: 35px;
+    height: 35px;
+    border-radius: 5px;
+}
+.download-text{
+    margin-right: 2%;
+    margin-left: 1.5%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.download-text p{
+    font-size: 14px;
+    color: #333333;
+}
+.download-action{
+    width: 85px;
+    height: 70%;
+    top: 15%;
+    right: 15px;
+    border-radius: 5px;
+    background: #f32a71;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.download-action p{
+    font-size: 14px;
+    color: white;
+}
+.mask{
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999999;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+        .mask>div:first-child{
+            text-align: right;
+        }
+        .mask img{
+            display: inline-block;
+            width: 120px;
+        }
+        .mask>div:last-child{
+            text-align: center;
+            color: #fff;
+        }
+        .mask>div h4{
+            margin-bottom: 15px;
+        }
+/*app下载 end*/

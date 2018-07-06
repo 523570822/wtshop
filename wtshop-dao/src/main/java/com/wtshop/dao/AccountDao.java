@@ -1,0 +1,72 @@
+package com.wtshop.dao;
+
+import com.wtshop.model.Account;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
+
+/**
+ * Created by sq on 2017/9/12.
+ */
+public class AccountDao extends BaseDao<Account>{
+
+    public AccountDao(){
+        super(Account.class);
+    }
+
+
+    /**
+     * 获取用户信息
+     */
+    public Account findByAccount(String openId, Integer type){
+
+        String sql = " select * from account where 1 = 1 ";
+        if(StringUtils.isNotBlank(openId)){
+
+            sql += " AND account = '"+ openId + "'";
+
+        }if(type != null){
+
+            sql += " AND type = "+ type;
+
+        }
+        return modelManager.findFirst(sql);
+
+    }
+
+
+    /**
+     * 获取用户信息
+     */
+    public Account getUserInfo(Long memberId, Integer type){
+
+        String sql = " select * from account where 1 = 1 ";
+        if(memberId != null){
+
+            sql += " AND member_id = "+ memberId;
+
+        }if(type != null){
+
+            sql += " AND type = "+ type;
+
+        }
+        return modelManager.findFirst(sql);
+
+    }
+
+    /**
+     *  获取用户信息集合
+     */
+    public List<Account> getUserInfoList(Long memberId){
+
+        String sql = " select * from account where 1 = 1 ";
+        if(memberId != null){
+
+            sql += " AND member_id = "+ memberId;
+
+        }
+        return modelManager.find(sql);
+
+    }
+
+}

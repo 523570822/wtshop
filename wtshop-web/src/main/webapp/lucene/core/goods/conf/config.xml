@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fields>
+	<field type="int" name="id" isQuery="n"></field>
+	<field type="string" name="sn" isQuery="y"></field>
+	<field type="string" name="keywork" isQuery="y"></field>
+	<field type="string" name="name" isQuery="y"></field>
+	<field type="string" name="caption" isQuery="y"></field>
+	<field type="int" name="type" isQuery="y"></field>
+	<field type="string" name="thumbnail" isQuery="y"></field>
+	<field type="string" name="product_images" isQuery="y"></field>
+	<field type="string" name="is_marketable" isQuery="y"></field>
+	<field type="string" name="is_list" isQuery="y"></field>
+	<field type="string" name="price" isQuery="y"></field>
+	<field type="string" name="is_top" isQuery="y"></field>
+	<field type="string" name="sales" isQuery="y"></field>
+	<field type="string" name="score" isQuery="y"></field>
+	<field type="string" name="create_date" isQuery="y"></field>
+</fields>

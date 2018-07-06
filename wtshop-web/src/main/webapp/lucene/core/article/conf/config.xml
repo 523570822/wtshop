@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fields>
+	<field type="int" name="id" isQuery="n"></field>
+	<field type="string" name="title" isQuery="y"></field>
+	<field type="string" name="content" isQuery="y"></field>
+	<field type="string" name="is_publication" isQuery="y"></field>
+	<field type="string" name="create_date" isQuery="y"></field>
+	<field type="string" name="author" isQuery="y"></field>
+	<field type="string" name="text" isQuery="y"></field>
+</fields>
