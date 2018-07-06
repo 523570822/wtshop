@@ -76,9 +76,12 @@ public class InformationDao extends  BaseDao<Information>{
         }
         if (type != null) {
             if( 0 == type){
-                sqlExceptSelect += " AND type in (0, 1, 2, 3, 5) ";
-            }else {
+                sqlExceptSelect += " AND type in (0, 2, 5) ";
+            }else if( 1 == type) {
+
                 sqlExceptSelect += " AND type = 4 ";
+            }else if( 2 == type){
+                sqlExceptSelect += " AND type in (1, 3) ";
             }
         }
         sqlExceptSelect += " order by  create_date desc";

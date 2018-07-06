@@ -177,12 +177,12 @@ public class MemberAPIController extends BaseAPIController {
 			certificates1.setPhone(phone);
 			certificates1.setName(name);
 			certificates1.setMemberId(member.getId());
-			certificates1.setState(1);
+			certificates1.setState(0);
 			certificatesService.save(certificates1);
 			renderJson(ApiResult.successMsg("上传成功,等待后台审核"));
 			log.info("_______________________________上传成功姓名和身份证号成功：____________________________" );
 		}
-		certificates.setState(1);
+		certificates.setState(0);
 		certificates.setIdCard(idCard);
 		certificates.setName(name);
 		certificates.setPhone(phone);
