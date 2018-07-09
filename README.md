@@ -121,6 +121,17 @@ git rm --cached -r  "target"
  git pull gitHub master
  
   git pull  origin master
+  
+  
+  server2 部署
+  scp -r   root@10.25.92.80:/root/fengServer2.sh   /root    --拷贝.sh 文件
+  chmod 755 /root/fengServer2.sh   --赋予执行权限
+  
+  scp -r   root@10.25.92.80:/root/learngit/mr_feng/wtshop.properties /root/learngit/mr_feng
+  i@8fmhY7!m3FkwJ*
+  
+  
+
  
 
 

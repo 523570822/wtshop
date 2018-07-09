@@ -188,8 +188,10 @@ public class MemberAPIController extends BaseAPIController {
 		certificates.setName(name);
 		certificates.setPhone(phone);
 		certificatesService.update(certificates);
+
 		log.info("_______________________________上传成功姓名和身份证号成功：____________________________" );
 		renderJson(ApiResult.successMsg("上传成功,等待后台审核"));
+		return;
 
 	}
 	
