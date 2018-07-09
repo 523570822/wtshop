@@ -124,10 +124,11 @@ git rm --cached -r  "target"
   
   
   server2 部署
-  scp -r   root@10.25.92.80:/root/fengServer2.sh   /root    --拷贝.sh 文件
-  chmod 755 /root/fengServer2.sh   --赋予执行权限
+  单独部署server2 需要在server1中执行 ./serverBS2_mr_feng.sh
+  scp -r   root@10.25.92.80:/root/learngit/mr_feng/fengServer2.sh   /root/learngit/mr_feng    --拷贝.sh 文件
+  chmod 755 /root/learngit/mr_feng/fengServer2.sh   --赋予执行权限
   
-  scp -r   root@10.25.92.80:/root/learngit/mr_feng/wtshop.properties /root/learngit/mr_feng
+  scp -r   root@10.25.92.80:/root/learngit/mr_feng/wtshop.properties /root
   i@8fmhY7!m3FkwJ*
   
   
