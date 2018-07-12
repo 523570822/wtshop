@@ -235,7 +235,7 @@ public class OrderAPIController extends BaseAPIController {
 
 		//是否实名认证
 		Certificates certificates = certificatesService.queryByMemberId(member.getId());
-		if(certificates == null || (certificates != null && certificates.getState() != 1)){
+		if(certificates != null && certificates.getState() != 1){
 			renderJson(new ApiResult(101,"请先进行实名认证!"));
 			return;
 		}
@@ -562,14 +562,8 @@ public class OrderAPIController extends BaseAPIController {
 		Member member = memberService.getCurrent();
 
 		//是否实名认证
-		Boolean is_renzheng = false;
 		Certificates certificates = certificatesService.queryByMemberId(member.getId());
-
-		if(certificates != null && certificates.getState() == 1){
-			is_renzheng = true;
-		}
-
-		if(!is_renzheng){
+		if(certificates != null && certificates.getState() != 1){
 			renderJson(new ApiResult(101,"请先进行实名认证!"));
 			return;
 		}

@@ -2,7 +2,7 @@ echo "開始停止tomcat服务!"
  /mrmf/tomcat_shops/bin/shutdown.sh
 echo "备份当前tomcat下商城代码"
 tar zcvf /mrmf/tomcat_shops/webapps/ROOT$(date +%Y%m%d%H).tar.gz /mrmf/tomcat_shops/webapps/ROOT ;//备份语句根据实际情况修改
-sleep 20
+sleep 10
 echo "删除文件及缓存"
 sudo rm -rf /root/learngit/wtshop/wtshop-web/target/*
 sudo rm -rf /mrmf/tomcat_shops/webapps/ROOT/*

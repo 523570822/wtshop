@@ -117,10 +117,10 @@ public class ReverseAuctionController extends BaseAPIController {
         Member member = memberService.getCurrent();
         Map<String, Object> resultMap = new HashMap<>();
         //是否实名认证
-        int isCert = Code.FALSE;
+        int isCert = Code.TRUE;
         Certificates certificates = certificatesService.queryByMemberId(member.getId());
-        if (certificates != null && certificates.getState() == Code.TRUE) {
-            isCert = Code.TRUE;
+        if (certificates != null && certificates.getState() != Code.TRUE) {
+            isCert = Code.FAIL;
         }
         resultMap.put("isCert", isCert);
         resultMap.put("certMsg", "请先进行实名认证");

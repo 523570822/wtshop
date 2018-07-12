@@ -177,21 +177,18 @@ public class MemberAPIController extends BaseAPIController {
 			certificates1.setPhone(phone);
 			certificates1.setName(name);
 			certificates1.setMemberId(member.getId());
-			certificates1.setState(0);
+			certificates1.setState(1);
 			certificatesService.save(certificates1);
 			renderJson(ApiResult.successMsg("上传成功,等待后台审核"));
 			log.info("_______________________________上传成功姓名和身份证号成功：____________________________" );
-			return;
 		}
-		certificates.setState(0);
+		certificates.setState(1);
 		certificates.setIdCard(idCard);
 		certificates.setName(name);
 		certificates.setPhone(phone);
 		certificatesService.update(certificates);
-
 		log.info("_______________________________上传成功姓名和身份证号成功：____________________________" );
 		renderJson(ApiResult.successMsg("上传成功,等待后台审核"));
-		return;
 
 	}
 	

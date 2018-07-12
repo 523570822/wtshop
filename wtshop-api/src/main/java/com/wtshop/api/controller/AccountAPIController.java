@@ -40,10 +40,6 @@ public class AccountAPIController extends BaseAPIController {
 	
 	/**
 	 * 检查用户名是否被禁用或已存在
-	 *
-	 *
-	 *
-	 * aa
 	 * {"msg":"","code":1,"data":false}
 	 */
 

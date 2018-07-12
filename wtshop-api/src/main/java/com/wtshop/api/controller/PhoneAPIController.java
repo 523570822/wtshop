@@ -70,8 +70,7 @@ public class PhoneAPIController extends BaseAPIController {
     public void soundStatus(){
         Member current = memberService.getCurrent();
         Cache redis = Redis.use();
-        Long ddd = current.getId();
-        String sound = redis.get("SOUND:" + ddd);
+        String sound = redis.get("SOUND:" + current.getId());
         Boolean status = true;
         if("sound.wav".equals(sound)){
             status = false;

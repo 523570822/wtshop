@@ -46,7 +46,7 @@ public class MessageAPIController extends BaseAPIController {
 
 	/**
 	 * 列表
-	 * type = 0 通知  type = 1  互动  ,type =2.物流
+	 * type = 0 我的消息  type = 1 技师消息
 	 */
 	public void list() {
 		Integer pageNumber = getParaToInt("pageNumber");
