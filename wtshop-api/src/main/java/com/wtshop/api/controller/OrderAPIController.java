@@ -211,10 +211,12 @@ public class OrderAPIController extends BaseAPIController {
 		miaoBiDesc ="共" + MathUtil.getInt(member.getPoint().toString()) + "喵币,可用" + MathUtil.getInt(useMiaoBi.toString()) + "喵币,抵扣¥" + MathUtil.getInt(miaoBiPrice.toString()) ;
 
 		Double[] param = {deliver, miaobi, amountpaid ,couponYunfei ,manJianPrices};
+		String params = deliver.toString() + "," + miaobi.toString() + "," +amountpaid.toString() + "," +couponYunfei.toString() + "," +manJianPrices.toString() ;
 
-		realPrice =  MathUtil.getInt(amountpaid.toString());
+			realPrice =  MathUtil.getInt(amountpaid.toString());
 		OrderBuyNowResult orderBuyNowResult = new OrderBuyNowResult(taxUrl, yunfei, member, defaultReceiver, goods, 1, receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, priceList,
 			realPrice, favoritePrice, param, is_promotion, amountpaid);
+		RedisUtil.setString("ORDERPARAM:"+member.getId(), params);
 
 		renderJson(ApiResult.success(orderBuyNowResult));
 
@@ -241,7 +243,7 @@ public class OrderAPIController extends BaseAPIController {
 		}
 
 		Double price = MathUtil.multiply(goods.getPrice(), 1);
-		String[] values = StringUtils.split(getPara("param"), ",");
+		String[] values = StringUtils.split(RedisUtil.getString("ORDERPARAM:" + member.getId()), ",");
 		Double[] skuids = values == null ? null :convertToDouble(values);
 
 		//快递费用

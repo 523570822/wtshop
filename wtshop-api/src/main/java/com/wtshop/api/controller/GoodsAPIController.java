@@ -206,8 +206,9 @@ public class GoodsAPIController extends BaseAPIController {
 	public void reviewDetail(){
 		Long id = getParaToLong("goodIds");
 		Long type = getParaToLong("type");
+		Integer pageNumber = getParaToInt("pageNumber",1);
 		Goods goods = goodsService.find(id);
-		Pageable pageable = new Pageable(1, 20);
+		Pageable pageable = new Pageable(pageNumber, 20);
 		if( type == null){
 			Page<Review> reviewPages = reviewService.findPage(null, goods, null, true, pageable);
 			List<Review> list = reviewPages.getList();
