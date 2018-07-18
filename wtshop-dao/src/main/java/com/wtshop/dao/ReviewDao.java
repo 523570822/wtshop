@@ -243,7 +243,7 @@ public class ReviewDao extends BaseDao<Review> {
 	 * @return 评论分页
 	 */
 	public Page<Review> findPage(Member member, Goods goods,  Boolean isShow, Pageable pageable) {
-		String sqlExceptSelect = "FROM review r left join member m on r.member_id = m.id WHERE 1 = 1 AND IMAGES IS NOT NULL";
+		String sqlExceptSelect = "FROM review r left join member m on r.member_id = m.id WHERE 1 = 1 AND IMAGES like '%/%'";
 		String select = "select r.*,m.avatar,m.nickname";
 		if (member != null) {
 			sqlExceptSelect += " AND member_id = " + member.getId();
@@ -254,6 +254,7 @@ public class ReviewDao extends BaseDao<Review> {
 		if (isShow != null) {
 			sqlExceptSelect += " AND is_show = " + isShow;
 		}
+
 		return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
 	}
 

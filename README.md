@@ -132,6 +132,12 @@ git rm --cached -r  "target"
   i@8fmhY7!m3FkwJ*
   
   
+  
+  //linux 常用命令
+   ps -ef |grep tomcat  查看tomcat线程
+   杀死线程kill -9 23119
+  
+  
 
  
 

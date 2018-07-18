@@ -208,7 +208,7 @@ public class GoodsAPIController extends BaseAPIController {
 		Long type = getParaToLong("type");
 		Integer pageNumber = getParaToInt("pageNumber",1);
 		Goods goods = goodsService.find(id);
-		Pageable pageable = new Pageable(pageNumber, 20);
+		Pageable pageable = new Pageable(pageNumber, 10);
 		if( type == null){
 			Page<Review> reviewPages = reviewService.findPage(null, goods, null, true, pageable);
 			List<Review> list = reviewPages.getList();
@@ -289,7 +289,7 @@ public class GoodsAPIController extends BaseAPIController {
 		}else if( 3 == type){
 			Page<Review> imagePage = reviewService.findPage(null, goods, true, pageable);
 			List<Review> list = imagePage.getList();
-			for(Review review:list){
+			for(Review review :list){
 				Member member = review.getMember();
 				String nickname = member.getNickname();
 				if(review.getIsAnonymous() != null && review.getIsAnonymous()){
@@ -304,13 +304,13 @@ public class GoodsAPIController extends BaseAPIController {
 					review.setOrderContent(nickname);
 				}
 			}
-			int totalRow = imagePage.getTotalRow();
+
 			for(int i = 0; i < list.size() ; i++){
 				if(!list.get(i).getImages().contains("/")){
 					list.remove(i);
-					totalRow--;
 				}
 			}
+
 			renderJson(ApiResult.success(imagePage));
 		}
 		else {

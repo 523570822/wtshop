@@ -201,7 +201,10 @@ public class ReviewAPIController extends BaseAPIController {
 					}
 				}
 				reviewService.saveReview(member, ip, 1, anonymous, id, score, content, images);
-			}
+			}else {
+                renderJson(ApiResult.fail("系统错误,请稍后尝试"));
+                return;
+            }
 		}
 		renderJson(ApiResult.success(resZh.format("shop.review.success")));
 	}
