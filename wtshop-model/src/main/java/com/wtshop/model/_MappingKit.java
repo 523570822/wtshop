@@ -108,7 +108,8 @@ public class _MappingKit {
 		arp.addMapping("order_log", "id", OrderLog.class);
 		arp.addMapping("organ", "id", Organ.class);
 		arp.addMapping("parameter", "id", Parameter.class);
-	//	arp.addMapping("partner", "id", Partner.class);
+		arp.addMapping("partner", "id", Partner.class);
+
 		arp.addMapping("payment", "id", Payment.class);
 		arp.addMapping("payment_log", "id", PaymentLog.class);
 		arp.addMapping("payment_method", "id", PaymentMethod.class);

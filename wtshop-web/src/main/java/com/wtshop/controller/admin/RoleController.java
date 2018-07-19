@@ -80,7 +80,7 @@ public class RoleController extends BaseController {
 		role.remove("is_system");
 		roleService.update(role);
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("/admin/role/list");
+		redirect("/admin/role/list.jhtml");
 	}
 
 	/**
