@@ -3,7 +3,6 @@ package com.wtshop.dao;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
-import com.sun.tools.corba.se.idl.constExpr.Or;
 import com.wtshop.Filter;
 import com.wtshop.Pageable;
 import com.wtshop.model.Goods;
@@ -104,6 +103,23 @@ public class OrderDao extends BaseDao<Order> {
 		String sql = "SELECT * FROM `order` WHERE sn = LOWER(?) AND is_delete = 0 ";
 		try {
 			return modelManager.findFirst(sql, sn);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * 根据倒拍详情ID查找订单
+	 * @param actOrderId	倒拍详情id
+	 * @return
+	 */
+	public Order findByActOrderId(String actOrderId) {
+		if (StringUtils.isEmpty(actOrderId)) {
+			return null;
+		}
+		String sql = "SELECT * FROM `order` WHERE actOrderId = ? AND is_delete = 0";
+		try {
+			return modelManager.findFirst(sql, actOrderId);
 		} catch (Exception e) {
 			return null;
 		}

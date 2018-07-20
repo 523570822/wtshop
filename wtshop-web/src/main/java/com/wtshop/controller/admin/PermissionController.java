@@ -43,7 +43,7 @@ public class PermissionController extends BaseController {
 		permission.setIsEnabled(isEnabled);
 		permissionService.save(permission);
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("list.jhtml");
+		redirect("/admin/permission/list.jhtml");
 	}
 	
 	/**

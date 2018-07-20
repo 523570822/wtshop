@@ -373,15 +373,16 @@ public class MemberService extends BaseService<Member> {
 		map.put("hasOrgan",false);
 		map.put("hasVip",false);
 		map.put("hasBangDing",false);
-		MrmfShop mrmfShop = mrmfShopDao.findByMemberId(member.getId());
+
 		StaffMember staffMember = staffMemberDao.queryByMemberId(member.getId());
+	/*	MrmfShop mrmfShop = mrmfShopDao.findByMemberId(member.getId());
 		if(!ObjectUtils.isEmpty(mrmfShop)){
-			map.put("hasOrgan",true);
-		}
+			map.put("hasOrgan",true); //组织(店铺)
+		}*/
 		if(!ObjectUtils.isEmpty(staffMember)){
-			map.put("hasBangDing",true);
+			map.put("hasBangDing",true); //绑定
 		}
-		if(com.wtshop.util.StringUtils.isEmpty(member.getPhone())){//如果手机号为空，则不会去mongo查询
+	/*	if(com.wtshop.util.StringUtils.isEmpty(member.getPhone())){//如果手机号为空，则不会去mongo查询
 			return map;
 		}
 		BasicDBObject basicDBObject = new BasicDBObject();
@@ -398,7 +399,7 @@ public class MemberService extends BaseService<Member> {
 		}
 		if(!ObjectUtils.isEmpty(vip)){
 			map.put("hasVip",true);
-		}
+		}*/
 		return map;
 	}
 

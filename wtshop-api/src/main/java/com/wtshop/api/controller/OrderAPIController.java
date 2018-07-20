@@ -663,10 +663,8 @@ public class OrderAPIController extends BaseAPIController {
 		Date expire = order.getExpire();
 		Date date = new Date();
 		if(expire != null && !expire.after(date)){
-
 			renderJson(ApiResult.fail("订单已过期,请重新下单购买"));
 			return;
-
 		}
 
 		double price = order.getAmount().doubleValue();

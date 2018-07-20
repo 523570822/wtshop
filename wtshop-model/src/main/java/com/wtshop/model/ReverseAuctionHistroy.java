@@ -7,5 +7,13 @@ import com.wtshop.model.base.BaseReverseAuctionHistroy;
  */
 @SuppressWarnings("serial")
 public class ReverseAuctionHistroy extends BaseReverseAuctionHistroy<ReverseAuctionHistroy> {
+
 	public static final ReverseAuctionHistroy dao = new ReverseAuctionHistroy().dao();
+
+	//  购买状态 0/已取消,1/未付款,2/已付款
+	public enum BuyState {
+		cancel,
+		pendingPayment,
+		payment
+	}
 }

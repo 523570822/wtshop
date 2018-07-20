@@ -512,6 +512,9 @@
 											[@shiro.hasPermission name="admin:caiwu"]
                                                 <li><a href="../caiwu/list.jhtml" target="iframe">${message("admin.role.caiwu")}</a></li>
 											[/@shiro.hasPermission]
+											[@shiro.hasPermission name="admin:proxy"]
+                                                <li><a href="../proxy/list.jhtml" target="iframe">${message("admin.role.proxy")}</a></li>
+											[/@shiro.hasPermission]
 
 		                                </ul>
 		                            </div>
