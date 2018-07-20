@@ -4,9 +4,11 @@ package com.wtshop.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.jfinal.aop.Before;
 import com.jfinal.aop.Enhancer;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.wtshop.dao.*;
 import com.wtshop.model.*;
 import com.wtshop.util.ApiResult;
@@ -45,6 +47,7 @@ public class ReverseAuctionService extends BaseService<ReverseAuction> {
     private OrderLogDao orderLogDao = Enhancer.enhance(OrderLogDao.class);
     private DepositLogDao depositLogDao = Enhancer.enhance(DepositLogDao.class);
 
+    @Before(Tx.class)
     public ApiResult detail(Long memberId, String auctionId, String detailId, Long productId) {
         ApiResult result = ApiResult.fail();
         try {
@@ -119,6 +122,7 @@ public class ReverseAuctionService extends BaseService<ReverseAuction> {
     }
 
     //  微信倒拍回调
+    @Before(Tx.class)
     public ApiResult handleWechatPayCallback(Map<String, String> callbackMap) {
         String payNo = callbackMap.get("out_trade_no");
         String otherNo = callbackMap.get("transaction_id");
@@ -148,6 +152,7 @@ public class ReverseAuctionService extends BaseService<ReverseAuction> {
     }
 
     //  支付宝倒拍回调
+    @Before(Tx.class)
     public ApiResult handleAlipayPayCallback(Map<String, String> callbackMap) {
         String payNo = callbackMap.get("out_trade_no");
         String otherNo = callbackMap.get("trade_no");
@@ -181,7 +186,7 @@ public class ReverseAuctionService extends BaseService<ReverseAuction> {
         return "REVERSE_AUCTION:" + UUIDUtils.getStringUUID();
     }
 
-
+    @Before(Tx.class)
     public Order updateReverseAuctionOrderToPendingShip(ReverseAuctionHistroy reverseAuctionHistroy, Order.PayType payType, String amount, String balance, String orderNo) {
         Member member = memberService.find(reverseAuctionHistroy.getMemberId());
         Order order = orderDao.findByActOrderId(String.valueOf(reverseAuctionHistroy.getReverseAuctionDetailId()));
@@ -224,6 +229,7 @@ public class ReverseAuctionService extends BaseService<ReverseAuction> {
     }
 
     //  创建倒拍订单（待支付）
+    @Before(Tx.class)
     public Order createReverseAuctionOrderToPendingPayment(Long reverseAuctionHistroyId, long maxPayTimeInSecond) {
         ReverseAuctionHistroy reverseAuctionHistroy = reverseAuctionHistroyDao.find(reverseAuctionHistroyId);
         Order order = new Order();
