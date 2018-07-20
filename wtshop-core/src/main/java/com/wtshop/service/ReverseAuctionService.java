@@ -143,7 +143,7 @@ public class ReverseAuctionService extends BaseService<ReverseAuction> {
         }
         histroy.setBuyState(2);
         reverseAuctionHistroyDao.update(histroy);
-        createReverseAuctionOrder(histroy, Order.PayType.wechat, String.valueOf(NumberUtils.toDouble(amount) / 100.0), "0", otherNo);
+        updateReverseAuctionOrderToPendingShip(histroy, Order.PayType.wechat, String.valueOf(NumberUtils.toDouble(amount) / 100.0), "0", otherNo);
         return ApiResult.success();
     }
 
@@ -172,7 +172,7 @@ public class ReverseAuctionService extends BaseService<ReverseAuction> {
         //  记录订单
         histroy.setBuyState(2);
         reverseAuctionHistroyDao.update(histroy);
-        createReverseAuctionOrder(histroy, Order.PayType.alipay, amount, "0", otherNo);
+        updateReverseAuctionOrderToPendingShip(histroy, Order.PayType.alipay, amount, "0", otherNo);
 
         return ApiResult.success();
     }
@@ -181,7 +181,51 @@ public class ReverseAuctionService extends BaseService<ReverseAuction> {
         return "REVERSE_AUCTION:" + UUIDUtils.getStringUUID();
     }
 
-    public Order createReverseAuctionOrder(ReverseAuctionHistroy reverseAuctionHistroy, Order.PayType payType, String amount, String balance, String orderNo) {
+
+    public Order updateReverseAuctionOrderToPendingShip(ReverseAuctionHistroy reverseAuctionHistroy, Order.PayType payType, String amount, String balance, String orderNo) {
+        Member member = memberService.find(reverseAuctionHistroy.getMemberId());
+        Order order = orderDao.findByActOrderId(String.valueOf(reverseAuctionHistroy.getReverseAuctionDetailId()));
+        order.setAmountPaid(new BigDecimal(balance));
+        order.setOrderNo(orderNo);
+        if (payType == Order.PayType.wechat) {
+            order.setWeixinPaid(new BigDecimal(amount));
+        }else {
+            order.setWeixinPaid(BigDecimal.ZERO);
+        }
+        if (payType == Order.PayType.alipay) {
+            order.setAliPaid(new BigDecimal(amount));
+        } else {
+            order.setAliPaid(BigDecimal.ZERO);
+        }
+        order.setStatus(Order.Status.pendingShipment.ordinal());
+        orderDao.update(order);
+
+        //  更新用户余额
+        memberService.addAmount(member, order.getAmount());
+        if (order.getAmountPaid().doubleValue() > 0) {
+            BigDecimal decimal = member.getBalance().subtract(order.getAmountPaid()).setScale(2, RoundingMode.UP);
+            if (decimal.doubleValue() < 0) {
+                decimal = BigDecimal.ZERO;
+            }
+            member.setBalance(decimal);
+            memberService.update(member);
+            //添加余额消费记录
+            DepositLog depositLog = new DepositLog();
+            depositLog.setBalance(decimal);
+            depositLog.setCredit(new BigDecimal("0"));
+            depositLog.setDebit(order.getAmountPaid());
+            depositLog.setMemo("倒拍支付");
+            depositLog.setType(DepositLog.Type.payment.ordinal());
+            depositLog.setOrderId(order.getId());
+            depositLog.setMemberId(member.getId());
+            depositLogDao.save(depositLog);
+        }
+        return order;
+    }
+
+    //  创建倒拍订单（待支付）
+    public Order createReverseAuctionOrderToPendingPayment(Long reverseAuctionHistroyId, long maxPayTimeInSecond) {
+        ReverseAuctionHistroy reverseAuctionHistroy = reverseAuctionHistroyDao.find(reverseAuctionHistroyId);
         Order order = new Order();
         order.setSn(snDao.generate(Sn.Type.order));
         order.setType(Order.Type.daopai.ordinal());
@@ -191,7 +235,7 @@ public class ReverseAuctionService extends BaseService<ReverseAuction> {
         order.setMiaobiPaid(BigDecimal.ZERO);
         order.setPromotionDiscount(BigDecimal.ZERO);
         order.setOffsetAmount(BigDecimal.ZERO);
-        order.setAmountPaid(new BigDecimal(balance));
+        order.setAmountPaid(BigDecimal.ZERO);
         order.setRefundAmount(BigDecimal.ZERO);
         order.setCouponDiscount(BigDecimal.ZERO);
         order.setRewardPoint(0L);
@@ -203,18 +247,9 @@ public class ReverseAuctionService extends BaseService<ReverseAuction> {
         order.setShippedQuantity(0);
         order.setReturnedQuantity(0);
         order.setIsDelete(false);
-        order.setOrderNo(orderNo);
 
-        if (payType == Order.PayType.wechat)
-            order.setWeixinPaid(new BigDecimal(amount));
-        else
-            order.setWeixinPaid(BigDecimal.ZERO);
-
-        if (payType == Order.PayType.alipay)
-            order.setAliPaid(new BigDecimal(amount));
-        else
-            order.setAliPaid(BigDecimal.ZERO);
-
+        order.setWeixinPaid(BigDecimal.ZERO);
+        order.setAliPaid(BigDecimal.ZERO);
 
         Member member = memberService.find(reverseAuctionHistroy.getMemberId());
         Receiver receiver = receiverService.findDefault(member);
@@ -238,14 +273,12 @@ public class ReverseAuctionService extends BaseService<ReverseAuction> {
         order.setCoupons(null);
         order.setIsVip(false);
         order.setTax(BigDecimal.ZERO);
-        order.setStatus(Order.Status.pendingShipment.ordinal());
+        order.setStatus(Order.Status.pendingPayment.ordinal());
         order.setPaymentMethod(null);
         order.setPaymentMethodId(1L);
         order.setPaymentMethodName("倒拍支付");
-        order.setExpire(DateUtils.addMinutes(new Date(), 60 * 24 * 7));
+        order.setExpire(DateUtils.addMinutes(new Date(), (int)(maxPayTimeInSecond / 60)));
         order.setActOrderId(reverseAuctionHistroy.getReverseAuctionDetailId().toString());
-
-
         if (order.getArea() != null) {
             order.setAreaName(order.getArea().getFullName());
         }
@@ -285,28 +318,6 @@ public class ReverseAuctionService extends BaseService<ReverseAuction> {
         orderLog.setType(OrderLog.Type.create.ordinal());
         orderLog.setOrderId(order.getId());
         orderLogDao.save(orderLog);
-
-
-        //  更新用户余额
-        memberService.addAmount(member, order.getAmount());
-        if (order.getAmountPaid().doubleValue() > 0) {
-            BigDecimal decimal = member.getBalance().subtract(order.getAmountPaid()).setScale(2, RoundingMode.UP);
-            if (decimal.doubleValue() < 0) {
-                decimal = BigDecimal.ZERO;
-            }
-            member.setBalance(decimal);
-            memberService.update(member);
-            //添加余额消费记录
-            DepositLog depositLog = new DepositLog();
-            depositLog.setBalance(decimal);
-            depositLog.setCredit(new BigDecimal("0"));
-            depositLog.setDebit(order.getAmountPaid());
-            depositLog.setMemo("倒拍支付");
-            depositLog.setType(DepositLog.Type.payment.ordinal());
-            depositLog.setOrderId(order.getId());
-            depositLog.setMemberId(member.getId());
-            depositLogDao.save(depositLog);
-        }
         return order;
     }
 

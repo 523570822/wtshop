@@ -13,6 +13,8 @@ import com.wtshop.api.controller.BaseAPIController;
 import com.wtshop.api.interceptor.ErrorInterceptor;
 import com.wtshop.api.interceptor.TokenInterceptor;
 import com.wtshop.constants.Code;
+import com.wtshop.dao.OrderDao;
+import com.wtshop.dao.ReverseAuctionHistroyDao;
 import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.*;
 import com.wtshop.service.*;
@@ -36,6 +38,8 @@ public class ReverseAuctionController extends BaseAPIController {
     private ReverseAuctionHistroyService reverseAuctionHistroyService = enhance(ReverseAuctionHistroyService.class);
     private UserPayService userPayService = enhance(UserPayService.class);
     private CertificatesService certificatesService = enhance(CertificatesService.class);
+    private OrderDao orderDao = enhance(OrderDao.class);
+    private ReverseAuctionHistroyDao reverseAuctionHistroyDao = enhance(ReverseAuctionHistroyDao.class);
 
     //  获取倒拍列表
     public void auctionList() {
@@ -134,6 +138,12 @@ public class ReverseAuctionController extends BaseAPIController {
             long maxBuyTime = System.currentTimeMillis() - maxPayTimeInSecond * 1000;
             Record record = Db.findFirst("select * from `reverse_auction_histroy` rah where rah.`member_id` = ? and rah.buy_state = 1 and rah.buy_time > ? order by `buy_time` desc limit 1", member.getId(), new Date(maxBuyTime));
             if (record != null) {
+                Long reverse_auction_detail_id = record.getLong("reverse_auction_detail_id");
+                Order order = orderDao.findByActOrderId(String.valueOf(reverse_auction_detail_id));
+                if (order == null) {    //  生成待支付订单
+                    Long reverse_auction_histroy_id = record.getLong("id");
+                    reverseAuctionService.createReverseAuctionOrderToPendingPayment(reverse_auction_histroy_id, maxPayTimeInSecond);
+                }
                 double balance = member.getBalance().doubleValue();
                 resultMap.put("auction_history_id", record.getLong("id"));
                 resultMap.put("pay_state", 1);
@@ -143,6 +153,31 @@ public class ReverseAuctionController extends BaseAPIController {
                 renderJson(ApiResult.success(resultMap));
                 return;
             }
+        }
+        renderJson(ApiResult.success(resultMap));
+    }
+
+    //  获取订单支付信息
+    public void queryOrderPayDetail() {
+        Member member = memberService.getCurrent();
+        Map<String, Object> resultMap = new HashMap<>();
+        if (member != null) {
+            String setting = org.apache.commons.lang3.ObjectUtils.defaultIfNull(Redis.use("queue").get(Code.kAuctionSetting), "");
+            String[] settings = org.apache.commons.lang3.StringUtils.splitByWholeSeparatorPreserveAllTokens(setting, ",");
+            long maxPayTimeInSecond = 180;
+            if (org.apache.commons.lang3.StringUtils.isNotBlank(setting) && settings.length == 3) {
+                maxPayTimeInSecond = NumberUtils.toLong(settings[0]);
+            }
+            Long order_id = getParaToLong("order_id");
+            Order order = orderDao.find(order_id);
+            ReverseAuctionHistroy reverseAuctionHistroy = reverseAuctionHistroyDao.findByReverseAuctionDetailId(order.getActOrderId());
+            double balance = member.getBalance().doubleValue();
+            resultMap.put("auction_history_id", reverseAuctionHistroy.getId());
+            resultMap.put("pay_state", 1);
+            resultMap.put("pay_price", reverseAuctionHistroy.getBuyPrice());
+            resultMap.put("pay_time", reverseAuctionHistroy.getBuyTime().getTime() + maxPayTimeInSecond * 1000 - System.currentTimeMillis());
+            resultMap.put("balance", balance);
+            renderJson(ApiResult.success(resultMap));
         }
         renderJson(ApiResult.success(resultMap));
     }
@@ -185,7 +220,7 @@ public class ReverseAuctionController extends BaseAPIController {
         if (isBalance && NumberUtils.toDouble(pay_price) <= 0){ //  余额付
             reverseAuctionHistroy.setBuyState(2);
             reverseAuctionHistroyService.update(reverseAuctionHistroy);
-            reverseAuctionService.createReverseAuctionOrder(reverseAuctionHistroy, Order.PayType.balance, balance_price, balance_price, "");
+            reverseAuctionService.updateReverseAuctionOrderToPendingShip(reverseAuctionHistroy, Order.PayType.balance, balance_price, balance_price, "");
             renderJson(ApiResult.success("支付成功"));
             return;
         }else{
