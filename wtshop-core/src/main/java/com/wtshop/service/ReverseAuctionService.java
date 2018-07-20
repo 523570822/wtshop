@@ -54,10 +54,10 @@ public class ReverseAuctionService extends BaseService<ReverseAuction> {
             ReverseAuctionDetail reverseAuctionDetail = reverseAuctionDetailDao.find(Long.valueOf(detailId));
             Product product = productDao.find(productId);
             Goods goods = product.getGoods();
-            Long reviewCount = reviewService.count(null, goods, null, null);//全部评论
-            Long positiveCount = reviewService.count(null, goods, Review.Type.positive, null);
-            Long moderateCount = reviewService.count(null, goods, Review.Type.moderate, null);
-            Long negativeCount = reviewService.count(null, goods, Review.Type.negative, null);
+            Long reviewCount = reviewService.count(null, goods, null, true);//全部评论
+            Long positiveCount = reviewService.count(null, goods, Review.Type.positive, true);
+            Long moderateCount = reviewService.count(null, goods, Review.Type.moderate, true);
+            Long negativeCount = reviewService.count(null, goods, Review.Type.negative, true);
             //Long imagesCount = reviewService.count(null, good, null);
             HashMap<String, Object> resultMap = new HashMap<String, Object>();
             resultMap.put("reviewCount", reviewCount);
