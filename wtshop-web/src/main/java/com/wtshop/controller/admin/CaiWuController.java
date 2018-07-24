@@ -107,8 +107,8 @@ public class CaiWuController extends BaseController {
 			}
 
 		}
-		String[] header={"订单类型","订单编号","创建日期","会员名称","状态","商品名称","数量","商品单价","使用喵币","消费额","微信支付金额","支付宝支付金额","交易单号","产品成本","产品利润"};
-		String[] columns={"type","sn","create_date","name","status","goodsName","quantity","price","miaobi_paid","amount","weiXin_paid","aLi_paid","order_no","cost","profit"};
+		String[] header={"订单类型","订单编号","创建日期","会员名称","状态","商品名称","数量","商品单价","使用喵币","消费额","微信支付金额","支付宝支付金额","余额支付金额","交易单号","产品成本","产品利润"};
+		String[] columns={"type","sn","create_date","name","status","goodsName","quantity","price","miaobi_paid","amount","weiXin_paid","aLi_paid","amount_paid","order_no","cost","profit"};
 		Render poirender = PoiRender.me(list).fileName("caiwuOrder.xls").headers(header).sheetName("财务订单").columns(columns);
 		render(poirender);
 

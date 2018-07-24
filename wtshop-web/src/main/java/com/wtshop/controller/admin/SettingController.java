@@ -145,6 +145,7 @@ public class SettingController extends BaseController {
 		setting.setIsSendMiaoBi(getParaToBoolean("isSendMiaoBi",false));
 		setting.setIsUseMiaoBi(getParaToBoolean("isUseMiaoBi",false));
 		setting.setIsMyMessage(getParaToBoolean("isMyMessage",true));
+
 		setting.setIsStaffMessage(getParaToBoolean("isStaffMessage",true));
 		setting.setIsRegisterSending(getParaToBoolean("isRegisterSending",true));
 		JSONObject redisSetting = new JSONObject();
