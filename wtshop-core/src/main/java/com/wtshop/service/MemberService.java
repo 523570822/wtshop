@@ -157,7 +157,7 @@ public class MemberService extends BaseService<Member> {
 		Setting setting = SystemUtils.getSetting();
 		//判断用户名是否是mongo数据库中数据
 		//查询mongo数据库
-		BasicDBObject basicDBObject = new BasicDBObject();
+	/*	BasicDBObject basicDBObject = new BasicDBObject();
 		basicDBObject.put("phone",username);
 		DBObject user = MongoKit.getCollection("user").findOne(basicDBObject);
 		DBObject staff = MongoKit.getCollection("staff").findOne(basicDBObject);
@@ -168,8 +168,8 @@ public class MemberService extends BaseService<Member> {
 		DBObject vip = MongoKit.getCollection("vipMember").findOne(basicDBObject);
 		if(! ObjectUtils.isEmpty(vip)){
 			isVip = true;
-		}
-
+		}*/
+		Boolean isVip = false;
 		Member member = new Member();
 
 		String phone = StringUtils.lowerCase(username);
@@ -225,7 +225,7 @@ public class MemberService extends BaseService<Member> {
 		memberDao.save(member);
 
 		//判断mogo是否存在 若存在 更新数据 若不存在 插入数据
-		if(user != null){
+/*		if(user != null){
 			user.put("shopPassword", DigestUtils.md5Hex(password));
 			MongoKit.getCollection("user").save(user);
 
@@ -239,7 +239,7 @@ public class MemberService extends BaseService<Member> {
 		}else{
 			Record record = new Record().set("phone" ,username).set("shopPassword" ,password);
 			MongoKit.save("user",record);
-		}
+		}*/
 		return member;
 	}
 

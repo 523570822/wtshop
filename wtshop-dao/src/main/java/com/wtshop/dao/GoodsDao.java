@@ -61,7 +61,7 @@ public class GoodsDao extends BaseDao<Goods> {
 	 */
 	public List<Goods> findLikeList(){
 
-		String sql = "  select g.id,g.name,g.price,g.market_price,g.image,g.caption from like_commend n left join goods g on n.goods_id = g.id where 1 = 1 and g.is_delete = 0 and g.is_marketable = 1";
+		String sql = "  select g.id,g.name,g.price,g.market_price,g.image,g.caption,g.sales from like_commend n left join goods g on n.goods_id = g.id where 1 = 1 and g.is_delete = 0 and g.is_marketable = 1";
 
 		return modelManager.find(sql);
 
@@ -118,7 +118,7 @@ public class GoodsDao extends BaseDao<Goods> {
 	 */
 	public List<Goods> findNewGoodsList(){
 
-		String sql = "  select g.id,g.name,g.price,g.market_price,g.image,g.caption from newGoods_commend n left join goods g on n.goods_id = g.id where 1 = 1 and g.is_delete = 0 and g.is_marketable = 1";
+		String sql = " select g.id,g.name,g.price,g.market_price,g.image,g.caption,g.sales from newGoods_commend n left join goods g on n.goods_id = g.id where 1 = 1 and g.is_delete = 0 and g.is_marketable = 1;";
 
 		return modelManager.find(sql);
 
@@ -129,7 +129,7 @@ public class GoodsDao extends BaseDao<Goods> {
 	 */
 	public List<Goods> findCharactersList(){
 
-		String sql = " select g.id,g.name,g.price,g.market_price,g.image,g.caption from character_commend n left join goods g on n.goods_id = g.id where 1 = 1 and g.is_delete = 0 and g.is_marketable = 1";
+		String sql = " select g.id,g.name,g.price,g.market_price,g.image,g.caption,g.sales from character_commend n left join goods g on n.goods_id = g.id where 1 = 1 and g.is_delete = 0 and g.is_marketable = 1";
 
 		return modelManager.find(sql);
 
