@@ -255,10 +255,13 @@ public class ReviewController extends BaseController {
 		//带加入的昵称
 
 		if(name==null||name.trim().equals("")){
-			review.setIsAnonymous(true);
+			map.put("status", "0");
+			map.put(MESSAGE,  "昵称不能为空");
+			renderJson(map);
 		}else{
-			review.setIsAnonymous(false);
-			review.setOrderContent(name);
+			review.setIsAnonymous(true);
+
+			review.setName(name);
 		}
 
 

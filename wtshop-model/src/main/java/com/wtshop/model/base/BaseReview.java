@@ -16,6 +16,13 @@ public abstract class BaseReview<M extends BaseReview<M>> extends Model<M> imple
 	public Long getId() {
 		return get("id");
 	}
+	public void setName(String name) {
+		set("name", name);
+	}
+
+	public Long getName() {
+		return get("name");
+	}
 
 	public void setCreateDate(java.util.Date createDate) {
 		set("create_date", createDate);

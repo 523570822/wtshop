@@ -299,17 +299,16 @@
             </a>
             <div class="margin-top padding-top border-top">
 
-                <span class="mui-btn margin-small-right hd-btn-blue" data-score="5">五&nbsp;&nbsp;星</span>
+              <span class="mui-btn margin-small-right hd-btn-blue" data-score="5">五&nbsp;&nbsp;星</span>
                 <span class="mui-btn margin-small-right hd-btn-gray" data-score="4">四&nbsp;&nbsp;星</span>
                 <span class="mui-btn margin-small-right hd-btn-gray" data-score="3">三&nbsp;&nbsp;星</span>
-    [#--            <span class="mui-btn margin-small-right hd-btn-gray" data-score="2">二&nbsp;&nbsp;星</span>
+         [#--    <span class="mui-btn margin-small-right hd-btn-gray" data-score="2">二&nbsp;&nbsp;星</span>
                 <span class="mui-btn margin-small-right hd-btn-gray" data-score="1">一&nbsp;&nbsp;星</span>--]
 
-
-            [#--<span class="mui-btn margin-small-right hd-btn-gray" data-score="2">差&nbsp;&nbsp;&nbsp;评</span>--]
+        <span class="mui-btn margin-small-right hd-btn-gray" data-score="2">差&nbsp;&nbsp;&nbsp;评</span>
             </div>
             <input type="hidden" id="ids" name="ids"  />
-            <input type="hidden" name="score" value="0">
+            <input type="hidden" name="score" value="5">
         </li>
         <li>
             <input type="text" name="namee" class="mui-input-clear" placeholder="请输入昵称">
@@ -327,7 +326,7 @@
     </div>
     <div class="padding">
         <input type="hidden" name="id" value="${orderItem.id}">
-        <input type="submit" class="mui-btn full mui-btn-primary" value="发表评论"/>
+        <input type="submit" class="mui-btn  mui-btn-primary" value="发表评论"/>
     </div>
 </form>
 	<footer class="footer posi">
@@ -403,7 +402,8 @@
 	    	$this = $(this);
 	    	if($this.hasClass('hd-btn-gray')){
 	    		$this.addClass('hd-btn-blue').removeClass('hd-btn-gray').siblings().removeClass('hd-btn-blue').addClass('hd-btn-gray');
-	    		$('input[name=score]').val($this.attr('data-score'));
+
+	    			$('input[name=score]').val($this.attr('data-score'));
 	    	}
 	    });
 	    
