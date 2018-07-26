@@ -1,8 +1,15 @@
 package com.wtshop.controller.wap.member;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.jfinal.kit.StrKit;
+import com.wtshop.api.common.result.ImageResult;
+import com.wtshop.model.*;
+import com.wtshop.service.*;
+import com.wtshop.util.ApiResult;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.fastjson.JSONArray;
@@ -19,13 +26,6 @@ import com.wtshop.Setting;
 import com.wtshop.controller.wap.BaseController;
 import com.wtshop.exception.ResourceNotFoundException;
 import com.wtshop.interceptor.WapMemberInterceptor;
-import com.wtshop.model.Member;
-import com.wtshop.model.OrderItem;
-import com.wtshop.model.Review;
-import com.wtshop.service.FileService;
-import com.wtshop.service.MemberService;
-import com.wtshop.service.OrderItemService;
-import com.wtshop.service.ReviewService;
 import com.wtshop.util.SystemUtils;
 
 /**
@@ -36,13 +36,22 @@ import com.wtshop.util.SystemUtils;
 @ControllerBind(controllerKey = "/wap/member/review")
 @Before(WapMemberInterceptor.class)
 public class ReviewController extends BaseController {
-	
+
 	private FileService fileService = enhance(FileService.class);
 	private MemberService memberService =enhance(MemberService.class);
 	private OrderItemService orderItemService = enhance(OrderItemService.class);
 	private ReviewService reviewService = enhance(ReviewService.class);
-	
-	/**
+
+	private GoodsService goodsService = enhance(GoodsService.class);
+
+	private ProductCategoryService productCategoryService = enhance(ProductCategoryService.class);
+	private BrandService brandService = enhance(BrandService.class);
+	private PromotionService promotionService = enhance(PromotionService.class);
+	private TagService tagService = enhance(TagService.class);
+
+	private EffectService effectService = enhance(EffectService.class);
+
+	 /**
 	 * 上传
 	 */
 	public void upload() {
@@ -71,7 +80,40 @@ public class ReviewController extends BaseController {
 		}
 		data.put(MESSAGE, "上传成功!");
 		data.put(STATUS, SUCCESS);
+
 		data.put("url", url);
+		renderJson(data);
+	}
+	/**
+	 * 多图上传
+	 */
+	public void uploads() {
+		List<UploadFile> files = getFiles();
+		FileType fileType = FileType.valueOf(getPara("fileTypes", "image"));
+
+		List<ImageResult> imageResult = new ArrayList<ImageResult>();
+		if (fileType == null || files.size() == 0 ) {
+			renderJson(ApiResult.fail("请选择选图片"));
+			return;
+		}
+		for(UploadFile file : files){
+			if (!fileService.isValid(fileType, file)) {
+				renderJson(ApiResult.fail(Message.warn("admin.upload.invalid").toString()));
+				return;
+			}
+			String url = fileService.upload(fileType, file, false);
+
+			ImageResult image = new ImageResult(file.getOriginalFileName(), url);
+			imageResult.add(image);
+			if (StringUtils.isEmpty(url)) {
+				renderJson(ApiResult.fail(Message.warn("admin.upload.error").toString()));
+				return;
+			}
+		}
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put(MESSAGE, "上传成功!");
+		data.put(STATUS, SUCCESS);
+		data.put("url", imageResult);
 		renderJson(data);
 	}
 	
@@ -94,18 +136,57 @@ public class ReviewController extends BaseController {
 	 */
 	public void add() {
 		Long id = getParaToLong("id");
-		OrderItem orderItem = orderItemService.find(id);
+	//	OrderItem orderItem = orderItemService.find(id);
 		
 		Setting setting = SystemUtils.getSetting();
 		if (!setting.getIsReviewEnabled()) {
 			throw new ResourceNotFoundException();
 		}
-		if (orderItem == null) {
-			throw new ResourceNotFoundException();
-		}
-		
-		setAttr("orderItem", orderItem);
-		setAttr("goods", orderItem.getProduct().getGoods());
+
+
+		String typeName = getPara("type");
+		Goods.Type type = StrKit.notBlank(typeName) ? Goods.Type.valueOf(typeName) : null;
+		Long productCategoryId = getParaToLong("productCategoryId");
+		Long brandId = getParaToLong("brandId");
+		Long promotionId = getParaToLong("promotionId");
+		Long tagId = getParaToLong("tagId");
+		Boolean isMarketable = getParaToBoolean("isMarketable");
+		Boolean isList = getParaToBoolean("isList");
+		Boolean isTop = getParaToBoolean("isTop");
+		Boolean isOutOfStock = getParaToBoolean("isOutOfStock");
+		Boolean isStockAlert = getParaToBoolean("isStockAlert");
+		Pageable pageable = getBean(Pageable.class);
+		pageable.setPageSize(20);
+		//pageable.setd
+	//	pageable.DEFAULT_PAGE_SIZE
+		Boolean isVip = getParaToBoolean("isVip");
+		ProductCategory productCategory = productCategoryService.find(productCategoryId);
+		Brand brand = brandService.find(brandId);
+		Promotion promotion = promotionService.find(promotionId);
+		Tag tag = tagService.find(tagId);
+		setAttr("types", Goods.Type.values());
+		setAttr("productCategoryTree", productCategoryService.findTree());
+		setAttr("brands", brandService.findAll());
+		setAttr("promotions", promotionService.findAll());
+		setAttr("tags", tagService.findList(Tag.Type.goods));
+		setAttr("effects", effectService.findAll());
+		setAttr("type", type);
+		setAttr("productCategoryId", productCategoryId);
+		setAttr("brandId", brandId);
+		setAttr("promotionId", promotionId);
+		setAttr("tagId", tagId);
+		setAttr("isMarketable", isMarketable);
+		setAttr("isList", isList);
+		setAttr("isTop", isTop);
+		setAttr("isOutOfStock", isOutOfStock);
+		setAttr("isStockAlert", isStockAlert);
+		setAttr("isVip", isVip);
+		setAttr("pageable", pageable);
+		setAttr("page", goodsService.findPage(isVip, false, type, productCategory, brand, promotion, tag, null, null, null, isMarketable, isList, isTop, isOutOfStock, isStockAlert, null, null, pageable));
+
+
+
+
 		setAttr("title" , "评价交易 - 会员中心");
 		render("/wap/member/review/add.ftl");
 	}
@@ -116,38 +197,51 @@ public class ReviewController extends BaseController {
 	 */
 	@Before(Tx.class)
 	public void save() {
-		Long id = getParaToLong("id");
+		Long id = getParaToLong("ids");
 		Integer score = getParaToInt("score");
 		String content = getPara("content");
 		String [] images = getParaValues("images");
+		String name = getPara("namee");
 		
-		OrderItem orderItem = orderItemService.find(id);
-		
-		Res resZh = I18n.use();
-		Setting setting = SystemUtils.getSetting();
-		Map<String, String> map = new HashMap<String, String>();
-		if (!setting.getIsReviewEnabled()) {
-			map.put(STATUS, ERROR);
-			map.put(MESSAGE, resZh.format("shop.review.disabled"));
+		//OrderItem orderItem = orderItemService.find(id);
+
+		if(id==null||id==0){
+			Map<String, String> map = new HashMap<String, String>();
+
+			map.put("status", "0");
+			map.put(MESSAGE,  "请选择评价商品");
 			renderJson(map);
 			return;
 		}
-		
+
+		if(content==null||content.trim().equals("")){
+			Map<String, String> map = new HashMap<String, String>();
+
+			map.put("status", "0");
+			map.put(MESSAGE,  "评价不能为空");
+			renderJson(map);
+			return;
+		}
+
+		Res resZh = I18n.use();
+		Setting setting = SystemUtils.getSetting();
+		Map<String, String> map = new HashMap<String, String>();
+/*
 		if (orderItem == null) {
 			map.put(STATUS, ERROR);
 			map.put(MESSAGE, "评价商品不能为空!");
 			renderJson(map);
 			return;
-		}
+		}*/
 		
 		Member member = memberService.getCurrent();
-		if (!Setting.ReviewAuthority.anyone.equals(setting.getReviewAuthority()) && member == null) {
+		/*if (!Setting.ReviewAuthority.anyone.equals(setting.getReviewAuthority()) && member == null) {
 			map.put(STATUS, ERROR);
 			map.put(MESSAGE, resZh.format("shop.review.accessDenied"));
 			renderJson(map);
 			return;
-		}
-		if (orderItem.getIsReview()) {
+		}*/
+	/*	if (orderItem.getIsReview()) {
 			map.put(STATUS, ERROR);
 			map.put(MESSAGE, resZh.format("shop.review.noPermission"));
 			renderJson(map);
@@ -155,29 +249,40 @@ public class ReviewController extends BaseController {
 		}
 		orderItem.setIsReview(true);
 		orderItem.update();
-		
+		*/
 		Review review = new Review();
+
+		//带加入的昵称
+
+		if(name==null||name.trim().equals("")){
+			review.setIsAnonymous(true);
+		}else{
+			review.setIsAnonymous(false);
+			review.setOrderContent(name);
+		}
+
+
 		review.setScore(score);
 		review.setContent(content);
 		review.setImages(JSONArray.toJSONString(images));
 		review.setIp(getRequest().getRemoteAddr());
 		review.setMemberId(member.getId());
-		review.setProductId(orderItem.getProductId());
-		review.setGoodsId(orderItem.getProduct().getGoodsId());
-		review.setOrderItemId(orderItem.getId());
-		if (setting.getIsReviewCheck()) {
-			review.setIsShow(false);
-			reviewService.save(review);
-			map.put(STATUS, SUCCESS);
-			map.put(MESSAGE, resZh.format("shop.review.check"));
-			renderJson(map);
-		} else {
+		review.setProductId(23757818l);
+		review.setGoodsId(id);
+		review.setOrderItemId(1l);
+		review.setIsDelete(false);
+		review.setIsShow(true);
+		review.setIsAnonymous(true);
+		review.setStatus(true);
+
+
 			review.setIsShow(true);
 			reviewService.save(review);
 			map.put(STATUS, SUCCESS);
+			map.put("status", "0");
 			map.put(MESSAGE, resZh.format("shop.review.success"));
 			renderJson(map);
-		}
+
 	}
 	
 	/**
@@ -190,6 +295,17 @@ public class ReviewController extends BaseController {
 		setAttr("review", review);
 		setAttr("title" , "评价详情 - 会员中心");
 		render("/wap/member/review/view.ftl");
+	}
+	public void updataXL (){
+		Long id = getParaToLong("id");
+		Long num = getParaToLong("num");
+		Map<String, Object> data = new HashMap<String, Object>();
+		Goods pGoods = goodsService.find(id);
+		pGoods.setSales(num);
+		pGoods.update();
+		data.put(MESSAGE, "上传成功!");
+		data.put(STATUS, SUCCESS);
+		renderJson(data);
 	}
 	
 	

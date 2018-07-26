@@ -762,7 +762,7 @@ public class GoodsController extends BaseController {
         Boolean isOutOfStock = getParaToBoolean("isOutOfStock");
         Boolean isStockAlert = getParaToBoolean("isStockAlert");
         Pageable pageable = getBean(Pageable.class);
-        Boolean isVip = getParaToBoolean("isVip");;
+        Boolean isVip = getParaToBoolean("isVip");
         ProductCategory productCategory = productCategoryService.find(productCategoryId);
         Brand brand = brandService.find(brandId);
         Promotion promotion = promotionService.find(promotionId);

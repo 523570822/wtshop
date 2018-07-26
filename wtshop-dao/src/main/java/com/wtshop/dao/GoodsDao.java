@@ -90,7 +90,7 @@ public class GoodsDao extends BaseDao<Goods> {
 			return  null;
 		}else {
 			String sql = "  FROM goods_promotion g LEFT JOIN promotion p on g.promotions = p.id LEFT JOIN goods d ON g.goods = d.id LEFT JOIN product_category c on d.product_category_id =c.id left join product u on d.id = u.goods_id where 1 = 1 and g.promotions = " + promId;
-			String select = " SELECT d.id,d.name,d.sn,d.price,d.market_price,d.image, u.id product_id, d.caption,g.create_date,c.name cname ";
+			String select = " SELECT d.id,d.name,d.sn,d.price,d.market_price,d.image, u.id product_id, d.caption,g.create_date,c.name cname ,d.findGoods,d.sales";
 			return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sql);
 		}
 
@@ -254,7 +254,7 @@ public class GoodsDao extends BaseDao<Goods> {
 	 */
 	public Page<Goods> search(Boolean is_vip, List<Long> productCategoryList, Long[] brandId, List<Long> areaList, Long[] functionId, String keyword, BigDecimal startPrice, BigDecimal endPrice, Pageable pageable, Boolean modify_date, Boolean sell, Boolean review, Boolean priceUp ,Boolean priceDown){
 		Logger logger = LoggerFactory.getLogger("dddddd");
-		String sqlExceptSelect = " from (select g.id,g.is_top, g.name,g.price,g.market_price,g.image,g.caption,g.product_category_id,g.is_delete,g.is_marketable FROM goods g left join goods_effct e on g.id = e.goods " +
+		String sqlExceptSelect = " from (select g.sales,g.id,g.is_top, g.name,g.price,g.market_price,g.image,g.caption,g.product_category_id,g.is_delete,g.is_marketable FROM goods g left join goods_effct e on g.id = e.goods " +
 				"LEFT JOIN (SELECT count(*) count,goods_id from review group by goods_id ) m ON g.id = m.goods_id " +
 				"LEFT JOIN (SELECT count(p.goods_id)count,p.goods_id,o.`status`,p.stock from order_item i LEFT JOIN `order` o ON i.order_id = o.id " +
 				"LEFT JOIN product p ON p.id =i.product_id GROUP BY p.goods_id ";
@@ -485,7 +485,7 @@ public class GoodsDao extends BaseDao<Goods> {
 			return  null;
 		}
 		String sql = " from goods g left join product p on g.id = p.goods_id where 1 = 1  and g.is_delete = 0 and g.is_marketable = 1 ";
-		String select = " select g.id,g.name,g.price,g.market_price,g.image, p.id product_id  ";
+		String select = " select g.id,g.name,g.price,g.market_price,g.image,g.sales, p.id product_id  ";
 		if(price != null){
 			sql += " AND g.price <= " + price;
 		}

@@ -82,7 +82,7 @@ public class ReviewAPIController extends BaseAPIController {
 		List<UploadFile> files = getFiles();
 		FileType fileType = FileType.valueOf(getPara("fileTypes", "image"));
 
-		List<ImageResult> imageResult = new ArrayList<>();
+		List<ImageResult> imageResult = new ArrayList<ImageResult>();
 		if (fileType == null || files.size() == 0 ) {
 			renderJson(ApiResult.fail("请选择选图片"));
 			return;

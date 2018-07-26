@@ -1,18 +1,5 @@
 package com.wtshop.controller.wap;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
-
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.i18n.I18n;
@@ -26,13 +13,24 @@ import com.wtshop.model.Member;
 import com.wtshop.service.MemberService;
 import com.wtshop.util.SystemUtils;
 import com.wtshop.util.WebUtils;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
-@ControllerBind(controllerKey = "/wap/login")
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@ControllerBind(controllerKey = "/wap/brushLogin")
 @Before(WapInterceptor.class)
-public class LoginController extends BaseController {
+public class brushReviewController extends BaseController {
 
 	private MemberService memberService = enhance(MemberService.class);
-	
+
 	/**
 	 * 登录页面
 	 */
@@ -41,17 +39,17 @@ public class LoginController extends BaseController {
 		setSessionAttr("url_forward", urlForward);
 		setAttr("title" , "会员登录");
 		LogKit.info("OPEN_ID >>> " + getSessionAttr(Member.OPEN_ID));
-		render("/wap/login/index.ftl");
+		render("/wap/brushLogin/index.ftl");
 	}
-	
+
 	/**
 	 * 登录提交
 	 */
 	public void submit() {
 		String username = getPara("username");
-		String password = getPara("password"); 
+		String password = getPara("password");
 		String urlForward = getSessionAttr("url_forward");
-		
+
 		HttpServletRequest request = getRequest();
 		HttpServletResponse response = getResponse();
 
@@ -63,7 +61,7 @@ public class LoginController extends BaseController {
 			renderJson(map);
 			return;
 		}
-		
+
 		Member member;
 		Setting setting = SystemUtils.getSetting();
 		if (setting.getIsEmailLogin() && username.contains("@")) {
@@ -157,11 +155,11 @@ public class LoginController extends BaseController {
 		if (StringUtils.isNotEmpty(member.getNickname())) {
 			WebUtils.addCookie(request, response, Member.NICKNAME_COOKIE_NAME, member.getNickname());
 		}
-		
+
 		map.put(STATUS, SUCCESS);
 		map.put(MESSAGE, "登录成功!");
 
-		map.put("referer", StrKit.notBlank(urlForward) ? urlForward : "wap.jhtml");
+		map.put("referer", StrKit.notBlank(urlForward) ? urlForward : "member/review/add.jhtml");
 		renderJson(map);
 	}
 

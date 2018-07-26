@@ -40,7 +40,8 @@ public class ReviewController extends BaseController {
 	 * 发表
 	 */
 	public void add() {
-		Long goodsId = getParaToLong(0);
+	//	Long goodsId = getParaToLong(0);
+		Long goodsId=1l;
 		Setting setting = SystemUtils.getSetting();
 		if (!setting.getIsReviewEnabled()) {
 			throw new ResourceNotFoundException();

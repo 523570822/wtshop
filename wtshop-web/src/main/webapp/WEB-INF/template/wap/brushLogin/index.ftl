@@ -2,14 +2,14 @@
 			<script type="text/javascript" src="${base}/statics/js/wtshop.validate.js?v=2.6.0.161014"></script>
 			<div class="mui-content">
 				<div class="padding bg-white login-wrap">
-					<form class="padding-small" action="${base}/wap/login/submit.jhtml" method="POST" name="login_form">
+					<form class="padding-small" action="${base}/wap/brushLogin/submit.jhtml" method="POST" name="login_form">
 						<div class="list">
 							<input type="text" class="input" name="username" placeholder="用户名/手机号/邮箱" datatype="s2-15|mobile|email" nullmsg="请输入用户名/邮箱/手机号" errmsg="格式不正确">
 							<span class="validform_checktip"></span></div>
 						<div class="list">
 							<input type="password" class="input" name="password" placeholder="密码" datatype="*" nullmsg="请输入密码">
 							<span class="validform_checktip"></span></div>
-						<input type="submit" class="mui-btn full" value="登录1">
+						<input type="submit" class="mui-btn full" value="登录">
 						<a class="mui-btn full margin-top margin-bottom mui-btn-danger" href="${base}/wap/register/register.jhtml">还没有账号？注册</a>
 						<div class="mui-clearfix">
 							<input type="hidden" name="url_forward" value="">

@@ -27,55 +27,10 @@ $().ready( function() {
 	var $pageNumber = $("#pageNumber");
    var  $nohandle=$("#nohandle");
 	
-	// 删除
-	$deleteButton.click( function() {
-		var $this = $(this);
-		if ($this.hasClass("disabled")) {
-			return false;
-		}
-		var $checkedIds = $("#listTable input[name='ids']:enabled:checked");
-		$.dialog({
-			type: "warn",
-			content: message("admin.dialog.deleteConfirm"),
-			ok: message("admin.dialog.ok"),
-			cancel: message("admin.dialog.cancel"),
-			onOk: function() {
-				$.ajax({
-					url: "delete.jhtml",
-					type: "POST",
-					data: $checkedIds.serialize(),
-					dataType: "json",
-					cache: false,
-					success: function(message) {
-						$.message(message);
-						if (message.type == "success"||message.code*1==1) {
-						//	$checkedIds.closest("tr").remove();
 
-								setTimeout(function() {
-									location.reload(true);
-								}, 1000);
-
-						}
-						$deleteButton.addClass("disabled");
-						$selectAll.prop("checked", false);
-						$checkedIds.prop("checked", false);
-					}
-				});
-			}
-		});
-		return false;
-	});
 	
-	// 刷新
-	$refreshButton.click( function() {
-		location.reload(true);
-		return false;
-	});
-	//代发货
-    $("#nohandle").click(function(){
-        $("#status").val("pendingShipment");
-        $listForm.submit();
-	});
+
+
 	
 	// 每页记录数菜单
 	$pageSizeMenu.hover(
@@ -85,7 +40,7 @@ $().ready( function() {
 			$(this).children("ul").hide();
 		}
 	);
-	
+
 	// 每页记录数
 	$pageSizeMenuItem.click( function() {
 		$pageSize.val($(this).attr("val"));
@@ -113,7 +68,7 @@ $().ready( function() {
 			$(this).children("ul").hide();
 		}
 	);
-	
+
 	// 搜索项
 	$searchPropertyMenuItem.click( function() {
 		var $this = $(this);
@@ -121,7 +76,7 @@ $().ready( function() {
 		$searchPropertyMenuItem.removeClass("current");
 		$this.addClass("current");
 	});
-	
+
 	// 全选
 	$selectAll.click( function() {
 		var $this = $(this);
@@ -140,23 +95,20 @@ $().ready( function() {
 			$contentRow.removeClass("selected");
 		}
 	});
-	
+
 	// 选择
 	$ids.click( function() {
+
+
 		var $this = $(this);
-		if ($this.prop("checked")) {
-			$this.closest("tr").addClass("selected");
-			$deleteButton.removeClass("disabled");
-		} else {
-			$this.closest("tr").removeClass("selected");
-			if ($("#listTable input[name='ids']:enabled:checked").size() > 0) {
-				$deleteButton.removeClass("disabled");
-			} else {
-				$deleteButton.addClass("disabled");
-			}
-		}
+
+
+        $contentRow.removeClass("selected");
+
+        $this.closest("tr").addClass("selected");
+
 	});
-	
+
 	// 排序
 	$sort.click( function() {
 		var orderProperty = $(this).attr("name");
@@ -174,7 +126,7 @@ $().ready( function() {
 		$listForm.submit();
 		return false;
 	});
-	
+
 	// 排序图标
 	if ($orderProperty.val() != "") {
 		$sort = $("#listTable a[name='" + $orderProperty.val() + "']");
@@ -184,12 +136,12 @@ $().ready( function() {
 			$sort.removeClass("asc").addClass("desc");
 		}
 	}
-	
+
 	// 页码
 	$pageNumber.keypress(function(event) {
 		return (event.which >= 48 && event.which <= 57) || event.which == 8 || (event.which == 13 && $(this).val().length > 0);
 	});
-	
+
 	// 表单提交
 	$listForm.submit(function() {
 		if (!/^\d*[1-9]\d*$/.test($pageNumber.val())) {
