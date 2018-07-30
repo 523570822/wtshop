@@ -68,20 +68,23 @@ public class InformationDao extends  BaseDao<Information>{
      * @return 消息分页
      */
     public Page<Information> findPage(Member member, Pageable pageable, Integer type) {
-        String sqlExceptSelect = "FROM information i LEFT JOIN member m ON i.staff_id = m.id left join message_link l on i.link = l.uuid WHERE 1 = 1 AND i.is_delete = 0";
+        String sqlExceptSelect = "FROM information i LEFT JOIN member m ON i.staff_id = m.id left join message_link l on i.link = l.uuid LEFT JOIN `order` o ON i.link = o.sn LEFT JOIN `order_item` ord ON ord.order_id=o.id WHERE 1 = 1 AND i.is_delete = 0";
 
-        String select = " select i.id, i.content, i.create_date, i.link, i.type, m.avatar, m.nickname ,l.information ,i.status";
+        String select = " select i.id, i.content, i.create_date, i.link, i.type, m.avatar, m.nickname ,l.information ,i.status,ord.thumbnail";
         if (member != null) {
-            sqlExceptSelect += " AND member_id = " + member.getId() ;
+            sqlExceptSelect += " AND i.member_id = " + member.getId() ;
         }
         if (type != null) {
             if( 0 == type){
-                sqlExceptSelect += " AND type in (0, 1, 2, 3, 5) ";
-            }else {
-                sqlExceptSelect += " AND type = 4 ";
+                sqlExceptSelect += " AND i.type in (0, 2, 5) ";
+            }else if( 1 == type) {
+
+                sqlExceptSelect += " AND i.type = 4 ";
+            }else if( 2 == type){
+                sqlExceptSelect += " AND i.type in (1, 3) ";
             }
         }
-        sqlExceptSelect += " order by  create_date desc";
+        sqlExceptSelect += " GROUP BY i.id order by  create_date desc";
         return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
     }
 
