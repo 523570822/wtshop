@@ -8,6 +8,7 @@ import com.wtshop.constants.Code;
 public class AppRuntimeException extends RuntimeException{
 
     private Integer code;
+    private Object data;
 
     public AppRuntimeException() {
     }
@@ -21,7 +22,19 @@ public class AppRuntimeException extends RuntimeException{
         super(message);
         this.code = code;
     }
+    public AppRuntimeException(Integer code, String message,Object data) {
 
+        super(message);
+        this.data=data;
+        this.code = code;
+    }
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
 
     public Integer getCode() {
         return code;

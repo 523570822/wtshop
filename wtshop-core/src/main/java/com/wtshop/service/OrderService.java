@@ -12,6 +12,7 @@ import com.jfinal.plugin.redis.Redis;
 import com.wtshop.Filter;
 import com.wtshop.Pageable;
 import com.wtshop.Setting;
+import com.wtshop.constants.Code;
 import com.wtshop.dao.*;
 import com.wtshop.entity.Invoice;
 import com.wtshop.entity.OrderGoods;
@@ -33,7 +34,6 @@ import java.util.Map;
 
 import static java.math.BigDecimal.ROUND_HALF_DOWN;
 import static java.math.BigDecimal.ROUND_HALF_UP;
-import static java.math.BigDecimal.ZERO;
 
 /**
  * Service - 订单
@@ -1634,12 +1634,15 @@ public class OrderService extends BaseService<Order> {
                         Integer wechatReturnPriceIntValue = Integer.parseInt(String.format("%.0f", wechatReturnPrice * 100));
                         Map<String, String> map = accountService.BackToWeChat(orderNo, totalPrice, wechatReturnPriceIntValue, "任性猫退款");
                         if (map == null || !"SUCCESS".equals(map.get("result_code"))) {
-                            throw new AppRuntimeException("微信退款失败");
+
+                          //  renderJson(ApiResult.fail("余额不足"));
+
+                            throw new AppRuntimeException(Code.FAIL,"微信退款失败");
                         }
                     } catch (Exception e) {
                         logger.error("微信退款失败: " + e.getCause());
                         logger.error("微信退款失败详情: " + orderNo);
-                        throw new AppRuntimeException("微信退款失败");
+                        throw new AppRuntimeException(Code.FAIL,"微信退款失败");
                     }
 
                 }
@@ -1656,7 +1659,7 @@ public class OrderService extends BaseService<Order> {
                     } catch (Exception e) {
                         logger.error("支付宝退款失败: " + e.getCause());
                         logger.error("支付宝退款失败详情: " + orderNo);
-                        throw new AppRuntimeException("支付宝退款失败");
+                        throw new AppRuntimeException(Code.FAIL,"支付宝退款失败");
                     }
                 }
                 if (balace != null)
@@ -1686,7 +1689,7 @@ public class OrderService extends BaseService<Order> {
                     } catch (Exception e) {
                         logger.error("支付宝退款失败: " + e.getCause());
                         logger.error("支付宝退款失败详情: " + orderNo);
-                        throw new AppRuntimeException("支付宝退款失败");
+                        throw new AppRuntimeException(Code.FAIL,"支付宝退款失败");
                     }
                 }
                 //  微信退
@@ -1699,12 +1702,12 @@ public class OrderService extends BaseService<Order> {
                         Integer wechatReturnPriceIntValue = Integer.parseInt(String.format("%.0f", wechatReturnPrice * 100));
                         Map<String, String> map = accountService.BackToWeChat(orderNo, totalPrice, wechatReturnPriceIntValue, "任性猫退款");
                         if (map == null || !"SUCCESS".equals(map.get("result_code"))) {
-                            throw new AppRuntimeException("微信退款失败");
+                            throw new AppRuntimeException(Code.FAIL,"微信退款失败");
                         }
                     } catch (Exception e) {
                         logger.error("微信退款失败: " + e.getCause());
                         logger.error("微信退款失败详情: " + orderNo );
-                        throw new AppRuntimeException("微信退款失败");
+                        throw new AppRuntimeException(Code.FAIL,"微信退款失败");
                     }
                 }
             }

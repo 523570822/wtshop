@@ -6,6 +6,7 @@ import com.jfinal.log.Logger;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Pageable;
+import com.wtshop.constants.Code;
 import com.wtshop.dao.DepositLogDao;
 import com.wtshop.dao.RefundsDao;
 import com.wtshop.dao.SnDao;
@@ -257,7 +258,7 @@ public class RefundsService extends BaseService<Refunds> {
                     } catch (Exception e) {
                         logger.error("支付宝退款失败: " + e.getCause());
                         logger.error("支付宝退款失败详情: " + orderNo + " : " + returns);
-                        throw new AppRuntimeException("支付宝退款失败");
+                        throw new AppRuntimeException(Code.FAIL,"支付宝退款失败");
                     }
                 }
                 //  微信退
@@ -276,7 +277,7 @@ public class RefundsService extends BaseService<Refunds> {
                     } catch (Exception e) {
                         logger.error("微信退款失败: " + e.getCause());
                         logger.error("微信退款失败详情: " + orderNo + " : " + returns);
-                        throw new AppRuntimeException("微信退款失败");
+                        throw new AppRuntimeException(Code.FAIL,"微信退款失败");
                     }
                 }
             }

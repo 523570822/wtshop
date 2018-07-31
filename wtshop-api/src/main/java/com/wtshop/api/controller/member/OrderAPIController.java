@@ -251,7 +251,12 @@ public class OrderAPIController extends BaseAPIController {
 			renderJson(ApiResult.fail(resZh.format("shop.member.order.locked")));
 
 		}
-		orderService.cancel(order ,cause, desc, url);
+
+			orderService.cancel(order ,cause, desc, url);
+
+
+
+
 
 		renderJson(ApiResult.success());
 	}

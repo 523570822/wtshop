@@ -17,14 +17,14 @@
     <script type="text/javascript">
         $().ready(function () {
             var $areaId = $("#areaId");
-            var $inputForm = $("#returns");
+       //     var $inputForm = $("#returns");
             [@flash_message /]
 
             $areaId.lSelect({
                 url: "${base}/common/area.jhtml"
             });
             // 表单验证
-            $inputForm.validate({
+      /*      $inputForm.validate({
                 rules: {
                     consignee: "required",
                     areaId: "required",
@@ -38,7 +38,7 @@
                         pattern: /^\d{3,4}-?\d{7,9}$/
                     }
                 }
-            });
+            });*/
 
         });
     </script>
