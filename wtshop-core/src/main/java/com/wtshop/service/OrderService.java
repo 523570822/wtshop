@@ -370,6 +370,7 @@ public class OrderService extends BaseService<Order> {
                         goods.setSales(0L);
                     }
                     goods.setSales(goods.getSales()+1);
+                    goodsService.update(goods);
                     Promotion prom = promotionDao.findProm(goods.getId());
                     if (prom != null) {
                         member.setBalance(member.getBalance().add(prom.getMoney()).setScale(2, BigDecimal.ROUND_HALF_UP));
