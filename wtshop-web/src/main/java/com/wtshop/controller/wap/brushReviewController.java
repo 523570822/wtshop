@@ -91,7 +91,12 @@ public class brushReviewController extends BaseController {
 			renderJson(map);
 			return;
 		}
-		if (member.getIsLocked()) {
+		boolean lock=true;
+		if(member.getIsLocked()==null||!member.getIsLocked()){
+			lock=false;
+		}
+
+		if (lock) {
 			if (ArrayUtils.contains(setting.getAccountLockTypes(), Setting.AccountLockType.member)) {
 				int loginFailureLockTime = setting.getAccountLockTime();
 				if (loginFailureLockTime == 0) {
@@ -149,9 +154,12 @@ public class brushReviewController extends BaseController {
 		member.setLoginDate(new Date());
 		member.setLoginFailureCount(0);
 		memberService.update(member);
-
+		if(member.getUsername()==null){
+			member.setUsername(	member.getPhone());
+		}
+		//Principal dfas = new Principal(member.getId(), member.getUsername());
 		setSessionAttr(Member.PRINCIPAL_ATTRIBUTE_NAME, new Principal(member.getId(), member.getUsername()));
-		WebUtils.addCookie(request, response, Member.USERNAME_COOKIE_NAME, member.getUsername());
+
 		if (StringUtils.isNotEmpty(member.getNickname())) {
 			WebUtils.addCookie(request, response, Member.NICKNAME_COOKIE_NAME, member.getNickname());
 		}
