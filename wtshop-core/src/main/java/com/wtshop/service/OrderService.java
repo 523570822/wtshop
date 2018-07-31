@@ -333,7 +333,7 @@ public class OrderService extends BaseService<Order> {
         }
 
         //  佣金计算
-        if (0 == order.getType() ) {
+        if ( Order.Type.general.ordinal()== order.getType() ) {
             List<Goods> goodsLists = goodsService.findGoodsByPt(order.getId());
             List<Long> goodsList = new ArrayList<>();
             if (goodsLists != null && goodsLists.size() > 0) {
@@ -361,15 +361,22 @@ public class OrderService extends BaseService<Order> {
             }
 
         }
-        if (0 == order.getType()) {
+        if (Order.Type.general.ordinal()== order.getType()) {
             //商品返现
             List<Goods> goodList = goodsService.findGoodsByOrderItemId(order.getId());
             if (goodList != null && goodList.size() > 0) {
                 for (Goods goods : goodList) {
+                    if(goods.getSales()==null){
+                        goods.setSales(0L);
+                    }
+                    goods.setSales(goods.getSales()+1);
                     Promotion prom = promotionDao.findProm(goods.getId());
                     if (prom != null) {
                         member.setBalance(member.getBalance().add(prom.getMoney()).setScale(2, BigDecimal.ROUND_HALF_UP));
                         memberService.update(member);
+
+
+
 
                         //插入钱包变动记录
                         DepositLog depositLog = new DepositLog();
