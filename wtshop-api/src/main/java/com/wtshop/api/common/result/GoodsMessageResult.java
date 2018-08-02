@@ -64,8 +64,18 @@ public class GoodsMessageResult  implements Serializable {
     private BigDecimal miaobi;
     //钱
     private BigDecimal price;
+    //包邮
+    private String freeMoney;
 
-    public GoodsMessageResult(Integer sotck, Goods goods, String title, Boolean favorite, Page<Consultation> consultationPages, Page<Review> review, Long reviewCount, Long positiveCount, Long moderateCount, Long negativeCount, Long imagesCount, List<Tag> tag, List<Product> productList, String settingShoppingCopyUrl, String certifiedCopyUrl, String taxExplainUrl, Receiver aDefault, String receiveTime) {
+    public String getFreeMoney() {
+        return freeMoney;
+    }
+
+    public void setFreeMoney(String freeMoney) {
+        this.freeMoney = freeMoney;
+    }
+
+    public GoodsMessageResult(Integer sotck, Goods goods, String title, Boolean favorite, Page<Consultation> consultationPages, Page<Review> review, Long reviewCount, Long positiveCount, Long moderateCount, Long negativeCount, Long imagesCount, List<Tag> tag, List<Product> productList, String settingShoppingCopyUrl, String certifiedCopyUrl, String taxExplainUrl, Receiver aDefault, String receiveTime, String freeMoney) {
         this.sotck = sotck;
         this.goods = goods;
         this.title = title;
@@ -84,6 +94,7 @@ public class GoodsMessageResult  implements Serializable {
         this.taxExplainUrl = taxExplainUrl;
         this.aDefault = aDefault;
         this.receiveTime = receiveTime;
+        this.freeMoney = freeMoney;
     }
 
     public BigDecimal getMiaobi() {

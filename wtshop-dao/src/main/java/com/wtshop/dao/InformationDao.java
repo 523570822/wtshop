@@ -59,7 +59,7 @@ public class InformationDao extends  BaseDao<Information>{
 
 
     /**
-     * 查找消息分页
+     * 查找消息分页（type = 0 通知  type = 1  互动  ,type =2.物流）
      *
      * @param member
      *            会员，null表示管理员

@@ -296,20 +296,21 @@
             </div>
 
             <!-- <span class="text-ellipsis text-gray">{$goods[_sku_spec]}</span> -->
-            </a>
+
             <div class="margin-top padding-top border-top">
 
               <span class="mui-btn margin-small-right hd-btn-blue" data-score="5">五&nbsp;&nbsp;星</span>
                 <span class="mui-btn margin-small-right hd-btn-gray" data-score="4">四&nbsp;&nbsp;星</span>
                 <span class="mui-btn margin-small-right hd-btn-gray" data-score="3">三&nbsp;&nbsp;星</span>
          [#--    <span class="mui-btn margin-small-right hd-btn-gray" data-score="2">二&nbsp;&nbsp;星</span>
-                <span class="mui-btn margin-small-right hd-btn-gray" data-score="1">一&nbsp;&nbsp;星</span>--]
+                <span class="mui-btn margin-small-right hd-btn-gray" data-score="1">一&nbsp;&nbsp;星</span>
 
-        <span class="mui-btn margin-small-right hd-btn-gray" data-score="2">差&nbsp;&nbsp;&nbsp;评</span>
+        <span class="mui-btn margin-small-right hd-btn-gray" data-score="2">差&nbsp;&nbsp;&nbsp;评</span>--]
             </div>
             <input type="hidden" id="ids" name="ids"  />
             <input type="hidden" name="score" value="5">
         </li>
+
         <li>
             <input type="text" name="namee" class="mui-input-clear" placeholder="请输入昵称">
             <textarea class="border-none margin-none" name="content" placeholder="发表您的商品评价，与给多人一同分享"></textarea>
@@ -318,10 +319,19 @@
     <div class="list-col-10 padding-lr">
         <div class="padding-tb border-bottom">
             <span class="icon-15 mui-pull-left margin-right"><img src="${base}/statics/images/ico_1.png" /></span>
+            <span>上传头像</span>
+        </div>
+        <ul class="comment-upload-list padding-top-15 padding-small-bottom mui-clearfix">
+            <li><div id="uploadT" class="upload"> </div></li>
+        </ul>
+    </div>
+    <div class="list-col-10 padding-lr">
+        <div class="padding-tb border-bottom">
+            <span class="icon-15 mui-pull-left margin-right"><img src="${base}/statics/images/ico_1.png" /></span>
             <span>上传图片完成晒单，最多可以上传5张照片</span>
         </div>
         <ul class="comment-upload-list padding-top-15 padding-small-bottom mui-clearfix">
-            <li><div class="upload"> </div></li>
+            <li><div id="upload" class="upload"> </div></li>
         </ul>
     </div>
     <div class="padding">
@@ -359,7 +369,7 @@
 		})
 	})
 	window.onload = function(){
-		
+
 		var uploader = WebUploader.create({
 	        auto:true,
 	        fileNumLimit:5,
@@ -375,7 +385,7 @@
 	        },
 	        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
 	        pick: {
-	            id: '.upload',
+	            id: '#upload',
 	            multiple:true
 	        },
 	        // 压缩图片大小
@@ -391,13 +401,53 @@
 	    })
 	
 	    uploader.onUploadSuccess = function(file, response) {
+		    console.info("dd")
 	    	if(response.status == 1) {
-	    		$('.upload').parents('.comment-upload-list').prepend('<li><img src="${fileServer}' + response.url + '" /><input type="hidden" name="images" value="' + response.url + '"/><span class="remove">×</span></li>');
+	    		$('#upload').parents('.comment-upload-list').prepend('<li><img src="${fileServer}' + response.url + '" /><input type="hidden" name="images" value="' + response.url + '"/><span class="remove">×</span></li>');
 	    	} else {
 	    		$.tips({content: response.message})
 	    		return false;
 	    	}
 	    }
+
+        var uploader1 = WebUploader.create({
+            auto:true,
+            fileNumLimit:1,
+            fileVal:'upfile',
+            // swf文件路径
+            swf: '${base}/statics/js/upload/uploader.swf',
+            // 文件接收服务端。
+            server: "${base}/wap/member/review/upload.jhtml",
+            // 选择文件的按钮。可选
+            formData:{
+                file : 'upfile',
+                //upload_init : ''
+            },
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: {
+                id: '#uploadT',
+                multiple:true
+            },
+            // 压缩图片大小
+            compress:false,
+            accept:{
+                title: '图片文件',
+                extensions: 'gif,jpg,jpeg,bmp,png',
+                mimeTypes: 'image/*'
+            },
+            chunked: false,
+            chunkSize:1000000,
+            resize: false
+        })
+
+        uploader1.onUploadSuccess = function(file, response) {
+            if(response.status == 1) {
+                $('#uploadT').parents('.comment-upload-list').prepend('<li><img src="${fileServer}' + response.url + '" /><input type="hidden" name="imagesT" value="' + response.url + '"/><span class="remove">×</span></li>');
+            } else {
+                $.tips({content: response.message})
+                return false;
+            }
+        }
 	    $('.margin-small-right').bind('click',function(){
 	    	$this = $(this);
 	    	if($this.hasClass('hd-btn-gray')){

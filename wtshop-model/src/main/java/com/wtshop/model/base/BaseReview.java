@@ -64,6 +64,14 @@ public abstract class BaseReview<M extends BaseReview<M>> extends Model<M> imple
 		return get("content");
 	}
 
+	public void setAvatarUrl(String avatarUrl) {
+		set("avatarUrl", avatarUrl);
+	}
+
+	public String getAvatarUrl() {
+		return get("avatarUrl");
+	}
+
 	public void setIp(String ip) {
 		set("ip", ip);
 	}

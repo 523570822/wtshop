@@ -201,6 +201,7 @@ public class ReviewController extends BaseController {
 		Integer score = getParaToInt("score");
 		String content = getPara("content");
 		String [] images = getParaValues("images");
+		String  imagesT = getPara("imagesT");
 		String name = getPara("namee");
 		
 		//OrderItem orderItem = orderItemService.find(id);
@@ -277,6 +278,7 @@ public class ReviewController extends BaseController {
 		review.setIsShow(true);
 		review.setIsAnonymous(true);
 		review.setStatus(true);
+		review.setAvatarUrl(imagesT);
 
 
 			review.setIsShow(true);

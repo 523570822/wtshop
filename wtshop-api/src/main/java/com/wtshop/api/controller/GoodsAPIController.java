@@ -20,6 +20,7 @@ import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.*;
 import com.wtshop.service.*;
 import com.wtshop.util.ApiResult;
+import com.wtshop.util.RedisUtil;
 import com.wtshop.util.SystemUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -193,7 +194,14 @@ public class GoodsAPIController extends BaseAPIController {
 
 			}
 		}
-		GoodsMessageResult goodsMessageResult = new GoodsMessageResult(stock,goods,name, favorite, consultationPages, reviewPages, reviewCount,positiveCount,moderateCount,negativeCount,imagescount,tags,productList,settingShoppingCopyUrl,certifiedCopyUrl,taxExplainUrl,aDefault,receiveTime);
+	String 	freeMoney=RedisUtil.getString("freeMoney");
+		String freMon;
+		if(freeMoney==null||freeMoney.trim().equals("")){
+			freMon=	"包邮";
+		}
+
+	 	freMon="订单满"+freeMoney+"元包邮";
+		GoodsMessageResult goodsMessageResult = new GoodsMessageResult(stock,goods,name, favorite, consultationPages, reviewPages, reviewCount,positiveCount,moderateCount,negativeCount,imagescount,tags,productList,settingShoppingCopyUrl,certifiedCopyUrl,taxExplainUrl,aDefault,receiveTime,freMon);
 		renderJson(ApiResult.success(goodsMessageResult));
 
 

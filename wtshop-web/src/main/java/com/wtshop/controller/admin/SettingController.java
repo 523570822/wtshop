@@ -173,6 +173,7 @@ public class SettingController extends BaseController {
 		redisSetting.put("registerSending",setting.getRegisterSending());
 
 		RedisUtil.setString("redisSetting",redisSetting.toJSONString());
+		RedisUtil.setString("freeMoney",setting.getFreeMoney()+"");
 
 
 		String watermarkPositionName = getPara("watermarkPosition");
