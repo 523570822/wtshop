@@ -198,9 +198,11 @@ public class GoodsAPIController extends BaseAPIController {
 		String freMon;
 		if(freeMoney==null||freeMoney.trim().equals("")){
 			freMon=	"包邮";
+		}else{
+			freMon="订单满"+freeMoney+"元包邮";
 		}
 
-	 	freMon="订单满"+freeMoney+"元包邮";
+
 		GoodsMessageResult goodsMessageResult = new GoodsMessageResult(stock,goods,name, favorite, consultationPages, reviewPages, reviewCount,positiveCount,moderateCount,negativeCount,imagescount,tags,productList,settingShoppingCopyUrl,certifiedCopyUrl,taxExplainUrl,aDefault,receiveTime,freMon);
 		renderJson(ApiResult.success(goodsMessageResult));
 
