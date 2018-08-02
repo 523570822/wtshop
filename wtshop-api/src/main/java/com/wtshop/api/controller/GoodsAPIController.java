@@ -196,7 +196,7 @@ public class GoodsAPIController extends BaseAPIController {
 		}
 	String 	freeMoney=RedisUtil.getString("freeMoney");
 		String freMon;
-		if(freeMoney==null||freeMoney.trim().equals("")){
+		if(freeMoney==null||freeMoney.trim().equals("")||freeMoney.trim().equals("null")||freeMoney.trim().equals("0")){
 			freMon=	"包邮";
 		}else{
 			freMon="订单满"+freeMoney+"元包邮";
