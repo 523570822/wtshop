@@ -1,4 +1,4 @@
-package com.wtshop;
+package com.jfinalshop;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

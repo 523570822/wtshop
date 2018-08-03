@@ -500,7 +500,7 @@ $().ready(function() {
 				<th>
 					${message("Product.marketPrice")}
 				<\/th>
-				' + (type == "general" ? '<th>${message("Product.rewardPoint")}<\/th>' : '') + 
+				' + (type == "general" ? '<th>${message("Product.rewardPoint")}<\/th>' : '') +
 				(type == "exchange" ? '<th>${message("Product.exchangePoint")}<\/th>' : '') + '
 				<th>
 					${message("Product.stock")}
@@ -546,7 +546,7 @@ $().ready(function() {
 					<td>
 						<input type="text" name="productList[' + i + '].market_price" class="text marketPrice" value="' + market_price + '" maxlength="16" style="width: 50px;" \/>
 					<\/td>
-					' + (type == "general" ? '<td><input type="text" name="productList[' + i + '].reward_point" class="text rewardPoint" value="' + reward_point + '" maxlength="9" style="width: 50px;" \/><\/td>' : '') + 
+					' + (type == "general" ? '<td><input type="text" name="productList[' + i + '].reward_point" class="text rewardPoint" value="' + reward_point + '" maxlength="9" style="width: 50px;" \/><\/td>' : '') +
 					(type == "exchange" ? '<td><input type="text" name="productList[' + i + '].exchange_point" class="text exchangePoint" value="' + exchange_point + '" maxlength="9" style="width: 50px;" \/><\/td>' : '') + '
 					<td>
 						<input type="text" name="productList[' + i + '].stock" class="text stock" value="' + stock + '" maxlength="9" style="width: 50px;" \/>

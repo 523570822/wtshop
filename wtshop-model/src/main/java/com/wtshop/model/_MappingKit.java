@@ -18,6 +18,7 @@ public class _MappingKit {
 	public static void mapping(ActiveRecordPlugin arp) {
 		arp.addMapping("account", "id", Account.class);
 		arp.addMapping("act_introduce", "id", ActIntroduce.class);
+		arp.addMapping("activity", "id", Activity.class);
 		arp.addMapping("ad", "id", Ad.class);
 		arp.addMapping("ad_position", "id", AdPosition.class);
 		arp.addMapping("admin", "id", Admin.class);
@@ -109,7 +110,6 @@ public class _MappingKit {
 		arp.addMapping("organ", "id", Organ.class);
 		arp.addMapping("parameter", "id", Parameter.class);
 		arp.addMapping("partner", "id", Partner.class);
-
 		arp.addMapping("payment", "id", Payment.class);
 		arp.addMapping("payment_log", "id", PaymentLog.class);
 		arp.addMapping("payment_method", "id", PaymentMethod.class);
@@ -133,6 +133,7 @@ public class _MappingKit {
 		arp.addMapping("promotion_gift", "gift_promotions,gifts", PromotionGift.class);
 		// Composite Primary Key order: member_ranks,promotions
 		arp.addMapping("promotion_member_rank", "member_ranks,promotions", PromotionMemberRank.class);
+		arp.addMapping("raffle", "id", Raffle.class);
 		arp.addMapping("receiver", "id", Receiver.class);
 		arp.addMapping("referrer_config", "id", ReferrerConfig.class);
 		arp.addMapping("referrer_goods", "id", ReferrerGoods.class);
