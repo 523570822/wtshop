@@ -368,8 +368,11 @@ public class OrderService extends BaseService<Order> {
                 for (Goods goods : goodList) {
                     if(goods.getSales()==null){
                         goods.setSales(0L);
+                    }else{
+
+                        goods.setSales(goods.getSales()+Long.valueOf(goods.get("quantity")));
                     }
-                    goods.setSales(goods.getSales()+1);
+
                     goodsService.update(goods);
                     Promotion prom = promotionDao.findProm(goods.getId());
                     if (prom != null) {

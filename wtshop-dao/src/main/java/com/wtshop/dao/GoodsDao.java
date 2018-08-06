@@ -353,7 +353,7 @@ public class GoodsDao extends BaseDao<Goods> {
 
 	public List<Goods> findGoodsByOrderItemId(Long id){
 
-		String sql = " select g.id , g.name, g.caption ,g.image ,g.is_vip ,i.id order_itemId, i.quantity ,i.price ,i.is_review from order_item i LEFT JOIN product p ON i.product_id=p.id LEFT JOIN goods g on p.goods_id = g.id WHERE i.order_id= " + id;
+		String sql = " select g.id,g.sales , g.name, g.caption ,g.image ,g.is_vip ,i.id order_itemId, i.quantity ,i.price ,i.is_review from order_item i LEFT JOIN product p ON i.product_id=p.id LEFT JOIN goods g on p.goods_id = g.id WHERE i.order_id= " + id;
 
 		sql += " order by i.create_date desc ";
 
