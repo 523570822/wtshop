@@ -10,8 +10,8 @@ import com.wtshop.util.ApiResult;
 import com.wtshop.api.interceptor.ErrorInterceptor;
 import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.service.*;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
 
 /**
  * Created by sq on 2017/6/8.
@@ -47,6 +47,23 @@ public class ActivityAPIController extends  BaseAPIController{
 
 
     }
+    /**
+     *点击抽奖接口
+     * status（0：成功，1：失败，没有次数）
+     * Ranking（名次）
+      */
+    public void lottery() {
+        Map<String, String> map = new HashMap<String, String>();
+
+        int max = 8;
+        int min = 1;
+        Random random = new Random();
+        int s = random.nextInt(max)%(max-min+1) + min;
+        map.put("Ranking",s+"");
+        map.put("status","0");
+        String msg="抽取成功";
+        renderJson(ApiResult.success(map,msg));
 
 
+    }
 }
