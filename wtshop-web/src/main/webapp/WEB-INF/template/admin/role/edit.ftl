@@ -103,7 +103,7 @@ $().ready(function() {
 			[#list modules as module]
 				<tr class="authorities">
 					<th>
-						${module}
+						[#--${module}--]
 						<a href="javascript:;" class="selectAll" title="${message("admin.role.selectAll")}">${message("admin.role." + module)}</a>
 					</th>
 					<td>

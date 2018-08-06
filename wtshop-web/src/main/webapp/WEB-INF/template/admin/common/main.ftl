@@ -385,7 +385,7 @@
 		                        <div class="accordion-body collapse" id="marketingGroup">
 		                            <div class="panel-body">
 		                                <ul class="nav nav-pills nav-stacked">
-		                                <ul class="nav nav-pills nav-stacked">
+
 
 											[@shiro.hasPermission name="admin:miaobiGoods"]
                                                 <li><a href="../miaobi_goods/list.jhtml" target="iframe">${message("admin.role.miaobiGoods")}</a></li>
@@ -394,8 +394,12 @@
 											[@shiro.hasPermission name="admin:promotion"]
 												<li><a href="../promotion/list.jhtml" target="iframe">${message("admin.main.promotion")}</a></li>
 											[/@shiro.hasPermission]
+												[@shiro.hasPermission name="admin:activity"]
+												<li><a href="../activity/list.jhtml" target="iframe">${message("admin.main.activity")}</a></li>
+												[/@shiro.hasPermission]
 
-		                                 </ul>
+
+										</ul>
 		                            </div>
 		                        </div>
 		                    </div>

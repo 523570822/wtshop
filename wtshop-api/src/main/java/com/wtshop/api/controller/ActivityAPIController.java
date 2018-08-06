@@ -55,8 +55,8 @@ public class ActivityAPIController extends  BaseAPIController{
     public void lottery() {
         Map<String, String> map = new HashMap<String, String>();
 
-        int max = 8;
-        int min = 1;
+        int max = 7;
+        int min = 0;
         Random random = new Random();
         int s = random.nextInt(max)%(max-min+1) + min;
         map.put("Ranking",s+"");
