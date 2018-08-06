@@ -1,7 +1,15 @@
-﻿<!DOCTYPE html>
+﻿<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%
+	String path = request.getContextPath();
+	//假如你的项目名称是ssp,那么basePath最后获得的值就是 --> http://localhost:8080/ssp/
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/lucky/";
+%>
 <html lang="en">
 
 <head>
+	<base href="<%=basePath%>">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
@@ -241,8 +249,10 @@
 				lottery.speed -= 10;
 			} else if(lottery.times == lottery.cycle) {
 				//var index = Math.random() * (lottery.count) | 0; //静态演示，随机产生一个奖品序号，实际需请求接口产生
-				
-				  $.ajax({ url:"${base}/api/activity/lottery.jhtml",data:dataa, success: function(data){
+				var dataa={
+
+				}
+				  $.ajax({ url:"../api/activity/lottery.jhtml",data:null, success: function(data){
 
                 console.info(data.data);
                         var index=data.data.Ranking;
