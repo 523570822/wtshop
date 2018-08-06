@@ -369,8 +369,12 @@ public class OrderService extends BaseService<Order> {
                     if(goods.getSales()==null){
                         goods.setSales(0L);
                     }else{
+                        if(goods.get("quantity")==null||goods.get("quantity").equals("null")){
 
-                        goods.setSales(goods.getSales()+Long.valueOf(goods.get("quantity")+""));
+                        }else{
+                            goods.setSales(goods.getSales()+Long.valueOf(goods.get("quantity")+""));
+                        }
+
 
 
                     }
