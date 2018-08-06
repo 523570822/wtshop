@@ -371,6 +371,8 @@ public class OrderService extends BaseService<Order> {
                     }else{
 
                         goods.setSales(goods.getSales()+Long.valueOf(goods.get("quantity")+""));
+
+
                     }
 
                     goodsService.update(goods);

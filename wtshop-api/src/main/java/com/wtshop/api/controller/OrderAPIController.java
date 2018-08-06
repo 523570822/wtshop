@@ -227,7 +227,11 @@ public class OrderAPIController extends BaseAPIController {
 	 * 立即购买商品-创建
 	 */
 	@Before(Tx.class)
-	public void createByNowOrder() {
+		public void createByNowOrder() {
+
+
+
+
 		Member member = memberService.getCurrent();
 		Long receiverId = getParaToLong("receiverId"); //收货人
 		Receiver receiver = receiverService.find(receiverId);
