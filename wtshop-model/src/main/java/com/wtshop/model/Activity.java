@@ -8,4 +8,5 @@ import com.wtshop.model.base.BaseActivity;
 @SuppressWarnings("serial")
 public class Activity extends BaseActivity<Activity> {
 	public static final Activity dao = new Activity().dao();
+
 }

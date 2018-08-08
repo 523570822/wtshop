@@ -882,6 +882,37 @@ public final class DateUtils {
 		return isSameDate;
 	}
 
+
+	/**
+	 *  判断time是否在from，to之内 开区间
+	 *
+	 * @author xj
+	 * @date 2017/11/23 16:56
+	 * @param time 时间
+	 * @param from, 开始时间
+	 * @param to 结束时间
+	 * @return （-1在之前，0在内，1,之后)
+	 */
+	public static int belongCalendar(Date time, Date from, Date to) {
+		Calendar date = Calendar.getInstance();
+		date.setTime(time);
+
+		Calendar after = Calendar.getInstance();
+		after.setTime(from);
+
+		Calendar before = Calendar.getInstance();
+		before.setTime(to);
+
+		if (date.after(after) && date.before(before)) {
+			return 0;
+		} else if(date.before(after)){
+			return -1;
+		} else if(date.after(before)){
+			return 1;
+		}
+		return 0;
+	}
+
 	public static void main(String[] args) throws ParseException {
 		Date d=DateUtils.addDate(new Date(),Calendar.DATE,0);
 		long [] t=getDistanceTimes2("2017-06-18 00:00:58","2017-06-19 20:10:01");

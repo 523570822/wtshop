@@ -125,7 +125,7 @@
             <input type="button" value="${message("admin.coupon.base")}"class="current" />
         </li>
         <li>
-            <input type="button" value="${message("Fudai.rule")}" />
+            <input type="button" value="${message("Activity.rule")}" />
         </li>
         <li>
             <input type="button" value="${message("admin.goods.productImage")}" />
@@ -143,7 +143,7 @@
         </tr>
         <tr>
             <th>
-                <span class="requiredField">*</span>${message("Fudai.price")}:
+                <span class="requiredField">*</span>${message("Activity.price")}:
             </th>
             <td>
                 <input type="text" name="fuDai.price" class="text" maxlength="200" title= ${message("fudai.sale.title")} />
@@ -151,7 +151,7 @@
         </tr>
         <tr>
             <th>
-                <span class="requiredField">*</span>${message("Fudai.primary.goods")}:
+                <span class="requiredField">*</span>${message("Activity.primary.goods")}:
             </th>
             </th>
             <td>
@@ -173,7 +173,7 @@
         </tr>
         <tr>
             <th>
-                <span class="requiredField">*</span>${message("Fudai.other.count")}:
+                <span class="requiredField">*</span>${message("Activity.other.count")}:
             </th>
             <td>
                 <input type="text" name="fuDai.num" class="text" maxlength="200" title=${message("fudai.success.title")} />
@@ -182,7 +182,7 @@
 
         <tr>
             <th>
-                <span class="requiredField"></span>${message("Fudai.message")}:
+                <span class="requiredField"></span>${message("Activity.message")}:
             </th>
             <td>
                 <textarea rows="" cols="" name="fuDai.explain" style="width: 300px;height:200px " maxlength="400" title= ${message("fudai.message.title")}></textarea>

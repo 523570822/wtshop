@@ -2,27 +2,31 @@ package com.wtshop.controller.admin;
 
 import com.alibaba.fastjson.JSONArray;
 import com.jfinal.ext.route.ControllerBind;
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
 import com.wtshop.Message;
 import com.wtshop.Pageable;
 import com.wtshop.entity.ProductImage;
+import com.wtshop.model.Activity;
 import com.wtshop.model.FuDai;
 import com.wtshop.model.FudaiImg;
 import com.wtshop.model.FudaiProduct;
 import com.wtshop.service.*;
 import com.wtshop.util.ApiResult;
+import com.wtshop.util.DateUtils;
 import com.wtshop.util.ReadProper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by 蔺哲 on 2017/7/11.
  */
 @ControllerBind(controllerKey = "/admin/activity")
-public class activityController extends BaseController {
+public class ActivityController extends BaseController {
 
     private ActivityService activityService=enhance(ActivityService.class);
     private FuDaiService fuDaiService = enhance(FuDaiService.class);
@@ -33,12 +37,27 @@ public class activityController extends BaseController {
     public void list() {
         Pageable pageable = getBean(Pageable.class);
 
-        pageable.setOrderProperty("orders");
+        pageable.setOrderProperty("create_date");
         pageable.setOrderDirection("desc");
 
-        activityService.findPage(pageable);
+
+        Page<Activity> activiList = activityService.findPage(pageable);
+
+        List<Activity> ddd = activiList.getList();
+
+        for (Activity activity : activiList.getList()) {
+
+            Date  time=new Date();
+            Date form=activity.getBeginDate();
+            Date to = activity.getEndDate();
+           int state= DateUtils.belongCalendar(time,form,to);
+            activity.getEndDate();
+            activity.put("isTime",state);
+
+        }
+
         setAttr("pageable", pageable);
-        setAttr("page", fuDaiService.findPage(pageable));
+        setAttr("page", activiList);
         render("/admin/activity/list.ftl");
     }
 

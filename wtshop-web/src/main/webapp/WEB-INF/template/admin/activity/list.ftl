@@ -78,16 +78,23 @@
                 <span>${message("Promotion.title")}</span>
             </th>
             <th>
-                <span>${message("Fudai.price")}</span>
+                <span>${message("Activity.ptNum")}</span>
             </th>
             <th>
-                <span>${message("Fudai.count")}</span>
+                <span>${message("Activity.nowNumber")}</span>
             </th>
             <th>
-                <a href="javascript:;" class="sort" name="orders">${message("shop.common.order")}</a>
+                <span>${message("Activity.phone")}</span>
+            </th>
+
+            <th>
+                <span>${message("Footprint.beginTime")}</span>
             </th>
             <th>
-                <span>${message("app_manage.list.time")}</span>
+                <span>${message("Footprint.endTime")}</span>
+            </th>
+            <th>
+                <span>${message("NewGoods.time")}</span>
             </th>
             <th>
                 <span>${message("admin.common.type")}</span>
@@ -96,49 +103,75 @@
                 <span>${message("admin.common.action")}</span>
             </th>
         </tr>
-        [#list page.list as fuDai]
+        [#list page.list as ctivity]
             <tr>
                 <td>
-                    <input type="checkbox" name="ids" value="${fuDai.id}"/>
+                    <input type="checkbox" name="ids" value="${ctivity.id}"/>
                 </td>
                 <td>
-                    <span title="${fuDai.title}">${abbreviate(fuDai.title, 50, "...")}</span>
+                    <span title="${ctivity.opporName}">${abbreviate(ctivity.opporName, 50, "...")}</span>
                 </td>
                 <td>
-                ${fuDai.price}
+                ${ctivity.ptNum}
                 </td>
                 <td>
-                ${fuDai.num}
+                ${ctivity.nowNumber}
+                </td>
+
+                <td>
+                    ${ctivity.phone}
                 </td>
                 <td>
-                ${fuDai.orders}
-                </td>
-                <td>
-                    [#if fuDai.create_date??]
-                        <span title="${fuDai.create_date?string("yyyy-MM-dd HH:mm:ss")}">${fuDai.create_date}</span>
+                    [#if ctivity.begin_date??]
+                        <span title="${ctivity.begin_date?string("yyyy-MM-dd HH:mm:ss")}">${ctivity.begin_date}</span>
                     [#else]
                         -
                     [/#if]
                 </td>
                 <td>
-                    [#if fuDai.status==0]
-                        <span class="green">[已启用]</span>
+                    [#if ctivity.end_date??]
+                        <span title="${ctivity.end_date?string("yyyy-MM-dd HH:mm:ss")}">${ctivity.end_date}</span>
                     [#else]
-                        <span class="red">[已禁用]</span>
+                        -
                     [/#if]
                 </td>
                 <td>
-                    [#if fuDai.status==0]
-                        <a href="toEdit.jhtml?id=${fuDai.id}">[${message("admin.common.edit")}]</a>
-                        <a href="addGoods.jhtml?id=${fuDai.id}">[${message("Fudai.goods.manager")}]</a>
-                        <a class="hidden" href="imgList.jhtml?id=${fuDai.id}">[${message("Fudai.image.manager")}]</a>
-                        <a href="disabled.jhtml?id=${fuDai.id}" class="status"
+                    [#if ctivity.create_date??]
+                        <span title="${ctivity.create_date?string("yyyy-MM-dd HH:mm:ss")}">${ctivity.create_date}</span>
+                    [#else]
+                        -
+                    [/#if]
+                </td>
+                <td>
+                    [#if ctivity.status==0]
+                        <span class="green">[已启用]</span>
+                         [#if ctivity.isTime==0]
+                        <span class="green">[已开始]</span>
+                         [#elseif  ctivity.isTime==1]
+                        <span class="red">[已结局]</span>
+                         [#elseif ctivity.isTime==1]
+                            <span class="red">[未开始]</span>
+                         [#else]
+                       <span class="red">[有问题联系技术]</span>
+                         [/#if]
+                    [#else]
+                        <span class="red">[已禁用]</span>
+                    [/#if]
+
+
+                </td>
+                <td>
+                    [#if ctivity.status==0]
+                        <a href="toEdit.jhtml?id=${ctivity.id}">[${message("admin.common.edit")}]</a>
+                        <a href="addGoods.jhtml?id=${ctivity.id}">[${message("Fudai.goods.manager")}]</a>
+                        <a class="hidden" href="imgList.jhtml?id=${ctivity.id}">[${message("Fudai.image.manager")}]</a>
+                        <a href="disabled.jhtml?id=${ctivity.id}" class="status"
                            data="${fuDai.id}">][${message("admin.member.disabled")}]</a>
                     [#else ]
-                        <a href="toEdit.jhtml?id=${fuDai.id}">[${message("admin.common.edit")}]</a>
-                        <a href="addGoods.jhtml?id=${fuDai.id}">[${message("Fudai.goods.manager")}]</a>
-                        <a href="publish.jhtml?id=${fuDai.id}" class="status"
-                           data="${fuDai.id}">[${message("LoginPlugin.isEnabled")}]</a>
+                        <a href="toEdit.jhtml?id=${ctivity.id}">[${message("admin.common.edit")}]</a>
+                        <a href="addGoods.jhtml?id=${ctivity.id}">[${message("Fudai.goods.manager")}]</a>
+                        <a href="publish.jhtml?id=${ctivity.id}" class="status"
+                           data="${ctivity.id}">[${message("LoginPlugin.isEnabled")}]</a>
                     [/#if]
                 </td>
             </tr>

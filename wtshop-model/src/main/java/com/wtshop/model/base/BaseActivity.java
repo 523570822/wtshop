@@ -113,6 +113,17 @@ public abstract class BaseActivity<M extends BaseActivity<M>> extends Model<M> i
 		return get("states");
 	}
 
+
+	public void setPhone(String phone) {
+		set("phone", phone);
+	}
+
+	public String getPhone() {
+		return get("phone");
+	}
+
+
+
 	public void setOneMaxGoods(Integer oneMaxGoods) {
 		set("one_max_goods", oneMaxGoods);
 	}
@@ -143,6 +154,14 @@ public abstract class BaseActivity<M extends BaseActivity<M>> extends Model<M> i
 
 	public Integer getLuckyNumber() {
 		return get("lucky_number");
+	}
+
+	public void setCreateDate(java.util.Date createDate) {
+		set("create_date", createDate);
+	}
+
+	public java.util.Date getCreateDate() {
+		return get("create_date");
 	}
 
 }
