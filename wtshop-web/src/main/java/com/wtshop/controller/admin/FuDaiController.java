@@ -6,6 +6,7 @@ import com.jfinal.upload.UploadFile;
 import com.wtshop.Message;
 import com.wtshop.Pageable;
 import com.wtshop.entity.ProductImage;
+import com.wtshop.model.Activity;
 import com.wtshop.model.FuDai;
 import com.wtshop.model.FudaiImg;
 import com.wtshop.model.FudaiProduct;
@@ -51,6 +52,7 @@ public class FuDaiController extends BaseController {
         // 图片
         List<UploadFile> uploadFiles = getFiles();
         FuDai fuDai = getModel(FuDai.class);
+
 
         Long productId = getParaToLong("productId");
         Integer productImageIndex = getBeans(ProductImage.class, "productImages").size();

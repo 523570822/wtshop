@@ -34,7 +34,7 @@
                     type: 2,
                     skin: 'layui-layer-rim', //加上边框
                     area: ['870px', '540px'], //宽高
-                    content: "/admin/reverseAuction/chooseGoods.jhtml?flag=2",
+                    content: "${base}/admin/reverseAuction/chooseGoods.jhtml?flag=2",
                     shadeClose:true,
                 });
             });
@@ -57,10 +57,12 @@
             // 表单验证
             $inputForm.validate({
                 rules: {
-                    "fuDai.title":"required",
-                    "fuDai.price":"required",
-                    "fuDai.num": "required",
-                    "product_name":"required"
+                    "activity.title":"required",
+                    "activity.number":"required",
+                    "activity.phone": "required",
+                    "product_name":"required",
+                    "activity.beginDate":"required",
+                    "activity.endDate":"required"
 
                 }
             });
@@ -71,55 +73,44 @@
             var $productImageTable = $("#productImageTable");
             var productImageIndex = ${(fuDai.productImagesConverter?size)!0};
             var $addProductImage = $("#addProductImage");
-            var $filePicker = $("#filePicker");
-            $filePicker.uploader();
-            // 增加商品图片
-            $addProductImage.click(function() {
-            $productImageTable.append(
-                [@compress single_line = true]
-                        '<tr>
-                        <td>
-                        <input type="file" name="productImages[' + productImageIndex + '].file" class="productImageFile" \/>
-                    <\/td>
-                <td>
-                <input type="text" name="productImages[' + productImageIndex + '].title" class="text" maxlength="200" \/>
-                    <\/td>
-                <td>
-                <input type="text" name="productImages[' + productImageIndex + '].orders" class="text productImageOrder" maxlength="9" style="width: 50px;" \/>
-                    <\/td>
-                <td>
-                <a href="javascript:;" class="remove">[${message("admin.common.remove")}]<\/a>
-                <\/td>
-                <\/tr>'
-                [/@compress]
-                );
-                productImageIndex ++;
 
-                //重新排序商品图片id,后台是读取的顺序id
-                var index=0;
-                $('#productImageTable tr').each(function (i,v) {
-                    if ($(this).find('input').length>0){
-                        $('#productImageTable tr').eq(i).find ('input').eq(0).attr('name','productImages['+index+'].file');
-                        $('#productImageTable tr').eq(i).find ('input').eq(1).attr('name','productImages['+index+'].title');
-                        $('#productImageTable tr').eq(i).find ('input').eq(2).attr('name','productImages['+index+'].orders');
-                        index++;
-                    }
-                });
-            });
 
-            // 删除商品图片
-            $productImageTable.on("click", "a.remove", function() {
-                $(this).closest("tr").remove();
-            });
 
+
+
+  
         });
+
+function  inputForm() {
+
+
+    var beginDate=$("#beginDate").val();
+    var endDate=$("#endDate").val();
+    var d1 = new Date(beginDate.replace(/\-/g, "\/"));
+    var d2 = new Date(endDate.replace(/\-/g, "\/"));
+
+    if(beginDate!=""&&endDate!=""&&d1 >=d2) {
+        var d="开始时间不能大于结束时间！";
+        layer.open({
+            content: d,skin: 'msg'
+            ,time: 1000//2秒后自动关闭
+        });
+    }else{
+        $("#inputForm").submit();
+    }
+
+
+
+
+
+}
     </script>
 </head>
 <body>
 <div class="breadcrumb">
     <a href="${base}/admin/common/index.jhtml">${message("admin.breadcrumb.home")}</a> &raquo;${message("Fudai.add.llst")}
 </div>
-<form id="inputForm" action="save.jhtml" method="post"  enctype="multipart/form-data" >
+<form id="inputForm" action="save.jhtml" method="post"  enctype="multipart/form-data">
     <ul id="tab" class="tab">
         <li>
             <input type="button" value="${message("admin.coupon.base")}"class="current" />
@@ -127,83 +118,78 @@
         <li>
             <input type="button" value="${message("Activity.rule")}" />
         </li>
-        <li>
+       [#-- <li>
             <input type="button" value="${message("admin.goods.productImage")}" />
-        </li>
+        </li>--]
         </ul>
+    <input value="0" name="activity.status" type="hidden"/>
     <input value="0" name="fuDai.status" type="hidden"/>
+
     <table class="input tabContent">
+
         <tr>
             <th>
                 <span class="requiredField">*</span>${message("Ad.title")}:
             </th>
             <td>
-                <input type="text" name="fuDai.title" class="text" maxlength="200"  />
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("Activity.price")}:
-            </th>
-            <td>
-                <input type="text" name="fuDai.price" class="text" maxlength="200" title= ${message("fudai.sale.title")} />
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("Activity.primary.goods")}:
-            </th>
-            </th>
-            <td>
-                <input type="hidden" name="productId" id="product_id" class="text" maxlength="200" />
-                <input type="text" class="text" maxlength="200" id="product_name" name="product_name" title=${message("fudai.phone.title")}  />
-                <input type="button" value="选择产品" class="button" id="addProduct"/>
-            </td>
-        </tr>
-        <tr>
-            <th><span class="requiredField">*</span>${message("Fudai.other.image")} </th>
-            <td>
-   <span class="fieldSet">
-      <input type="text" name="fuDai.questionImage" class="text" value="${fuDaiQuestionImage}" maxlength="200" />
-      <a  id="filePicker"  href="javascript:;" title="手机端用于展示副产品的图片" class="button filePicker">${message("admin.upload.filePicker")} </a>
-      <a href="${fileServer}${fuDaiQuestionImage}" target="_blank">${message("admin.common.view")}</a>
-   </span>
-            </td>
 
+                <input type="text" name="activity.opporName" class="text" maxlength="200"  />
+            </td>
+        </tr>
+
+        <tr>
+            <th>
+                <span class="requiredField">*</span>${message("Activity.number")}:
+            </th>
+            <td>
+                <input type="text" name="activity.number" class="text" maxlength="200" 	min=0 title=${message("Activity.success.title")} />
+            </td>
         </tr>
         <tr>
             <th>
-                <span class="requiredField">*</span>${message("Activity.other.count")}:
+                <span class="requiredField">*</span>${message("Activity.phone")}:
             </th>
             <td>
-                <input type="text" name="fuDai.num" class="text" maxlength="200" title=${message("fudai.success.title")} />
+                <input type="text" name="activity.phone" class="text" maxlength="200" title=${message("Activity.success.phone")}  />
             </td>
         </tr>
+
+        <tr>
+            <th>
+                ${message("Footprint.beginTime")}:
+            </th>
+            <td>
+             <input  class="hidden"   id="stime" value="${stime?string('yyyy-MM-dd HH:mm:ss')}"/>
+                <input  class="hidden" id="etime" value="${etime?string('yyyy-MM-dd HH:mm:ss')}"/>
+                <input type="text" id="beginDate" name="activity.beginDate"
+                       value="${beginDate?string('yyyy-MM-dd HH:mm:ss')}"
+                       class="text Wdate begin_date" onclick="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'stime\')}'});"  />
+             <input type="text" id="endDate" name="activity.endDate"
+                       value="${endDate?string('yyyy-MM-dd HH:mm:ss')}"
+                       class="text Wdate end_date" onclick=" WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'beginDate\')}'}); " />
+
+
+            </td>
+        </tr>
+
 
         <tr>
             <th>
                 <span class="requiredField"></span>${message("Activity.message")}:
             </th>
             <td>
-                <textarea rows="" cols="" name="fuDai.explain" style="width: 300px;height:200px " maxlength="400" title= ${message("fudai.message.title")}></textarea>
+                <textarea rows="" cols="" name="activity.explain" style="width: 300px;height:200px " maxlength="400" title= ${message("fudai.message.title")}></textarea>
             </td>
         </tr>
-        <tr>
-            <th>
-            ${message("admin.common.order")}:
-            </th>
-            <td>
-                <input type="text" name="fuDai.orders" class="text" maxlength="9" />
-            </td>
-        </tr>
+
 
 
     </table>
     <table class="input tabContent">
-        <tr><td><textarea id="introduction" name="fuDai.rule" class="editor" style="width: 100%;"></textarea></td></tr>
+        <tr><td><textarea id="introduction" name="activity.rule" class="editor" style="width: 100%;"></textarea></td></tr>
     </table>
 
-    <table id="productImageTable" class="item tabContent">
+[#--    <table id="productImageTable" class="item tabContent">
         <tr>
             <td colspan="4">
                 <a href="javascript:;" id="addProductImage" title= ${message("fudai.image.title")} class="button">${message("admin.goods.addProductImage")}</a>
@@ -226,14 +212,14 @@
 
 
 
-    </table>
+    </table>--]
     <table class="input">
         <tr>
             <th>&nbsp;
 
             </th>
             <td>
-            <input type="submit" class="button" value="${message("admin.common.submit")}" />
+            <input type="button" onclick="inputForm()" class="button" value="${message("admin.common.submit")}" />
             <input type="button" class="button" value="${message("admin.common.back")}" onclick="history.back(); return false;" />
         </td>
         </tr>

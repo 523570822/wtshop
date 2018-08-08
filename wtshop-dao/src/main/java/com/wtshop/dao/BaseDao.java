@@ -166,7 +166,19 @@ public class BaseDao <M extends Model<M>> {
 		model.set(VERSION, 0);
 		model.save();
 	}
+	/**
+	 * 持久化实体对象
+	 *
+	 * @param model
+	 *            实体对象
+	 */
+	public void saveF(M model) {
+		Assert.notNull(model);
+		model.set(CREATE_DATE, new Date());
+		model.set(MODIFY_DATE, new Date());
 
+		model.save();
+	}
 	/**
 	 * 更新实体对象
 	 *

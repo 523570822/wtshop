@@ -18,11 +18,11 @@ public abstract class BaseActivity<M extends BaseActivity<M>> extends Model<M> i
 	}
 
 	public void setOpporName(String opporName) {
-		set("oppor_name", opporName);
+		set("opporName", opporName);
 	}
 
 	public String getOpporName() {
-		return get("oppor_name");
+		return get("opporName");
 	}
 
 	public void setGoodId(Long goodId) {
@@ -34,51 +34,51 @@ public abstract class BaseActivity<M extends BaseActivity<M>> extends Model<M> i
 	}
 
 	public void setGoodName(String goodName) {
-		set("good_name", goodName);
+		set("goodName", goodName);
 	}
 
 	public String getGoodName() {
-		return get("good_name");
+		return get("goodName");
 	}
 
-	public void setGoodNumber(Integer goodNumber) {
-		set("good_number", goodNumber);
+	public void setNumber(Integer number) {
+		set("number", number);
 	}
 
-	public Integer getGoodNumber() {
-		return get("good_number");
+	public Integer getNumber() {
+		return get("number");
 	}
 
 	public void setPtNum(Integer ptNum) {
-		set("pt_num", ptNum);
+		set("ptNum", ptNum);
 	}
 
 	public Integer getPtNum() {
-		return get("pt_num");
+		return get("ptNum");
 	}
 
 	public void setBeginDate(java.util.Date beginDate) {
-		set("begin_date", beginDate);
+		set("beginDate", beginDate);
 	}
 
 	public java.util.Date getBeginDate() {
-		return get("begin_date");
+		return get("beginDate");
 	}
 
 	public void setEndDate(java.util.Date endDate) {
-		set("end_date", endDate);
+		set("endDate", endDate);
 	}
 
 	public java.util.Date getEndDate() {
-		return get("end_date");
+		return get("endDate");
 	}
 
 	public void setForeNumber(Integer foreNumber) {
-		set("fore_number", foreNumber);
+		set("foreNumber", foreNumber);
 	}
 
 	public Integer getForeNumber() {
-		return get("fore_number");
+		return get("foreNumber");
 	}
 
 	public void setMemberId(Long memberId) {
@@ -90,11 +90,11 @@ public abstract class BaseActivity<M extends BaseActivity<M>> extends Model<M> i
 	}
 
 	public void setNowNumber(Integer nowNumber) {
-		set("now_number", nowNumber);
+		set("nowNumber", nowNumber);
 	}
 
 	public Integer getNowNumber() {
-		return get("now_number");
+		return get("nowNumber");
 	}
 
 	public void setOrderId(Long orderId) {
@@ -105,39 +105,28 @@ public abstract class BaseActivity<M extends BaseActivity<M>> extends Model<M> i
 		return get("order_id");
 	}
 
-	public void setStates(String states) {
-		set("states", states);
+	public void setStatus(String status) {
+		set("status", status);
 	}
 
-	public String getStates() {
-		return get("states");
+	public String getStatus() {
+		return get("status");
 	}
-
-
-	public void setPhone(String phone) {
-		set("phone", phone);
-	}
-
-	public String getPhone() {
-		return get("phone");
-	}
-
-
 
 	public void setOneMaxGoods(Integer oneMaxGoods) {
-		set("one_max_goods", oneMaxGoods);
+		set("oneMaxGoods", oneMaxGoods);
 	}
 
 	public Integer getOneMaxGoods() {
-		return get("one_max_goods");
+		return get("oneMaxGoods");
 	}
 
 	public void setLotteryExp(java.util.Date lotteryExp) {
-		set("lottery_exp", lotteryExp);
+		set("lotteryExp", lotteryExp);
 	}
 
 	public java.util.Date getLotteryExp() {
-		return get("lottery_exp");
+		return get("lotteryExp");
 	}
 
 	public void setPoint(java.math.BigDecimal point) {
@@ -149,11 +138,11 @@ public abstract class BaseActivity<M extends BaseActivity<M>> extends Model<M> i
 	}
 
 	public void setLuckyNumber(Integer luckyNumber) {
-		set("lucky_number", luckyNumber);
+		set("luckyNumber", luckyNumber);
 	}
 
 	public Integer getLuckyNumber() {
-		return get("lucky_number");
+		return get("luckyNumber");
 	}
 
 	public void setCreateDate(java.util.Date createDate) {
@@ -162,6 +151,38 @@ public abstract class BaseActivity<M extends BaseActivity<M>> extends Model<M> i
 
 	public java.util.Date getCreateDate() {
 		return get("create_date");
+	}
+
+	public void setPhone(String phone) {
+		set("phone", phone);
+	}
+
+	public String getPhone() {
+		return get("phone");
+	}
+
+	public void setModifyDate(java.util.Date modifyDate) {
+		set("modify_date", modifyDate);
+	}
+
+	public java.util.Date getModifyDate() {
+		return get("modify_date");
+	}
+
+	public void setRule(String rule) {
+		set("rule", rule);
+	}
+
+	public String getRule() {
+		return get("rule");
+	}
+
+	public void setExplain(String explain) {
+		set("explain", explain);
+	}
+
+	public String getExplain() {
+		return get("explain");
 	}
 
 }

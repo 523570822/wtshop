@@ -69,6 +69,7 @@ public class JFinalModelCase {
 
         //映射数据库的表和继承与model的实体
         //只有做完该映射后，才能进行junit测试
+        //只有做完该映射后，才能进行junit测试
         activeRecord.addMapping("activity", Activity.class);
         //activeRecord.
         activeRecord.start();

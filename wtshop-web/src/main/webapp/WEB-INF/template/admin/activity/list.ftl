@@ -84,6 +84,9 @@
                 <span>${message("Activity.nowNumber")}</span>
             </th>
             <th>
+                <span>${message("Activity.number")}</span>
+            </th>
+            <th>
                 <span>${message("Activity.phone")}</span>
             </th>
 
@@ -103,53 +106,55 @@
                 <span>${message("admin.common.action")}</span>
             </th>
         </tr>
-        [#list page.list as ctivity]
+        [#list page.list as activity]
             <tr>
                 <td>
-                    <input type="checkbox" name="ids" value="${ctivity.id}"/>
+                    <input type="checkbox" name="ids" value="${activity.id}"/>
                 </td>
                 <td>
-                    <span title="${ctivity.opporName}">${abbreviate(ctivity.opporName, 50, "...")}</span>
+                    <span title="${activity.opporName}">${abbreviate(activity.opporName, 50, "...")}</span>
                 </td>
                 <td>
-                ${ctivity.ptNum}
+                ${activity.ptNum}
                 </td>
                 <td>
-                ${ctivity.nowNumber}
-                </td>
-
-                <td>
-                    ${ctivity.phone}
+                ${activity.nowNumber}
                 </td>
                 <td>
-                    [#if ctivity.begin_date??]
-                        <span title="${ctivity.begin_date?string("yyyy-MM-dd HH:mm:ss")}">${ctivity.begin_date}</span>
+                    ${activity.number}
+                </td>
+                <td>
+                    ${activity.phone}
+                </td>
+                <td>
+                    [#if activity.begin_date??]
+                        <span title="${activity.begin_date?string("yyyy-MM-dd HH:mm:ss")}">${activity.beginDate}</span>
                     [#else]
                         -
                     [/#if]
                 </td>
                 <td>
-                    [#if ctivity.end_date??]
-                        <span title="${ctivity.end_date?string("yyyy-MM-dd HH:mm:ss")}">${ctivity.end_date}</span>
+                    [#if activity.end_date??]
+                        <span title="${activity.end_date?string("yyyy-MM-dd HH:mm:ss")}">${activity.endDate}</span>
                     [#else]
                         -
                     [/#if]
                 </td>
                 <td>
-                    [#if ctivity.create_date??]
-                        <span title="${ctivity.create_date?string("yyyy-MM-dd HH:mm:ss")}">${ctivity.create_date}</span>
+                    [#if activity.create_date??]
+                        <span title="${activity.create_date?string("yyyy-MM-dd HH:mm:ss")}">${activity.create_date}</span>
                     [#else]
                         -
                     [/#if]
                 </td>
                 <td>
-                    [#if ctivity.status==0]
-                        <span class="green">[已启用]</span>
-                         [#if ctivity.isTime==0]
+                    [#if activity.status==0]
+                      [#--  <span class="green">[已启用]</span>--]
+                         [#if activity.isTime==0]
                         <span class="green">[已开始]</span>
-                         [#elseif  ctivity.isTime==1]
-                        <span class="red">[已结局]</span>
-                         [#elseif ctivity.isTime==1]
+                         [#elseif  activity.isTime==1]
+                        <span class="red">[已结束]</span>
+                         [#elseif activity.isTime==1]
                             <span class="red">[未开始]</span>
                          [#else]
                        <span class="red">[有问题联系技术]</span>

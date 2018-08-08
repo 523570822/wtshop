@@ -31,7 +31,7 @@ public class MiaoBiGoodsController extends BaseController {
         MiaobiGoods miaobiGoods = getModel(MiaobiGoods.class);
         miaoBiGoodsService.save(miaobiGoods);
         addFlashMessage(SUCCESS_MESSAGE);
-        redirect("list.jhtml");
+        redirect("/admin/miaobi_goods/list.ftl");
     }
     public void edit(){
         Long id = getParaToLong("id");
@@ -43,7 +43,7 @@ public class MiaoBiGoodsController extends BaseController {
         MiaobiGoods miaobiGoods = getModel(MiaobiGoods.class);
         miaoBiGoodsService.update(miaobiGoods);
         addFlashMessage(SUCCESS_MESSAGE);
-        redirect("list.jhtml");
+        redirect("/admin/miaobi_goods/list.ftl");
     }
     public void delete(){
         String[] values = StringUtils.split(getPara("ids"), ",");

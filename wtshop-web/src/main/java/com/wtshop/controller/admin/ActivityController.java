@@ -50,9 +50,13 @@ public class ActivityController extends BaseController {
             Date  time=new Date();
             Date form=activity.getBeginDate();
             Date to = activity.getEndDate();
-           int state= DateUtils.belongCalendar(time,form,to);
-            activity.getEndDate();
-            activity.put("isTime",state);
+            if(form!=null&&to!=null&&!activity.getStatus().equals("1")){
+                int state= DateUtils.belongCalendar(time,form,to);
+                activity.getEndDate();
+                activity.put("isTime",state);
+            }
+
+
 
         }
 
@@ -64,56 +68,55 @@ public class ActivityController extends BaseController {
     //去添加页面
     public void add() {
         setAttr("fuDaiQuestionImage", ReadProper.getResourceValue("fuDaiDefaultImage"));
-        render("/admin/fuDai/add.ftl");
+        //用户选择日期
+        Date beginDate = null;
+        Date endDate = null;
+        Date stime = null;
+        Date etime = null;
+        Date now = new Date();
+        if (beginDate == null) {
+            beginDate =now ;
+
+        }
+        if (endDate == null) {
+
+            endDate = org.apache.commons.lang3.time.DateUtils.addDays(now, 1);
+            stime = org.apache.commons.lang3.time.DateUtils.addDays(now, 1);
+        }
+        //设置日期限制
+
+
+
+        etime = now;
+        setAttr("stime", stime);
+        setAttr("etime", etime);
+        setAttr("beginDate", beginDate);
+        setAttr("endDate", endDate);
+        render("/admin/activity/add.ftl");
     }
 
     //保存福袋信息
     public void save() {
-        // 图片
         List<UploadFile> uploadFiles = getFiles();
-        FuDai fuDai = getModel(FuDai.class);
 
-        Long productId = getParaToLong("productId");
-        Integer productImageIndex = getBeans(ProductImage.class, "productImages").size();
 
-        if (CollectionUtils.isNotEmpty(uploadFiles)) {
-            List<ProductImage> productImages = new ArrayList<ProductImage>();
-            for (int i = 0; i < productImageIndex; i++) {
-                ProductImage productImage = getBean(ProductImage.class, "productImages[" + i + "]");
-                productImage.setFile(getFile("productImages[" + i + "].file"));
-                productImages.add(productImage);
-            }
-            fuDai.setProductImagesConverter(productImages);
-            productImageService.filter(fuDai.getProductImagesConverter());
-        }
 
-        //生成图片
-        productImageService.generate(fuDai.getProductImagesConverter());
-        List<ProductImage> productImagesConverter = fuDai.getProductImagesConverter();
-        if (CollectionUtils.isNotEmpty(productImagesConverter)) {
-            List<ProductImage> productImages = new ArrayList<ProductImage>();
-            for (ProductImage productImage : productImagesConverter) {
-                productImages.add(productImage);
-            }
-            fuDai.setProductImages(JSONArray.toJSONString(productImages));
-        }
+        Activity activity = getModel(Activity.class);
 
-        if (StringUtils.isEmpty(fuDai.getImage()) && StringUtils.isNotEmpty(fuDai.getThumbnail())) {
-            fuDai.setImage(fuDai.getThumbnail());
-        }
 
-        fuDai.setStatus(1);
-        fuDaiService.save(fuDai);
-        FudaiProduct fudaiProduct = new FudaiProduct(productId, fuDai.getId(), 1);
-        fuDaiProductService.save(fudaiProduct);
-        redirect("list.jhtml");
+
+
+
+      activityService.saveF(activity);
+        addFlashMessage(SUCCESS_MESSAGE);
+        redirect("/admin/activity/list.jhtml");
     }
 
     //去修改页面
     public void toEdit() {
         Long fuDaiId = getParaToLong("id");
-        setAttr("fuDai", fuDaiService.find(fuDaiId));
-        render("/admin/fuDai/edit.ftl");
+        setAttr("activity", activityService.find(fuDaiId));
+        render("/admin/fuDai/add.ftl");
     }
 
     //修改福袋信息
