@@ -100,7 +100,6 @@ public class ActivityController extends BaseController {
         List<UploadFile> uploadFiles = getFiles();
 
 
-
         Activity activity = getModel(Activity.class);
 
 
@@ -114,9 +113,47 @@ public class ActivityController extends BaseController {
 
     //去修改页面
     public void toEdit() {
-        Long fuDaiId = getParaToLong("id");
-        setAttr("activity", activityService.find(fuDaiId));
-        render("/admin/fuDai/add.ftl");
+        Long id = getParaToLong("id");
+        Activity activity = activityService.find(id);
+
+        Date now = new Date();
+        Date stime = null;
+        Date etime = null;
+        Date beginDate = null;
+        Date endDate = null;
+        if (activity.getBeginDate() == null) {
+            beginDate =now ;
+
+        }else {
+            beginDate=activity.getBeginDate();
+        }
+        if (activity.getEndDate() == null) {
+
+            endDate = org.apache.commons.lang3.time.DateUtils.addDays(now, 1);
+
+        }else {
+
+            endDate=activity.getEndDate();
+        }
+        if (stime == null) {
+            stime =now ;
+
+        }else{
+            stime=activity.getBeginDate();
+        }
+        if (etime == null) {
+
+            etime = org.apache.commons.lang3.time.DateUtils.addDays(now, 1);
+
+        }else{
+            etime=activity.getEndDate();
+        }
+        setAttr("beginDate", beginDate);
+        setAttr("endDate", endDate);
+        setAttr("stime", stime);
+        setAttr("etime", etime);
+        setAttr("activity", activity);
+        render("/admin/activity/add.ftl");
     }
 
     //修改福袋信息

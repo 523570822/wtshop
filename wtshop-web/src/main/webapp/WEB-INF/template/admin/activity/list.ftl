@@ -127,15 +127,15 @@
                     ${activity.phone}
                 </td>
                 <td>
-                    [#if activity.begin_date??]
-                        <span title="${activity.begin_date?string("yyyy-MM-dd HH:mm:ss")}">${activity.beginDate}</span>
+                    [#if activity.beginDate??]
+                        <span title="${activity.beginDate?string("yyyy-MM-dd HH:mm:ss")}">${activity.beginDate}</span>
                     [#else]
                         -
                     [/#if]
                 </td>
                 <td>
-                    [#if activity.end_date??]
-                        <span title="${activity.end_date?string("yyyy-MM-dd HH:mm:ss")}">${activity.endDate}</span>
+                    [#if activity.endDate??]
+                        <span title="${activity.endDate?string("yyyy-MM-dd HH:mm:ss")}">${activity.endDate}</span>
                     [#else]
                         -
                     [/#if]
@@ -167,16 +167,16 @@
                 </td>
                 <td>
                     [#if ctivity.status==0]
-                        <a href="toEdit.jhtml?id=${ctivity.id}">[${message("admin.common.edit")}]</a>
-                        <a href="addGoods.jhtml?id=${ctivity.id}">[${message("Fudai.goods.manager")}]</a>
-                        <a class="hidden" href="imgList.jhtml?id=${ctivity.id}">[${message("Fudai.image.manager")}]</a>
-                        <a href="disabled.jhtml?id=${ctivity.id}" class="status"
-                           data="${fuDai.id}">][${message("admin.member.disabled")}]</a>
+                        <a href="toEdit.jhtml?id=${activity.id}">[${message("admin.common.edit")}]</a>
+                        <a href="addGoods.jhtml?id=${activity.id}">[${message("Fudai.goods.manager")}]</a>
+                        <a class="hidden" href="imgList.jhtml?id=${activity.id}">[${message("Fudai.image.manager")}]</a>
+                        <a href="disabled.jhtml?id=${activity.id}" class="status"
+                           data="${activity.id}">][${message("admin.member.disabled")}]</a>
                     [#else ]
-                        <a href="toEdit.jhtml?id=${ctivity.id}">[${message("admin.common.edit")}]</a>
-                        <a href="addGoods.jhtml?id=${ctivity.id}">[${message("Fudai.goods.manager")}]</a>
-                        <a href="publish.jhtml?id=${ctivity.id}" class="status"
-                           data="${ctivity.id}">[${message("LoginPlugin.isEnabled")}]</a>
+                        <a href="toEdit.jhtml?id=${activity.id}">[${message("admin.common.edit")}]</a>
+                        <a href="addGoods.jhtml?id=${activity.id}">[${message("Fudai.goods.manager")}]</a>
+                        <a href="publish.jhtml?id=${activity.id}" class="status"
+                           data="${activity.id}">[${message("LoginPlugin.isEnabled")}]</a>
                     [/#if]
                 </td>
             </tr>
