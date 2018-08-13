@@ -53,7 +53,7 @@
                     [#--<li name="isStockAlert"[#if isStockAlert?? && isStockAlert] class="checked"[/#if] val="true">${message("admin.goods.isStockAlert")}</li>--]
                 [#--</ul>--]
             [#--</div>--]
-            [#--<a href="javascript:;" id="moreButton" class="button">${message("admin.goods.moreOption")}</a>--]
+
             <div id="pageSizeMenu" class="dropdownMenu">
                 <a href="javascript:;" class="button">
                 ${message("admin.page.pageSize")}<span class="arrow">&nbsp;</span>
@@ -154,7 +154,7 @@
         var $listForm = $("#listForm");
         var $filterMenu = $("#filterMenu");
         var $filterMenuItem = $("#filterMenu li");
-        var $moreButton = $("#moreButton");
+
 
         [@flash_message /]
 
@@ -179,114 +179,8 @@
             $listForm.submit();
         });
 
-        // 更多选项
-        $moreButton.click(function() {
-        $.dialog({
-            title: "${message("admin.goods.moreOption")}",
-            [@compress single_line = true]
-                content: '
-                <table id="moreTable" class="moreTable">
-            <tr>
-            <th>
-            ${message("Goods.productCategory")}:
-                <\/th>
-            <td>
-            <select name="productCategoryId">
-                    <option value="">${message("admin.common.choose")}<\/option>
-                [#list productCategoryTree as productCategory]
-                <option value="${productCategory.id}"[#if productCategory.id == productCategoryId] selected="selected"[/#if]>
-                    [#if productCategory.grade != 0]
-                        [#list 1..productCategory.grade as i]
-                        &nbsp;&nbsp;
-                        [/#list]
-                    [/#if]
-                    [#noescape]
-                    ${productCategory.name?html?js_string}
-                    [/#noescape]
-                    <\/option>
-                [/#list]
-            <\/select>
-            <\/td>
-            <\/tr>
-            <tr>
-            <th>
-            ${message("Goods.type")}:
-                <\/th>
-            <td>
-            <select name="type">
-                    <option value="">${message("admin.common.choose")}<\/option>
-                [#list types as value]
-                <option value="${value}"[#if value == type] selected="selected"[/#if]>${message("Goods.Type." + value)}<\/option>
-                [/#list]
-            <\/select>
-            <\/td>
-            <\/tr>
-            <tr>
-            <th>
-            ${message("Goods.brand")}:
-                <\/th>
-            <td>
-            <select name="brandId">
-                    <option value="">${message("admin.common.choose")}<\/option>
-                [#list brands as brand]
-                <option value="${brand.id}"[#if brand.id == brandId] selected="selected"[/#if]>
-                    [#noescape]
-                    ${brand.name?html?js_string}
-                    [/#noescape]
-                <\/option>
-                [/#list]
-            <\/select>
-            <\/td>
-            <\/tr>
-            <tr>
-            <th>
-            ${message("Goods.tags")}:
-                <\/th>
-            <td>
-            <select name="tagId">
-                    <option value="">${message("admin.common.choose")}<\/option>
-                [#list tags as tag]
-                <option value="${tag.id}"[#if tag.id == tagId] selected="selected"[/#if]>
-                    [#noescape]
-                    ${tag.name?html?js_string}
-                    [/#noescape]
-                <\/option>
-                [/#list]
-            <\/select>
-            <\/td>
-            <\/tr>
-            <tr>
-            <th>
-            ${message("Goods.promotions")}:
-                <\/th>
-            <td>
-            <select name="promotionId">
-                    <option value="">${message("admin.common.choose")}<\/option>
-                [#list promotions as promotion]
-                <option value="${promotion.id}"[#if promotion.id == promotionId] selected="selected"[/#if]>
-                    [#noescape]
-                    ${promotion.name?html?js_string}
-                    [/#noescape]
-                <\/option>
-                [/#list]
-            <\/select>
-            <\/td>
-            <\/tr>
-            <\/table>',
-            [/@compress]
-            width: 470,
-                    modal: true,
-                    ok: "${message("admin.dialog.ok")}",
-                    cancel: "${message("admin.dialog.cancel")}",
-                    onOk: function() {
-                $("#moreTable :input").each(function() {
-                    var $this = $(this);
-                    $("#" + $this.attr("name")).val($this.val());
-                });
-                $listForm.submit();
-            }
-        });
-        });
+
+
         var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
         $('#listTable tr').click(function(){
             var productId = $(this).children('td').eq(0).children('input').val();
@@ -400,12 +294,12 @@
             )
             }
             if(flag==4){//福袋产品使用
-            parent.$('#productImageTable').append(
+                parent.$('#productImageTable').append(
                 [@compress single_line = true]
                         '<tr>
                         <td> '+goodsName+'
                         <input type="hidden" value="'+productId+'" name="fudaiProduct['+productImageIndex+'].product_id" class="text productId" maxlength="200" />
-                        <input type="hidden" value="'+goodsTheme+'" name="fudaiProduct['+productImageIndex+'].fudai_id" class="text" maxlength="200" />
+                        <input type="hidden" value="'+goodsTheme+'" name="fudaiProduct['+productImageIndex+'].activity_id" class="text" maxlength="200" />
                         <input type="hidden" value="0" name="fudaiProduct['+productImageIndex+'].is_main" />
                         </td>
                         <td> '+className+' <\/td>
@@ -428,8 +322,35 @@
             )
             }
 
+                if(flag==5){//奖励产品使用
+                parent.$('#productImageTable').append(
+                [@compress single_line = true]
+                        '<tr>
+                        <td> '+goodsName+'
+                        <input type="hidden" value="'+productId+'" name="activityProduct['+productImageIndex+'].product_id" class="text productId" maxlength="200" />
+                        <input type="hidden" value="'+goodsTheme+'" name="activityProduct['+productImageIndex+'].activity_id" class="text" maxlength="200" />
+                        <input type="hidden" value="0" name="activityProduct['+productImageIndex+'].is_main" />
+                        </td>
+                        <td> '+className+' <\/td>
+                        <td> <input type="number"class="text num" style="width:80px" title="商品抽取概率,大于0,小数点后两位,数字越大,概率越高"  name="activityProduct['+productImageIndex+'].probability" value="1"/> <\/td>
+                <td> <input  type="hidden"class="text sale_num" style="width:80px" title="用户再一次抽取到该产品的最短时间,单位(秒)" name="activityProduct['+productImageIndex+'].repeatTime" value="0"/>
+
+                        <input type="hidden"      name="activityProduct['+productImageIndex+'].maxNum"  title="用户抽取一次抽到该商品最大数量"  class="text" maxlength="9" style="width: 80px;" value="0" \/>
+
+
+
+                                <a href="javascript:;" class="remove">[${message("admin.common.remove")}]<\/a>
+
+                                <input type="hidden" name="activityProduct['+productImageIndex+'].grandPrix" value="0" class="grandPrixV"/>
+                          <\/td>
+
+                        <\/tr>'
+                [/@compress]
+                    )
+                    }
+
 //                parent.$('#goodsId').text('我被改变了');
-//                parent.layer.msg('您将标记 [ ' +val + ' ] 成功传送给了父窗口');
+          //    parent.layer.msg('您将标记 [ ' +val + ' ] 成功传送给了父窗口');
 //                productImageIndex++;
             parent.layer.close(index);
         });

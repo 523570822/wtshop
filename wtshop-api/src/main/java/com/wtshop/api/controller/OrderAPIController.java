@@ -67,6 +67,10 @@ public class OrderAPIController extends BaseAPIController {
 		Long productId = getParaToLong("productId");
 		Product product = productService.find(productId);
 		Goods goods = goodsService.findGoodsByPro(productId);
+		if (!product.getIsMarketable()) {
+			renderJson(ApiResult.fail(resZh.format("shop.cart.productNotMarketable")));
+			return;
+		}
 
 
 		Boolean isUseMiao = getParaToBoolean("isUseMiao",false);
@@ -227,11 +231,7 @@ public class OrderAPIController extends BaseAPIController {
 	 * 立即购买商品-创建
 	 */
 	@Before(Tx.class)
-		public void createByNowOrder() {
-
-
-
-
+	public void createByNowOrder() {
 		Member member = memberService.getCurrent();
 		Long receiverId = getParaToLong("receiverId"); //收货人
 		Receiver receiver = receiverService.find(receiverId);

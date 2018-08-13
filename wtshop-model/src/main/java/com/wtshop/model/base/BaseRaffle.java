@@ -9,11 +9,11 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseRaffle<M extends BaseRaffle<M>> extends Model<M> implements IBean {
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		set("id", id);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return get("id");
 	}
 
@@ -41,11 +41,11 @@ public abstract class BaseRaffle<M extends BaseRaffle<M>> extends Model<M> imple
 		return get("phone");
 	}
 
-	public void setActivityId(Integer activityId) {
+	public void setActivityId(Long activityId) {
 		set("activity_id", activityId);
 	}
 
-	public Integer getActivityId() {
+	public Long getActivityId() {
 		return get("activity_id");
 	}
 

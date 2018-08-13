@@ -7,10 +7,7 @@ import com.jfinal.upload.UploadFile;
 import com.wtshop.Message;
 import com.wtshop.Pageable;
 import com.wtshop.entity.ProductImage;
-import com.wtshop.model.Activity;
-import com.wtshop.model.FuDai;
-import com.wtshop.model.FudaiImg;
-import com.wtshop.model.FudaiProduct;
+import com.wtshop.model.*;
 import com.wtshop.service.*;
 import com.wtshop.util.ApiResult;
 import com.wtshop.util.DateUtils;
@@ -50,7 +47,7 @@ public class ActivityController extends BaseController {
             Date  time=new Date();
             Date form=activity.getBeginDate();
             Date to = activity.getEndDate();
-            if(form!=null&&to!=null&&!activity.getStatus().equals("1")){
+            if(form!=null&&to!=null&&activity.getStatus()==0){
                 int state= DateUtils.belongCalendar(time,form,to);
                 activity.getEndDate();
                 activity.put("isTime",state);
@@ -106,7 +103,7 @@ public class ActivityController extends BaseController {
 
 
 
-      activityService.saveF(activity);
+      activityService.save(activity);
         addFlashMessage(SUCCESS_MESSAGE);
         redirect("/admin/activity/list.jhtml");
     }
@@ -205,21 +202,21 @@ public class ActivityController extends BaseController {
     }
 
     public void addGoods() {
-        Long fuDaiId = getParaToLong("id");
-        List list = fuDaiService.queryByFuDaiId(fuDaiId);
-        FuDai fd = fuDaiService.find(fuDaiId);
-        setAttr("fuDaiId", fuDaiId);
+        Long activityId = getParaToLong("id");
+        List list = activityService.queryByActivityId(activityId);
+        Activity fd = activityService.find(activityId);
+        setAttr("activityId", activityId);
         setAttr("indexNum", list.size());
-        setAttr("fuDaiProductList", list);
+        setAttr("activityProductList", list);
         setAttr("fd", fd);
-        render("/admin/fuDai/addGoods.ftl");
+        render("/admin/activity/addGoods.ftl");
     }
 
     public void saveGoogs() {
-        List<FudaiProduct> list = getModels(FudaiProduct.class);
-        Long fuDaiId = getParaToLong("fuDaiId");
-        fuDaiService.saveOrUpdate(list, fuDaiId);
-        redirect("list.jhtml");
+        List<ActivityProduct> list = getModels(ActivityProduct.class);
+        Long activityId = getParaToLong("activityId");
+        activityService.saveOrUpdate(list, activityId);
+        redirect("/admin/activity/addGoods.jhtml?id="+activityId);
     }
 
     public void imgList() {
@@ -251,11 +248,11 @@ public class ActivityController extends BaseController {
      * 禁用福袋
      */
     public void disabled() {
-        Long fudaiId = getParaToLong("id");
-        FuDai fuDai = fuDaiService.find(fudaiId);
-        fuDai.setStatus(FuDai.State_UnActive);
-        fuDaiService.update(fuDai);
-        redirect("list.jhtml");
+        Long id = getParaToLong("id");
+        Activity activity = activityService.find(id);
+        activity.setStatus(FuDai.State_UnActive);
+        activityService.update(activity);
+        redirect("/admin/activity/list.jhtml");
     }
 
 
@@ -263,17 +260,13 @@ public class ActivityController extends BaseController {
      * 启用福袋
      */
     public void publish() {
-        Long fudaiId = getParaToLong("id");
-        FuDai fuDai = fuDaiService.find(fudaiId);
-        List<FudaiProduct> list = fuDaiService.findSubListByFudaiId(fuDai.getId());
-        if (CollectionUtils.isEmpty(list) || list.size() <= fuDai.getNum()) {
-            addFlashMessage(Message.errMsg("福袋副产品数量需要大于福袋要抽取的副产品数量"));
-            redirect("list.jhtml");
-            return;
-        }
-        fuDai.setStatus(FuDai.State_Active);
-        fuDaiService.update(fuDai);
-        redirect("list.jhtml");
+        Long id = getParaToLong("id");
+        Activity activity = activityService.find(id);
+
+
+        activity.setStatus(FuDai.State_Active);
+        activityService.update(activity);
+        redirect("/admin/activity/list.jhtml");
     }
 
 

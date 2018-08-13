@@ -327,8 +327,10 @@ public class LoginAPIController extends BaseAPIController {
     public void phoneBang(){
         Long accountId = getParaToLong("accountId");
         String phone = getPara("phone");
-        String code = getPara("code");
+        String passWord = getPara("passWord");
 
+        String code = getPara("code");
+        String passWordMD = DigestUtils.md5Hex(passWord);
         if (!smsService.smsExists(phone, code, Setting.SmsType.memberRegister)) {
             renderJson(ApiResult.fail("验证码输入错误!"));
             return;
@@ -338,6 +340,7 @@ public class LoginAPIController extends BaseAPIController {
             Member member = memberService.find(account.getMemberId());
             if(member != null){
                 member.setPhone(phone);
+                member.setPassword(passWordMD);
                 memberService.update(member);
 
                 setSessionAttr(Member.PRINCIPAL_ATTRIBUTE_NAME, new Principal(member.getId(), member.getUsername()));

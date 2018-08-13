@@ -172,11 +172,7 @@ public class BaseService<M extends Model<M>> {
 		baseDao.save(model);
 		return model;
 	}
-	public M saveF(M model) {
-		Assert.notNull(model);
-		baseDao.saveF(model);
-		return model;
-	}
+
 	/**
 	 * 更新实体对象
 	 * 

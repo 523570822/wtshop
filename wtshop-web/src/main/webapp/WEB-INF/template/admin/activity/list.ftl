@@ -166,17 +166,13 @@
 
                 </td>
                 <td>
-                    [#if ctivity.status==0]
-                        <a href="toEdit.jhtml?id=${activity.id}">[${message("admin.common.edit")}]</a>
-                        <a href="addGoods.jhtml?id=${activity.id}">[${message("Fudai.goods.manager")}]</a>
-                        <a class="hidden" href="imgList.jhtml?id=${activity.id}">[${message("Fudai.image.manager")}]</a>
-                        <a href="disabled.jhtml?id=${activity.id}" class="status"
-                           data="${activity.id}">][${message("admin.member.disabled")}]</a>
+                    <a href="addGoods.jhtml?id=${activity.id}">[${message("Activity.goods")}]</a>
+                    <a href="toEdit.jhtml?id=${activity.id}">[${message("admin.common.edit")}]</a>
+                    [#if activity.status==0]
+                        <a href="disabled.jhtml?id=${activity.id}" class="status" data="${activity.id}">][${message("admin.member.disabled")}]</a>
                     [#else ]
-                        <a href="toEdit.jhtml?id=${activity.id}">[${message("admin.common.edit")}]</a>
-                        <a href="addGoods.jhtml?id=${activity.id}">[${message("Fudai.goods.manager")}]</a>
-                        <a href="publish.jhtml?id=${activity.id}" class="status"
-                           data="${activity.id}">[${message("LoginPlugin.isEnabled")}]</a>
+
+                        <a href="publish.jhtml?id=${activity.id}" class="status" data="${activity.id}">[${message("LoginPlugin.isEnabled")}]</a>
                     [/#if]
                 </td>
             </tr>

@@ -19,6 +19,7 @@ public class _MappingKit {
 		arp.addMapping("account", "id", Account.class);
 		arp.addMapping("act_introduce", "id", ActIntroduce.class);
 		arp.addMapping("activity", "id", Activity.class);
+		arp.addMapping("activity_product", "id", ActivityProduct.class);
 		arp.addMapping("ad", "id", Ad.class);
 		arp.addMapping("ad_position", "id", AdPosition.class);
 		arp.addMapping("admin", "id", Admin.class);

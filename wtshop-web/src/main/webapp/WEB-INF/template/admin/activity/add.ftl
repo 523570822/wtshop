@@ -133,7 +133,7 @@ function  inputForm() {
             </th>
             <td>
 
-                <input type="text" name="activity.opporName" class="text" maxlength="200"  />
+                <input type="text" value="${activity.opporName}" name="activity.opporName" class="text" maxlength="200"  />
             </td>
         </tr>
 
@@ -142,7 +142,7 @@ function  inputForm() {
                 <span class="requiredField">*</span>${message("Activity.number")}:
             </th>
             <td>
-                <input type="text" name="activity.number" class="text" maxlength="200" 	min=0 title=${message("Activity.success.title")} />
+                <input type="text"  value="${activity.number}"  name="activity.number" class="text" maxlength="200" 	min=0 title=${message("Activity.success.title")} />
             </td>
         </tr>
         <tr>
@@ -150,7 +150,7 @@ function  inputForm() {
                 <span class="requiredField">*</span>${message("Activity.phone")}:
             </th>
             <td>
-                <input type="text" name="activity.phone" class="text" maxlength="200" title=${message("Activity.success.phone")}  />
+                <input type="text" value="${activity.phone}" name="activity.phone" class="text" maxlength="200" title=${message("Activity.success.phone")}  />
             </td>
         </tr>
 
@@ -178,7 +178,7 @@ function  inputForm() {
                 <span class="requiredField"></span>${message("Activity.message")}:
             </th>
             <td>
-                <textarea rows="" cols="" name="activity.explain" style="width: 300px;height:200px " maxlength="400" title= ${message("fudai.message.title")}></textarea>
+                <textarea rows="" cols="" value="${activity.explain}" name="activity.explain" style="width: 300px;height:200px " maxlength="400" title= ${message("fudai.message.title")}></textarea>
             </td>
         </tr>
 
@@ -186,7 +186,7 @@ function  inputForm() {
 
     </table>
     <table class="input tabContent">
-        <tr><td><textarea id="introduction" name="activity.rule" class="editor" style="width: 100%;"></textarea></td></tr>
+        <tr><td><textarea id="introduction" value="${activity.rule}" name="activity.rule" class="editor" style="width: 100%;"></textarea></td></tr>
     </table>
 
 [#--    <table id="productImageTable" class="item tabContent">

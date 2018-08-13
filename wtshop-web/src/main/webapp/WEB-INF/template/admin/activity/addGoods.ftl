@@ -66,7 +66,7 @@
                     skin: 'layui-layer-rim', //加上边框
                     area: ['870px', '540px'], //宽高
 //                    ccontent:"/admin/goods/list.jhtml",
-                    content: "/admin/reverseAuction/chooseGoods.jhtml?flag=4",
+                    content: "${base}/admin/reverseAuction/chooseGoods.jhtml?flag=5",
                     shadeClose:true,
                 });
                 $("#show").show();
@@ -119,7 +119,7 @@
 
                 },
                 maxNum:{
-                    max:${fd.num}
+                    max: ${fd.num?default(0)}
                 }
 
             });
@@ -156,7 +156,7 @@
     <a href="${base}/admin/common/index.jhtml">${message("admin.breadcrumb.home")}</a> &raquo; ${message("admin.goods.add")}
 </div>
 <form id="inputForm" action="saveGoogs.jhtml" method="post">
-    <input type="hidden" id="goodsThemeId" name="fuDaiId" value="${fuDaiId}"/>
+    <input type="hidden" id="goodsThemeId" name="activityId" value="${activityId}"/>
     <div style="margin: 10px;font-size: 16px;line-height: 20px">
         <p class="red">${message("fudai.tioajian.first")}</p>
         <p class="red">${message("fudai.tioajian.two")}</p>
@@ -180,54 +180,56 @@
             <th>
                 ${message("fudai.tioajian.gailv")}
             </th>
-            <th>
+         [#--   <th>
                 ${message("fudai.tioajian.jiange")}
-            </th>
+            </th>--]
             <th>
                 ${message("fudai.tioajian.count")}
             </th>
-            <th>
+        [#--    <th>
                 ${message("fudai.tioajian.dajiang")}
+            </th>--]
+            <th>
+                ${message("Activity.ptNum")}
             </th>
             <th>
             ${message("admin.common.action")}
             </th>
         </tr>
-        [#list fuDaiProductList as fuDaiProduct]
+        [#list activityProductList as activityProduct]
             <tr>
                 <td>
-                ${fuDaiProduct.product.goods.name}
-                    <input type="hidden" value="${fuDaiProduct.id}" name="fudaiProduct[${fuDaiProduct_index}].id"/>
-                    <input type="hidden" class="productId" value="${fuDaiProduct.product_id}" name="fudaiProduct[${fuDaiProduct_index}].product_id"/>
-                    <input type="hidden" value="${fuDaiProduct.fudai_id}" name="fudaiProduct[${fuDaiProduct_index}].fudai_id" />
-                    <input type="hidden" value="0" name="fudaiProduct[${fuDaiProduct_index}].is_main" />
+                ${activityProduct.product.goods.name}
+                    <input type="hidden" value="${activityProduct.id}" name="activityProduct[${activityProduct_index}].id"/>
+                    <input type="hidden" class="productId" value="${activityProduct.product_id}" name="activityProduct[${activityProduct_index}].product_id"/>
+                    <input type="hidden" value="${activityProduct.activity_id}" name="activityProduct[${activityProduct_index}].activity_id" />
+                    <input type="hidden" value="0" name="activityProduct[${activityProduct_index}].is_main" />
                 </td>
                 <td>
-                ${fuDaiProduct.product.goods.productCategory.name}
+                ${activityProduct.product.goods.productCategory.name}
                 </td>
                 <td>
-                    <input type="number" value="${fuDaiProduct.probability}" title="${message("fudai.xianzi.gailv")}" name="fudaiProduct[${fuDaiProduct_index}].probability" class="text num"  style="width: 80px;" />
+                    <input type="number" value="${activityProduct.probability}" title="${message("fudai.xianzi.gailv")}" name="activityProduct[${activityProduct_index}].probability" class="text  num"  style="width: 80px;" />
                     [#--<input type="number" value="${fuDaiProduct.probability?string('0.00')}" title=${message("fudai.xianzi.gailv")} name="fudaiProduct[${fuDaiProduct_index}].probability" class="text num"  style="width: 80px;" />--]
                 </td>
+             [#--   <td>
+                    <input type="number" value="${activityProduct.repeatTime/60}" name="fudaiProduct[${activityProduct_index}].repeatTime" title="${message("fudai.xianzi.time")}"   class="text sale_num"  style="width: 80px;" />
+                </td>--]
                 <td>
-                    <input type="number" value="${fuDaiProduct.repeatTime/60}" name="fudaiProduct[${fuDaiProduct_index}].repeatTime" title="${message("fudai.xianzi.time")}"   class="text sale_num"  style="width: 80px;" />
+                    <input type="number" value="${activityProduct.maxNum}" name="activityProduct[${activityProduct_index}].maxNum"  title="${message("fudai.xianzi.max")}"   class="text sale_num"  style="width: 80px;" />
                 </td>
                 <td>
-                    <input type="number" value="${fuDaiProduct.maxNum}" name="fudaiProduct[${fuDaiProduct_index}].maxNum"  title="${message("fudai.xianzi.max")}"   class="text maxNum"  style="width: 80px;" />
-                </td>
-                <td>       [#if fuDaiProduct.grandPrix ==1]<span class="red isgrand">${message("fudai.tioajian.is")}</span>
-                                [#else]<span class= "isgrand">${message("fudai.tioajian.no")}</span>
-                                [/#if]
+                    <input type="number" value="${activityProduct.ptNum}" disabled name="activityProduct[${activityProduct_index}].maxNum"   class="text sale_num"  style="width: 80px;" />
                 </td>
                 <td>
                     <a href="javascript:;" class="remove">[${message("admin.common.remove")}]</a>
-                    [#if fuDaiProduct.grandPrix ==0]
+                  [#--  [#if fuDaiProduct.grandPrix ==0]
                         <a class="grandPrix">[${message("fudai.tioajian.isDaJiang")}]</a>
                     [#else]
                         <a class="grandPrix red" >[${message("fudai.tioajian.noDaJiang")}]</a>
 
-                    [/#if]
-                    <input type="hidden" name="fudaiProduct[${fuDaiProduct_index}].grandPrix" value="${fuDaiProduct.grandPrix}" class="grandPrixV"/>
+                    [/#if]--]
+                    <input type="hidden" name="activityProduct[${activityProduct_index}].grandPrix" value="${activityProduct.grandPrix}" class="grandPrixV"/>
 
                 </td>
 

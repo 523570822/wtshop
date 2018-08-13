@@ -9,11 +9,11 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseActivity<M extends BaseActivity<M>> extends Model<M> implements IBean {
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		set("id", id);
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return get("id");
 	}
 
@@ -105,11 +105,11 @@ public abstract class BaseActivity<M extends BaseActivity<M>> extends Model<M> i
 		return get("order_id");
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Integer status) {
 		set("status", status);
 	}
 
-	public String getStatus() {
+	public Integer getStatus() {
 		return get("status");
 	}
 
@@ -137,11 +137,11 @@ public abstract class BaseActivity<M extends BaseActivity<M>> extends Model<M> i
 		return get("point");
 	}
 
-	public void setLuckyNumber(Integer luckyNumber) {
+	public void setLuckyNumber(String luckyNumber) {
 		set("luckyNumber", luckyNumber);
 	}
 
-	public Integer getLuckyNumber() {
+	public String getLuckyNumber() {
 		return get("luckyNumber");
 	}
 
@@ -183,6 +183,14 @@ public abstract class BaseActivity<M extends BaseActivity<M>> extends Model<M> i
 
 	public String getExplain() {
 		return get("explain");
+	}
+
+	public void setVersion(Long version) {
+		set("version", version);
+	}
+
+	public Long getVersion() {
+		return get("version");
 	}
 
 }
