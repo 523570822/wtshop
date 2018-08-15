@@ -14,10 +14,10 @@ import java.util.*;
 /**
  * Created by 蔺哲 on 2017/7/11.
  */
-public class ActivityProductService extends BaseService<FudaiProduct> {
+public class ActivityProductService extends BaseService<ActivityProduct> {
 
     public ActivityProductService() {
-        super(FudaiProduct.class);
+        super(ActivityProduct.class);
     }
 
     private FuDaiProductDao fuDaiProductDao = Enhancer.enhance(FuDaiProductDao.class);
@@ -25,22 +25,7 @@ public class ActivityProductService extends BaseService<FudaiProduct> {
     private FuDaiDao fuDaiDao = Enhancer.enhance(FuDaiDao.class);
     private ProductService productService = Enhancer.enhance(ProductService.class);
 
-    /**
-     * 修改当前福袋的主产品对应的productId
-     *
-     * @param fuDaiId
-     * @param productId
-     */
-    public void updateProduct(Long fuDaiId, Long productId) {
-        FudaiProduct fudaiProduct = fuDaiProductDao.findMainByFuDaiId(fuDaiId);
-        if (ObjectUtils.isEmpty(fudaiProduct)) {
-            FudaiProduct newFuDaiProduct = new FudaiProduct(productId, fuDaiId, 1);
-            this.save(newFuDaiProduct);
-            return;
-        }
-        fudaiProduct.setProductId(productId);
-        this.update(fudaiProduct);
-    }
+
 
     /**
      * 根据福袋Id 获取主福袋商品信息

@@ -1217,5 +1217,20 @@ public class StringUtils {
 		return   out.toString();
 	}
 
+	/**
+	 * 用set方法判断是否在数组中
+	 * @param arr
+	 * @param targetValue
+	 * @return
+	 */
+	public static boolean useList(String[] arr, String targetValue) {
+		return Arrays.asList(arr).contains(targetValue);
+	}
+	public static boolean useSet(String[] arr, String targetValue) {
+		Set<String> set = new HashSet<String>(Arrays.asList(arr));
+		return set.contains(targetValue);
+	}
+
+
 
 }

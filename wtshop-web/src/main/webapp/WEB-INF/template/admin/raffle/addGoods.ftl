@@ -186,9 +186,6 @@
             <th>
                 ${message("fudai.tioajian.count")}
             </th>
-            <th>
-                ${message("Activity.serialNumber")}
-            </th>
         [#--    <th>
                 ${message("fudai.tioajian.dajiang")}
             </th>--]
@@ -221,13 +218,8 @@
                 <td>
                     <input type="number" value="${activityProduct.maxNum}" name="activityProduct[${activityProduct_index}].maxNum"  title="${message("fudai.xianzi.max")}"   class="text sale_num"  style="width: 80px;" />
                 </td>
-
                 <td>
-                    <input type="number" value="${activityProduct.serialNumber}" name="activityProduct[${activityProduct_index}].serialNumber"     class="text sale_num"  style="width: 80px;" />
-                </td>
-
-                <td>
-                    <input type="number" value="${activityProduct.ptNum}" disabled name="activityProduct[${activityProduct_index}].ptNum"   class="text sale_num"  style="width: 80px;" />
+                    <input type="number" value="${activityProduct.ptNum}" disabled name="activityProduct[${activityProduct_index}].maxNum"   class="text sale_num"  style="width: 80px;" />
                 </td>
                 <td>
                     <a href="javascript:;" class="remove">[${message("admin.common.remove")}]</a>

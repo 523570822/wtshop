@@ -396,6 +396,8 @@
 											[/@shiro.hasPermission]
 												[@shiro.hasPermission name="admin:activity"]
 												<li><a href="../activity/list.jhtml" target="iframe">${message("admin.main.activity")}</a></li>
+												<li><a href="../raffle/list.jhtml" target="iframe">${message("admin.main.raffle")}</a></li>
+
 												[/@shiro.hasPermission]
 
 

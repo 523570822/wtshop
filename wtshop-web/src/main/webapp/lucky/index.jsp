@@ -250,9 +250,9 @@
 			} else if(lottery.times == lottery.cycle) {
 				//var index = Math.random() * (lottery.count) | 0; //静态演示，随机产生一个奖品序号，实际需请求接口产生
 				var dataa={
-
+                   id:4
 				}
-				  $.ajax({ url:"../api/activity/lottery.jhtml",data:null, success: function(data){
+				  $.ajax({ url:"../api/activity/lottery.jhtml",data:dataa, success: function(data){
 
                 console.info(data.data);
                         var index=data.data.Ranking;

@@ -1,6 +1,6 @@
 [#escape x as x?html]
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
@@ -13,9 +13,27 @@
     <script type="text/javascript" src="${base}/resources/admin/js/common.js"></script>
     <script type="text/javascript" src="${base}/resources/admin/js/list.js"></script>
     <script type="text/javascript">
-        $().ready(function () {
 
-            [@flash_message /]
+            function issue(id){
+
+                                var sn =$("#sn").val();
+
+                if (sn==null||sn==""){
+                    alert("订单编好不能为空");
+                }else {
+                    window.location.href="publish.jhtml?sn="+sn+"&id="+id;
+                }
+
+
+
+
+
+            }
+
+        $().ready(function (){
+
+             [@flash_message /]
+
 
 
         });
@@ -23,19 +41,19 @@
 </head>
 <body>
 <div class="breadcrumb">
-    <a href="${base}/admin/common/index.jhtml">${message("admin.breadcrumb.home")}</a> &raquo; ${message("Fudai.manager")}
+    <a href="${base}/admin/common/index.jhtml">${message("admin.breadcrumb.home")}</a> &raquo; ${message("Activity.manager")}
     <span>(${message("admin.page.total", page.totalRow)})</span>
 </div>
 <form id="listForm" action="list.jhtml" method="post">
     <div class="bar">
-        <a href="add.jhtml" class="iconButton">
+       [#-- <a href="add.jhtml" class="iconButton">
             <span class="addIcon">&nbsp;</span>${message("admin.common.add")}
         </a>
-
+--]
         <div class="buttonGroup">
-            <a href="javascript:;" id="deleteButton" class="iconButton disabled">
+           [#-- <a href="javascript:;" id="deleteButton" class="iconButton disabled">
                 <span class="deleteIcon">&nbsp;</span>${message("admin.common.delete")}
-            </a>
+            </a>--]
             <a href="javascript:;" id="refreshButton" class="iconButton">
                 <span class="refreshIcon">&nbsp;</span>${message("admin.common.refresh")}
             </a>
@@ -75,30 +93,23 @@
                 <input type="checkbox" id="selectAll"/>
             </th>
             <th>
-                <span>${message("Promotion.title")}</span>
+                <span>${message("admin.wallet.nickname")}</span>
             </th>
             <th>
-                <span>${message("Activity.ptNum")}</span>
+                <span>${message("admin.member.phone")}</span>
             </th>
             <th>
-                <span>${message("Activity.nowNumber")}</span>
+                <span>${message("Reffle.isReal")}</span>
             </th>
             <th>
-                <span>${message("Activity.number")}</span>
-            </th>
-            <th>
-                <span>${message("Activity.phone")}</span>
-            </th>
-            <th>
-                <span>${message("Activity.luckyNumber")}</span>
+                <span>${message("admin.point.point")}</span>
             </th>
 
             <th>
-                <span>${message("Footprint.beginTime")}</span>
+                <span>${message("Activity.opporName")}</span>
             </th>
-            <th>
-                <span>${message("Footprint.endTime")}</span>
-            </th>
+
+
             <th>
                 <span>${message("NewGoods.time")}</span>
             </th>
@@ -109,76 +120,59 @@
                 <span>${message("admin.common.action")}</span>
             </th>
         </tr>
-        [#list page.list as activity]
+        [#list page.list as raffle]
             <tr>
                 <td>
-                    <input type="checkbox" name="ids" value="${activity.id}"/>
+                    <input type="checkbox" name="ids" value="${raffle.id}"/>
                 </td>
                 <td>
-                    <span title="${activity.opporName}">${abbreviate(activity.opporName, 50, "...")}</span>
+                    <span title="${raffle.member.nickname}">${abbreviate(raffle.member.nickname, 50, "...")}</span>
                 </td>
                 <td>
-                ${activity.ptNum}
+                    <span title="${raffle.member.phone}">${abbreviate(raffle.member.phone, 50, "...")}</span>
                 </td>
                 <td>
-                ${activity.nowNumber}
+                        [#if raffle.isReal==1]
+                           是
+                        [#else ]
+                            否
+                        [/#if]
                 </td>
                 <td>
-                    ${activity.number}
+                    ${raffle.point}
                 </td>
                 <td>
-                    ${activity.phone}
+                       ${raffle.activity.opporName}
                 </td>
+
                 <td>
-                    ${activity.luckyNumber}
-                </td>
-                <td>
-                    [#if activity.beginDate??]
-                        <span title="${activity.beginDate?string("yyyy-MM-dd HH:mm:ss")}">${activity.beginDate}</span>
+                    [#if raffle.create_date??]
+                        <span title="${raffle.create_date?string("yyyy-MM-dd HH:mm:ss")}">${raffle.create_date}</span>
                     [#else]
                         -
                     [/#if]
                 </td>
                 <td>
-                    [#if activity.endDate??]
-                        <span title="${activity.endDate?string("yyyy-MM-dd HH:mm:ss")}">${activity.endDate}</span>
+                    [#if raffle.issue==0]
+                        <span class="red">[未发放]</span>
                     [#else]
-                        -
-                    [/#if]
-                </td>
-                <td>
-                    [#if activity.create_date??]
-                        <span title="${activity.create_date?string("yyyy-MM-dd HH:mm:ss")}">${activity.create_date}</span>
-                    [#else]
-                        -
-                    [/#if]
-                </td>
-                <td>
-                    [#if activity.status==0]
-                      [#--  <span class="green">[已启用]</span>--]
-                         [#if activity.isTime==0]
-                        <span class="green">[已开始]</span>
-                         [#elseif  activity.isTime==1]
-                        <span class="red">[已结束]</span>
-                         [#elseif activity.isTime==1]
-                            <span class="red">[未开始]</span>
-                         [#else]
-                       <span class="red">[有问题联系技术]</span>
-                         [/#if]
-                    [#else]
-                        <span class="red">[已禁用]</span>
+                        <span class="red">[已发放]</span>
                     [/#if]
 
 
                 </td>
                 <td>
-                    <a href="addGoods.jhtml?id=${activity.id}">[${message("Activity.goods")}]</a>
-                    <a href="toEdit.jhtml?id=${activity.id}">[${message("admin.common.edit")}]</a>
-                    [#if activity.status==0]
-                        <a href="disabled.jhtml?id=${activity.id}" class="status" data="${activity.id}">][${message("admin.member.disabled")}]</a>
+
+                    [#if raffle.issue==0]
+
+                         <input name="sn" id="sn"  type="text" />
+
+                        <a  onclick="issue(${raffle.id});" href="javascript:;" class="status" >[${message("LoginPlugin.isEnabled")}]</a>
+
+
                     [#else ]
+                        <span >${raffle.sn}</span>
 
-                        <a href="publish.jhtml?id=${activity.id}" class="status" data="${activity.id}">[${message("LoginPlugin.isEnabled")}]</a>
                     [/#if]
                 </td>
             </tr>

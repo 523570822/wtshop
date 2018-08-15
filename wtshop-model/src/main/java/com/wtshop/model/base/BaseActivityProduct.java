@@ -105,4 +105,12 @@ public abstract class BaseActivityProduct<M extends BaseActivityProduct<M>> exte
 		return get("ptNum");
 	}
 
+	public void setSerialNumber(Integer serialNumber) {
+		set("serialNumber", serialNumber);
+	}
+
+	public Integer getSerialNumber() {
+		return get("serialNumber");
+	}
+
 }

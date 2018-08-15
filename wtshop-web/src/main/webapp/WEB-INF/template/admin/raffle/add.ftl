@@ -150,7 +150,7 @@ function  inputForm() {
                 <span class="requiredField">*</span>${message("Activity.luckyNumber")}:
             </th>
             <td>
-                <input type="text"  value="${activity.luckyNumber}"  name="activity.luckyNumber" class="text" maxlength="200" 	 title=${message("Activity.luckyNumber.title")} />
+                <input type="text"  value="${activity.luckyNumber}"  name="activity.luckyNumber" class="text" maxlength="200" 	min=0 title=${message("Activity.luckyNumber.title")} />
             </td>
         </tr>
         <tr>
@@ -169,7 +169,6 @@ function  inputForm() {
             <td>
              <input  class="hidden"   id="stime" value="${stime?string('yyyy-MM-dd HH:mm:ss')}"/>
                 <input  class="hidden" id="etime" value="${etime?string('yyyy-MM-dd HH:mm:ss')}"/>
-                <input  class="hidden" name="activity.id" value="${activity.id}" value="${etime?string('yyyy-MM-dd HH:mm:ss')}"/>
                 <input type="text" id="beginDate" name="activity.beginDate"
                        value="${beginDate?string('yyyy-MM-dd HH:mm:ss')}"
                        class="text Wdate begin_date" onclick="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'stime\')}'});"  />

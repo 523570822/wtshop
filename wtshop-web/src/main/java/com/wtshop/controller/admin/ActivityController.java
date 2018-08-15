@@ -47,9 +47,9 @@ public class ActivityController extends BaseController {
             Date  time=new Date();
             Date form=activity.getBeginDate();
             Date to = activity.getEndDate();
-            if(form!=null&&to!=null&&activity.getStatus()==0){
+            if(form!=null&&to!=null&&activity.getStatus()==1){
                 int state= DateUtils.belongCalendar(time,form,to);
-                activity.getEndDate();
+
                 activity.put("isTime",state);
             }
 
@@ -100,10 +100,16 @@ public class ActivityController extends BaseController {
         Activity activity = getModel(Activity.class);
 
 
+     if(activity.getId()!=null){
+         activityService.update(activity);
+     }else{
+         activityService.save(activity);
+        }
 
 
 
-      activityService.save(activity);
+
+
         addFlashMessage(SUCCESS_MESSAGE);
         redirect("/admin/activity/list.jhtml");
     }

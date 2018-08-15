@@ -25,22 +25,6 @@ public abstract class BaseRaffle<M extends BaseRaffle<M>> extends Model<M> imple
 		return get("member_id");
 	}
 
-	public void setNickname(String nickname) {
-		set("nickname", nickname);
-	}
-
-	public String getNickname() {
-		return get("nickname");
-	}
-
-	public void setPhone(String phone) {
-		set("phone", phone);
-	}
-
-	public String getPhone() {
-		return get("phone");
-	}
-
 	public void setActivityId(Long activityId) {
 		set("activity_id", activityId);
 	}
@@ -49,12 +33,68 @@ public abstract class BaseRaffle<M extends BaseRaffle<M>> extends Model<M> imple
 		return get("activity_id");
 	}
 
-	public void setOpporName(String OpporName) {
-		set("OpporName", OpporName);
+	public void setIsReal(Integer isReal) {
+		set("isReal", isReal);
 	}
 
-	public String getOpporName() {
-		return get("OpporName");
+	public Integer getIsReal() {
+		return get("isReal");
+	}
+
+	public void setActivityProductId(Long activityProductId) {
+		set("activityProductId", activityProductId);
+	}
+
+	public Long getActivityProductId() {
+		return get("activityProductId");
+	}
+
+	public void setPoint(java.math.BigDecimal point) {
+		set("point", point);
+	}
+
+	public java.math.BigDecimal getPoint() {
+		return get("point");
+	}
+
+	public void setIssue(Integer issue) {
+		set("issue", issue);
+	}
+
+	public Integer getIssue() {
+		return get("issue");
+	}
+
+	public void setCreateDate(java.util.Date createDate) {
+		set("create_date", createDate);
+	}
+
+	public java.util.Date getCreateDate() {
+		return get("create_date");
+	}
+
+	public void setSn(String sn) {
+		set("sn", sn);
+	}
+
+	public String getSn() {
+		return get("sn");
+	}
+
+	public void setModifyDate(java.util.Date modifyDate) {
+		set("modify_date", modifyDate);
+	}
+
+	public java.util.Date getModifyDate() {
+		return get("modify_date");
+	}
+
+	public void setVersion(Long version) {
+		set("version", version);
+	}
+
+	public Long getVersion() {
+		return get("version");
 	}
 
 }
