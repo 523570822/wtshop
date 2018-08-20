@@ -256,7 +256,7 @@ public class ActivityController extends BaseController {
     public void disabled() {
         Long id = getParaToLong("id");
         Activity activity = activityService.find(id);
-        activity.setStatus(FuDai.State_UnActive);
+        activity.setStatus(0);
         activityService.update(activity);
         redirect("/admin/activity/list.jhtml");
     }
@@ -270,7 +270,7 @@ public class ActivityController extends BaseController {
         Activity activity = activityService.find(id);
 
 
-        activity.setStatus(FuDai.State_Active);
+        activity.setStatus(1);
         activityService.update(activity);
         redirect("/admin/activity/list.jhtml");
     }

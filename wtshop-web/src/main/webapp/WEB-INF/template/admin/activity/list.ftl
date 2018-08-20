@@ -154,7 +154,7 @@
                     [/#if]
                 </td>
                 <td>
-                    [#if activity.status==0]
+                    [#if activity.status==1]
                       [#--  <span class="green">[已启用]</span>--]
                          [#if activity.isTime==0]
                         <span class="green">[已开始]</span>
@@ -174,7 +174,7 @@
                 <td>
                     <a href="addGoods.jhtml?id=${activity.id}">[${message("Activity.goods")}]</a>
                     <a href="toEdit.jhtml?id=${activity.id}">[${message("admin.common.edit")}]</a>
-                    [#if activity.status==0]
+                    [#if activity.status==1]
                         <a href="disabled.jhtml?id=${activity.id}" class="status" data="${activity.id}">][${message("admin.member.disabled")}]</a>
                     [#else ]
 

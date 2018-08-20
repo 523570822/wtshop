@@ -64,8 +64,8 @@ public class ActivityAPIController extends  BaseAPIController{
     public void lottery() {
         Long id = getParaToLong("id");
 
-        BigDecimal[] point={ new BigDecimal("50"), new BigDecimal("100"), new BigDecimal("200"), new BigDecimal("0"), new BigDecimal("200"), new BigDecimal("100"), new BigDecimal("50")};
-        Map<String, String> map = new HashMap<String, String>();
+        BigDecimal[] point={ new BigDecimal("50"), new BigDecimal("100"), new BigDecimal("200"), new BigDecimal("0"), new BigDecimal("200"), new BigDecimal("100"), new BigDecimal("50"), new BigDecimal("0")};
+        Map<String, Object> map = new HashMap<String, Object>();
         Member member = memberService.getCurrent();
 
 
@@ -194,10 +194,15 @@ public class ActivityAPIController extends  BaseAPIController{
             member.setPoint(member.getPoint().add(sendMiaoBi).setScale(2, BigDecimal.ROUND_HALF_UP));
             memberService.update(member);
         }
+if(isZ){
+    map.put("PName",activityProductN.getProduct().getName());
+}else {
+    map.put("PName","");
+}
 
-
-
-        map.put("Ranking",s+"");
+        map.put("isz",isZ);
+        map.put("Point",point[s]);
+        map.put("Ranking",s);
         map.put("status","1");
         String msg="抽取成功";
         renderJson(ApiResult.success(map,msg));
@@ -256,13 +261,13 @@ public class ActivityAPIController extends  BaseAPIController{
      */
     public void findRaffle() {
         Long id = getParaToLong("id");
-        List<Map<String, String>> mapList = new ArrayList<Map<String, String>>();
+        List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 
 
         List<Raffle> raffleList = raffleService.findByActivityIdList(id);
 
         for (Raffle raffle:raffleList) {
-            Map<String, String> map1 = new HashMap<String, String>();
+            Map<String, Object> map1 = new HashMap<String, Object>();
 
             if(raffle.getMember().getUsername()==null||"".equals(raffle.getMember().getUsername())){
                 map1.put("phone",raffle.getMember().getNickname());
@@ -276,9 +281,13 @@ public class ActivityAPIController extends  BaseAPIController{
 
             if(raffle.getIsReal()==1){
                 map1.put("prizeName",raffle.getActivityProduct().getProduct().getName());
+                map1.put("SerialNumber",raffle.getActivityProduct().getSerialNumber());
             }else{
-                map1.put("prizeName",raffle.getPoint()+"");
+                map1.put("prizeName",Double.parseDouble(raffle.getPoint().toString())+"喵币");
             }
+            map1.put("date",raffle.getCreateDate());
+
+
             mapList.add(map1);
         }
         Map<String, Object> map = new HashMap<String, Object>();

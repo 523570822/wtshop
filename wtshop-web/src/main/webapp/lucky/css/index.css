@@ -1,0 +1,88 @@
+.hidden-bottom-container {
+	display: inline-block;
+	background: #efefef;
+	padding: 10px;
+	border: 1px solid #ccc;
+	font-family: "Microsoft YaHei";
+}
+
+.hidden-bottom-container .rolling-award {
+	height: 42px;
+	overflow: hidden;
+}
+
+.hidden-bottom-container ul {
+	position: relative;
+	animation: 8s 0.6s infinite;
+	-webkit-animation: 8s 0.6s infinite;
+}
+
+@keyframes {
+	0% {
+		top: 0px;
+	}
+	18% {
+		top: 0px;
+	}
+	20% {
+		top: -28px;
+	}
+	38% {
+		top: -28px;
+	}
+	40% {
+		top: -56px;
+	}
+	58% {
+		top: -56px;
+	}
+	60% {
+		top: -84px;
+	}
+	78% {
+		top: -84px;
+	}
+	80% {
+		top: -112px;
+	}
+	98% {
+		top: -112px;
+	}
+}
+
+</p><p>@-webkit-keyframes
+/*Safari and Chrome*/
+
+{
+	0% {
+		top: 0px;
+	}
+	18% {
+		top: 0px;
+	}
+	20% {
+		top: -28px;
+	}
+	38% {
+		top: -28px;
+	}
+	40% {
+		top: -56px;
+	}
+	58% {
+		top: -56px;
+	}
+	60% {
+		top: -84px;
+	}
+	78% {
+		top: -84px;
+	}
+	80% {
+		top: -112px;
+	}
+	98% {
+		top: -112px;
+	}
+}
+.hidden-bottom-container li{ line-height:1.8; color:#666; }
