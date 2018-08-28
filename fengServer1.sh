@@ -1,11 +1,11 @@
 echo "開始停止tomcat服务!"
- /mrmf/tomcat_shops/bin/shutdown.sh
+ /mrmf/tomcat_shop/bin/shutdown.sh
 echo "备份当前tomcat下商城代码"
-tar zcvf /mrmf/tomcat_shops/webapps/ROOT$(date +%Y%m%d%H).tar.gz /mrmf/tomcat_shops/webapps/ROOT ;//备份语句根据实际情况修改
-sleep 20
+tar zcvf /mrmf/tomcat_shop/webapps/ROOT$(date +%Y%m%d%H).tar.gz /mrmf/tomcat_shop/webapps/ROOT ;//备份语句根据实际情况修改
+sleep 10
 echo "删除文件及缓存"
 sudo rm -rf /root/learngit/wtshop/wtshop-web/target/*
-sudo rm -rf /mrmf/tomcat_shops/webapps/ROOT/*
+sudo rm -rf /mrmf/tomcat_shop/webapps/ROOT/*
 cd /root/learngit/wtshop
 echo "拉取git上代码"
 git pull origin   --force
@@ -18,5 +18,5 @@ rsync -rtlvz --exclude 'wtshop.properties' /root/learngit/wtshop/wtshop-web/targ
 rsync -rtlvz /mrmf/tomcat_shops/wtshop-web/WEB-INF/classes/wtshop.properties /mrmf/tomcat_shops/webapps/ROOT/WEB-INF/classes
 
 echo "开启tomcat"
-sudo /mrmf/tomcat_shops/bin/startup.sh
-#tail -f /mrmf/tomcat_shops/logs/catalina.out
+sudo /mrmf/tomcat_shop/bin/startup.sh
+#tail -f /mrmf/tomcat_shop/logs/catalina.out

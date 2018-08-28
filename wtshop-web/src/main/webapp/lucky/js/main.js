@@ -1,3 +1,5 @@
+
+
 var lottery={
     index:-1,    //当前转动到哪个位置，起点位置
     count:0,    //总共有多少个位置
@@ -61,8 +63,9 @@ function roll(){
             lottery.speed=40;
         };
         lottery.timer = setTimeout(roll,lottery.speed);//循环调用
-        zhongJJL();
+
     }
+    zhongJJL();
     return false;
 }
 
@@ -98,6 +101,8 @@ function   zhongJJL() {
         }
     });
 }
+
+
 window.onload=function(){
 
  zhongJJL();
@@ -132,11 +137,15 @@ window.onload=function(){
             lottery.speed = 100;
 
             var dataa={
-                id:4
+                id:getQueryString("id")
             }
             $.ajax({
                 url:"../api/activity/lottery.jhtml",
                 dataType:'json',
+                headers: {
+
+                    token: getQueryString("token")
+                },
                 data:dataa,
                 success: function(data){
                     console.info(data);
@@ -144,23 +153,34 @@ window.onload=function(){
 
                     if(data.data.status==4){
                         mag="活动已经关闭";
-                     //   $("#xx").html(mag);
-                   //     $(".winning-prizes").show();
-                        alert(mag)
-                        return false;
+                       $("#xx").html(mag);
+                       $(".winning-prizes").show();
+
                     }else if(data.data.status==0){
-                       mag="已经抽取过了";
-                   //     $("#xx").html(mag);
-                   //     $(".winning-prizes").show();
-                        alert(mag)
+                        mag="抽奖机会已经用完";
+
+                        $("#xx").html(mag);
+                        $("#xx").css('color','#FFFFFF');
+                        $(".draw").css('background-image','url(images/bg_no.png)');
+                        $(".draw").css('top','100px');
+                        $(".draw").css('height','55%');
+
+                        $(".winning-prizes").show();
+
+
+
+                        return false;
+
+
+
                     }else if(data.data.status==2){
-                        mag="活动已经过期";
-                   //     $("#xx").html(mag);
-                   //     $(".winning-prizes").show();
-                        alert(mag)
+
+                       $("#xx").html(mag);
+                       $(".winning-prizes").show();
+
                     }else if(data.data.status==3){
-                   //     mag="活动未开始";
-                       alert("活动未开始")
+                        mag="活动未开始";
+                        $("#xx").html(mag);
                         $(".winning-prizes").show();
                     }else{
                          indexx=data.data.Ranking;
@@ -188,3 +208,12 @@ window.onload=function(){
         }
     });
 };
+function hide(){
+    console.info("ddd");
+
+}
+function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
+}

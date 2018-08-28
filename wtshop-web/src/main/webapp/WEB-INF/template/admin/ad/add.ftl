@@ -27,6 +27,9 @@ $().ready(function() {
 	[@flash_message /]
     checkParam();//首次验证跳转
     sublevel();
+
+
+
 	$filePicker.uploader();
 	
 	$content.editor();
@@ -63,10 +66,16 @@ $().ready(function() {
 function sublevel() {
     var subtext=$("#targetTitleId").find("option:selected").text().replace(/\s/g, "");
     var num = $("#targetTitleId").find("option:selected").attr("data");
+    console.info(num);
+    $("#param").val("")
     if(num==1||num==2){
+
+
         //清空下拉内容
         $.post("${base}/admin/goodsTheme/levelState.jhtml",{urlType:num},function (data) {
             if(data.length>0){
+                $("#param").attr("readonly",false);
+
                 $("#subTitleId").empty();
                 //遍历添加 查到的二级内容
                 for (var i=0;i<data.length;i++){
@@ -107,7 +116,7 @@ function checkParam() {
 		<table class="input">
 			<tr>
 				<th>
-					<span class="requiredField">*</span>${message("Ad.title")}:
+					<span class="requiredField">123*</span>${message("Ad.title")}:
 				</th>
 				<td>
 					<input type="text" name="ad.title" class="text" maxlength="200" />

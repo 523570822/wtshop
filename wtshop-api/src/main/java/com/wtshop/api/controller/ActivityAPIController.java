@@ -130,8 +130,8 @@ public class ActivityAPIController extends  BaseAPIController{
 
 
        ActivityProduct activityProductN = new ActivityProduct();
-        Raffle  raffle=new Raffle();
-//随机获取的奖品
+       Raffle  raffle=new Raffle();
+        //随机获取的奖品
         if(isZ&&activityProductL!=null&&activityProductL.size()>0){
              activityProductN= (ActivityProduct) RandomUtils.createRandomList(activityProductL,1).get(0);
              s=activityProductN.getSerialNumber();
@@ -142,7 +142,6 @@ public class ActivityAPIController extends  BaseAPIController{
             activityProductN.setPtNum(activityProductN.getPtNum()+1);
             activityProductService.update(activityProductN);
 
-
         }else{
             int i=0;
             for (ActivityProduct activityProduct:activityProductL) {
@@ -150,7 +149,6 @@ public class ActivityAPIController extends  BaseAPIController{
                     serialNumber[i]=activityProduct.getSerialNumber()+"";
                     i++;
                 }
-
             }
            s = random.nextInt(max)%(max-min+1) + min;
 
@@ -161,8 +159,6 @@ public class ActivityAPIController extends  BaseAPIController{
                  serialNumberB=StringUtils.useSet(serialNumber,s+"");
 
                  }
-
-
 
             raffle.setIsReal(Raffle.IsReal.no.ordinal());
             raffle.setIssue(Raffle.IsReal.yes.ordinal());
@@ -194,11 +190,11 @@ public class ActivityAPIController extends  BaseAPIController{
             member.setPoint(member.getPoint().add(sendMiaoBi).setScale(2, BigDecimal.ROUND_HALF_UP));
             memberService.update(member);
         }
-if(isZ){
-    map.put("PName",activityProductN.getProduct().getName());
-}else {
-    map.put("PName","");
-}
+         if(isZ){
+                map.put("PName",activityProductN.getProduct().getName());
+           }else {
+                map.put("PName","");
+             }
 
         map.put("isz",isZ);
         map.put("Point",point[s]);

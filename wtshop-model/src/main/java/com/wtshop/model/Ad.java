@@ -24,9 +24,7 @@ public class Ad extends BaseAd<Ad> {
 		/** 文本 */
 		text,
 		/** 图片 */
-		image,
-		/** 连接*/
-		url,
+		image
 	}
 	
 	/** 广告位 */

@@ -66,7 +66,7 @@ public class RaffleService extends BaseService<Raffle> {
         filter1.setProperty("member_id");
         filter1.setOperator(Filter.Operator.eq);
         filter1.setValue(memberId);
-        long sm = raffleDao.count(filter);
+        long sm = raffleDao.count(filter,filter1);
         return (int)sm;
 
     }
