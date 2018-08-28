@@ -25,6 +25,9 @@ import com.wtshop.util.SystemUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -101,7 +104,7 @@ public class GoodsAPIController extends BaseAPIController {
 	 * {"msg":"","code":1,"data":{"review":{"totalRow":0,"pageNumber":1,"firstPage":true,"lastPage":true,"totalPage":0,"pageSize":20,"list":[]},"consultationPages":{"totalRow":0,"pageNumber":1,"firstPage":true,"lastPage":true,"totalPage":0,"pageSize":20,"list":[]},"goods":{"attribute_value0":null,"attribute_value1":null,"attribute_value10":null,"attribute_value11":null,"attribute_value12":null,"attribute_value13":null,"attribute_value14":null,"attribute_value15":null,"attribute_value16":null,"attribute_value17":null,"attribute_value18":null,"attribute_value19":null,"attribute_value2":null,"attribute_value3":null,"attribute_value4":null,"attribute_value5":null,"attribute_value6":null,"attribute_value7":null,"attribute_value8":null,"attribute_value9":null,"brand_id":50,"caption":"控油去油 长效保湿 调节水油平衡","create_date":"2017-05-22 14:19:21","generate_method":1,"hits":0,"id":64,"image":"/upload/image/201705/ba801bbb-37be-45e1-a576-e59df54753e5.jpg","introduction":"<p><img src=\"/upload/image/201705/e13f093e-0f6c-4771-88cb-be595666c409.png\"/></p>","is_delivery":true,"is_list":true,"is_marketable":true,"is_top":false,"keyword":null,"market_price":298.800000,"memo":null,"modify_date":"2017-05-22 17:50:27","month_hits":0,"month_hits_date":"2017-05-22 14:19:21","month_sales":0,"month_sales_date":"2017-05-22 14:19:21","name":"新品上市 欧莱雅男士洗面奶矿漠泥长效控油保湿洁面护肤品套装","parameter_values":"[{\"group\":\"产品参数\",\"entries\":[{\"name\":\"化妆品净含量\",\"value\":\"套装容量\"},{\"name\":\"产地\",\"value\":\"中国\"},{\"name\":\"功效\",\"value\":\"补水\"},{\"name\":\"规格类型\",\"value\":\"正常规格\"},{\"name\":\"化妆品保质期\",\"value\":\"3年\"},{\"name\":\"适合肤质\",\"value\":\"油性肤质\"}]}]","price":249.000000,"product_category_id":245,"product_images":"[{\"source\":\"/upload/image/201705/73e96e1e-2a89-46e9-a11b-5f942d0553ff-source.png\",\"large\":\"/upload/image/201705/73e96e1e-2a89-46e9-a11b-5f942d0553ff-large.jpg\",\"medium\":\"/upload/image/201705/73e96e1e-2a89-46e9-a11b-5f942d0553ff-medium.jpg\",\"thumbnail\":\"/upload/image/201705/73e96e1e-2a89-46e9-a11b-5f942d0553ff-thumbnail.jpg\"},{\"source\":\"/upload/image/201705/bb23ff84-b8f9-4258-a7f8-f481057991a3-source.jpg\",\"large\":\"/upload/image/201705/bb23ff84-b8f9-4258-a7f8-f481057991a3-large.jpg\",\"medium\":\"/upload/image/201705/bb23ff84-b8f9-4258-a7f8-f481057991a3-medium.jpg\",\"thumbnail\":\"/upload/image/201705/bb23ff84-b8f9-4258-a7f8-f481057991a3-thumbnail.jpg\"}]","sales":0,"score":0.0,"score_count":0,"seo_description":null,"seo_keywords":null,"seo_title":null,"sn":"201705221111","specification_items":null,"total_score":0,"type":0,"unit":"套","version":8,"week_hits":0,"week_hits_date":"2017-05-22 14:19:21","week_sales":0,"week_sales_date":"2017-05-22 14:19:21","weight":1000},"title":"新品上市 欧莱雅男士洗面奶矿漠泥长效控油保湿洁面护肤品套装","favorite":false}}
 	 * score 0 1 2   好评 中评 差评
 	 */
-	public void detail() {
+	public void detail() throws ParseException {
 		Long id = getParaToLong("goodIds");
 		String type = getPara("type"); //是否喵币商品
 		Goods goods = goodsService.find(id);
@@ -124,7 +127,11 @@ public class GoodsAPIController extends BaseAPIController {
 		Page<Review> reviewPages = reviewService.findPageList(null, goods, null, true, pageable);
 		List<Review> list = reviewPages.getList();
         for(Review review:list){
-
+			Date dd = review.getModifyDate();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String s = sdf.format(dd);
+			Date date =  sdf.parse(s);
+			review.setModifyDate(date);
 			Member member = memberService.find(review.getMemberId());
 			String nickname = member.getNickname();
 			if(review.getIsAnonymous() != null && review.getIsAnonymous()){
@@ -213,7 +220,7 @@ public class GoodsAPIController extends BaseAPIController {
 	 * 评论及晒图
 	 */
 
-	public void reviewDetail(){
+	public void reviewDetail() throws ParseException {
 		Long id = getParaToLong("goodIds");
 		Long type = getParaToLong("type");
 		Integer pageNumber = getParaToInt("pageNumber",1);
@@ -223,6 +230,11 @@ public class GoodsAPIController extends BaseAPIController {
 			Page<Review> reviewPages = reviewService.findPage(null, goods, null, true, pageable);
 			List<Review> list = reviewPages.getList();
 			for(Review review:list){
+				Date dd = review.getModifyDate();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String s = sdf.format(dd);
+				Date date =  sdf.parse(s);
+				review.setModifyDate(date);
 				Member member = review.getMember();
 				String nickname = member.getNickname();
 				if(review.getIsAnonymous() != null && review.getIsAnonymous()){
@@ -243,6 +255,11 @@ public class GoodsAPIController extends BaseAPIController {
 			Page<Review> reviewPages = reviewService.findPage(null, goods, Review.Type.positive, true, pageable);
 			List<Review> list = reviewPages.getList();
 			for(Review review:list){
+				Date dd = review.getModifyDate();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String s = sdf.format(dd);
+				Date date =  sdf.parse(s);
+				review.setModifyDate(date);
 				Member member = review.getMember();
 				String nickname = member.getNickname();
 				if(review.getIsAnonymous() != null && review.getIsAnonymous()){
@@ -262,6 +279,11 @@ public class GoodsAPIController extends BaseAPIController {
 			Page<Review> reviewPages = reviewService.findPage(null, goods, Review.Type.moderate, true, pageable);
 			List<Review> list = reviewPages.getList();
 			for(Review review:list){
+				Date dd = review.getModifyDate();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String s = sdf.format(dd);
+				Date date =  sdf.parse(s);
+				review.setModifyDate(date);
 				Member member = review.getMember();
 				String nickname = member.getNickname();
 				if(review.getIsAnonymous() != null && review.getIsAnonymous()){
@@ -282,6 +304,11 @@ public class GoodsAPIController extends BaseAPIController {
 			List<Review> list = reviewPages.getList();
 			for(Review review:list){
 				Member member = review.getMember();
+				Date dd = review.getModifyDate();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String s = sdf.format(dd);
+				Date date =  sdf.parse(s);
+				review.setModifyDate(date);
 				String nickname = member.getNickname();
 				if(review.getIsAnonymous() != null && review.getIsAnonymous()){
 					if(nickname != null){
@@ -300,6 +327,11 @@ public class GoodsAPIController extends BaseAPIController {
 			Page<Review> imagePage = reviewService.findPage(null, goods, true, pageable);
 			List<Review> list = imagePage.getList();
 			for(Review review :list){
+				Date dd = review.getModifyDate();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String s = sdf.format(dd);
+				Date date =  sdf.parse(s);
+				review.setModifyDate(date);
 				Member member = review.getMember();
 				String nickname = member.getNickname();
 				if(review.getIsAnonymous() != null && review.getIsAnonymous()){
