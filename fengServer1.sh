@@ -14,8 +14,8 @@ mvn -X install -Dmaven.test.skip=true
 #打包
 #mvn install -Dmaven.test.skip=true -U -P dev
 echo "拷贝到Tomcat下"
-rsync -rtlvz --exclude 'wtshop.properties' /root/learngit/wtshop/wtshop-web/target/wtshop-web/*  /mrmf/tomcat_shops/webapps/ROOT  ;   简化后 拷贝编译后的代码到指定tomcat服务器中sudo systemctl restart tomcat  启动Tomcat;
-rsync -rtlvz /mrmf/tomcat_shops/wtshop-web/WEB-INF/classes/wtshop.properties /mrmf/tomcat_shops/webapps/ROOT/WEB-INF/classes
+rsync -rtlvz --exclude 'wtshop.properties' /root/learngit/wtshop/wtshop-web/target/wtshop-web/*  /mrmf/tomcat_shop/webapps/ROOT  ;   简化后 拷贝编译后的代码到指定tomcat服务器中sudo systemctl restart tomcat  启动Tomcat;
+rsync -rtlvz /mrmf/tomcat_shop/wtshop-web/WEB-INF/classes/wtshop.properties /mrmf/tomcat_shop/webapps/ROOT/WEB-INF/classes
 
 echo "开启tomcat"
 sudo /mrmf/tomcat_shop/bin/startup.sh
