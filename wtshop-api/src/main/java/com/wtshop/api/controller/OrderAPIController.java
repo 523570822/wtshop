@@ -688,7 +688,11 @@ public class OrderAPIController extends BaseAPIController {
 			order.setAmountPaid(new BigDecimal(amountPaid));
 			orderService.update(order);
 		} else {
+
 			payMoney = price;
+			order.setAmountPaid(BigDecimal.ZERO);
+			orderService.update(order);
+
 		}
 
 		OrderMoneyResult orderMoneyResult = new OrderMoneyResult(price, balance, payMoney, MathUtil.subtract(expire.getTime()/1000,date.getTime()/1000), id);
