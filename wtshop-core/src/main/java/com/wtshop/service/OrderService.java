@@ -198,6 +198,7 @@ public class OrderService extends BaseService<Order> {
         JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
 
         Order order = orderDao.findBySn(sn);
+
         if (order.getStatus() == Order.Status.pendingShipment.ordinal()) {
             return ApiResult.fail("订单已完成支付,无需再次支付");
         }
@@ -209,6 +210,7 @@ public class OrderService extends BaseService<Order> {
         order.setExpire(null);
         order.setLockExpire(null);
         order.setLockKey(null);
+
         logger.info("测试支付宝应保存金额   :  " + amount);
         if (StringUtils.isNotBlank(weiXinNo)) {
             order.setWeixinPaid(amount);

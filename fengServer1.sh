@@ -1,4 +1,4 @@
-echo "開始停止tomcat服务!"
+﻿echo "開始停止tomcat服务!"
  /mrmf/tomcat_shop/bin/shutdown.sh
 echo "备份当前tomcat下商城代码"
 #备份语句根据实际情况修改

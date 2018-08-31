@@ -749,7 +749,7 @@ public class GoodsDao extends BaseDao<Goods> {
 	 */
 	public Page<Goods> findPage(Boolean is_vip, Boolean is_delete, Goods.Type type, ProductCategory productCategory, Brand brand, Promotion promotion, Tag tag, Map<Attribute, String> attributeValueMap, BigDecimal startPrice, BigDecimal endPrice, Boolean isMarketable, Boolean isList, Boolean isTop, Boolean isOutOfStock,
 			Boolean isStockAlert, Boolean hasPromotion, Goods.OrderType orderType, Pageable pageable) {
-		String sqlExceptSelect = "FROM goods g WHERE 1 = 1 and g.is_delete = 0  ";
+		String sqlExceptSelect = "FROM goods g WHERE 1 = 1  ";
 
 		if(is_delete != null){
 			sqlExceptSelect += " AND g.is_delete = " + is_delete;
