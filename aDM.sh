@@ -11,6 +11,7 @@ echo "拉取git上代码"
 git pull origin   --force
 echo "通过maven自动编译代码"
 mvn -X install -Dmaven.test.skip=true
+
 #打包
 #mvn install -Dmaven.test.skip=true -U -P dev
 echo "拷贝到Tomcat下"

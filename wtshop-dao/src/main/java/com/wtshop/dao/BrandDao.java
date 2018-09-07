@@ -28,7 +28,7 @@ public class BrandDao extends OrderEntity<Brand> {
 	 */
 	public List<Brand> findBrandList(){
 
-		String sql = " select id , name from brand order by name";
+		String sql = " select id , name from brand where is_delete='0' order by name";
 		return modelManager.find(sql);
 
 	}

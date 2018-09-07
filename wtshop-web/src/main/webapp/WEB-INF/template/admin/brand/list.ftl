@@ -76,6 +76,9 @@ $().ready(function() {
 				<th>
 					<a href="javascript:;" class="sort" name="orders">${message("admin.common.order")}</a>
 				</th>
+                <th>
+                    <a href="javascript:;" class="sort" name="isShow">${message("Review.isShow")}</a>
+                </th>
 				<th>
 					<span>${message("admin.common.action")}</span>
 				</th>
@@ -102,12 +105,30 @@ $().ready(function() {
 							-
 						[/#if]
 					</td>
+                    <td>
+					[#if brand.isDelete==0||brand.isDelete==null]
+
+                        <span class="green">[已显示]</span>
+
+
+
+					[#else]
+                        <span class="red">[已隐藏]</span>
+					[/#if]
+                    </td>
 					<td>
 						${brand.orders}
 					</td>
 					<td>
 						<a href="edit.jhtml?id=${brand.id}">[${message("admin.common.edit")}]</a>
 						[#--<a href="${base}${brand.path}" target="_blank">[${message("admin.common.view")}]</a>--]
+
+					[#if brand.isDelete==0||brand.isDelete==null]
+                        <a href="disabled.jhtml?id=${brand.id}" class="status" data="${brand.id}">][${message("admin.member.disabled")}]</a>
+						 [#else ]
+
+                        <a href="publish.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("LoginPlugin.isEnabled")}]</a>
+						 [/#if]
 					</td>
 				</tr>
 			[/#list]

@@ -89,4 +89,12 @@ public abstract class BaseBrand<M extends BaseBrand<M>> extends Model<M> impleme
 		return get("url");
 	}
 
+	public void setIsDelete(Boolean isDelete) {
+		set("is_delete", isDelete);
+	}
+
+	public Boolean getIsDelete() {
+		return get("is_delete");
+	}
+
 }

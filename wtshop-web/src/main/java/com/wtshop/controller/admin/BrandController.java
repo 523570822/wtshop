@@ -1,5 +1,6 @@
 package com.wtshop.controller.admin;
 
+import com.wtshop.model.Activity;
 import org.apache.commons.lang3.StringUtils;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.kit.LogKit;
@@ -119,6 +120,30 @@ public class BrandController extends BaseController {
 			brandService.delete(idList);
 		}
 		renderJson(SUCCESS_MESSAGE);
+	}
+	/**
+	 * 禁用福袋
+	 */
+	public void disabled() {
+		Long id = getParaToLong("id");
+		Brand activity = brandService.find(id);
+		activity.setIsDelete(true);
+		brandService.update(activity);
+		redirect("/admin/brand/list.jhtml");
+	}
+
+
+	/**
+	 * 启用福袋
+	 */
+	public void publish() {
+		Long id = getParaToLong("id");
+		Brand activity = brandService.find(id);
+
+
+		activity.setIsDelete(false);
+		brandService.update(activity);
+		redirect("/admin/brand/list.jhtml");
 	}
 
 }
