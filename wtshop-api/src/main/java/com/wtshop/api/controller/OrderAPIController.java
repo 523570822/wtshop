@@ -15,6 +15,7 @@ import com.wtshop.api.interceptor.ErrorInterceptor;
 import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.*;
 import com.wtshop.service.*;
+import com.wtshop.util.RedisUtil;
 import com.wtshop.util.ApiResult;
 import com.wtshop.util.MathUtil;
 import com.wtshop.util.RedisUtil;
@@ -117,11 +118,16 @@ public class OrderAPIController extends BaseAPIController {
 		//是否包邮
 
 		Boolean is_freeMoney = redisSetting.getBoolean("isFreeMoney") || price >= redisSetting.getDouble("freeMoney") ? true : false;
-		//运费优惠金额
+
 		Double deliver = 0d;
+		deliver = delivery.getPrice();
+		//运费优惠金额
+
+		Double couponYunfei =0d;
 		PriceResult newDeliveryPrice = new PriceResult("运费优惠金额","-¥ "+0 );
 		if(is_freeMoney){
-			deliver = delivery.getPrice();
+			 //运费
+			couponYunfei = delivery.getPrice();
 			newDeliveryPrice = new PriceResult("运费优惠金额","-¥ "+MathUtil.getInt(delivery.getPrice().toString()));
 		}
 		//包税 地址
@@ -160,13 +166,13 @@ public class OrderAPIController extends BaseAPIController {
 
 		if(isUseMiao){
 			miaobiPrice = new PriceResult("喵币","-¥ "+MathUtil.getInt(miaoBiPrice.toString()));
-			favoreatePriced = MathUtil.add(miaoBiPrice, deliver);
+			favoreatePriced = MathUtil.add(miaoBiPrice,couponYunfei);
 			favoritePrice = MathUtil.getInt(favoreatePriced.toString());
 
 			miaobi = miaoBiPrice;
 		}else {
 			miaobiPrice = new PriceResult("喵币","-¥ "+0);
-			favoritePrice =  MathUtil.getInt(deliver.toString());
+			favoritePrice =  MathUtil.getInt(newDeliveryPrice.getPrice());
 			miaobi = 0d;
 		}
 		PriceResult manjianPrice = null;
@@ -198,8 +204,8 @@ public class OrderAPIController extends BaseAPIController {
 
 		//运费
 		Double yunfei=  delivery.getPrice();
-		//运费优惠金额
-		Double couponYunfei = MathUtil.subtract(delivery.getPrice() ,deliver);
+		/*//运费优惠金额
+		Double couponYunfei = MathUtil.subtract(delivery.getPrice() ,deliver);*/
 		//支付金额
 		Double amountpaid = MathUtil.subtract(realPriced ,favoritePrice);
 		//优惠总额

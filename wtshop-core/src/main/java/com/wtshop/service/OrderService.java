@@ -1233,8 +1233,8 @@ public class OrderService extends BaseService<Order> {
         order.setSn(snDao.generate(Sn.Type.order));
         order.setType(type.ordinal());
         order.setPrice(new BigDecimal(price));
-        order.setFee(new BigDecimal(couponYunfei));
-        order.setFreight(new BigDecimal(deliveryMoney));
+        order.setFee(new BigDecimal(deliveryMoney));
+        order.setFreight(new BigDecimal(couponYunfei ));
         order.setMiaobiPaid(new BigDecimal(miaobiMoney));
         order.setWeixinPaid(BigDecimal.ZERO);
         order.setAliPaid(BigDecimal.ZERO);

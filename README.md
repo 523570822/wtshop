@@ -132,15 +132,44 @@ git rm --cached -r  "target"
   i@8fmhY7!m3FkwJ*
   
   
+
+
+
+
+   
+   textserver 启动redis
+  cd  /root/work/redis/src
+  进入src目录下，执行./redis-server & (带上&是在后台启动)
+                      ./redis-server ../redis_shop.conf
+  2 redis关闭
   
+  进入src目录下，执行./redis-cli shutdown
+  
+  3 远程连接redis服务器
+  
+  ./redis-cli -h redis服务器IP -p 6379 (默认端口)
+   
+   
+   textserver 启动mongodb
+   cd /root/work/mongodb/bin
+   
+   ./mongod -f mongod.conf
+ ./mongod
+
+    
   //linux 常用命令
    ps -ef |grep tomcat  查看tomcat线程
    
+   //查看tcp 端口使用情况
+    netstat -ntpl
+   
     ps -ef |grep java
-    
-    
+   杀死java线程  pkill -9  java
    杀死线程kill -9 23119
-  
+   
+   
+   查找大于100M的文件
+  find / -size +100M -exec ls -lh {} \;
   
 
  
