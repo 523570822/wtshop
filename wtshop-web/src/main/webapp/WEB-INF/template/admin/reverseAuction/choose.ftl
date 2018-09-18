@@ -299,7 +299,7 @@
                         '<tr>
                         <td> '+goodsName+'
                         <input type="hidden" value="'+productId+'" name="fudaiProduct['+productImageIndex+'].product_id" class="text productId" maxlength="200" />
-                        <input type="hidden" value="'+goodsTheme+'" name="fudaiProduct['+productImageIndex+'].activity_id" class="text" maxlength="200" />
+                        <input type="hidden" value="'+goodsTheme+'" name="fudaiProduct['+productImageIndex+'].fudai_id" class="text" maxlength="200" />
                         <input type="hidden" value="0" name="fudaiProduct['+productImageIndex+'].is_main" />
                         </td>
                         <td> '+className+' <\/td>
