@@ -66,7 +66,7 @@
                     skin: 'layui-layer-rim', //加上边框
                     area: ['870px', '540px'], //宽高
 //                    ccontent:"/admin/goods/list.jhtml",
-                    content: "/admin/reverseAuction/chooseGoods.jhtml?flag=4",
+                    content: "../../admin/reverseAuction/chooseGoods.jhtml?flag=4",
                     shadeClose:true,
                 });
                 $("#show").show();

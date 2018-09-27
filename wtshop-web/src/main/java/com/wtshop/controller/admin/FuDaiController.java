@@ -160,7 +160,7 @@ public class FuDaiController extends BaseController {
         List<FudaiProduct> list = getModels(FudaiProduct.class);
         Long fuDaiId = getParaToLong("fuDaiId");
         fuDaiService.saveOrUpdate(list, fuDaiId);
-        redirect("list.jhtml");
+        redirect("/admin/fuDai/list.jhtml");
     }
 
     public void imgList() {
