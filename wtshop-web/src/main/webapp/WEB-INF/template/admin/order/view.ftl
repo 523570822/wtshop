@@ -1206,7 +1206,10 @@ $().ready(function() {
 				${message("Order.freight")}:
 			</th>
 			<td>
-				${currency(order.freight, true)}
+				${currency(order.fee, true)}
+				[#if order.freight > 0]
+					<span class="silver">优惠: ${currency(order.freight, true)})</span>
+				[/#if]
 			</td>
 		</tr>
 		<tr>
