@@ -64,6 +64,7 @@ public class GoodsRankingController extends BaseController {
             case monthSales:
                 break;
             case sales:
+                //增加了已发货状态
                 dataList = Db.find("SELECT t.id , t.sn, t.name,  COUNT(1) count FROM\n" +
                         "(SELECT  o.`sn` order_sn, g.name, p.sn , p.`id`\n" +
                         " FROM `order` o , order_item oi, product p, goods g  " +
