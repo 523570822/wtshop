@@ -68,7 +68,7 @@ public class GoodsRankingController extends BaseController {
                         "(SELECT  o.`sn` order_sn, g.name, p.sn , p.`id`\n" +
                         " FROM `order` o , order_item oi, product p, goods g  " +
                         " WHERE o.`id` = oi.`order_id` AND p.goods_id = g.id  AND p.id = oi.product_id " +
-                        "   AND  o.`status` IN (5,9,10) AND o.`create_date` >= ? AND ? >= o.`create_date` \n" +
+                        "   AND  o.`status` IN (3,5,9,10) AND o.`create_date` >= ? AND ? >= o.`create_date` \n" +
                         ") t GROUP BY t.id", beginDate, endDate);
                 break;
             default:
