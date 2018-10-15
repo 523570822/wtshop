@@ -1,4 +1,4 @@
-echo "開始停止tomcat服务!"
+echo "stop tomcat!"
  /mrmf/tomcat_shops/bin/shutdown.sh
 echo "备份当前tomcat下商城代码"
 tar zcvf /mrmf/tomcat_shops/webapps/ROOT$(date +%Y%m%d%H).tar.gz /mrmf/tomcat_shops/webapps/ROOT ;//备份语句根据实际情况修改
