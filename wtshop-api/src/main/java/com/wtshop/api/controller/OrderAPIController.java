@@ -115,8 +115,8 @@ public class OrderAPIController extends BaseAPIController {
 
 
 		JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
-		//是否包邮
 
+		//是否包邮
 		Boolean is_freeMoney = redisSetting.getBoolean("isFreeMoney") || price >= redisSetting.getDouble("freeMoney") ? true : false;
 
 		Double deliver = 0d;
@@ -124,11 +124,11 @@ public class OrderAPIController extends BaseAPIController {
 		//运费优惠金额
 
 		Double couponYunfei =0d;
-		PriceResult newDeliveryPrice = new PriceResult("运费优惠金额","-¥ "+0 );
+		PriceResult newDeliveryPrice = new PriceResult("运费优惠金额","0" );
 		if(is_freeMoney){
 			 //运费
 			couponYunfei = delivery.getPrice();
-			newDeliveryPrice = new PriceResult("运费优惠金额","-¥ "+MathUtil.getInt(delivery.getPrice().toString()));
+			newDeliveryPrice = new PriceResult("运费优惠金额",MathUtil.getInt(delivery.getPrice().toString()));
 		}
 		//包税 地址
 		String taxUrl = "http://shop.rxmao.cn/rxm/goods/tax.html";
@@ -158,7 +158,7 @@ public class OrderAPIController extends BaseAPIController {
 
 		PriceResult miaobiPrice = null;
 		String realPrice = null;
-		String favoritePrice = null;
+		String favoritePrice = "0";
 		Double realPriced = MathUtil.add(price, delivery.getPrice());
 		Double favoreatePriced = 0d;
 		Double miaobi = 0d;
