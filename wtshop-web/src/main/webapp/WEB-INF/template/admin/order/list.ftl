@@ -221,6 +221,9 @@ $().ready(function() {
 					<a href="javascript:;" class="sort" name="payment_method_name">${message("Order.paymentMethod")}</a>
 				</th>
 				<th>
+					<a href="javascript:;" class="sort" name="payment_method_name">${message("Order.isInvoice")}</a>
+				</th>
+				<th>
 					<a href="javascript:;" class="sort" name="shipping_method_name">${message("Order.shippingMethod")}</a>
 				</th>
 				<th>
@@ -268,6 +271,15 @@ $().ready(function() {
 					<td>
 						${order.paymentMethodName}
 					</td>
+                    <td>
+						[#if order.isInvoice == "true"]
+
+                            <span class="red">开发票</span>
+						[#else ]
+
+							  <span>否</span>
+						[/#if]
+                    </td>
 					<td>
 						${order.shippingMethodName}
 					</td>

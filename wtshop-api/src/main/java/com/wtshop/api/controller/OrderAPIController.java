@@ -649,8 +649,8 @@ public class OrderAPIController extends BaseAPIController {
 		Boolean isInvoice=getParaToBoolean("isInvoice");
 		//1是 ，0否  是否是個人
 		Boolean isPersonal=getParaToBoolean("isPersonal");
-		String taxNumber = getPara("taxNumber"); 	//稅號
-		String companyName = getPara("companyName"); 	// 單位名稱
+		String taxNumber = getPara("taxNumber"); 		// 單位名稱
+		String companyName = getPara("companyName");   //稅號
 
 		  Order order = orderService.create(Order.Type.general, cart, manjianPrice, receiver, amountMoney, returnMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName);
 
