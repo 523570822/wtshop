@@ -110,8 +110,15 @@ public class FuDaiAPIController extends BaseAPIController {
             renderJson(ApiResult.fail("收货地址不能为空"));
             return;
         }
+//1是 ，0否  是否開發票
+        Boolean isInvoice=getParaToBoolean("isInvoice");
+        //1是 ，0否  是否是個人
+        Boolean isPersonal=getParaToBoolean("isPersonal");
+        String taxNumber = getPara("taxNumber"); 	//單位名稱
+        String companyName = getPara("companyName"); 	//稅號
 
-        Order order = orderService.createFudai(Order.Type.fudai, fuDai, receiver);
+
+        Order order = orderService.createFudai(Order.Type.fudai, fuDai, receiver,isInvoice,isPersonal,taxNumber,companyName);
         renderJson(ApiResult.success(order));
 
     }

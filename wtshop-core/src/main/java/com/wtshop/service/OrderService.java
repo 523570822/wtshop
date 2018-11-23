@@ -460,7 +460,7 @@ public class OrderService extends BaseService<Order> {
      * 创建福袋订单
      */
     @Before(Tx.class)
-    public Order createFudai(Order.Type type, FuDai fuDai, Receiver receiver) {
+    public Order createFudai(Order.Type type, FuDai fuDai, Receiver receiver,Boolean isInvoice,Boolean isPersonal,String taxNumber,String companyName) {
 
         List<ShippingMethod> shippingMethods = shippingMethodService.findMethodList();
         // 默认网上支付
@@ -468,7 +468,14 @@ public class OrderService extends BaseService<Order> {
 
         //快递公司
         Member member = memberService.getCurrent();
+
         Order order = new Order();
+
+        order.setIsInvoice(isInvoice);
+        order.setIsPersonal(isPersonal);
+        order.setTaxNumber(taxNumber);
+        order.setCompanyName(companyName);
+
         order.setSn(snDao.generate(Sn.Type.order));
         order.setType(type.ordinal());
         order.setPaymentMethodId(1L);
@@ -499,7 +506,7 @@ public class OrderService extends BaseService<Order> {
         order.setIsUseCouponCode(false);
         order.setIsExchangePoint(false);
         order.setIsAllocatedStock(false);
-        order.setInvoice(null);
+       // order.setInvoice(null);
         order.setShippingMethodId(shippingMethods.get(0).getId());
         order.setMemberId(member.getId());
         order.setCouponDiscount(BigDecimal.ZERO);
@@ -1039,7 +1046,7 @@ public class OrderService extends BaseService<Order> {
      * @return 订单
      */
 
-    public Order create(Order.Type type, Cart cart, Double manjianPrice, Receiver receiver, Double amountMoney, Double returnMoney, Double deliveryMoney, Double miaobiMoney, String memo, Double couponYunfei) {
+    public Order create(Order.Type type, Cart cart, Double manjianPrice, Receiver receiver, Double amountMoney, Double returnMoney, Double deliveryMoney, Double miaobiMoney, String memo, Double couponYunfei,Boolean isInvoice,Boolean isPersonal,String taxNumber,String companyName) {
         Assert.notNull(type);
         Assert.notNull(cart);
         Assert.notNull(cart.getMember());
@@ -1061,6 +1068,13 @@ public class OrderService extends BaseService<Order> {
         Member member = cart.getMember();
 
         Order order = new Order();
+
+        order.setIsInvoice(isInvoice);
+        order.setIsPersonal(isPersonal);
+        order.setTaxNumber(taxNumber);
+        order.setCompanyName(companyName);
+
+
         order.setSn(snDao.generate(Sn.Type.order));
         order.setType(type.ordinal());
         order.setPrice(cart.getPrice());
@@ -1097,7 +1111,7 @@ public class OrderService extends BaseService<Order> {
         order.setIsUseCouponCode(false);
         order.setIsExchangePoint(false);
         order.setIsAllocatedStock(false);
-        order.setInvoice(null);
+       // order.setInvoice(null);
         order.setShippingMethodId(1L);
         order.setMemberId(member.getId());
         order.setPromotionNames(JSON.toJSONString(cart.getPromotionNames()));
@@ -1225,13 +1239,21 @@ public class OrderService extends BaseService<Order> {
      */
 
     public Order createBuyNow(Order.Type type, Member member, Goods goods, Double price, int quantity, Double manjianPrice, Receiver receiver, Double amountMoney, Double deliveryMoney, Double
-        miaobiMoney, String memo, Double couponYunfei) {
+        miaobiMoney, String memo, Double couponYunfei,Boolean isInvoice,Boolean isPersonal,String taxNumber,String companyName) {
 
 
         JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
         Order order = new Order();
         order.setSn(snDao.generate(Sn.Type.order));
         order.setType(type.ordinal());
+
+
+        order.setIsInvoice(isInvoice);
+        order.setIsPersonal(isPersonal);
+        order.setTaxNumber(taxNumber);
+        order.setCompanyName(companyName);
+
+
         order.setPrice(new BigDecimal(price));
         order.setFee(new BigDecimal(deliveryMoney));
         order.setFreight(new BigDecimal(couponYunfei ));
@@ -1266,7 +1288,7 @@ public class OrderService extends BaseService<Order> {
         order.setIsUseCouponCode(false);
         order.setIsExchangePoint(false);
         order.setIsAllocatedStock(false);
-        order.setInvoice(null);
+      //  order.setInvoice(null);
         order.setShippingMethodId(1L);
         order.setMemberId(member.getId());
         order.setPromotionNames(null);
@@ -2271,12 +2293,18 @@ public class OrderService extends BaseService<Order> {
      * @return
      */
     @Before(Tx.class)
-    public Order createMiaoBi(Order.Type type, Receiver receiver, Member member, Double amountMoney, Double miaobiMoney, String memo, BigDecimal price, Integer goodsNum, Long goodsId, Integer weight) {
+    public Order createMiaoBi(Order.Type type, Receiver receiver, Member member, Double amountMoney, Double miaobiMoney, String memo, BigDecimal price, Integer goodsNum, Long goodsId, Integer weight,Boolean isInvoice,Boolean isPersonal,String taxNumber,String companyName) {
         Assert.notNull(type);
         JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
         Setting setting = SystemUtils.getSetting();
         Double scale = redisSetting.getDouble("scale");
         Order order = new Order();
+
+       order.setIsInvoice(isInvoice);
+        order.setIsPersonal(isPersonal);
+        order.setTaxNumber(taxNumber);
+        order.setCompanyName(companyName);
+
         order.setSn(snDao.generate(Sn.Type.order));//订单类型
         order.setType(type.ordinal());//枚举
         order.setPrice(price);//商品价格
@@ -2311,7 +2339,7 @@ public class OrderService extends BaseService<Order> {
         order.setIsUseCouponCode(false);
         order.setIsExchangePoint(false);
         order.setIsAllocatedStock(false);
-        order.setInvoice(null);
+        //order.setInvoice(null);
         order.setShippingMethodId(1L);
         order.setMemberId(member.getId());
         order.setPromotionNames(null);

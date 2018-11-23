@@ -441,6 +441,14 @@ public abstract class BaseOrder<M extends BaseOrder<M>> extends Model<M> impleme
 		return get("is_vip");
 	}
 
+	public void setActOrderId(String actOrderId) {
+		set("actOrderId", actOrderId);
+	}
+
+	public String getActOrderId() {
+		return get("actOrderId");
+	}
+
 	public void setIsCommission(Boolean isCommission) {
 		set("is_commission", isCommission);
 	}
@@ -449,12 +457,36 @@ public abstract class BaseOrder<M extends BaseOrder<M>> extends Model<M> impleme
 		return get("is_commission");
 	}
 
-	public void setActOrderId(String actOrderId) {
-		set("actOrderId", actOrderId);
+	public void setIsInvoice(Boolean isInvoice) {
+		set("isInvoice", isInvoice);
 	}
 
-	public String getActOrderId() {
-		return get("actOrderId");
+	public Boolean getIsInvoice() {
+		return get("isInvoice");
+	}
+
+	public void setIsPersonal(Boolean isPersonal) {
+		set("isPersonal", isPersonal);
+	}
+
+	public Boolean getIsPersonal() {
+		return get("isPersonal");
+	}
+
+	public void setTaxNumber(String taxNumber) {
+		set("taxNumber", taxNumber);
+	}
+
+	public String getTaxNumber() {
+		return get("taxNumber");
+	}
+
+	public void setCompanyName(String companyName) {
+		set("companyName", companyName);
+	}
+
+	public String getCompanyName() {
+		return get("companyName");
 	}
 
 }

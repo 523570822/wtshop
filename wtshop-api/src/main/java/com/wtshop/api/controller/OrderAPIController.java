@@ -240,10 +240,20 @@ public class OrderAPIController extends BaseAPIController {
 	public void createByNowOrder() {
 		Member member = memberService.getCurrent();
 		Long receiverId = getParaToLong("receiverId"); //收货人
+
+
+		//1是 ，0否  是否開發票
+		Boolean isInvoice=getParaToBoolean("isInvoice");
+		//1是 ，0否  是否是個人
+		Boolean isPersonal=getParaToBoolean("isPersonal");
+		String taxNumber = getPara("taxNumber"); 	//單位名稱
+		String companyName = getPara("companyName"); 	//稅號
+
+
 		Receiver receiver = receiverService.find(receiverId);
 		Long goodsId = getParaToLong("goodsId");//商品
 		Goods goods = goodsService.find(goodsId);
-		String memo = getPara("memo"); 		//备注
+		String memo = getPara("memo"); 	//备注
 
 		//是否实名认证
 		Certificates certificates = certificatesService.queryByMemberId(member.getId());
@@ -273,7 +283,7 @@ public class OrderAPIController extends BaseAPIController {
 
 
 
-		Order order = orderService.createBuyNow(Order.Type.general, member, goods, price, 1, manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney, memo, couponYunfei);
+		Order order = orderService.createBuyNow(Order.Type.general, member, goods, price, 1, manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName);
 		renderJson(ApiResult.success(order.getId()));
 	}
 
@@ -635,7 +645,14 @@ public class OrderAPIController extends BaseAPIController {
 			return;
 		}
 
-		  Order order = orderService.create(Order.Type.general, cart, manjianPrice, receiver, amountMoney, returnMoney, deliveryMoney , miaobiMoney, memo, couponYunfei);
+		//1是 ，0否  是否開發票
+		Boolean isInvoice=getParaToBoolean("isInvoice");
+		//1是 ，0否  是否是個人
+		Boolean isPersonal=getParaToBoolean("isPersonal");
+		String taxNumber = getPara("taxNumber"); 	//稅號
+		String companyName = getPara("companyName"); 	// 單位名稱
+
+		  Order order = orderService.create(Order.Type.general, cart, manjianPrice, receiver, amountMoney, returnMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName);
 
 		  renderJson(ApiResult.success(order.getId()));
 
@@ -657,7 +674,17 @@ public class OrderAPIController extends BaseAPIController {
 		Goods goods = miaobiGoods.getGoods();
 		Double miaobiMoney = miaobiGoods.getPriceMiaobi().doubleValue()*goodsNum;
 		Double amountMoney = miaobiGoods.getPrice().doubleValue()*goodsNum;
-		Order order = orderService.createMiaoBi(Order.Type.miaobi,receiver,member,amountMoney,miaobiMoney,null,goods.getPrice(),goodsNum,miaobiGoods.getGoodsId(),1*goodsNum);
+
+
+		//1是 ，0否  是否開發票
+		Boolean isInvoice=getParaToBoolean("isInvoice");
+		//1是 ，0否  是否是個人
+		Boolean isPersonal=getParaToBoolean("isPersonal");
+		String taxNumber = getPara("taxNumber"); 		//稅號
+		String companyName = getPara("companyName"); //單位名稱
+
+
+		Order order = orderService.createMiaoBi(Order.Type.miaobi,receiver,member,amountMoney,miaobiMoney,null,goods.getPrice(),goodsNum,miaobiGoods.getGoodsId(),1*goodsNum,isInvoice,isPersonal,taxNumber,companyName);
 		renderJson(new ApiResult(1,"",order.getId()));
 	}
 	/**
