@@ -147,7 +147,7 @@ public class ReverseAuctionService extends BaseService<ReverseAuction> {
         }
         histroy.setBuyState(2);
         reverseAuctionHistroyDao.update(histroy);
-        updateReverseAuctionOrderToPendingShip(histroy, Order.PayType.wechat, String.valueOf(NumberUtils.toDouble(amount) / 100.0), "0", otherNo);
+        updateReverseAuctionOrderToPendingShip(histroy, Order.PayType.wechat, String.valueOf(NumberUtils.toDouble(amount) / 100.0), "0", otherNo,false,true,"","");
         return ApiResult.success();
     }
 
@@ -177,7 +177,7 @@ public class ReverseAuctionService extends BaseService<ReverseAuction> {
         //  记录订单
         histroy.setBuyState(2);
         reverseAuctionHistroyDao.update(histroy);
-        updateReverseAuctionOrderToPendingShip(histroy, Order.PayType.alipay, amount, "0", otherNo);
+        updateReverseAuctionOrderToPendingShip(histroy, Order.PayType.alipay, amount, "0", otherNo,false,true,"","");
 
         return ApiResult.success();
     }
@@ -187,11 +187,15 @@ public class ReverseAuctionService extends BaseService<ReverseAuction> {
     }
 
     @Before(Tx.class)
-    public Order updateReverseAuctionOrderToPendingShip(ReverseAuctionHistroy reverseAuctionHistroy, Order.PayType payType, String amount, String balance, String orderNo) {
+    public Order updateReverseAuctionOrderToPendingShip(ReverseAuctionHistroy reverseAuctionHistroy, Order.PayType payType, String amount, String balance, String orderNo,Boolean isInvoice,Boolean isPersonal,String taxNumber,String companyName) {
         Member member = memberService.find(reverseAuctionHistroy.getMemberId());
         Order order = orderDao.findByActOrderId(String.valueOf(reverseAuctionHistroy.getReverseAuctionDetailId()));
         order.setAmountPaid(new BigDecimal(balance));
         order.setOrderNo(orderNo);
+        order.setIsInvoice(isInvoice);
+        order.setIsPersonal(isPersonal);
+        order.setTaxNumber(taxNumber);
+        order.setCompanyName(companyName);
         if (payType == Order.PayType.wechat) {
             order.setWeixinPaid(new BigDecimal(amount));
         }else {
@@ -226,6 +230,16 @@ public class ReverseAuctionService extends BaseService<ReverseAuction> {
             depositLogDao.save(depositLog);
         }
         return order;
+    }
+    @Before(Tx.class)
+    public void updateOrder(ReverseAuctionHistroy reverseAuctionHistroy,Boolean isInvoice,Boolean isPersonal,String taxNumber,String companyName){
+
+        Order order = orderDao.findByActOrderId(String.valueOf(reverseAuctionHistroy.getReverseAuctionDetailId()));
+        order.setIsInvoice(isInvoice);
+        order.setIsPersonal(isPersonal);
+        order.setTaxNumber(taxNumber);
+        order.setCompanyName(companyName);
+        orderDao.update(order);
     }
 
     //  创建倒拍订单（待支付）

@@ -184,17 +184,24 @@ public class ReverseAuctionController extends BaseAPIController {
 
 
     /**
-     * 准备支付信息
+     * 倒拍准备支付信息
      */
     @Before(Tx.class)
     public void preparePay() {
         //  商品支付金额
         Member member = memberService.getCurrent();
-        Long auction_history_id = getParaToLong("auction_history_id");
+        Long auction_history_id = getParaToLong("auction_history_id");//倒拍历史id
         String pay_price = getPara("pay_price");
         Integer pay_type = getParaToInt("pay_type");
         Boolean isBalance = getParaToBoolean("isBalance", false);
         String balance_price = getPara("balance_price");
+
+        //1是 ，0否  是否開發票
+        Boolean isInvoice=getParaToBoolean("isInvoice");
+        //1是 ，0否  是否是個人
+        Boolean isPersonal=getParaToBoolean("isPersonal");
+        String taxNumber = getPara("taxNumber"); 	//單位名稱
+        String companyName = getPara("companyName"); 	//稅號
 
         //  获取倒拍数据
         ReverseAuctionHistroy reverseAuctionHistroy = reverseAuctionHistroyService.find(auction_history_id);
@@ -202,7 +209,7 @@ public class ReverseAuctionController extends BaseAPIController {
             renderJson(ApiResult.fail("倒拍不存在"));
             return;
         }
-        if (!Code.isDevMode && isBalance){ //  使用余额支付，需要判断是否有余额、是否余额和平台支付价格一致
+        if (!Code.isDevMode && isBalance){ //使用余额支付，需要判断是否有余额、是否余额和平台支付价格一致
             if (NumberUtils.toDouble(balance_price) > member.getBalance().doubleValue() ){ //  待支付余额 大于 用户实际余额， 支付失败
                 renderJson(ApiResult.fail("余额不足"));
                 return;
@@ -220,7 +227,7 @@ public class ReverseAuctionController extends BaseAPIController {
         if (isBalance && NumberUtils.toDouble(pay_price) <= 0){ //  余额付
             reverseAuctionHistroy.setBuyState(2);
             reverseAuctionHistroyService.update(reverseAuctionHistroy);
-            reverseAuctionService.updateReverseAuctionOrderToPendingShip(reverseAuctionHistroy, Order.PayType.balance, balance_price, balance_price, "");
+            reverseAuctionService.updateReverseAuctionOrderToPendingShip(reverseAuctionHistroy, Order.PayType.balance, balance_price, balance_price, "",isInvoice,isPersonal,taxNumber,companyName);
             renderJson(ApiResult.success("支付成功"));
             return;
         }else{
@@ -234,12 +241,18 @@ public class ReverseAuctionController extends BaseAPIController {
                 Map<String, String> map = userPayService.getPrepayIdForDp(Double.parseDouble(pay_price), ip, order_no);
                 reverseAuctionHistroy.setBuyNo(order_no);
                 reverseAuctionHistroyService.update(reverseAuctionHistroy);
+
+               //更新订单增加发票
+                reverseAuctionService.updateOrder(reverseAuctionHistroy,isInvoice,isPersonal,taxNumber,companyName);
+
                 renderJson(ApiResult.success(map));
             } else if (2 == pay_type) {
                 //支付宝
                 Map<String, String> map = userPayService.aliPayOrderForDp(Double.parseDouble(pay_price), order_no);
                 reverseAuctionHistroy.setBuyNo(order_no);
                 reverseAuctionHistroyService.update(reverseAuctionHistroy);
+                //更新订单增加发票
+                reverseAuctionService.updateOrder(reverseAuctionHistroy,isInvoice,isPersonal,taxNumber,companyName);
                 renderJson(ApiResult.success(map));
             } else {
                 renderJson(ApiResult.fail("错误的支付类型"));
