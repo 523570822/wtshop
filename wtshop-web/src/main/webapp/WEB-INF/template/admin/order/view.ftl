@@ -1238,21 +1238,23 @@ $().ready(function() {
 			</th>
 			<td>
 				${order.shippingMethodName!"-"}
+				${order.rewardPoint}
 			</td>
 		</tr>
-		[#if order.invoice??]
+		[#if order.isInvoice==true]
 			<tr>
 				<th>
-					${message("Invoice.title")}:
+						<span class="blue">${message("Invoice.title")}:</span>
 				</th>
 				<td>
-					${order.invoice.title}
+				${order.companyName}
 				</td>
 				<th>
-					${message("Order.tax")}:
+					${message("Order.taxNumber")}:
 				</th>
 				<td>
-					${currency(order.tax, true)}
+					${order.taxNumber}
+					[#--${currency(order.tax, true)}--]
 				</td>
 			</tr>
 		[/#if]

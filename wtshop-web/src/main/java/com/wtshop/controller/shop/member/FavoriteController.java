@@ -15,8 +15,8 @@ import com.wtshop.service.MemberService;
 
 /**
  * Controller - 会员中心 - 商品收藏
- * 
- * 
+ *
+ *
  */
 @ControllerBind(controllerKey = "/member/favorite")
 @Before(MemberInterceptor.class)
@@ -48,7 +48,7 @@ public class FavoriteController extends BaseController {
 			renderJson(Message.warn("shop.member.favorite.addCountNotAllowed", Member.MAX_FAVORITE_COUNT));
 			return;
 		}
-		
+
 		MemberFavoriteGoods memberFavoriteGoods = new MemberFavoriteGoods();
 		memberFavoriteGoods.setFavoriteGoods(goods.getId());
 		memberFavoriteGoods.setFavoriteMembers(member.getId());
