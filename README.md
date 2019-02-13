@@ -171,6 +171,11 @@ git rm --cached -r  "target"
    查找大于100M的文件
   find / -size +100M -exec ls -lh {} \;
   
+  
+  如果重启服务器server1需要启动
+  cd /mrmf/apache-tomcat-8.0.30/bin 下的打
+  ./startup.sh
+  
 
  
 
