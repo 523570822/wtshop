@@ -127,31 +127,31 @@
                     [/#if]
                 </td>
                 <td>
-                    [#if groupBuy.status==1]
+                    [#if groupBuy.status]
                         <span class="green">[已启用]</span>
                     [#else]
                         <span class="red">[已禁用]</span>
                     [/#if]
 
-                    [#if groupBuy.isMarketable==1]
+                    [#if groupBuy.isMarketable]
                         <span class="green">[已上架]</span>
                     [#else]
                         <span class="red">[已下架]</span>
                     [/#if]
 
 
-                    [#if groupBuy.isTop==1]
+                    [#if groupBuy.isTop]
                         <span class="green">[已置顶]</span>
                         [#else]
                         <span class="red">[未置顶]</span>
-                        [/#if]     [#if groupBuy.is_singlepurchase==1]
+                        [/#if]     [#if groupBuy.is_singlepurchase]
                         <span class="green">[可以单独购买]</span>
                         [#else]
                         <span class="red">[不可以单独购买]</span>
                         [/#if]
                 </td>
                 <td>
-                    [#if groupBuy.status==1]
+                    [#if groupBuy.status]
                         <a href="toEdit.jhtml?id=${groupBuy.id}">[${message("admin.common.edit")}]</a>
 
 

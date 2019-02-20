@@ -270,7 +270,7 @@
                 <span class="requiredField"></span>${message("groupBuy.message")}:
             </th>
             <td>
-                <textarea rows="" cols="" name="groupBuy.explain" style="width: 300px;height:200px " maxlength="400" title="${message("groupBuy.message.list")}" >${groupBuy.explain}</textarea>
+                <textarea rows="" cols="" name="groupBuy.explain" style="width: 300px;height:200px " maxlength="400" title="${message("groupBuy.message.list")}" ></textarea>
             </td>
         </tr>
         <tr>

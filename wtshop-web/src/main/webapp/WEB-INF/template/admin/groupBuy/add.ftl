@@ -256,8 +256,8 @@
                     <input type="hidden" name="_isTop" value="false" />
                 </label>
                 <label>
-                    <input type="checkbox" name="isSinglePurchase" value="true" checked="checked" />${message("groupBuy.isSinglePurchase")}
-                    <input type="hidden" name="isSinglePurchase" value="false" />
+                    <input type="checkbox" name="isSinglepurchase" value="true" checked="checked" />${message("groupBuy.isSinglePurchase")}
+                    <input type="hidden" name="_isSinglepurchase" value="false" />
                 </label>
             </td>
         </tr>

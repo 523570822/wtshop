@@ -90,7 +90,7 @@ public class GroupBuyController extends BaseController {
         fuDai.setIsMarketable(getParaToBoolean("isMarketable", false));
         fuDai.setIsList(getParaToBoolean("isList", false));
         fuDai.setIsTop(getParaToBoolean("isTop", false));
-        fuDai.setIsSinglepurchase(getParaToBoolean("isSinglePurchase", false));
+        fuDai.setIsSinglepurchase(getParaToBoolean("isSinglepurchase", false));
 
 
         Long productId = getParaToLong("productId");
