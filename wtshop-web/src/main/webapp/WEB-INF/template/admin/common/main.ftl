@@ -450,6 +450,31 @@
 							[#break /]
 						[/@shiro.hasPermission]
 					[/#list]
+
+
+
+
+						[#list ["admin:groupBuy"] as permission]
+							[@shiro.hasPermission name = permission]
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <a href="#groupBuy" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
+                                        <i class="glyphicon glyphicon-gift"></i> ${message("admin.role.groupBuy")}
+                                    </a>
+                                </div>
+                                <div class="accordion-body collapse" id="groupBuy">
+                                    <div class="panel-body">
+                                        <ul class="nav nav-pills nav-stacked">
+											[@shiro.hasPermission name="admin:fuDai"]
+                                                <li><a href="../groupBuy/list.jhtml" target="iframe">${message("admin.role.groupBuy")}</a></li>
+											[/@shiro.hasPermission]
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+								[#break /]
+							[/@shiro.hasPermission]
+						[/#list]
 					[#list ["admin:myWallet" ,"admin:myWalletInfo"] as permission]
 						[@shiro.hasPermission name = permission]
                             <div class="panel panel-default">
@@ -652,6 +677,10 @@
 			[#break /]
 		[/@shiro.hasPermission]
 	[/#list]
+
+
+
+
 
 					[#list ["admin:deliveryCenter", "admin:deliveryTemplate", "admin:deposit", "admin:memberRank", "admin:memberAttribute", "admin:paymentMethod", "admin:paymentPlugin",
 					"admin:storagePlugin", "admin:loginPlugin", "admin:coupon", "admin:template", "admin:static", "admin:cache", "admin:index", "admin:organization", "admin:theme" ,

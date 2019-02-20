@@ -32,7 +32,7 @@
                     type: 2,
                     skin: 'layui-layer-rim', //加上边框
                     area: ['870px', '540px'], //宽高
-                    content: "../reverseAuction/choose.jhtml?flag=2",
+                    content: "/admin/reverseAuction/choose.jhtml?flag=2",
                     shadeClose:true,
                 });
             });
@@ -75,7 +75,7 @@
 
 
             var $productImageTable = $("#productImageTable");
-            var productImageIndex = ${(fuDai.productImagesConverter?size)!0};
+            var productImageIndex = ${(groupBuy.productImagesConverter?size)!0};
             var $addProductImage = $("#addProductImage");
             // 增加商品图片
             // 增加商品图片
@@ -121,21 +121,21 @@
 </head>
 <body>
 <div class="breadcrumb">
-    <a href="${base}/admin/common/index.jhtml"></a> &raquo; ${message("Fudai.edit.llst")}
+    <a href="${base}/admin/common/index.jhtml"></a> &raquo; ${message("groupBuy.edit.llst")}
 </div>
 <form id="inputForm" action="edit.jhtml" method="post"  enctype="multipart/form-data" >
-    <input name="fuDai.id" value="${fuDai.id}" type="hidden"/>
-    <input value="${fuDai.status}" name="fuDai.status" type="hidden"/>
+    <input name="groupBuy.id" value="${groupBuy.id}" type="hidden"/>
+    <input value="${groupBuy.status}" name="groupBuy.status" type="hidden"/>
     <ul id="tab" class="tab">
         <li>
             <input type="button" value="${message("admin.coupon.base")}"   class="current" />
         </li>
-        <li>
-            <input type="button" value="${message("Fudai.rule")}"  />
-        </li>
-        <li>
+       [#-- <li>
+            <input type="button" value="${message("groupBuy.rule")}"  />
+        </li>--]
+      [#--  <li>
             <input type="button" value="${message("admin.goods.productImage")}" />
-        </li>
+        </li>--]
     </ul>
     <table class="input tabContent">
         <tr>
@@ -143,52 +143,134 @@
                 <span class="requiredField">*</span>${message("Ad.title")}:
             </th>
             <td>
-                <input type="text" name="fuDai.title" class="text" maxlength="200" value="${fuDai.title}" />
+                <input type="text" name="groupBuy.title" class="text" maxlength="200" value="${groupBuy.title}" />
             </td>
         </tr>
         <tr>
             <th>
-                <span class="requiredField">*</span>${message("Fudai.price")}:
+                <span class="requiredField">*</span>${message("groupBuy.price")}:
             </th>
             <td>
-                <input type="text" name="fuDai.price" class="text" maxlength="200" value="${fuDai.price}"  title= ${message("fudai.sale.title")}/>
+                <input type="text" name="groupBuy.price" class="text" maxlength="200" value="${groupBuy.price}"  title= ${message("groupBuy.sale.title")}/>
             </td>
         </tr>
         <tr>
             <th>
-                <span class="requiredField">*</span>${message("Fudai.primary.goods")}:
+                <span class="requiredField">*</span>${message("groupBuy.uniprice")}:
             </th>
             <td>
-                <input type="hidden" name="productId" id="product_id" class="text" maxlength="200" value="${fuDai.fudaiProduct.product_id}"/>
-                <input type="text" class="text" maxlength="200" id="product_name" title=${message("fudai.phone.title")}   value="${fuDai.fudaiProduct.product.goods.name}" />
-                <input type="button" value="${message("fudai.select")}" class="button" id="addProduct"/>
+                <input type="text" name="groupBuy.uniprice" class="text" maxlength="200" value="${groupBuy.uniprice}"  title= ${message("groupBuy.uniprice.Explanation")} />
             </td>
         </tr>
-        <tr>
-            <th><span class="requiredField">*</span>${message("fudai.goods")}</th>
+       [#-- <tr>
+            <th>
+                <span class="requiredField">*</span>${message("groupBuy.primary.goods")}:
+            </th>
             <td>
-   <span class="fieldSet">
-      <input type="text" name="fuDai.questionImage" class="text" value="${fuDai.questionImage}" maxlength="200" />
-      <a  id="filePicker"  href="javascript:;"  title=${message("fudai.phone")} class="button filePicker">${message("admin.upload.filePicker")}</a>
-      <a href="${fileServer}${fuDai.questionImage}" target="_blank">${message("admin.common.view")}</a>
-   </span>
+                <input type="hidden" name="productId" id="product_id" class="text" maxlength="200" value="${groupBuy.groupBuyProduct.product_id}"/>
+                <input type="text" class="text" maxlength="200" id="product_name" title=${message("groupBuy.phone.title")}   value="${groupBuy.groupBuyProduct.product.goods.name}" />
+                <input type="button" value="${message("groupBuy.select")}" class="button" id="addProduct"/>
             </td>
+        </tr>--]
 
-        </tr>
         <tr>
             <th>
-                <span class="requiredField">*</span>${message("Fudai.other.count")}:
+                <span class="requiredField">*</span>${message("groupBuy.count")}:
             </th>
             <td>
-                <input type="text" name="fuDai.num" class="text" maxlength="200" value="${fuDai.num}" title=${message("fudai.success.title")}/>
+                <input type="text" name="groupBuy.count" class="text" maxlength="200" value="${groupBuy.count}" title=${message("groupBuy.success.title")}/>
             </td>
         </tr>
         <tr>
             <th>
-                <span class="requiredField"></span>${message("Fudai.message")}:
+                <span class="requiredField">*</span>${message("groupBuy.num")}:
             </th>
             <td>
-                <textarea rows="" cols="" name="fuDai.explain" style="width: 300px;height:200px " maxlength="400" title="${message("Fudai.message.list")}" >${fuDai.explain}</textarea>
+                <input type="text" name="groupBuy.num" class="text" value="${groupBuy.num}" maxlength="200" title=${message("groupBuy.num.title")} />
+            </td>
+        </tr>
+
+
+        <tr>
+            <th>
+                <span class="requiredField">*</span>${message("groupBuy.sales")}:
+            </th>
+            <td>
+                <input type="text" name="groupBuy.sales" value="${groupBuy.sales}"  class="text" maxlength="200"  />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <span class="requiredField">*</span>${message("groupBuy.teamnum")}:
+            </th>
+            <td>
+                <input type="text" name="groupBuy.teamnum" value="${groupBuy.teamnum}"  class="text" maxlength="200" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <span class="requiredField">*</span>${message("groupBuy.dispatchprice")}:
+            </th>
+            <td>
+                <input type="text" name="groupBuy.dispatchprice" value="${groupBuy.dispatchprice}"  class="text" maxlength="200" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <span class="requiredField">*</span>${message("groupBuy.groupnum")}:
+            </th>
+            <td>
+                <input type="text" name="groupBuy.groupnum"  value="${groupBuy.groupnum}"   class="text" maxlength="200"  />
+            </td>
+        </tr><tr>
+        <th>
+            <span class="requiredField">*</span>${message("groupBuy.endtime")}:
+        </th>
+        <td>
+            <input type="text" name="groupBuy.endtime" class="text" value="${groupBuy.endtime}"  maxlength="200" title=${message("groupBuy.num.title")} />
+        </td>
+    </tr>
+
+
+        <tr>
+            <th>
+                ${message("admin.common.setting")}:
+            </th>
+            <td>
+                <label>
+                    <input type="checkbox" name="isMarketable" value="true"
+                       [#if groupBuy.isMarketable]  checked="checked"[/#if] />
+                   ${message("CartItem.isMarketable")}
+                    <input type="hidden" name="_isList" value="false"/>
+                </label>
+
+                <label>
+                    <input type="checkbox" name="isList" value="true"[#if groupBuy.isList]
+                           checked="checked"[/#if] />${message("Goods.isList")}
+                    <input type="hidden" name="_isList" value="false"/>
+                </label>
+                <label>
+                    <input type="checkbox" name="isTop" value="true"
+                        [#if groupBuy.isTop]  checked="checked"[/#if] />
+                    ${message("Goods.isTop")} ${groupBuy.isTop}
+                    <input type="hidden" name="_isTop" value="false"/>
+                </label>
+
+
+                <label>
+                    <input type="checkbox" name="isSinglepurchase" value="true"
+                         [#if groupBuy.isSinglepurchase]  checked="checked"[/#if] />
+                    ${message("groupBuy.isSinglePurchase")}
+                    <input type="hidden" name="isSinglePurchase" value="false" />
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <span class="requiredField"></span>${message("groupBuy.message")}:
+            </th>
+            <td>
+                <textarea rows="" cols="" name="groupBuy.explain" style="width: 300px;height:200px " maxlength="400" title="${message("groupBuy.message.list")}" >${groupBuy.explain}</textarea>
             </td>
         </tr>
         <tr>
@@ -196,7 +278,7 @@
             ${message("admin.common.order")}:
             </th>
             <td>
-                <input type="text" name="fuDai.orders" class="text" maxlength="9" value="${fuDai.orders}" />
+                <input type="text" name="groupBuy.orders" class="text" maxlength="9" value="${groupBuy.orders}" />
             </td>
         </tr>
         <tr>
@@ -211,7 +293,7 @@
     </table>
 
     <table class="input tabContent">
-        <tr><td><textarea id="introduction" name="fuDai.rule" class="editor" style="width: 100%;"  >${fuDai.rule}</textarea></td></tr>
+        <tr><td><textarea id="introduction" name="groupBuy.rule" class="editor" style="width: 100%;"  >${groupBuy.rule}</textarea></td></tr>
         <tr style="text-align: center">
             <td>
                 <input type="submit" class="button" value="${message("admin.common.submit")}" />
@@ -223,7 +305,7 @@
     <table id="productImageTable" class="item tabContent">
         <tr>
             <td colspan="4">
-                <a href="javascript:;" id="addProductImage" title=${message("fudai.image.title")} class="button">${message("admin.goods.addProductImage")}</a>
+                <a href="javascript:;" id="addProductImage" title=${message("groupBuy.image.title")} class="button">${message("admin.goods.addProductImage")}</a>
             </td>
         </tr>
         <tr>
@@ -241,7 +323,7 @@
             </th>
         </tr>
 
-        [#list fuDai.productImagesConverter as productImage]
+        [#list groupBuy.productImagesConverter as productImage]
             <tr>
                 <td>
                     <input type="hidden" name="productImages[${productImage_index}].source"
