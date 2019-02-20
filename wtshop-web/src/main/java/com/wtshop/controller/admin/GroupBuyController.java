@@ -43,33 +43,19 @@ public class GroupBuyController extends BaseController {
 
     //保存福袋信息
     public void save() {
-        // 图片
-        List<UploadFile> uploadFiles = getFiles();
+
         GroupBuy fuDai = getModel( GroupBuy.class);
 
 
         Long productId = getParaToLong("productId");
-        Integer productImageIndex = getBeans(ProductImage.class, "productImages").size();
-
-        if (CollectionUtils.isNotEmpty(uploadFiles)) {
-            List<ProductImage> productImages = new ArrayList<ProductImage>();
-            for (int i = 0; i < productImageIndex; i++) {
-                ProductImage productImage = getBean(ProductImage.class, "productImages[" + i + "]");
-                productImage.setFile(getFile("productImages[" + i + "].file"));
-                productImages.add(productImage);
-            }
-           // fuDai.setProductImagesConverter(productImages);
-
-        }
-
-
-
-
+        fuDai.setIsMarketable(getParaToBoolean("isMarketable", false));
+        fuDai.setIsList(getParaToBoolean("isList", false));
+        fuDai.setIsTop(getParaToBoolean("isTop", false));
+        fuDai.setIsSinglepurchase(getParaToBoolean("isSinglepurchase", false));
         fuDai.setStatus(1);
         fuDaiService.save(fuDai);
         FudaiProduct fudaiProduct = new FudaiProduct(productId, fuDai.getId(), 1);
-
-        redirect("list.jhtml");
+        redirect("/admin/groupBuy/list.jhtml");
     }
 
     //去修改页面
@@ -112,7 +98,9 @@ public class GroupBuyController extends BaseController {
     public void delete() {
         Long[] ids = getParaValuesToLong("ids");
         fuDaiService.delete(ids);
-        redirect("list.jhtml");
+
+
+        renderJson("type", "success");
     }
 
     public void status() {

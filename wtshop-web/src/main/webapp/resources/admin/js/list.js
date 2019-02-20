@@ -29,6 +29,7 @@ $().ready( function() {
 	
 	// 删除
 	$deleteButton.click( function() {
+
 		var $this = $(this);
 		if ($this.hasClass("disabled")) {
 			return false;
@@ -46,7 +47,10 @@ $().ready( function() {
 					data: $checkedIds.serialize(),
 					dataType: "json",
 					cache: false,
-					success: function(message) {
+                    success: function(message) {
+
+                        console.info("ssss");
+						console.info(message);
 						$.message(message);
 						if (message.type == "success"||message.code*1==1) {
 						//	$checkedIds.closest("tr").remove();

@@ -278,7 +278,12 @@
                 <input type="text" name="groupBuy.orders" class="text" maxlength="9" />
             </td>
         </tr>
-
+<tr>
+    <td>
+        <input type="submit" class="button" value="${message("admin.common.submit")}" />
+        <input type="button" class="button" value="${message("admin.common.back")}" onclick="history.back(); return false;" />
+    </td>
+</tr>
 
     </table>
     <table class="input tabContent">
@@ -314,10 +319,7 @@
             <th>&nbsp;
 
             </th>
-            <td>
-            <input type="submit" class="button" value="${message("admin.common.submit")}" />
-            <input type="button" class="button" value="${message("admin.common.back")}" onclick="history.back(); return false;" />
-        </td>
+
         </tr>
     </table>
 
