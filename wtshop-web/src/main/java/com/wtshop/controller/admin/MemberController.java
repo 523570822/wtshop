@@ -242,6 +242,8 @@ public class MemberController extends BaseController {
 		setAttr("pageable", pageable);
 		setAttr("page", pages );
 		render("/admin/member/list.ftl");
+	//	render("/admin/certificates_shenhe/list.ftl");
+		//render("/index.html");
 	}
 
 

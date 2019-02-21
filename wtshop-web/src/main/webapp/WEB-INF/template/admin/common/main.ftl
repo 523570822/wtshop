@@ -465,12 +465,14 @@
                                 <div class="accordion-body collapse" id="groupBuy">
                                     <div class="panel-body">
                                         <ul class="nav nav-pills nav-stacked">
-											[@shiro.hasPermission name="admin:fuDai"]
-                                                <li><a href="../groupBuy/list.jhtml" target="iframe">${message("admin.role.groupBuy")}</a></li>
+											[@shiro.hasPermission name="admin:groupBuy"]
+                                                <li><a href="../groupBuy/list.jhtml" target="iframe">${message("admin.role.groupBuy")}1</a></li>
+                                                <li><a href="../fightGroup/list.jhtml" target="iframe">${message("admin.role.fightGroup")}</a></li>
 											[/@shiro.hasPermission]
                                         </ul>
                                     </div>
                                 </div>
+
                             </div>
 								[#break /]
 							[/@shiro.hasPermission]
