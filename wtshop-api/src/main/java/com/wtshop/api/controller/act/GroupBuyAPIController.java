@@ -4,6 +4,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.i18n.I18n;
 import com.jfinal.i18n.Res;
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Pageable;
 import com.wtshop.api.controller.BaseAPIController;
@@ -15,19 +16,22 @@ import com.wtshop.service.*;
 import com.wtshop.util.ApiResult;
 import org.apache.commons.collections.map.HashedMap;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created by sq on 2017/6/8.
  */
-@ControllerBind(controllerKey = "/api/fudai")
+@ControllerBind(controllerKey = "/api/groupbuy")
 @Before({WapInterceptor.class, ErrorInterceptor.class, TokenInterceptor.class})
-public class FuDaiAPIController extends BaseAPIController {
-
-    private FuDaiService fuDaiService = enhance(FuDaiService.class);
+public class GroupBuyAPIController extends BaseAPIController {
+    /** 每页记录数 */
+    private static final int PAGE_SIZE = 10;
+    private GroupBuyService fuDaiService = enhance(GroupBuyService.class);
     private GoodsService goodsService = enhance(GoodsService.class);
-    private FuDaiProductService fuDaiProductService = enhance(FuDaiProductService.class);
+
     private OrderService orderService = enhance(OrderService.class);
     private MemberService memberService = enhance(MemberService.class);
     private ReceiverService receiverService = enhance(ReceiverService.class);
@@ -40,25 +44,43 @@ public class FuDaiAPIController extends BaseAPIController {
     /**
      * 福袋主页
      */
-    public void fudai() {
-        List<Record> list = fuDaiService.findLists();
+    public void list() {
+        Integer pageNumber = getParaToInt("pageNumbers");
 
-        renderJson(list);
+
+        Map<String, Object> map = new HashedMap();
+        Pageable pageable = new Pageable(pageNumber, PAGE_SIZE);
+
+
+        Page<GroupBuy> list = fuDaiService.findPages(pageable);
+        map.put("list", list);
+        renderJson(ApiResult.success(map));
     }
 
     /**
-     * 主福袋信息
+     * 团购详情信息
      */
     public void primary() {
-        Long fuDaiId = getParaToLong("fuDaiId");
-        FuDai fuDai = fuDaiService.find(fuDaiId);
-        FudaiProduct fudaiProduct = fuDaiProductService.findPrimary(fuDaiId);
-        Product p = productService.find(fudaiProduct.getProductId()); //获取规格
+        Long fuDaiId = getParaToLong("tuanGouId");
+        GroupBuy fuDai = fuDaiService.find(fuDaiId);
+        List<FightGroup> fightgroupList=new  ArrayList<FightGroup>();
+        FightGroup fightGroup=new FightGroup();
+        fightGroup.setId(1L);
+        fightGroup.setSales(2);
+        fightGroup.setGroupnum(10);
+        fightgroupList.add(fightGroup);
+        FightGroup fightGroup1=new FightGroup();
+        fightGroup1.setId(2L);
+        fightGroup1.setSales(3);
+        fightGroup1.setGroupnum(10);
+        fightgroupList.add(fightGroup1);
+        Product p = fuDai.getProduct();
         Goods goods = p.getGoods();
         Map<String, Object> map = new HashedMap();
-        map.put("fuDai", fuDai);
+        map.put("groupbuy", fuDai);
         map.put("product", p);
         map.put("goods", goods);
+        map.put("fightgroup",fightgroupList);
         renderJson(ApiResult.success(map));
     }
 
@@ -67,7 +89,7 @@ public class FuDaiAPIController extends BaseAPIController {
      */
     public void check() {
         Long fuDaiId = getParaToLong("fuDaiId");
-        FuDai fuDai = fuDaiService.find(fuDaiId);
+        GroupBuy fuDai = fuDaiService.find(fuDaiId);
         Member member = memberService.getCurrent();
         //是否实名认证
         Certificates certificates = certificatesService.queryByMemberId(member.getId());
@@ -78,8 +100,8 @@ public class FuDaiAPIController extends BaseAPIController {
         //默认收货人
         Receiver defaultReceiver = receiverService.findDefault(member);
 
-        FudaiProduct fudaiProduct = fuDai.getFudaiProduct();
-        Product product = fudaiProduct.getProduct();
+
+        Product product = fuDai.getProduct();
         Goods goods = product.getGoods();
 
         Map<String, Object> map = new HashedMap();
@@ -100,7 +122,7 @@ public class FuDaiAPIController extends BaseAPIController {
         Long fudaiId = getParaToLong("fuDaiId");
         Long receiverId = getParaToLong("receiverId");
         Receiver receiver = receiverService.find(receiverId);
-        FuDai fuDai = fuDaiService.find(fudaiId);
+        GroupBuy fuDai = fuDaiService.find(fudaiId);
 
         if (member == null) {
             renderJson(ApiResult.fail("当前用户为空!"));
@@ -118,9 +140,9 @@ public class FuDaiAPIController extends BaseAPIController {
         String taxNumber = getPara("taxNumber"); 	//單位名稱
         String companyName = getPara("companyName"); 	//稅號
 
-
-        Order order = orderService.createFudai(Order.Type.fudai, fuDai, receiver,isInvoice,isPersonal,taxNumber,companyName);
-        renderJson(ApiResult.success(order));
+//一会要写创建团购订单
+       // Order order = orderService.createFudai(Order.Type.fudai, fuDai, receiver,isInvoice,isPersonal,taxNumber,companyName);
+        renderJson(ApiResult.success(null));
 
     }
 

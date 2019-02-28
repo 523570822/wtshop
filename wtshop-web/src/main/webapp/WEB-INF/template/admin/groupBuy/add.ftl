@@ -27,7 +27,7 @@
             var $type = $("#type");
             var $content = $("#content");
             var $path = $("#path");
-            var $filePicker = $("#filePicker");
+
             $("#addProduct").click(function() {
                 layer.open({
                     title:"商品列表11",
@@ -40,7 +40,7 @@
             });
             [@flash_message /]
 
-            $filePicker.uploader();
+
 
             $content.editor();
 
@@ -68,50 +68,6 @@
             var $introduction = $("#introduction");
             $introduction.editor();
 
-            var $productImageTable = $("#productImageTable");
-            var productImageIndex = ${(groupBuy.productImagesConverter?size)!0};
-            var $addProductImage = $("#addProductImage");
-            var $filePicker = $("#filePicker");
-            $filePicker.uploader();
-            // 增加商品图片
-            $addProductImage.click(function() {
-            $productImageTable.append(
-                [@compress single_line = true]
-                        '<tr>
-                        <td>
-                        <input type="file" name="productImages[' + productImageIndex + '].file" class="productImageFile" \/>
-                    <\/td>
-                <td>
-                <input type="text" name="productImages[' + productImageIndex + '].title" class="text" maxlength="200" \/>
-                    <\/td>
-                <td>
-                <input type="text" name="productImages[' + productImageIndex + '].orders" class="text productImageOrder" maxlength="9" style="width: 50px;" \/>
-                    <\/td>
-                <td>
-                <a href="javascript:;" class="remove">[${message("admin.common.remove")}]<\/a>
-                <\/td>
-                <\/tr>'
-                [/@compress]
-                );
-                productImageIndex ++;
-
-                //重新排序商品图片id,后台是读取的顺序id
-                var index=0;
-                $('#productImageTable tr').each(function (i,v) {
-                    if ($(this).find('input').length>0){
-                        $('#productImageTable tr').eq(i).find ('input').eq(0).attr('name','productImages['+index+'].file');
-                        $('#productImageTable tr').eq(i).find ('input').eq(1).attr('name','productImages['+index+'].title');
-                        $('#productImageTable tr').eq(i).find ('input').eq(2).attr('name','productImages['+index+'].orders');
-                        index++;
-                    }
-                });
-            });
-
-            // 删除商品图片
-            $productImageTable.on("click", "a.remove", function() {
-                $(this).closest("tr").remove();
-            });
-
         });
     </script>
 </head>
@@ -135,12 +91,13 @@
     <table class="input tabContent">
         <tr>
             <th>
-                <span class="requiredField">*</span>${message("Ad.title")}:
+                <span class="requiredField">*</span>${message("Ad.title")}:123123
             </th>
             <td>
                 <input type="text" name="groupBuy.title" class="text" maxlength="200"  />
             </td>
         </tr>
+
         <tr>
             <th>
                 <span class="requiredField">*</span>${message("groupBuy.price")}:
@@ -168,17 +125,6 @@
                 <input type="button" value="选择产品" class="button" id="addProduct"/>
             </td>
         </tr>
-     [#--   <tr>
-            <th><span class="requiredField">*</span>${message("groupBuy.other.image")} </th>
-            <td>
-   <span class="fieldSet">
-      <input type="text" name="groupBuy.questionImage" class="text" value="${groupBuyQuestionImage}" maxlength="200" />
-      <a  id="filePicker"  href="javascript:;" title="手机端用于展示副产品的图片" class="button filePicker">${message("admin.upload.filePicker")} </a>
-      <a href="${fileServer}${groupBuyQuestionImage}" target="_blank">${message("admin.common.view")}</a>
-   </span>
-            </td>
-
-        </tr>--]
       <tr>
             <th>
                 <span class="requiredField">*</span>${message("groupBuy.count")}:
@@ -244,8 +190,8 @@
             </th>
             <td>
                 <label>
-                    <input type="checkbox" id="isMarketable" name="isMarketable"  />${message("Goods.isMarketable")}
-                    <input type="hidden" name="_isMarketable" value="false" />
+                    <input type="checkbox" id="status" name="status"  />${message("Goods.status")}
+                    <input type="hidden" name="_status" value="false" />
                 </label>
                 <label>
                     <input type="checkbox" name="isList" value="true" checked="checked" />${message("Goods.isList")}

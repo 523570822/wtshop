@@ -32,7 +32,7 @@
                     type: 2,
                     skin: 'layui-layer-rim', //加上边框
                     area: ['870px', '540px'], //宽高
-                    content: "/admin/reverseAuction/choose.jhtml?flag=2",
+                    content: "../reverseAuction/choose.jhtml?flag=2",
                     shadeClose:true,
                 });
             });
@@ -162,16 +162,16 @@
                 <input type="text" name="groupBuy.uniprice" class="text" maxlength="200" value="${groupBuy.uniprice}"  title= ${message("groupBuy.uniprice.Explanation")} />
             </td>
         </tr>
-       [#-- <tr>
+        <tr>
             <th>
                 <span class="requiredField">*</span>${message("groupBuy.primary.goods")}:
             </th>
             <td>
                 <input type="hidden" name="productId" id="product_id" class="text" maxlength="200" value="${groupBuy.groupBuyProduct.product_id}"/>
-                <input type="text" class="text" maxlength="200" id="product_name" title=${message("groupBuy.phone.title")}   value="${groupBuy.groupBuyProduct.product.goods.name}" />
+                <input disabled type="text" class="text" maxlength="200" id="product_name" title=${message("groupBuy.phone.title")}   value="${groupBuy.product.goods.name}" />
                 <input type="button" value="${message("groupBuy.select")}" class="button" id="addProduct"/>
             </td>
-        </tr>--]
+        </tr>
 
         <tr>
             <th>
@@ -238,10 +238,10 @@
             </th>
             <td>
                 <label>
-                    <input type="checkbox" name="isMarketable" value="true"
-                       [#if groupBuy.isMarketable]  checked="checked"[/#if] />
-                   ${message("CartItem.isMarketable")}
-                    <input type="hidden" name="_isList" value="false"/>
+                    <input type="checkbox" name="status" value="true"
+                       [#if groupBuy.status]  checked="checked"[/#if] />
+                   ${message("CartItem.status")}
+                    <input type="hidden" name="_status" value="false"/>
                 </label>
 
                 <label>
@@ -292,65 +292,7 @@
         </tr>
     </table>
 
-    <table class="input tabContent">
-        <tr><td><textarea id="introduction" name="groupBuy.rule" class="editor" style="width: 100%;"  >${groupBuy.rule}</textarea></td></tr>
-        <tr style="text-align: center">
-            <td>
-                <input type="submit" class="button" value="${message("admin.common.submit")}" />
-                <input type="button" class="button" value="${message("admin.common.back")}" onclick="history.back(); return false;" />
-            </td>
-        </tr>
-    </table>
 
-    <table id="productImageTable" class="item tabContent">
-        <tr>
-            <td colspan="4">
-                <a href="javascript:;" id="addProductImage" title=${message("groupBuy.image.title")} class="button">${message("admin.goods.addProductImage")}</a>
-            </td>
-        </tr>
-        <tr>
-            <th>
-            ${message("ProductImage.file")}
-            </th>
-            <th>
-            ${message("ProductImage.title")}
-            </th>
-            <th>
-            ${message("admin.common.order")}
-            </th>
-            <th>
-            ${message("admin.common.action")}
-            </th>
-        </tr>
-
-        [#list groupBuy.productImagesConverter as productImage]
-            <tr>
-                <td>
-                    <input type="hidden" name="productImages[${productImage_index}].source"
-                           value="${productImage.source}"/>
-                    <input type="hidden" name="productImages[${productImage_index}].large"
-                           value="${productImage.large}"/>
-                    <input type="hidden" name="productImages[${productImage_index}].medium"
-                           value="${productImage.medium}"/>
-                    <input type="hidden" name="productImages[${productImage_index}].thumbnail"
-                           value="${productImage.thumbnail}"/>
-                    <input type="file"  name="productImages[${productImage_index}].file" class="productImageFile p_img"/>
-                    <a href="${fileServer}${productImage.large}" target="_blank">${message("admin.common.view")}</a>
-                </td>
-                <td>
-                    <input type="text" name="productImages[${productImage_index}].title" class="text p_title"
-                           value="${productImage.title}" maxlength="200"/>
-                </td>
-                <td>
-                    <input type="text" name="productImages[${productImage_index}].orders" class="text productImageOrder p_order"
-                           value="${productImage.orders}" maxlength="9" style="width: 50px;"/>
-                </td>
-                <td>
-                    <a href="javascript:;" class="remove">[${message("admin.common.remove")}]</a>
-                </td>
-            </tr>
-        [/#list]
-    </table>
 </form>
 </body>
 </html>

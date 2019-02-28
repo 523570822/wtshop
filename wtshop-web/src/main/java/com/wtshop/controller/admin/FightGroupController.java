@@ -1,65 +1,55 @@
 package com.wtshop.controller.admin;
 
-import com.alibaba.fastjson.JSONArray;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.upload.UploadFile;
 import com.wtshop.Message;
 import com.wtshop.Pageable;
-import com.wtshop.entity.ProductImage;
-import com.wtshop.model.*;
-import com.wtshop.service.*;
+import com.wtshop.model.FuDai;
+import com.wtshop.model.FudaiProduct;
+import com.wtshop.model.GroupBuy;
+import com.wtshop.service.GroupBuyService;
 import com.wtshop.util.ApiResult;
 import com.wtshop.util.ReadProper;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by mrFeng on 2019/2/18
  * 团购管理
  */
-@ControllerBind(controllerKey = "/admin/groupBuy")
-public class GroupBuyController extends BaseController {
+@ControllerBind(controllerKey = "/admin/fightGroup")
+public class FightGroupController extends BaseController {
     private GroupBuyService fuDaiService = enhance(GroupBuyService.class);
     public void list() {
-
-        GroupBuy fuDai = fuDaiService.find(23L);
-
-
-
         Pageable pageable = getBean(Pageable.class);
         pageable.setOrderProperty("orders");
         pageable.setOrderDirection("desc");
         setAttr("pageable", pageable);
         setAttr("page", fuDaiService.findPage(pageable));
-        render("/admin/groupBuy/list.ftl");
+        render("/admin/fightGroup/list.ftl");
     }
 
     //去添加页面
     public void add() {
-
+        setAttr("fuDaiQuestionImage", ReadProper.getResourceValue("fuDaiDefaultImage"));
         render("/admin/groupBuy/add.ftl");
     }
 
     //保存福袋信息
     public void save() {
-        List<UploadFile> uploadFiles = getFiles();
-        GroupBuy groupBuy = getModel( GroupBuy.class);
-        Map<String, String[]> sssss = getParaMap();
+
+        GroupBuy fuDai = getModel( GroupBuy.class);
+
 
         Long productId = getParaToLong("productId");
-        groupBuy.setProductId(productId);
-        groupBuy.setStatus(getParaToBoolean("status", false));
-        groupBuy.setIsList(getParaToBoolean("isList", false));
-        groupBuy.setIsTop(getParaToBoolean("isTop", false));
-        groupBuy.setIsSinglepurchase(getParaToBoolean("isSinglepurchase", false));
+        fuDai.setStatus(getParaToBoolean("status", false));
+        fuDai.setIsList(getParaToBoolean("isList", false));
+        fuDai.setIsTop(getParaToBoolean("isTop", false));
+        fuDai.setIsSinglepurchase(getParaToBoolean("isSinglepurchase", false));
 
-        fuDaiService.save(groupBuy);
-        FudaiProduct fudaiProduct = new FudaiProduct(productId, groupBuy.getId(), 1);
+        fuDaiService.save(fuDai);
+        FudaiProduct fudaiProduct = new FudaiProduct(productId, fuDai.getId(), 1);
         redirect("/admin/groupBuy/list.jhtml");
     }
 
@@ -76,16 +66,24 @@ public class GroupBuyController extends BaseController {
     public void edit() {
         // 图片
         List<UploadFile> uploadFiles = getFiles();
-        Map<String, String[]> sssss = getParaMap();
-        Map<String, String[]> dddd = getRequest().getParameterMap();
         GroupBuy fuDai = getModel( GroupBuy.class);
 
         fuDai.setStatus(getParaToBoolean("status", false));
         fuDai.setIsList(getParaToBoolean("isList", false));
         fuDai.setIsTop(getParaToBoolean("isTop", false));
         fuDai.setIsSinglepurchase(getParaToBoolean("isSinglepurchase", false));
+
+
         Long productId = getParaToLong("productId");
-        fuDai.setProductId(productId);
+
+
+
+
+
+
+
+
+
         fuDaiService.update(fuDai);
 
         redirect("/admin/groupBuy/list.jhtml");

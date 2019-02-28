@@ -78,8 +78,8 @@ public class GroupBuyService extends BaseService<GroupBuy> {
     /**
      * 获取当前正在使用的福袋
      */
-    public List<Record> findLists() {
-        return fuDaiDao.findLists();
+    public Page<GroupBuy> findPages(Pageable pageable) {
+        return fuDaiDao.findPages(pageable);
     }
 
 

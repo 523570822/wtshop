@@ -451,7 +451,30 @@
 						[/@shiro.hasPermission]
 					[/#list]
 
+	[#list ["admin:housekeeper"] as permission]
+		[@shiro.hasPermission name = permission]
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <a href="#housekeeper" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
+                                        <i class="glyphicon glyphicon-gift"></i> ${message("admin.role.housekeeper")}
+                                    </a>
+                                </div>
+                                <div class="accordion-body collapse" id="housekeeper">
+                                    <div class="panel-body">
+                                        <ul class="nav nav-pills nav-stacked">
+											[@shiro.hasPermission name="admin:housekeeper"]
+                                                <li><a href="../housekeeper/list.jhtml" target="iframe">${message("admin.role.housekeeper")}</a></li>
+                                                <li><a href="../houserkeeper_grade/list.jhtml" target="iframe">${message("admin.role.grade")}</a></li>
 
+											[/@shiro.hasPermission]
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+			[#break /]
+		[/@shiro.hasPermission]
+	[/#list]
 
 
 						[#list ["admin:groupBuy"] as permission]
@@ -466,7 +489,7 @@
                                     <div class="panel-body">
                                         <ul class="nav nav-pills nav-stacked">
 											[@shiro.hasPermission name="admin:groupBuy"]
-                                                <li><a href="../groupBuy/list.jhtml" target="iframe">${message("admin.role.groupBuy")}1</a></li>
+                                                <li><a href="../groupBuy/list.jhtml" target="iframe">${message("admin.role.groupBuy")}</a></li>
                                                 <li><a href="../fightGroup/list.jhtml" target="iframe">${message("admin.role.fightGroup")}</a></li>
 											[/@shiro.hasPermission]
                                         </ul>
@@ -477,6 +500,9 @@
 								[#break /]
 							[/@shiro.hasPermission]
 						[/#list]
+
+
+					
 					[#list ["admin:myWallet" ,"admin:myWalletInfo"] as permission]
 						[@shiro.hasPermission name = permission]
                             <div class="panel panel-default">

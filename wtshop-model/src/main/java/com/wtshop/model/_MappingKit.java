@@ -56,6 +56,7 @@ public class _MappingKit {
 		arp.addMapping("exchange_log", "id", ExchangeLog.class);
 		arp.addMapping("exchange_progress", "id", ExchangeProgress.class);
 		arp.addMapping("feedback", "id", Feedback.class);
+		arp.addMapping("fight_group", "id", FightGroup.class);
 		arp.addMapping("flashsale", "id", Flashsale.class);
 		arp.addMapping("flashsale_detail", "id", FlashsaleDetail.class);
 		arp.addMapping("footprint", "id", Footprint.class);
@@ -78,9 +79,11 @@ public class _MappingKit {
 		// Composite Primary Key order: goods,tags
 		arp.addMapping("goods_tag", "goods,tags", GoodsTag.class);
 		arp.addMapping("goods_theme", "id", GoodsTheme.class);
+		arp.addMapping("group_buy", "id", GroupBuy.class);
 		arp.addMapping("groups", "id", Groups.class);
 		arp.addMapping("groups_create", "id", GroupsCreate.class);
 		arp.addMapping("groups_join", "id", GroupsJoin.class);
+		arp.addMapping("houserkeeper_grade", "id", HouserkeeperGrade.class);
 		arp.addMapping("information", "id", Information.class);
 		arp.addMapping("interest_category", "id", InterestCategory.class);
 		arp.addMapping("like_commend", "id", LikeCommend.class);
@@ -174,7 +177,6 @@ public class _MappingKit {
 		arp.addMapping("ticketsnrecord", "id", Ticketsnrecord.class);
 		arp.addMapping("version", "id", Version.class);
 		arp.addMapping("vipGoods_history", "id", VipgoodsHistory.class);
-		arp.addMapping("group_buy", "id", GroupBuy.class);
 	}
 }
 

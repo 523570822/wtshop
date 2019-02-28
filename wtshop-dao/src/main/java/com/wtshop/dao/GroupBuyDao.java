@@ -2,7 +2,9 @@ package com.wtshop.dao;
 
 
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.wtshop.Pageable;
 import com.wtshop.model.FuDai;
 import com.wtshop.model.GroupBuy;
 
@@ -20,11 +22,12 @@ public class GroupBuyDao extends BaseDao<GroupBuy>{
     /**
      * 获取当前正在使用的福袋
      */
-    public List<Record> findLists(){
+    public Page<GroupBuy> findPages(Pageable pageable){
 
-        String sql = " SELECT f.* FROM group_buy f  \n" +
-                " where 1 = 1 AND status = 0 order by price desc";
-        return Db.find(sql);
+        String select = " SELECT f.*,g.name,g.image,g.market_price FROM group_buy f LEFT JOIN goods g on f.product_id=g.id   where 1 = 1 AND status = 0 order by price desc";
+        String  sqlExceptSelect="FROM group_buy f LEFT JOIN goods g on f.product_id=g.id   where 1 = 1 AND status = 0 order by price desc";
+        return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
+
 
     }
 

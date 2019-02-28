@@ -75,26 +75,22 @@
                 <input type="checkbox" id="selectAll"/>
             </th>
             <th>
-                <span>${message("Promotion.title")}</span>
+                <span>${message("fightGroup.id")}</span>
             </th>
             <th>
-                <span>${message("groupBuy.price")}</span>
+                <span>${message("ticket.addGoods.goodsName")}</span>
             </th>
             <th>
-                <span>${message("groupBuy.uniprice")}</span>
+                <span>团购进度</span>
             </th>
             <th>
-                <span>${message("groupBuy.count")}</span>
+                <span>${message("fightGroup.createDate")}</span>
             </th>
+
             <th>
-                <a href="javascript:;" class="sort" name="orders">${message("shop.common.order")}</a>
+                <span>${message("fightGroup.status")}</span>
             </th>
-            <th>
-                <span>${message("app_manage.list.time")}</span>
-            </th>
-            <th>
-                <span>${message("admin.common.type")}</span>
-            </th>
+
             <th>
                 <span>${message("admin.common.action")}</span>
             </th>
