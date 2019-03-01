@@ -103,8 +103,8 @@ public class JFWebConfig extends JFinalConfig {
     public void configPlugin(Plugins plugins) {
         //String publicKey = getProperty("jdbc.publicKey");
         //String password = getProperty("jdbc.password");
-
-        String mongodb_hosts = getProperty("mongodb.hosts");
+//mongodb  数据库注释
+ /*       String mongodb_hosts = getProperty("mongodb.hosts");
         String mongodb_ports = getProperty("mongodb.ports");
         if (StringUtils.isNotBlank(mongodb_hosts) && StringUtils.isNotBlank(mongodb_ports)){
             MongodbPlugin mongodbPlugin = new MongodbPlugin(
@@ -116,7 +116,7 @@ public class JFWebConfig extends JFinalConfig {
                     getProperty("mongodb.host"), Integer.parseInt(getProperty("mongodb.port")), getProperty("mongodb.name")
             );
             plugins.add(mongodbPlugin);
-        }
+        }*/
 
 
         // 定时器插件
