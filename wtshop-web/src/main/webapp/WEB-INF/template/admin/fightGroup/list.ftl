@@ -9,12 +9,36 @@
     <meta name="author" content="${setting.siteAuthor}"/>
     <meta name="copyright" content="${setting.siteCopyright}"/>
     <link href="${base}/resources/admin/css/common.css" rel="stylesheet" type="text/css"/>
+    <link href="${base}/statics/lib/layer/mobile/need/layer.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="${base}/resources/admin/js/jquery.js"></script>
     <script type="text/javascript" src="${base}/resources/admin/js/common.js"></script>
     <script type="text/javascript" src="${base}/resources/admin/js/list.js"></script>
+    <script type="text/javascript" src="${base}/statics/lib/layer/layer.js"></script>
     <script type="text/javascript">
+         function chooseOrder(orid){
+
+                 layer.open({
+                     title:"团购订单列表",
+                     type: 2,
+                     skin: 'layui-layer-rim', //加上边框
+                     area: ['870px', '540px'], //宽高
+                     content: "../order/chooseOrder.jhtml?flag="+orid,
+                     shadeClose:true,
+                 });
+
+         }
         $().ready(function () {
 
+       /*     $("#addProduct").click(function() {
+                layer.open({
+                    title:"团购订单列表",
+                    type: 2,
+                    skin: 'layui-layer-rim', //加上边框
+                    area: ['870px', '540px'], //宽高
+                    content: "../order/chooseOrder.jhtml?flag=2",
+                    shadeClose:true,
+                });
+            });*/
             [@flash_message /]
 
 
@@ -77,8 +101,12 @@
             <th>
                 <span>${message("fightGroup.id")}</span>
             </th>
+
             <th>
-                <span>${message("ticket.addGoods.goodsName")}</span>
+                <span>标题</span>
+            </th>
+            <th>
+                <span>${message("groupBuy.price")}</span>
             </th>
             <th>
                 <span>团购进度</span>
@@ -86,7 +114,9 @@
             <th>
                 <span>${message("fightGroup.createDate")}</span>
             </th>
-
+            <th>
+                <span>${message("admin.memberStatistic.endDate")}</span>
+            </th>
             <th>
                 <span>${message("fightGroup.status")}</span>
             </th>
@@ -101,19 +131,17 @@
                     <input type="checkbox" name="ids" value="${groupBuy.id}"/>
                 </td>
                 <td>
+                    ${groupBuy.id}
+                </td>
+                <td>
                     <span title="${groupBuy.title}">${abbreviate(groupBuy.title, 50, "...")}</span>
                 </td>
+
                 <td>
                 ${groupBuy.price}
                 </td>
                 <td>
-                ${groupBuy.uniprice}
-                </td>
-                <td>
-                ${groupBuy.num}
-                </td>
-                <td>
-                ${groupBuy.orders}
+                    <span class="red">${groupBuy.count}</span>   /${groupBuy.groupnum}
                 </td>
                 <td>
                     [#if groupBuy.create_date??]
@@ -123,42 +151,33 @@
                     [/#if]
                 </td>
                 <td>
-                    [#if groupBuy.status]
-                        <span class="green">[已启用]</span>
+                    [#if groupBuy.end_date??]
+                        <span title="${groupBuy.end_date?string("yyyy-MM-dd HH:mm:ss")}">${groupBuy.end_date}</span>
                     [#else]
-                        <span class="red">[已禁用]</span>
+                        -
                     [/#if]
-
-                    [#if groupBuy.isMarketable]
-                        <span class="green">[已上架]</span>
-                    [#else]
-                        <span class="red">[已下架]</span>
-                    [/#if]
-
-
-                    [#if groupBuy.isTop]
-                        <span class="green">[已置顶]</span>
-                        [#else]
-                        <span class="red">[未置顶]</span>
-                        [/#if]     [#if groupBuy.is_singlepurchase]
-                        <span class="green">[可以单独购买]</span>
-                        [#else]
-                        <span class="red">[不可以单独购买]</span>
-                        [/#if]
                 </td>
                 <td>
-                    [#if groupBuy.status]
-                        <a href="toEdit.jhtml?id=${groupBuy.id}">[${message("admin.common.edit")}]</a>
-
-
-                        <a href="disabled.jhtml?id=${groupBuy.id}" class="status"
-                           data="${groupBuy.id}">][${message("admin.member.disabled")}]</a>
-                    [#else ]
-                        <a href="toEdit.jhtml?id=${groupBuy.id}">[${message("admin.common.edit")}]</a>
-
-                        <a href="publish.jhtml?id=${groupBuy.id}" class="status"
-                           data="${groupBuy.id}">[${message("LoginPlugin.isEnabled")}]</a>
+                    [#if groupBuy.status==1]
+                        <span class="green">[拼团成功]</span>
                     [/#if]
+                    [#if  groupBuy.status==0 ]
+                        <span class="red">[拼图失败]</span>
+                    [/#if]
+
+                    [#if  groupBuy.status==2 ]
+                        <span class="blue">[拼图中]</span>
+                     [/#if]
+
+                </td>
+                <td>
+                [#--    <input type="button" value="[${message("admin.common.view")}拼图订单]" class="button" />--]
+                    <input type="button" onclick="chooseOrder('${groupBuy.id}');" value="[${message("admin.common.view")}拼图订单]" class="button" id="addProduct"/>
+                    [#--    <a href="toEdit.jhtml?id=${groupBuy.id}">[${message("admin.common.view")}拼图订单]</a>--]
+
+
+
+
                 </td>
             </tr>
         [/#list]

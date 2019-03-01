@@ -199,6 +199,17 @@ public class OrderController extends BaseController {
 	}
 
 	/**
+	 * 查看团购订单选择
+	 */
+	public void chooseOrder() {
+		Pageable pageable = getBean(Pageable.class);
+		setAttr("pageable", pageable);
+		setAttr("page", orderService.findPage(pageable));
+		render("/admin/fightGroup/choose.ftl");
+	}
+
+
+	/**
 	 * 审核
 	 */
 	public void review() {

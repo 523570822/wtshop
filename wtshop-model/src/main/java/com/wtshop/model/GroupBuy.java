@@ -23,6 +23,10 @@ public class GroupBuy extends BaseGroupBuy<GroupBuy> {
 	}
 
 	public void setProduct(Product product) {
+
+		if(ObjectUtils.isEmpty(product)){
+			product = Product.dao.findById(getProductId());
+		}
 		this.product = product;
 	}
 

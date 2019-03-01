@@ -11,6 +11,7 @@ import com.wtshop.service.*;
 import com.wtshop.util.ApiResult;
 import com.wtshop.util.ReadProper;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -26,8 +27,6 @@ import java.util.Map;
 public class GroupBuyController extends BaseController {
     private GroupBuyService fuDaiService = enhance(GroupBuyService.class);
     public void list() {
-
-        GroupBuy fuDai = fuDaiService.find(23L);
 
 
 

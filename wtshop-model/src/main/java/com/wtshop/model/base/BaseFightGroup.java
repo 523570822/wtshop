@@ -113,12 +113,20 @@ public abstract class BaseFightGroup<M extends BaseFightGroup<M>> extends Model<
 		return get("explain");
 	}
 
-	public void setProductId(Integer productId) {
-		set("productId", productId);
+	public void setProductId(Long productId) {
+		set("product_id", productId);
 	}
 
-	public Integer getProductId() {
-		return get("productId");
+	public Long getProductId() {
+		return get("product_id");
+	}
+
+	public void setCount(Integer count) {
+		set("count", count);
+	}
+
+	public Integer getCount() {
+		return get("count");
 	}
 
 	public void setSales(Integer sales) {
@@ -151,6 +159,14 @@ public abstract class BaseFightGroup<M extends BaseFightGroup<M>> extends Model<
 
 	public Integer getEndtime() {
 		return get("endtime");
+	}
+
+	public void setMemberId(Long memberId) {
+		set("member_id", memberId);
+	}
+
+	public Long getMemberId() {
+		return get("member_id");
 	}
 
 }

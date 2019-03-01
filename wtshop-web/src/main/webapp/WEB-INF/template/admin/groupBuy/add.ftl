@@ -30,7 +30,7 @@
 
             $("#addProduct").click(function() {
                 layer.open({
-                    title:"商品列表11",
+                    title:"商品列表",
                     type: 2,
                     skin: 'layui-layer-rim', //加上边框
                     area: ['870px', '540px'], //宽高

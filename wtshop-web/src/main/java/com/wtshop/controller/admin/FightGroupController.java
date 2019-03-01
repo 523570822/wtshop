@@ -4,9 +4,11 @@ import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.upload.UploadFile;
 import com.wtshop.Message;
 import com.wtshop.Pageable;
+import com.wtshop.model.FightGroup;
 import com.wtshop.model.FuDai;
 import com.wtshop.model.FudaiProduct;
 import com.wtshop.model.GroupBuy;
+import com.wtshop.service.FightGroupService;
 import com.wtshop.service.GroupBuyService;
 import com.wtshop.util.ApiResult;
 import com.wtshop.util.ReadProper;
@@ -20,7 +22,7 @@ import java.util.List;
  */
 @ControllerBind(controllerKey = "/admin/fightGroup")
 public class FightGroupController extends BaseController {
-    private GroupBuyService fuDaiService = enhance(GroupBuyService.class);
+    private FightGroupService fuDaiService = enhance(FightGroupService.class);
     public void list() {
         Pageable pageable = getBean(Pageable.class);
         pageable.setOrderProperty("orders");
@@ -39,14 +41,10 @@ public class FightGroupController extends BaseController {
     //保存福袋信息
     public void save() {
 
-        GroupBuy fuDai = getModel( GroupBuy.class);
+        FightGroup fuDai = getModel( FightGroup.class);
 
 
         Long productId = getParaToLong("productId");
-        fuDai.setStatus(getParaToBoolean("status", false));
-        fuDai.setIsList(getParaToBoolean("isList", false));
-        fuDai.setIsTop(getParaToBoolean("isTop", false));
-        fuDai.setIsSinglepurchase(getParaToBoolean("isSinglepurchase", false));
 
         fuDaiService.save(fuDai);
         FudaiProduct fudaiProduct = new FudaiProduct(productId, fuDai.getId(), 1);
@@ -56,7 +54,7 @@ public class FightGroupController extends BaseController {
     //去修改页面
     public void toEdit() {
         Long fuDaiId = getParaToLong("id");
-        GroupBuy group = fuDaiService.find(fuDaiId);
+        FightGroup group = fuDaiService.find(fuDaiId);
         setAttr("groupBuy", group);
 
         render("/admin/groupBuy/edit.ftl");
@@ -66,12 +64,9 @@ public class FightGroupController extends BaseController {
     public void edit() {
         // 图片
         List<UploadFile> uploadFiles = getFiles();
-        GroupBuy fuDai = getModel( GroupBuy.class);
+        FightGroup fuDai = getModel( FightGroup.class);
 
-        fuDai.setStatus(getParaToBoolean("status", false));
-        fuDai.setIsList(getParaToBoolean("isList", false));
-        fuDai.setIsTop(getParaToBoolean("isTop", false));
-        fuDai.setIsSinglepurchase(getParaToBoolean("isSinglepurchase", false));
+
 
 
         Long productId = getParaToLong("productId");
@@ -101,7 +96,7 @@ public class FightGroupController extends BaseController {
     public void status() {
         Long id = getParaToLong("fudaiId");
         int status = getParaToInt("status");
-        GroupBuy fuDai = fuDaiService.find(id);
+        FightGroup fuDai = fuDaiService.find(id);
         fuDai.setStatus(status);
         fuDaiService.update(fuDai);
         renderJson("1");
@@ -110,7 +105,7 @@ public class FightGroupController extends BaseController {
     public void addGoods() {
         Long fuDaiId = getParaToLong("id");
         List list = fuDaiService.queryByFuDaiId(fuDaiId);
-        GroupBuy fd = fuDaiService.find(fuDaiId);
+        FightGroup fd = fuDaiService.find(fuDaiId);
         setAttr("fuDaiId", fuDaiId);
         setAttr("indexNum", list.size());
         setAttr("fuDaiProductList", list);
@@ -145,7 +140,7 @@ public class FightGroupController extends BaseController {
      */
     public void disabled() {
         Long fudaiId = getParaToLong("id");
-        GroupBuy fuDai = fuDaiService.find(fudaiId);
+        FightGroup fuDai = fuDaiService.find(fudaiId);
         fuDai.setStatus(FuDai.State_UnActive);
         fuDaiService.update(fuDai);
         redirect("list.jhtml");
@@ -157,13 +152,13 @@ public class FightGroupController extends BaseController {
      */
     public void publish() {
         Long fudaiId = getParaToLong("id");
-        GroupBuy fuDai = fuDaiService.find(fudaiId);
+        FightGroup fuDai = fuDaiService.find(fudaiId);
         List<FudaiProduct> list = fuDaiService.findSubListByFudaiId(fuDai.getId());
-        if (CollectionUtils.isEmpty(list) || list.size() <= fuDai.getNum()) {
+/*        if (CollectionUtils.isEmpty(list) || list.size() <= fuDai.getNum()) {
             addFlashMessage(Message.errMsg("福袋副产品数量需要大于福袋要抽取的副产品数量"));
             redirect("list.jhtml");
             return;
-        }
+        }*/
         fuDai.setStatus(FuDai.State_Active);
         fuDaiService.update(fuDai);
         redirect("list.jhtml");
