@@ -58,14 +58,14 @@ public class LoginAPIController extends BaseAPIController {
         }
 
         //查询mongo数据库
-        BasicDBObject basicDBObject = new BasicDBObject();
+   /*     BasicDBObject basicDBObject = new BasicDBObject();
         Boolean isVip = false;
         basicDBObject.put("phone",username);
         DBObject vip = MongoKit.getCollection("vipMember").findOne(basicDBObject);
         if(! ObjectUtils.isEmpty(vip)){
             isVip = true;
-        }
-
+        }*/
+        Boolean isVip = false;
         //验证 先去member表里查
         Member member = memberService.findByUsernames(username, password);
 
