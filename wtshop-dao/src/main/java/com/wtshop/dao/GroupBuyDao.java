@@ -24,11 +24,9 @@ public class GroupBuyDao extends BaseDao<GroupBuy>{
      */
     public Page<GroupBuy> findPages(Pageable pageable){
 
-        String select = " SELECT f.*,g.name,g.image,g.market_price FROM group_buy f LEFT JOIN goods g on f.product_id=g.id   where 1 = 1 AND status = 0 order by price desc";
+        String select = " SELECT f.*,g.name,g.image,g.market_price ";
         String  sqlExceptSelect="FROM group_buy f LEFT JOIN goods g on f.product_id=g.id   where 1 = 1 AND status = 0 order by price desc";
         return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
-
-
     }
 
 

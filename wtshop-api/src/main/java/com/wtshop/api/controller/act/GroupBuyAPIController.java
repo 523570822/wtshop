@@ -53,8 +53,8 @@ public class GroupBuyAPIController extends BaseAPIController {
 
 
         Page<GroupBuy> list = fuDaiService.findPages(pageable);
-        map.put("list", list);
-        renderJson(ApiResult.success(map));
+        // map.put("list", list);
+        renderJson(ApiResult.success(list));
     }
 
     /**

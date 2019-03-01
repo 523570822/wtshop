@@ -137,10 +137,13 @@ git rm --cached -r  "target"
 
 
    
-   textserver 启动redis
+  测试服务器启动redis
   cd  /root/work/redis/src
   进入src目录下，执行./redis-server & (带上&是在后台启动)
                       ./redis-server ../redis_shop.conf
+                      
+   redis-server /root/word/redis/redis_shop.conf
+
   2 redis关闭
   
   进入src目录下，执行./redis-cli shutdown
