@@ -107,6 +107,23 @@ public class OrderDao extends BaseDao<Order> {
 			return null;
 		}
 	}
+	/**
+	 * 根据编号查找订单
+	 *
+	 * @param groupbuyId
+	 *            编号(忽略大小写)
+	 * @return 订单，若不存在则返回null
+	 */
+	public List<Order> findByfightgroupId(Long groupbuyId) {
+
+	//	String sql = "SELECT * FROM `order` WHERE fightgroup_id ="+groupbuyId+" AND is_delete = 0 ";
+		String sql = "SELECT o.*,m.avatar FROM `order` o LEFT JOIN member m on o.member_id=m.id  WHERE fightgroup_id ="+groupbuyId+" AND o.is_delete = 0 and o.`status` <>7 and o.`status` <>6 and o.`status` <>0 and o.`status` <>8";
+		try {
+			return modelManager.find(sql);
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
 	/**
 	 * 根据倒拍详情ID查找订单

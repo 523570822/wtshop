@@ -101,7 +101,7 @@ public class GroupBuyController extends BaseController {
 
     public void status() {
         Long id = getParaToLong("fudaiId");
-        int status = getParaToInt("status");
+        Boolean status = getParaToBoolean("status");
         GroupBuy fuDai = fuDaiService.find(id);
         fuDai.setStatus(status);
         fuDaiService.update(fuDai);
@@ -147,7 +147,7 @@ public class GroupBuyController extends BaseController {
     public void disabled() {
         Long fudaiId = getParaToLong("id");
         GroupBuy fuDai = fuDaiService.find(fudaiId);
-        fuDai.setStatus(FuDai.State_UnActive);
+        fuDai.setStatus(GroupBuy.State_UnActive);
         fuDaiService.update(fuDai);
         redirect("list.jhtml");
     }
@@ -165,7 +165,7 @@ public class GroupBuyController extends BaseController {
             redirect("list.jhtml");
             return;
         }
-        fuDai.setStatus(FuDai.State_Active);
+        fuDai.setStatus(GroupBuy.State_Active);
         fuDaiService.update(fuDai);
         redirect("list.jhtml");
     }

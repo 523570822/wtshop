@@ -73,12 +73,4 @@ public abstract class BaseVersion<M extends BaseVersion<M>> extends Model<M> imp
 		return get("url");
 	}
 
-	public void setIsUpdate(Boolean isUpdate) {
-		set("is_update", isUpdate);
-	}
-
-	public Boolean getIsUpdate() {
-		return get("is_update");
-	}
-
 }

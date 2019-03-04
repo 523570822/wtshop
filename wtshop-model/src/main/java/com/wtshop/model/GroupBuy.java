@@ -10,8 +10,8 @@ import com.wtshop.util.ObjectUtils;
 public class GroupBuy extends BaseGroupBuy<GroupBuy> {
 	public static final GroupBuy dao = new GroupBuy().dao();
 	//  福袋状态    0/已发布,1/未发布
-	public final static int State_Active = 0;
-	public final static int State_UnActive = 1;
+	public final static boolean State_Active = true;
+	public final static boolean State_UnActive = false;
 
 	private Product product;
 

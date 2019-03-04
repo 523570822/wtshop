@@ -41,11 +41,11 @@ public abstract class BasePartner<M extends BasePartner<M>> extends Model<M> imp
 		return get("is_delete");
 	}
 
-	public void setLevel(Boolean level) {
+	public void setLevel(Integer level) {
 		set("level", level);
 	}
 
-	public Boolean getLevel() {
+	public Integer getLevel() {
 		return get("level");
 	}
 
@@ -65,11 +65,11 @@ public abstract class BasePartner<M extends BasePartner<M>> extends Model<M> imp
 		return get("modify_date");
 	}
 
-	public void setIsEnabled(Boolean isEnabled) {
+	public void setIsEnabled(Integer isEnabled) {
 		set("is_enabled", isEnabled);
 	}
 
-	public Boolean getIsEnabled() {
+	public Integer getIsEnabled() {
 		return get("is_enabled");
 	}
 

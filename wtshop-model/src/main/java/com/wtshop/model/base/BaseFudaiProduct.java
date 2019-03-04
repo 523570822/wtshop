@@ -96,11 +96,5 @@ public abstract class BaseFudaiProduct<M extends BaseFudaiProduct<M>> extends Mo
 	public Integer getMaxNum() {
 		return get("maxNum");
 	}
-	public void setActivityId(Long activityId) {
-		set("activity_id", activityId);
-	}
 
-	public Long getActivityId() {
-		return get("activity_id");
-	}
 }

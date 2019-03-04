@@ -73,6 +73,25 @@ public class GroupBuyAPIController extends BaseAPIController {
         // map.put("list", list);
         renderJson(ApiResult.success(list));
     }
+/**
+ * 组团详情
+ */
+public void groupDetails() throws ParseException {
+    Long fightGroup = getParaToLong("fightGroup");
+    Long fuDaiId = getParaToLong("tuanGouId");
+    GroupBuy groupBuy = fuDaiService.find(fuDaiId);
+    groupBuy.getProduct();
+    List<Order> order = orderService.findByfightgroupId(fightGroup);
+    Map<String, Object> map = new HashedMap();
+
+    map.put("groupBuy",groupBuy);
+    map.put("order",order);
+
+    renderJson(ApiResult.success(map));
+
+
+
+}
 
     /**
      * 团购详情信息

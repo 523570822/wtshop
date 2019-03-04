@@ -49,11 +49,11 @@ public abstract class BaseAppVersion<M extends BaseAppVersion<M>> extends Model<
 		return get("title");
 	}
 
-	public void setAppVersion(Long appVersion) {
+	public void setAppVersion(Double appVersion) {
 		set("app_version", appVersion);
 	}
 
-	public Long getAppVersion() {
+	public Double getAppVersion() {
 		return get("app_version");
 	}
 
@@ -73,7 +73,7 @@ public abstract class BaseAppVersion<M extends BaseAppVersion<M>> extends Model<
 		return get("url");
 	}
 
-	public void setIsDorceUpdate(Boolean isForceUpdate) {
+	public void setIsForceUpdate(Boolean isForceUpdate) {
 		set("is_force_update", isForceUpdate);
 	}
 

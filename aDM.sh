@@ -1,7 +1,5 @@
 echo "stop tomcat!"
  /mrmf/tomcat_shops/bin/shutdown.sh
-echo "备份当前tomcat下商城代码"
-tar zcvf /mrmf/tomcat_shops/webapps/ROOT$(date +%Y%m%d%H).tar.gz /mrmf/tomcat_shops/webapps/ROOT ;//备份语句根据实际情况修改
 sleep 10
 echo "删除文件及缓存"
 sudo rm -rf /root/learngit/wtshop/wtshop-web/target/*
@@ -9,6 +7,7 @@ sudo rm -rf /mrmf/tomcat_shops/webapps/ROOT/*
 cd /root/learngit/wtshop
 echo "拉取git上代码"
 git pull origin   --force
+sleep 10
 echo "通过maven自动编译代码"
 mvn -X install -Dmaven.test.skip=true
 

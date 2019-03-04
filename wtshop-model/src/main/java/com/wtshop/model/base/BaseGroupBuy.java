@@ -81,10 +81,13 @@ public abstract class BaseGroupBuy<M extends BaseGroupBuy<M>> extends Model<M> i
 		return get("num");
 	}
 
-	public void setStatus(Integer status) {
+	public void setStatus(Boolean status) {
 		set("status", status);
 	}
 
+	public Boolean getStatus() {
+		return get("status");
+	}
 
 	public void setRule(String rule) {
 		set("rule", rule);
@@ -158,8 +161,6 @@ public abstract class BaseGroupBuy<M extends BaseGroupBuy<M>> extends Model<M> i
 		return get("endtime");
 	}
 
-
-
 	public void setIsList(Boolean isList) {
 		set("is_list", isList);
 	}
@@ -182,13 +183,6 @@ public abstract class BaseGroupBuy<M extends BaseGroupBuy<M>> extends Model<M> i
 
 	public Boolean getIsSinglepurchase() {
 		return get("is_singlepurchase");
-	}
-	public void setStatus(Boolean status) {
-		set("status", status);
-	}
-
-	public Boolean getStatus() {
-		return get("status");
 	}
 
 }

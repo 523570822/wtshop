@@ -70,6 +70,7 @@ public class FightGroupService extends BaseService<FightGroup> {
     }
 
     public List<FightGroup> queryByFuDaiId(Long id) {
+
         return fuDaiProductDao.findByFudaiId(id);
     }
 

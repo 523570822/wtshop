@@ -35,6 +35,7 @@ public class FightGroupController extends BaseController {
     private FootPrintService footPrintService= enhance(FootPrintService.class);
     private ConsultationService consultationService = enhance(ConsultationService.class);
   private GroupBuyService groupBuyService = enhance(GroupBuyService.class);
+
     private GoodsService goodsService = enhance(GoodsService.class);
     private AreaService areaService = enhance(AreaService.class);
     private ReceiverService receiverService = enhance(ReceiverService.class);
@@ -60,7 +61,7 @@ public class FightGroupController extends BaseController {
 
     //去添加页面
     public void add() throws ParseException {
-       Map<String, String[]> ss = getParaMap();
+     /*  Map<String, String[]> ss = getParaMap();
         Long fuDaiId =23L;
                 GroupBuy fuDai = groupBuyService.find(fuDaiId);
         //可拼团认
@@ -175,9 +176,22 @@ public class FightGroupController extends BaseController {
 
 
         TuanGouGoodsMessageResult goodsMessageResult = new TuanGouGoodsMessageResult(stock,goods,name, favorite, consultationPages, reviewPages, reviewCount,positiveCount,moderateCount,negativeCount,imagescount,tags,productList,settingShoppingCopyUrl,certifiedCopyUrl,taxExplainUrl,aDefault,receiveTime,freMon,fuDai,fightgroupList);
-        renderJson(ApiResult.success(goodsMessageResult));
+        renderJson(ApiResult.success(goodsMessageResult));*/
 
 
+        Long fightGroupL = 23L;
+
+        Long tuanGouId = 23L;
+
+        FightGroup fightGroup = fightGroupService.find(fightGroupL);
+      //  groupBuy.getProduct();
+        List<Order> order = orderService.findByfightgroupId(fightGroupL);
+        Map<String, Object> map = new HashedMap();
+        map.put("goods", fightGroup.getProduct().getGoods());
+        map.put("fightGroup",fightGroup);
+        map.put("order",order);
+
+        renderJson(ApiResult.success(map));
 
 /*     setAttr("fuDaiQuestionImage", ReadProper.getResourceValue("fuDaiDefaultImage"));
         render("/admin/groupBuy/add.ftl");*/
