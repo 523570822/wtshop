@@ -50,7 +50,7 @@ public class GroupBuyAPIController extends BaseAPIController {
     private ReviewService reviewService = enhance(ReviewService.class);
     private OrderService orderService = enhance(OrderService.class);
     private MemberService memberService = enhance(MemberService.class);
-
+    private  FightGroupService fightGroupService= enhance(FightGroupService.class);
     private ProductService productService = enhance(ProductService.class);
     private ActIntroduceService actIntroduceService = enhance(ActIntroduceService.class);
     private CertificatesService certificatesService= enhance(CertificatesService.class);
@@ -81,17 +81,11 @@ public class GroupBuyAPIController extends BaseAPIController {
         Map<String, String[]> ss = getParaMap();
         Long fuDaiId = getParaToLong("tuanGouId");
         GroupBuy fuDai = fuDaiService.find(fuDaiId);
-        List<FightGroup> fightgroupList=new  ArrayList<FightGroup>();
-        FightGroup fightGroup=new FightGroup();
-        fightGroup.setId(1L);
-        fightGroup.setSales(2);
-        fightGroup.setGroupnum(10);
-        fightgroupList.add(fightGroup);
-        FightGroup fightGroup1=new FightGroup();
-        fightGroup1.setId(2L);
-        fightGroup1.setSales(3);
-        fightGroup1.setGroupnum(10);
-        fightgroupList.add(fightGroup1);
+      /*  List<FightGroup> fightgroupList=new  ArrayList<FightGroup>();*/
+
+
+        //可拼团认
+        List<FightGroup> fightgroupList=fightGroupService.findByProductId(fuDai.getProductId());
         Product p = fuDai.getProduct();
         Goods goods = p.getGoods();
         Map<String, Object> map = new HashedMap();

@@ -5,6 +5,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Pageable;
+import com.wtshop.dao.FightGroupDao;
 import com.wtshop.dao.FuDaiProductDao;
 import com.wtshop.dao.GroupBuyDao;
 import com.wtshop.dao.OrderDao;
@@ -27,50 +28,48 @@ public class FightGroupService extends BaseService<FightGroup> {
         super( FightGroup.class);
     }
 
-    private FuDaiProductDao fuDaiProductDao = Enhancer.enhance(FuDaiProductDao.class);
+    private FightGroupDao fuDaiProductDao = Enhancer.enhance(FightGroupDao.class);
+
+
     private GroupBuyDao fuDaiDao = Enhancer.enhance(GroupBuyDao.class);
     private FuDaiProductService fuDaiProductService = Enhancer.enhance(FuDaiProductService.class);
     private MemberService memberService = Enhancer.enhance(MemberService.class);
     private OrderDao orderDao = Enhancer.enhance(OrderDao.class);
+/**
+ * 根据商品id   product_id 获取参团信息
+ */
+    public  List<FightGroup> findByProductId (Long productId){
+    return     fuDaiProductDao.findByProductId(productId);
+    }
 
 
-    public void saveOrUpdate(List<FudaiProduct> newList, Long fuDaiId) {
-        List<FudaiProduct> oldList = fuDaiProductDao.findByFudaiId(fuDaiId);
+    public void saveOrUpdate(List<FightGroup> newList, Long fuDaiId) {
+        List<FightGroup> oldList = fuDaiProductDao.findByFudaiId(fuDaiId);
         List<Long> updateIdList = new ArrayList<Long>();
 
         if (oldList.size() > 0) {//修改保存删除
-            for (FudaiProduct detail : newList) {//保存新增产品
+            for (FightGroup detail : newList) {//保存新增产品
                 if (!StringUtils.isEmpty(detail.getId())) {
                     updateIdList.add(detail.getId());
                 } else {
-                    detail.setRepeatTime(detail.getRepeatTime() * 60);
+
                     fuDaiProductDao.save(detail);
                 }
             }
 
-            for (FudaiProduct detail : oldList) {//删除前端删除产品
+            for (FightGroup detail : oldList) {//删除前端删除产品
                 if (!updateIdList.contains(detail.getId())) {
                     fuDaiProductDao.remove(detail);
                 }
             }
 
-            for (FudaiProduct updateDetail : oldList) {//修改前段修改产品
-                for (FudaiProduct detail : newList) {
-                    if (detail.getId().equals(updateDetail.getId())) {
-                        detail.setRepeatTime(detail.getRepeatTime() * 60);
-                        fuDaiProductDao.update(detail);
-                    }
-                }
-            }
+
         } else {//保存
-            for (FudaiProduct detail : newList) {
-                detail.setRepeatTime(detail.getRepeatTime() * 60);
-                fuDaiProductDao.save(detail);
-            }
+
         }
     }
 
-    public List<FudaiProduct> queryByFuDaiId(Long id) {
+    public List<FightGroup> queryByFuDaiId(Long id) {
         return fuDaiProductDao.findByFudaiId(id);
     }
 
@@ -176,7 +175,7 @@ public class FightGroupService extends BaseService<FightGroup> {
     }
 
 
-    public List<FudaiProduct> findSubListByFudaiId(Long fuDaiId){
+    public List<FightGroup> findSubListByFudaiId(Long fuDaiId){
         return fuDaiProductDao.findByFudaiId(fuDaiId);
     }
 }
