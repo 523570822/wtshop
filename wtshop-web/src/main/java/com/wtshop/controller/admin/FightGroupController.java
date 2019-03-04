@@ -60,7 +60,7 @@ public class FightGroupController extends BaseController {
 
     //去添加页面
     public void add() throws ParseException {
-  /*      Map<String, String[]> ss = getParaMap();
+       Map<String, String[]> ss = getParaMap();
         Long fuDaiId =23L;
                 GroupBuy fuDai = groupBuyService.find(fuDaiId);
         //可拼团认
@@ -177,10 +177,10 @@ public class FightGroupController extends BaseController {
         TuanGouGoodsMessageResult goodsMessageResult = new TuanGouGoodsMessageResult(stock,goods,name, favorite, consultationPages, reviewPages, reviewCount,positiveCount,moderateCount,negativeCount,imagescount,tags,productList,settingShoppingCopyUrl,certifiedCopyUrl,taxExplainUrl,aDefault,receiveTime,freMon,fuDai,fightgroupList);
         renderJson(ApiResult.success(goodsMessageResult));
 
-*/
 
-     setAttr("fuDaiQuestionImage", ReadProper.getResourceValue("fuDaiDefaultImage"));
-        render("/admin/groupBuy/add.ftl");
+
+/*     setAttr("fuDaiQuestionImage", ReadProper.getResourceValue("fuDaiDefaultImage"));
+        render("/admin/groupBuy/add.ftl");*/
     }
 
     //保存福袋信息
