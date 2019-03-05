@@ -46,13 +46,12 @@ public class OrderBuyNowTuanGouResult implements Serializable{
 
     private Boolean is_promotion;
 
-    public Long getTuanGouId() {
-        return tuanGouId;
-    }
 
-    public void setTuanGouId(Long tuanGouId) {
-        this.tuanGouId = tuanGouId;
-    }
+
+    private Long fightGroupId;
+
+
+    private Double payPrice;
 
     private Long tuanGouId;
 
@@ -64,22 +63,29 @@ public class OrderBuyNowTuanGouResult implements Serializable{
     public void setFightGroupId(Long fightGroupId) {
         this.fightGroupId = fightGroupId;
     }
-
-    public Boolean getSinglepurchase() {
-        return isSinglepurchase;
+    public Long getTuanGouId() {
+        return tuanGouId;
     }
 
-    public void setSinglepurchase(Boolean singlepurchase) {
-        isSinglepurchase = singlepurchase;
+    public void setTuanGouId(Long tuanGouId) {
+        this.tuanGouId = tuanGouId;
     }
 
-    private Boolean isSinglepurchase;
- private Long fightGroupId;
+    public Boolean getIs_singlepurchase() {
+        return is_singlepurchase;
+    }
+
+    public void setIs_singlepurchase(Boolean is_singlepurchase) {
+        this.is_singlepurchase = is_singlepurchase;
+    }
+
+    private Boolean is_singlepurchase;
 
 
-    private Double payPrice;
 
-    public OrderBuyNowTuanGouResult(String taxUrl, Double delivery, Member member, Receiver receiver, Goods goods, Integer quantity, String receiveTime, Boolean is_freeMoney, Boolean is_useMiaobi, String miaoBiDesc, List<PriceResult> priceList, String realPrice, String couponPrice, Double[] param, Boolean is_promotion, Double payPrice,Boolean isSinglepurchase,Long fightGroupId,Long tuanGouId) {
+
+
+    public OrderBuyNowTuanGouResult(String taxUrl, Double delivery, Member member, Receiver receiver, Goods goods, Integer quantity, String receiveTime, Boolean is_freeMoney, Boolean is_useMiaobi, String miaoBiDesc, List<PriceResult> priceList, String realPrice, String couponPrice, Double[] param, Boolean is_promotion, Double payPrice,Boolean is_singlepurchase,Long fightGroupId,Long tuanGouId) {
         this.taxUrl = taxUrl;
         this.delivery = delivery;
         this.member = member;
@@ -96,7 +102,7 @@ public class OrderBuyNowTuanGouResult implements Serializable{
         this.param = param;
         this.is_promotion = is_promotion;
         this.payPrice = payPrice;
-        this.isSinglepurchase = isSinglepurchase;
+        this.is_singlepurchase = is_singlepurchase;
         this.fightGroupId = fightGroupId;
         this.tuanGouId = tuanGouId;
     }
