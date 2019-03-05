@@ -56,13 +56,6 @@ public class OrderBuyNowTuanGouResult implements Serializable{
 
     private Long tuanGouId;
 
-    public Boolean getSinglepurchase() {
-        return isSinglepurchase;
-    }
-
-    public void setSinglepurchase(Boolean singlepurchase) {
-        isSinglepurchase = singlepurchase;
-    }
 
     public Long getFightGroupId() {
         return fightGroupId;
@@ -70,6 +63,14 @@ public class OrderBuyNowTuanGouResult implements Serializable{
 
     public void setFightGroupId(Long fightGroupId) {
         this.fightGroupId = fightGroupId;
+    }
+
+    public Boolean getSinglepurchase() {
+        return isSinglepurchase;
+    }
+
+    public void setSinglepurchase(Boolean singlepurchase) {
+        isSinglepurchase = singlepurchase;
     }
 
     private Boolean isSinglepurchase;
