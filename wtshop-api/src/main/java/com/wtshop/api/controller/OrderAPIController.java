@@ -450,7 +450,7 @@ public class OrderAPIController extends BaseAPIController {
 
 		realPrice =  MathUtil.getInt(amountpaid.toString());
 		OrderBuyNowTuanGouResult orderBuyNowResult = new OrderBuyNowTuanGouResult(taxUrl, yunfei, member, defaultReceiver, goods, 1, receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, priceList,
-				realPrice, favoritePrice, param, is_promotion, amountpaid,isSinglepurchase,fightGroupId);
+				realPrice, favoritePrice, param, is_promotion, amountpaid,isSinglepurchase,fightGroupId,tuanGouId);
 		RedisUtil.setString("ORDERPARAM:"+member.getId(), params);
 
 		renderJson(ApiResult.success(orderBuyNowResult));
