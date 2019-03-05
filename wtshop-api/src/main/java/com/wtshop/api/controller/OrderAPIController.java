@@ -291,14 +291,16 @@ public class OrderAPIController extends BaseAPIController {
 	}
 
 	/**
-	 * 立即购买 调用接口
+	 * 团购立即购买 调用接口
 	 */
 	@Before(Tx.class)
 	public void buyNowTuangou() {
 
 		Member member = memberService.getCurrent();
-
-
+		//是否是单购  1是  0否
+		boolean isSinglepurchase= getParaToBoolean("isSinglepurchase");
+		//是否是团长
+		Long fightGroupId = getParaToLong("fightGroupId");
 		Long tuanGouId = getParaToLong("tuanGouId");
 
 		GroupBuy groupBuy = groupBuyService.find(tuanGouId);
@@ -319,12 +321,7 @@ public class OrderAPIController extends BaseAPIController {
 
 		//判断商品是否是促销商品
 		Boolean is_promotion = false;
-		if(product !=null ){
-			GoodsPromotion goodsPromotion = goodsPromotionService.findPromitByGoodsId(product.getGoodsId());
-			if(goodsPromotion != null){
-				is_promotion = true;
-			}
-		}
+
 
 		//获取默认的收货地址
 		Receiver defaultReceiver = receiverService.findDefault(member);
@@ -347,14 +344,17 @@ public class OrderAPIController extends BaseAPIController {
 
 		//商品运费
 		List<ShippingMethod> shippingMethods = shippingMethodService.findMethodList();
-		double value = shippingMethodService.calculateFreight(shippingMethods.get(0), defaultReceiver, goods.getWeight() * 1).doubleValue();
+		double value =groupBuy.getDispatchprice();
 		Delivery delivery = new Delivery(shippingMethods.get(0).getId(), shippingMethods.get(0).getName(), value);
 
 
 		JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
 
+
+
+
 		//是否包邮
-		Boolean is_freeMoney = redisSetting.getBoolean("isFreeMoney") || price >= redisSetting.getDouble("freeMoney") ? true : false;
+		Boolean is_freeMoney = groupBuy.getDispatchprice()==0 ? true : false;
 
 		Double deliver = 0d;
 		deliver = delivery.getPrice();
@@ -371,7 +371,7 @@ public class OrderAPIController extends BaseAPIController {
 		String taxUrl = "http://shop.rxmao.cn/rxm/goods/tax.html";
 
 		//是否可以使用喵币
-		Boolean is_useMiaobi = redisSetting.getBoolean("isUseMiaoBi") ? true : false;
+		Boolean is_useMiaobi =  false;
 		//我的喵币个数
 		Double myMiaoBi =  member.getPoint().doubleValue();
 		//可用喵币
@@ -380,18 +380,7 @@ public class OrderAPIController extends BaseAPIController {
 		Double miaoBiPrice = 0d;
 		String miaoBiDesc = "";
 		Double scale =  redisSetting.getDouble("scale");
-		if(is_useMiaobi && myMiaoBi >= 0){
-			useMiaoBi = myMiaoBi;
-			Double limit =  redisSetting.getDouble("miaoBiLimit");
-			miaoBiPrice= new BigDecimal(useMiaoBi).divide(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-			double multiply = new BigDecimal(price).multiply(new BigDecimal(limit)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-			//重新计算可用喵币
-			if(miaoBiPrice > multiply){
-				useMiaoBi = new BigDecimal(multiply).multiply(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-				miaoBiPrice= new BigDecimal(useMiaoBi).divide(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-			}
 
-		}
 
 		PriceResult miaobiPrice = null;
 		String realPrice = null;
@@ -401,40 +390,26 @@ public class OrderAPIController extends BaseAPIController {
 		Double miaobi = 0d;
 		Double returns = 0d;
 
-		if(isUseMiao){
-			miaobiPrice = new PriceResult("喵币","-¥ "+MathUtil.getInt(miaoBiPrice.toString()));
-			favoreatePriced = MathUtil.add(miaoBiPrice,couponYunfei);
-			favoritePrice = MathUtil.getInt(favoreatePriced.toString());
 
-			miaobi = miaoBiPrice;
-		}else {
 			miaobiPrice = new PriceResult("喵币","-¥ "+0);
 			favoritePrice =  MathUtil.getInt(newDeliveryPrice.getPrice());
 			miaobi = 0d;
-		}
+
 		PriceResult manjianPrice = null;
 		Promotion promotion = promotionService.find(5L);
 		Double manJianPrices = 0d;
-		if(is_promotion){
-			if ( price >= promotion.getTotalMoney().doubleValue()){
-				manjianPrice = new PriceResult(promotion.getTitle(),"-¥ "+MathUtil.getInt(promotion.getMoney().toString()));
-				favoritePrice = MathUtil.getInt(new BigDecimal(favoritePrice).add(promotion.getMoney()).toString());
-				manJianPrices = promotion.getMoney().doubleValue();
-			}
-		}
+
 
 		//优惠前总金额
 		Double marketPrice = MathUtil.multiply(goods.getMarketPrice(), 1);
-		PriceResult totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(price.toString()));
-		PriceResult oldTotalPrice = new PriceResult("商品优惠前总金额","¥ "+ MathUtil.getInt(marketPrice.toString()));
+		PriceResult totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(groupBuy.getPrice().toString()));
+		PriceResult oldTotalPrice = new PriceResult("商品优惠前总金额","¥ "+MathUtil.getInt(price.toString()));
 		PriceResult deliveryPrice = new PriceResult("运费","¥ "+ MathUtil.getInt(delivery.getPrice().toString()));
 		List<PriceResult> priceList = new ArrayList<>();
 		priceList.add(oldTotalPrice);
 		priceList.add(totalPrice);
 		priceList.add(deliveryPrice);
-		if(!is_promotion){
-			priceList.add(miaobiPrice);
-		}
+
 
 		priceList.add(newDeliveryPrice);
 		priceList.add(manjianPrice);
@@ -461,7 +436,7 @@ public class OrderAPIController extends BaseAPIController {
 		String params = deliver.toString() + "," + miaobi.toString() + "," +amountpaid.toString() + "," +couponYunfei.toString() + "," +manJianPrices.toString() ;
 
 		realPrice =  MathUtil.getInt(amountpaid.toString());
-		OrderBuyNowResult orderBuyNowResult = new OrderBuyNowResult(taxUrl, yunfei, member, defaultReceiver, goods, 1, receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, priceList,
+		OrderBuyNowTuanGouResult orderBuyNowResult = new OrderBuyNowTuanGouResult(taxUrl, yunfei, member, defaultReceiver, goods, 1, receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, priceList,
 				realPrice, favoritePrice, param, is_promotion, amountpaid);
 		RedisUtil.setString("ORDERPARAM:"+member.getId(), params);
 
@@ -474,6 +449,7 @@ public class OrderAPIController extends BaseAPIController {
 	 */
 	@Before(Tx.class)
 	public void createByNowTuangouOrder() {
+
 		Member member = memberService.getCurrent();
 		Long receiverId = getParaToLong("receiverId"); //收货人
 

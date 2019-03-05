@@ -77,14 +77,13 @@ public class GroupBuyAPIController extends BaseAPIController {
  * 组团详情
  */
 public void groupDetails() throws ParseException {
-    Long fightGroup = getParaToLong("fightGroup");
+    Long fightGroupL = getParaToLong("fightGroup");
     Long fuDaiId = getParaToLong("tuanGouId");
-    GroupBuy groupBuy = fuDaiService.find(fuDaiId);
-    groupBuy.getProduct();
-    List<Order> order = orderService.findByfightgroupId(fightGroup);
+    List<Order> order = orderService.findByfightgroupId(fightGroupL);
+    FightGroup fightGroup = fightGroupService.find(fightGroupL);
     Map<String, Object> map = new HashedMap();
 
-    map.put("groupBuy",groupBuy);
+    map.put("fightGroup",fightGroup);
     map.put("order",order);
 
     renderJson(ApiResult.success(map));
