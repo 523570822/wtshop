@@ -26,11 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by sq on 2017/6/8.
@@ -95,6 +91,12 @@ public void groupDetails() throws ParseException {
     Long fuDaiId = getParaToLong("tuanGouId");
     List<Order> order = orderService.findByfightgroupId(fightGroupL);
     FightGroup fightGroup = fightGroupService.find(fightGroupL);
+    Long time = 0L;
+    time = Calendar.getInstance().getTimeInMillis();
+    // fightGroup.set("ji_shi",fightGroup.getEndDate().getTime()- time);
+
+    fightGroup.setJishi(fightGroup.getEndDate().getTime()- time);
+
     Map<String, Object> map = new HashedMap();
     map.put("goods", fightGroup.getProduct().getGoods());
     map.put("fightGroup",fightGroup);
@@ -115,6 +117,7 @@ public void groupDetails() throws ParseException {
 
         //可拼团认
         List<FightGroup> fightgroupList=fightGroupService.findByProductId(fuDai.getProductId());
+
         Product p = fuDai.getProduct();
         Goods goods = p.getGoods();
         Map<String, Object> map = new HashedMap();
