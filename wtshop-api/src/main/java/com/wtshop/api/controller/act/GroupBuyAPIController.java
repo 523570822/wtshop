@@ -82,7 +82,7 @@ public void groupDetails() throws ParseException {
     List<Order> order = orderService.findByfightgroupId(fightGroupL);
     FightGroup fightGroup = fightGroupService.find(fightGroupL);
     Map<String, Object> map = new HashedMap();
-
+    map.put("goods", fightGroup.getProduct().getGoods());
     map.put("fightGroup",fightGroup);
     map.put("order",order);
 
