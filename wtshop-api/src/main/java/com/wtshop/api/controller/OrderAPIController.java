@@ -247,7 +247,7 @@ public class OrderAPIController extends BaseAPIController {
 
 		//1是 ，0否  是否開發票
 		Boolean isInvoice=getParaToBoolean("isInvoice");
-		//1是 ，0否  是否是個人
+		//1是 ，0否  是否是個人发票还是单位发票
 		Boolean isPersonal=getParaToBoolean("isPersonal");
 		String taxNumber = getPara("taxNumber"); 	//單位名稱
 		String companyName = getPara("companyName"); 	//稅號

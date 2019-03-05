@@ -20,10 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by mrFeng on 2019/2/18
@@ -67,6 +64,12 @@ public class FightGroupController extends BaseController {
         List<Order> order = orderService.findByfightgroupId(fightGroupL);
         FightGroup fightGroup = fightGroupService.find(fightGroupL);
         Map<String, Object> map = new HashedMap();
+
+        Long time = 0L;
+        time = Calendar.getInstance().getTimeInMillis();
+
+
+        fightGroup.setJishi(fightGroup.getEndDate().getTime()- time);
         map.put("goods", fightGroup.getProduct().getGoods());
         map.put("fightGroup",fightGroup);
         map.put("order",order);

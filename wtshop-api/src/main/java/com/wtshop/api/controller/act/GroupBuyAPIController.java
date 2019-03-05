@@ -95,7 +95,7 @@ public void groupDetails() throws ParseException {
 
     Long time = 0L;
     time = Calendar.getInstance().getTimeInMillis();
-    // fightGroup.set("ji_shi",fightGroup.getEndDate().getTime()- time);
+
 
     fightGroup.setJishi(fightGroup.getEndDate().getTime()- time);
     fightGroup.setSales(ss.getSales());
