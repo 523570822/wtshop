@@ -301,6 +301,12 @@ public class OrderAPIController extends BaseAPIController {
 		boolean isSinglepurchase= getParaToBoolean("isSinglepurchase");
 		//是否是团长
 		Long fightGroupId = getParaToLong("fightGroupId");
+
+
+		if(isSinglepurchase){
+
+		}
+
 		Long tuanGouId = getParaToLong("tuanGouId");
 
 		GroupBuy groupBuy = groupBuyService.find(tuanGouId);
@@ -402,7 +408,14 @@ public class OrderAPIController extends BaseAPIController {
 
 		//优惠前总金额
 		Double marketPrice = MathUtil.multiply(goods.getMarketPrice(), 1);
-		PriceResult totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(groupBuy.getPrice().toString()));
+		PriceResult totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(groupBuy.getUniprice().toString()));
+
+		if(isSinglepurchase){
+			 totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(groupBuy.getPrice().toString()));
+		}else {
+			 totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(groupBuy.getUniprice().toString()));
+		}
+
 		PriceResult oldTotalPrice = new PriceResult("商品优惠前总金额","¥ "+MathUtil.getInt(price.toString()));
 		PriceResult deliveryPrice = new PriceResult("运费","¥ "+ MathUtil.getInt(delivery.getPrice().toString()));
 		List<PriceResult> priceList = new ArrayList<>();
@@ -437,7 +450,7 @@ public class OrderAPIController extends BaseAPIController {
 
 		realPrice =  MathUtil.getInt(amountpaid.toString());
 		OrderBuyNowTuanGouResult orderBuyNowResult = new OrderBuyNowTuanGouResult(taxUrl, yunfei, member, defaultReceiver, goods, 1, receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, priceList,
-				realPrice, favoritePrice, param, is_promotion, amountpaid);
+				realPrice, favoritePrice, param, is_promotion, amountpaid,isSinglepurchase,fightGroupId);
 		RedisUtil.setString("ORDERPARAM:"+member.getId(), params);
 
 		renderJson(ApiResult.success(orderBuyNowResult));

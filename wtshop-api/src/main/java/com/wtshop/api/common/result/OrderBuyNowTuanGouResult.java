@@ -46,9 +46,29 @@ public class OrderBuyNowTuanGouResult implements Serializable{
 
     private Boolean is_promotion;
 
+    public Boolean getSinglepurchase() {
+        return isSinglepurchase;
+    }
+
+    public void setSinglepurchase(Boolean singlepurchase) {
+        isSinglepurchase = singlepurchase;
+    }
+
+    public Long getFightGroupId() {
+        return fightGroupId;
+    }
+
+    public void setFightGroupId(Long fightGroupId) {
+        this.fightGroupId = fightGroupId;
+    }
+
+    private Boolean isSinglepurchase;
+ private Long fightGroupId;
+
+
     private Double payPrice;
 
-    public OrderBuyNowTuanGouResult(String taxUrl, Double delivery, Member member, Receiver receiver, Goods goods, Integer quantity, String receiveTime, Boolean is_freeMoney, Boolean is_useMiaobi, String miaoBiDesc, List<PriceResult> priceList, String realPrice, String couponPrice, Double[] param, Boolean is_promotion, Double payPrice) {
+    public OrderBuyNowTuanGouResult(String taxUrl, Double delivery, Member member, Receiver receiver, Goods goods, Integer quantity, String receiveTime, Boolean is_freeMoney, Boolean is_useMiaobi, String miaoBiDesc, List<PriceResult> priceList, String realPrice, String couponPrice, Double[] param, Boolean is_promotion, Double payPrice,Boolean isSinglepurchase,Long fightGroupId) {
         this.taxUrl = taxUrl;
         this.delivery = delivery;
         this.member = member;
@@ -65,6 +85,8 @@ public class OrderBuyNowTuanGouResult implements Serializable{
         this.param = param;
         this.is_promotion = is_promotion;
         this.payPrice = payPrice;
+        this.isSinglepurchase = isSinglepurchase;
+        this.fightGroupId = fightGroupId;
     }
 
     public Integer getQuantity() {

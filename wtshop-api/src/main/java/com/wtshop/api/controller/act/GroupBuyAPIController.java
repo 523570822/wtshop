@@ -88,15 +88,17 @@ public class GroupBuyAPIController extends BaseAPIController {
  */
 public void groupDetails() throws ParseException {
     Long fightGroupL = getParaToLong("fightGroup");
-    Long fuDaiId = getParaToLong("tuanGouId");
+    Long tuanGouId = getParaToLong("tuanGouId");
     List<Order> order = orderService.findByfightgroupId(fightGroupL);
     FightGroup fightGroup = fightGroupService.find(fightGroupL);
+    GroupBuy ss = fuDaiService.find(tuanGouId);
+
     Long time = 0L;
     time = Calendar.getInstance().getTimeInMillis();
     // fightGroup.set("ji_shi",fightGroup.getEndDate().getTime()- time);
 
     fightGroup.setJishi(fightGroup.getEndDate().getTime()- time);
-
+    fightGroup.setSales(ss.getSales());
     Map<String, Object> map = new HashedMap();
     map.put("goods", fightGroup.getProduct().getGoods());
     map.put("fightGroup",fightGroup);
