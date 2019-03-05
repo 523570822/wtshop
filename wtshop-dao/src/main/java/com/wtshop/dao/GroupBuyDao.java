@@ -27,6 +27,14 @@ public class GroupBuyDao extends BaseDao<GroupBuy>{
         String select = " SELECT f.*,g.name,g.image,g.market_price ";
         String  sqlExceptSelect="FROM group_buy f LEFT JOIN goods g on f.product_id=g.id   where 1 = 1 AND status = 0 order by price desc";
         return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
+    }   /**
+     * 获取当前正在使用的福袋
+     */
+    public List<GroupBuy> findListRe(){
+
+        String sql = " SELECT  f.*,g.name,g.image,g.market_price FROM group_buy f LEFT JOIN goods g on f.product_id=g.id   where 1 = 1 AND status = 0 order by f.sales desc  limit 10";
+
+        return modelManager.find(sql);
     }
 
 

@@ -81,6 +81,9 @@ public class GroupBuyService extends BaseService<GroupBuy> {
     public Page<GroupBuy> findPages(Pageable pageable) {
         return fuDaiDao.findPages(pageable);
     }
+    public List<GroupBuy> findListRe() {
+        return fuDaiDao.findListRe();
+    }
 
 
     //福袋抽取副产品

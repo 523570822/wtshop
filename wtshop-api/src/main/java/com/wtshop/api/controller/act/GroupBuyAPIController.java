@@ -73,6 +73,20 @@ public class GroupBuyAPIController extends BaseAPIController {
         // map.put("list", list);
         renderJson(ApiResult.success(list));
     }
+
+    /**
+     * 福袋主页
+     */
+    public void listRe() {
+
+
+
+        Map<String, Object> map = new HashedMap();
+
+       List<GroupBuy> list = fuDaiService.findListRe();
+        // map.put("list", list);
+        renderJson(ApiResult.success(list));
+    }
 /**
  * 组团详情
  */
@@ -85,10 +99,7 @@ public void groupDetails() throws ParseException {
     map.put("goods", fightGroup.getProduct().getGoods());
     map.put("fightGroup",fightGroup);
     map.put("order",order);
-
     renderJson(ApiResult.success(map));
-
-
 
 }
 
