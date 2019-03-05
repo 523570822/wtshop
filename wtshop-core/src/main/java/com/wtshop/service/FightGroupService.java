@@ -15,10 +15,7 @@ import com.wtshop.util.StringUtils;
 import org.apache.commons.collections.map.HashedMap;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by 蔺哲 on 2017/7/11.
@@ -39,7 +36,16 @@ public class FightGroupService extends BaseService<FightGroup> {
  * 根据商品id   product_id 获取参团信息
  */
     public  List<FightGroup> findByProductId (Long productId){
-    return     fuDaiProductDao.findByProductId(productId);
+        List<FightGroup> fightGroupList = fuDaiProductDao.findByProductId(productId);
+        for (FightGroup fightGroup:fightGroupList) {
+            Long time = 0L;
+            time = Calendar.getInstance().getTimeInMillis();
+           // fightGroup.set("ji_shi",fightGroup.getEndDate().getTime()- time);
+
+            fightGroup.setJishi(fightGroup.getEndDate().getTime()- time);
+            
+        }
+    return    fightGroupList;
     }
 
 

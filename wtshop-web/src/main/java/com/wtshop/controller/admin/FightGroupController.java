@@ -21,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -61,125 +62,17 @@ public class FightGroupController extends BaseController {
 
     //去添加页面
     public void add() throws ParseException {
-     /*  Map<String, String[]> ss = getParaMap();
-        Long fuDaiId =23L;
-                GroupBuy fuDai = groupBuyService.find(fuDaiId);
-        //可拼团认
-        List<FightGroup> fightgroupList=fightGroupService.findByProductId(fuDai.getProductId());
-        Product p = fuDai.getProduct();
-        Goods goods = p.getGoods();
-        Map<String, Object> map = new HashedMap();
-
-        Long id = goods.getId();
-        String type = getPara("type"); //是否喵币商品
-        Member perosn=memberService.getCurrent();
-        Pageable pageable = new Pageable(1, 20);
-        Boolean favorite = false;
-
-        if (goods == null) {
-            return;
-        }
-        List<Area> areas = areaService.findParents(goods.getArea(), true, null);
-        goods.setAttributeValue0(areas.get(0).getName());
-
-        RequestContextHolder.setRequestAttributes(getRequest());
-        Member m=memberService.getCurrent();
-        if (goods.getFavoriteMembers().contains(m)) {
-            favorite = true;
-        }
-        Page<Consultation> consultationPages = consultationService.findPage(null, goods, true, pageable);
-        Page<Review> reviewPages = reviewService.findPageList(null, goods, null, true, pageable);
-        List<Review> list = reviewPages.getList();
-        for(Review review:list){
-            Date dd = review.getModifyDate();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String s = sdf.format(dd);
-
-            Date date =  sdf.parse(s);
-            review.setModifyDate(date);
-            Member member = memberService.find(review.getMemberId());
-            String nickname = member.getNickname();
-            if(review.getIsAnonymous() != null && review.getIsAnonymous()){
-                if(StringUtils.isNotBlank(nickname)){
-                    String first = nickname.substring(0,1);
-                    String end = nickname.substring(nickname.length()-1);
-                    review.setOrderContent(first+"**"+end);
-                }else {
-                    review.setOrderContent("**");
-                }
-            }else {
-                review.setOrderContent(nickname);
-            }
-        }
-        Long reviewCount = reviewService.count(null, goods, null, true);//全部评论
-        Long positiveCount = reviewService.count(null, goods, Review.Type.positive, true);
-        Long moderateCount = reviewService.count(null, goods, Review.Type.moderate, true);
-        Long negativeCount = reviewService.count(null, goods, Review.Type.negative, true);
-        Long imagescount = 0L;
-        List<Review> reviews = reviewService.count(null, goods, true);
-        for(Review review : reviews){
-            String images = review.getImages();
-            if(images.contains("/")){
-                imagescount += 1;
-            }
-        }
-        List<Product> productList = productService.findProductList(id);
-        String name = goods.getName();
-        List<Tag> tags = goodsService.finTagList(goods.getId());
-
-
-
-        //购物须知&正品保障&关税
-        Setting setting = SystemUtils.getSetting();
-        String settingShoppingCopyUrl = setting.getShoppingCopyUrl();
-        String certifiedCopyUrl = setting.getCertifiedCopyUrl();
-        String taxExplainUrl = setting.getTaxExplainUrl();
-        Product byGoodsId = productService.findByGoodsId(goods.getId());
-        Integer stock = byGoodsId.getStock();
-
-
-        //插入会员足迹
-        if (m !=null){
-            boolean isHas = footPrintService.findByTime(goods.getId(),perosn.getId());
-            if(!isHas){
-                Footprint footprint=new  Footprint();
-                footprint.setGoodsId(goods.getId());
-                footprint.setMemberId(perosn.getId());
-                footPrintService.save(footprint);
-            }
-        }
-        //收货地址
-        Receiver aDefault = receiverService.findDefault(perosn);
-
-        //商品配送
-        String receiveTime = null;
-        if(aDefault != null){
-            AreaDescribe areaDescribe = areaDescribeService.findByAreaId(aDefault.getAreaId());
-            //判断本级地区是否填写
-            if(areaDescribe != null && areaDescribe.getReceivingBegintime() != null){
-                receiveTime = areaDescribe.getReceivingBegintime();
-            }else {
-                AreaDescribe areaDescribes = areaDescribeService.findByAreaId(areaService.find(aDefault.getAreaId()).getParentId());
-                if(areaDescribes !=null){
-                    receiveTime = areaDescribes.getReceivingBegintime();
-                }
-
-            }
-        }
-        String 	freeMoney= RedisUtil.getString("freeMoney");
-        String freMon;
-        if(freeMoney==null||freeMoney.trim().equals("")||freeMoney.trim().equals("null")||freeMoney.trim().equals("0")){
-            freMon=	"包邮";
-        }else{
-            freMon="订单满"+freeMoney+"元包邮";
-        }
-
-
-        TuanGouGoodsMessageResult goodsMessageResult = new TuanGouGoodsMessageResult(stock,goods,name, favorite, consultationPages, reviewPages, reviewCount,positiveCount,moderateCount,negativeCount,imagescount,tags,productList,settingShoppingCopyUrl,certifiedCopyUrl,taxExplainUrl,aDefault,receiveTime,freMon,fuDai,fightgroupList);
-        renderJson(ApiResult.success(goodsMessageResult));*/
-
-
         Long fightGroupL = 23L;
+        Long tuanGouId = 23L;
+        List<Order> order = orderService.findByfightgroupId(fightGroupL);
+        FightGroup fightGroup = fightGroupService.find(fightGroupL);
+        Map<String, Object> map = new HashedMap();
+        map.put("goods", fightGroup.getProduct().getGoods());
+        map.put("fightGroup",fightGroup);
+        map.put("order",order);
+        renderJson(ApiResult.success(map));
+
+       /* Long fightGroupL = 23L;
 
         Long tuanGouId = 23L;
 
@@ -191,7 +84,7 @@ public class FightGroupController extends BaseController {
         map.put("fightGroup",fightGroup);
         map.put("order",order);
 
-        renderJson(ApiResult.success(map));
+        renderJson(ApiResult.success(map));*/
 
 /*     setAttr("fuDaiQuestionImage", ReadProper.getResourceValue("fuDaiDefaultImage"));
         render("/admin/groupBuy/add.ftl");*/
