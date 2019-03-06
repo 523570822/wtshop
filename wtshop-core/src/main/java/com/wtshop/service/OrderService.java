@@ -422,7 +422,10 @@ public class OrderService extends BaseService<Order> {
             List<Map<String, Object>> list = fuDaiService.luckDraw(order);
             //调用推送
         }
-
+        logger.info("测试团购getFightgroupId   :  " + order.getFightgroupId());
+        logger.info("测试团购order.getIsSinglepurchase()   :  " +order.getIsSinglepurchase());
+        logger.info("order.getType()  :  " +order.getType());
+        logger.info("Order.Type.group.ordinal()  :  " +Order.Type.group.ordinal());
         //团购
         if (order.getType() == Order.Type.group.ordinal()) {
             FightGroup fightGroup=new FightGroup();
@@ -464,6 +467,7 @@ public class OrderService extends BaseService<Order> {
                 fightGroupService.save(fightGroup);
 
             }else{
+
                  fightGroup = fightGroupService.find(order.getFightgroupId());
                 fightGroup.setCount(fightGroup.getCount()+1);
                 if(fightGroup.getCount()>=fightGroup.getGroupnum()){
