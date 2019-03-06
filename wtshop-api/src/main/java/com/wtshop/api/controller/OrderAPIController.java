@@ -477,11 +477,16 @@ public class OrderAPIController extends BaseAPIController {
         Long tuanGouId = getParaToLong("tuanGouId");
 
 
-		FightGroup fightGroup = fightGroupService.find(fightGroupId);
 
-		if(fightGroup.getCount()>=fightGroup.getGroupnum()){
-			renderJson(ApiResult.fail("抱歉该团已经完成"));
+        if(fightGroupId==0){
+			FightGroup fightGroup = fightGroupService.find(fightGroupId);
+
+			if(fightGroup.getCount()>=fightGroup.getGroupnum()){
+				renderJson(ApiResult.fail("抱歉该团已经完成"));
+				return;
+			}
 		}
+
 
 
 
