@@ -314,6 +314,7 @@ public class OrderAPIController extends BaseAPIController {
 
 				if(order.size()>0){
 					renderJson(ApiResult.fail("你个傻逼"));
+					return;
 				}
 			}
 

@@ -267,7 +267,7 @@ public class OrderDao extends BaseDao<Order> {
 	public Page<Order> findPages(Order.Status status, Member member, Pageable pageable ,Integer type) {
 		String select = " select o.type, o.id ,o.status ,o.quantity quantity,o.amount price ," +
 			"o.sn , o.create_date ,o.freight, o.actOrderId fudaiId";
-		String sqlExceptSelect = "FROM `order` o WHERE 1 = 1 AND o.is_delete = 0" ;
+		String sqlExceptSelect = "FROM `order` o WHERE 1 = 1 AND o.is_delete = 0 And o.type<>7 " ;
 
 		if(status != null &&  !status.equals(Order.Status.shipped)){
 			sqlExceptSelect += " AND o.status = "+ status.ordinal();
@@ -284,6 +284,45 @@ public class OrderDao extends BaseDao<Order> {
 		return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
 	}
 
+	/**
+	 * 查找团购订单分页
+	 *
+
+	 * @param status
+	 *            状态
+	 * @param member
+	 *            会员
+	 * @param pageable
+	 *            分页信息
+	 * @return 订单分页
+	 */
+	public Page<Order> findTuanGouPages(String status, Member member, Pageable pageable ) {
+		String select = " select o.type, o.id ,o.status ,o.quantity quantity,o.amount price ," +
+				"o.sn , o.create_date ,o.freight, o.actOrderId fudaiId";
+		String sqlExceptSelect = "FROM `order` o WHERE 1 = 1 AND o.is_delete = 0 And o.type=7" ;
+
+		if(status != null){
+
+			if(status.equals("0")){
+				sqlExceptSelect += " AND o.status in ('6','7','8','11') ";
+			}
+			if(status.equals("1")){
+				sqlExceptSelect += " AND o.status in ('2','3','4','5','9','10') ";
+			}
+			if(status.equals("2")){
+				sqlExceptSelect += " AND o.status in('0','1') ";
+			}
+
+		}
+
+
+
+		if (member != null) {
+			sqlExceptSelect += " AND o.member_id = " + member.getId();
+		}
+		sqlExceptSelect += " order by o.modify_date desc";
+		return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
+	}
 
 	/**
 	 * 查找订单分页

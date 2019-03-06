@@ -93,6 +93,47 @@ public class OrderAPIController extends BaseAPIController {
 		renderJson(ApiResult.success(hashMap));
 
 	}
+	/**
+	 * 列表
+	 * {"msg":"","code":1,"data":{"page":{"totalRow":1,"pageNumber":1,"firstPage":true,"lastPage":true,"totalPage":1,"pageSize":10,"list":[{"address":"中南海1号","amount":70.000000,"amount_paid":0.000000,"area_id":null,"area_name":"北京市昌平区","complete_date":null,"consignee":"史强","coupon_code_id":null,"coupon_discount":0.000000,"create_date":"2017-05-24 14:42:25","exchange_point":0,"expire":"2017-05-25 14:42:25","fee":0.000000,"freight":0.000000,"id":82,"invoice_content":null,"invoice_title":null,"is_allocated_stock":false,"is_exchange_point":false,"is_use_coupon_code":false,"lock_expire":"2017-05-24 14:43:25","lock_key":"b16f3025929c413e27fb4fd39a4f46ee","member_id":18,"memo":"","modify_date":"2017-05-24 14:42:25","offset_amount":0.000000,"payment_method_id":1,"payment_method_name":"网上支付","payment_method_type":0,"phone":"13581856711","price":70.000000,"promotion_discount":0.000000,"promotion_names":"[]","quantity":1,"refund_amount":0.000000,"returned_quantity":0,"reward_point":10,"shipped_quantity":0,"shipping_method_id":1,"shipping_method_name":"普通快递","sn":"20170524404","status":0,"tax":0.000000,"type":0,"version":0,"weight":1000,"zip_code":"100000"}]},"status":"all"}}
+	 */
+	public void tuanGouList() {
+		Integer pageNumber = getParaToInt("pageNumbers");
+		String status = getPara("status");
+		//Integer type = getParaToInt("type");
+		//Order.Status status = StrKit.notBlank(statusName) ? Order.Status.valueOf(statusName) : null;
+		Member member = memberService.getCurrent();
+		Pageable pageable = new Pageable(pageNumber, PAGE_SIZE);
+		//更新过期订单
+		orderService.updateExperce(member);
+		Page<Order> page = orderService.findTuanGouPages( status, member ,pageable );
+
+		List<Order> orderList = page.getList();
+		List<OrderGoods> orderGoodss = new ArrayList<>();
+		for(Order order : orderList){
+			//todo 退款订单显示问题 暂时这样修改
+			if(order.getStatus() == 11){
+				order.setStatus(110);
+			}
+
+			List<Goods> goodsList = goodsService.findGoodsByItemId(order.getId());
+			if (order.getType()==Order.Type.daopai.ordinal()){
+				//获取倒拍单价
+
+			}
+			OrderGoods orderGoods = new OrderGoods(goodsList, order);
+			orderGoodss.add(orderGoods);
+		}
+
+		HashMap<String, Object> hashMap = new HashMap<String, Object>();
+		hashMap.put("PageNumber",page.getPageNumber());
+		hashMap.put("TotalPage",page.getTotalPage());
+		hashMap.put("TotalRow",page.getTotalRow());
+		hashMap.put("PageSize",page.getPageSize());
+		hashMap.put("orderGoodss",orderGoodss);
+		renderJson(ApiResult.success(hashMap));
+
+	}
 
 
 	/**

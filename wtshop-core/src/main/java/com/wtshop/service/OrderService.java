@@ -713,6 +713,9 @@ public class OrderService extends BaseService<Order> {
     public Page<Order> findPages(Order.Status status, Member member, Pageable pageable, Integer type) {
         return orderDao.findPages(status, member, pageable, type);
     }
+    public Page<Order> findTuanGouPages( String status, Member member, Pageable pageable) {
+        return orderDao.findTuanGouPages(status, member, pageable);
+    }
 
 
     /**
