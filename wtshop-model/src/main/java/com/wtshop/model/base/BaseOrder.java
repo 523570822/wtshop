@@ -489,4 +489,28 @@ public abstract class BaseOrder<M extends BaseOrder<M>> extends Model<M> impleme
 		return get("companyName");
 	}
 
+	public void setFightgroupId(Long fightgroupId) {
+		set("fightgroup_id", fightgroupId);
+	}
+
+	public Long getFightgroupId() {
+		return get("fightgroup_id");
+	}
+
+	public void setGroupbuyId(Long groupbuyId) {
+		set("groupbuy_id", groupbuyId);
+	}
+
+	public Long getGroupbuyId() {
+		return get("groupbuy_id");
+	}
+
+	public void setIsSinglepurchase(Boolean isSinglepurchase) {
+		set("is_singlepurchase", isSinglepurchase);
+	}
+
+	public Boolean getIsSinglepurchase() {
+		return get("is_singlepurchase");
+	}
+
 }

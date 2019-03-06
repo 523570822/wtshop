@@ -2,6 +2,7 @@ package com.wtshop.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
+import com.jfinal.aop.Enhancer;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.i18n.I18n;
 import com.jfinal.i18n.Res;
@@ -51,6 +52,7 @@ public class OrderAPIController extends BaseAPIController {
 	private AreaService areaService = enhance(AreaService.class);
 	private PromotionService promotionService = enhance(PromotionService.class);
 	private GoodsPromotionService goodsPromotionService = enhance(GoodsPromotionService.class);
+	private  FightGroupService fightGroupService= Enhancer.enhance(FightGroupService.class);
 	private Res resZh = I18n.use();
 
 	private GroupBuyService groupBuyService = enhance(GroupBuyService.class);
@@ -286,7 +288,7 @@ public class OrderAPIController extends BaseAPIController {
 
 
 
-		Order order = orderService.createBuyNow(Order.Type.general, member, goods, price, 1, manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName);
+		Order order = orderService.createBuyNow(Order.Type.general, member, goods, price, 1, manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,null,0,0);
 		renderJson(ApiResult.success(order.getId()));
 	}
 
@@ -311,13 +313,15 @@ public class OrderAPIController extends BaseAPIController {
 		Product product = groupBuy.getProduct();
 
         PriceResult totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(groupBuy.getUniprice().toString()));
-
+		Double price = groupBuy.getUniprice();
         if(isSinglepurchase){
-            totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(groupBuy.getPrice().toString()));
-        }else {
             totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(groupBuy.getUniprice().toString()));
+			price=groupBuy.getUniprice();
+        }else {
+            totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(groupBuy.getPrice().toString()));
+			price=groupBuy.getPrice();
         }
-        PriceResult price = totalPrice;
+
 		Goods goods = goodsService.findGoodsByPro(product.getId());
 		if (!product.getIsMarketable()) {
 			renderJson(ApiResult.fail(resZh.format("shop.cart.productNotMarketable")));
@@ -434,7 +438,7 @@ public class OrderAPIController extends BaseAPIController {
 		//支付金额
 		Double amountpaid = MathUtil.subtract(realPriced ,favoritePrice);
 		//优惠总额
-		favoritePrice = MathUtil.getInt(new BigDecimal(favoritePrice).add(new BigDecimal(marketPrice)).subtract(new BigDecimal(price.getPrice())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		favoritePrice = MathUtil.getInt(new BigDecimal(favoritePrice).add(new BigDecimal(marketPrice)).subtract(new BigDecimal(price)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 
 		if(amountpaid < 0){
 			miaobi = miaobi + amountpaid;
@@ -453,7 +457,7 @@ public class OrderAPIController extends BaseAPIController {
 				realPrice, favoritePrice, param, is_promotion, amountpaid,isSinglepurchase,fightGroupId,tuanGouId);
 		RedisUtil.setString("ORDERPARAM:"+member.getId(), params);
 
-		renderJson(ApiResult.success(orderBuyNowResult));
+ 		renderJson(ApiResult.success(orderBuyNowResult));
 
 	}
 	/**
@@ -473,6 +477,11 @@ public class OrderAPIController extends BaseAPIController {
         Long tuanGouId = getParaToLong("tuanGouId");
 
 
+		FightGroup fightGroup = fightGroupService.find(fightGroupId);
+
+		if(fightGroup.getCount()>=fightGroup.getGroupnum()){
+			renderJson(ApiResult.fail("抱歉该团已经完成"));
+		}
 
 
 
@@ -522,7 +531,8 @@ public class OrderAPIController extends BaseAPIController {
 
 
 
-		Order order = orderService.createBuyNow(Order.Type.general, member, goods, price, 1, manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName);
+		Order order = orderService.createBuyNow(Order.Type.group, member, goods, price, 1, manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney
+				, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,isSinglepurchase,fightGroupId,tuanGouId);
 		renderJson(ApiResult.success(order.getId()));
 	}
 	/**

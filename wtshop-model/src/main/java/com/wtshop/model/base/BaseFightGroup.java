@@ -9,15 +9,6 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseFightGroup<M extends BaseFightGroup<M>> extends Model<M> implements IBean {
 
-
-	public Long getJiShi() {
-		return get("ji_shi");
-	}
-
-	public void setJishi(Long jiShi) {
-		set("ji_shi", jiShi);
-	}
-
 	public void setId(Long id) {
 		set("id", id);
 	}
@@ -176,6 +167,22 @@ public abstract class BaseFightGroup<M extends BaseFightGroup<M>> extends Model<
 
 	public Long getMemberId() {
 		return get("member_id");
+	}
+
+	public void setTuangouId(Long tuangouId) {
+		set("tuangou_id", tuangouId);
+	}
+
+	public Long getTuangouId() {
+		return get("tuangou_id");
+	}
+
+	public void setJiShi(Long jiShi) {
+		set("ji_shi", jiShi);
+	}
+
+	public Long getJiShi() {
+		return get("ji_shi");
 	}
 
 }

@@ -69,7 +69,7 @@ public class FightGroupController extends BaseController {
         time = Calendar.getInstance().getTimeInMillis();
 
 
-        fightGroup.setJishi(fightGroup.getEndDate().getTime()- time);
+        fightGroup.setJiShi(fightGroup.getEndDate().getTime()- time);
         map.put("goods", fightGroup.getProduct().getGoods());
         map.put("fightGroup",fightGroup);
         map.put("order",order);

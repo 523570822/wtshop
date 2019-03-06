@@ -97,7 +97,7 @@ public void groupDetails() throws ParseException {
     time = Calendar.getInstance().getTimeInMillis();
 
 
-    fightGroup.setJishi(fightGroup.getEndDate().getTime()- time);
+    fightGroup.setJiShi(fightGroup.getEndDate().getTime()- time);
     fightGroup.setSales(ss.getSales());
     Map<String, Object> map = new HashedMap();
     map.put("goods", fightGroup.getProduct().getGoods());

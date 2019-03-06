@@ -53,7 +53,11 @@ public class Order extends BaseOrder<Order> {
 		/**
 		 * vip置换订单
 		 */
-		vip
+		vip,
+		/**
+		 * 团购
+		 */
+		group
 	}
 
 	/**

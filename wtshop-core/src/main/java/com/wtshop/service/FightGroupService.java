@@ -41,8 +41,8 @@ public class FightGroupService extends BaseService<FightGroup> {
             Long time = 0L;
             time = Calendar.getInstance().getTimeInMillis();
            // fightGroup.set("ji_shi",fightGroup.getEndDate().getTime()- time);
+            fightGroup.setJiShi(fightGroup.getEndDate().getTime()- time);
 
-            fightGroup.setJishi(fightGroup.getEndDate().getTime()- time);
             
         }
     return    fightGroupList;

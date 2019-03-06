@@ -27,10 +27,7 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.math.BigDecimal.ROUND_HALF_DOWN;
 import static java.math.BigDecimal.ROUND_HALF_UP;
@@ -81,7 +78,8 @@ public class OrderService extends BaseService<Order> {
     private DepositLogService depositLogService = Enhancer.enhance(DepositLogService.class);
     private ExchangeLogService exchangeLogService = Enhancer.enhance(ExchangeLogService.class);
     private AccountService accountService = Enhancer.enhance(AccountService.class);
-
+    private  FightGroupService fightGroupService= Enhancer.enhance(FightGroupService.class);
+    private GroupBuyService groupBuyService = Enhancer.enhance(GroupBuyService.class);
     com.jfinal.log.Logger logger = com.jfinal.log.Logger.getLogger(OrderService.class);
 
     /**
@@ -424,6 +422,66 @@ public class OrderService extends BaseService<Order> {
             List<Map<String, Object>> list = fuDaiService.luckDraw(order);
             //调用推送
         }
+
+        //团购
+        if (order.getType() == Order.Type.group.ordinal()) {
+            FightGroup fightGroup=new FightGroup();
+            GroupBuy groupBuy = groupBuyService.find(order.getGroupbuyId());
+            //判断有没有拼团id 并且判断是不是单购
+            if(order.getFightgroupId()==0&&order.getIsSinglepurchase()){
+                //单购
+
+
+            }else if (order.getFightgroupId()==0&&!order.getIsSinglepurchase()){
+                //自己租的团
+
+              //  fightGroup.
+                fightGroup.setTitle(groupBuy.getTitle());
+                fightGroup.setPrice(groupBuy.getPrice());
+                fightGroup.setUniprice(groupBuy.getUniprice());
+
+                //拼图状态  拼图中
+                fightGroup.setStatus(2);
+                fightGroup.setRule(groupBuy.getRule());
+                fightGroup.setExplain(groupBuy.getExplain());
+                fightGroup.setProductId(groupBuy.getProductId());
+                //已经参团人数
+                fightGroup.setCount(2);
+                fightGroup.setDispatchprice(groupBuy.getDispatchprice());
+                fightGroup.setGroupnum(groupBuy.getGroupnum());
+                fightGroup.setEndtime(groupBuy.getEndtime());
+                fightGroup.setMemberId(order.getMemberId());
+                Date nowDate = new Date();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(nowDate);
+                cal.add(Calendar.HOUR, groupBuy.getEndtime());// 24小时制
+                Date time = cal.getTime();
+
+                fightGroup.setEndDate(time);
+
+               fightGroup.setTuangouId(order.getGroupbuyId());
+
+                fightGroupService.save(fightGroup);
+
+            }else{
+                 fightGroup = fightGroupService.find(order.getFightgroupId());
+                fightGroup.setCount(fightGroup.getCount()+1);
+                if(fightGroup.getCount()>=fightGroup.getGroupnum()){
+                    fightGroup.setStatus(1);
+                }
+                //跟人家拼团
+
+            }
+
+            logger.info("开始调用团购————————————————————————");
+
+
+
+//			reverseExService.paySuccess(order.getActOrderId());
+        }
+
+
+
 
         logger.info("开始极光推送服务————————————————————————");
         try {
@@ -1246,15 +1304,16 @@ public class OrderService extends BaseService<Order> {
      */
 
     public Order createBuyNow(Order.Type type, Member member, Goods goods, Double price, int quantity, Double manjianPrice, Receiver receiver, Double amountMoney, Double deliveryMoney, Double
-        miaobiMoney, String memo, Double couponYunfei,Boolean isInvoice,Boolean isPersonal,String taxNumber,String companyName) {
+        miaobiMoney, String memo, Double couponYunfei,Boolean isInvoice,Boolean isPersonal,String taxNumber,String companyName,Boolean isSinglepurchase,long fightGroupId,long tuanGouId) {
 
 
         JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
         Order order = new Order();
         order.setSn(snDao.generate(Sn.Type.order));
         order.setType(type.ordinal());
-
-
+        order.setIsSinglepurchase(isSinglepurchase);
+        order.setFightgroupId(fightGroupId);
+        order.setGroupbuyId(tuanGouId);
         order.setIsInvoice(isInvoice);
         order.setIsPersonal(isPersonal);
         order.setTaxNumber(taxNumber);
