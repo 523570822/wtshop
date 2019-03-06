@@ -301,17 +301,23 @@ public class OrderAPIController extends BaseAPIController {
 		boolean isSinglepurchase= getParaToBoolean("isSinglepurchase");
 		//是否是团长
 		Long fightGroupId = getParaToLong("fightGroupId");
+        Long tuanGouId = getParaToLong("tuanGouId");
 
 
-		if(isSinglepurchase){
 
-		}
 
-		Long tuanGouId = getParaToLong("tuanGouId");
 
 		GroupBuy groupBuy = groupBuyService.find(tuanGouId);
 		Product product = groupBuy.getProduct();
 
+        PriceResult totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(groupBuy.getUniprice().toString()));
+
+        if(isSinglepurchase){
+            totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(groupBuy.getPrice().toString()));
+        }else {
+            totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(groupBuy.getUniprice().toString()));
+        }
+        PriceResult price = totalPrice;
 		Goods goods = goodsService.findGoodsByPro(product.getId());
 		if (!product.getIsMarketable()) {
 			renderJson(ApiResult.fail(resZh.format("shop.cart.productNotMarketable")));
@@ -322,7 +328,7 @@ public class OrderAPIController extends BaseAPIController {
 		Boolean isUseMiao = getParaToBoolean("isUseMiao",false);
 
 		//获取商品价格
-		Double price = MathUtil.multiply(goods.getPrice(), 1);
+	//	Double price = MathUtil.multiply(goods.getPrice(), 1);
 
 
 		//判断商品是否是促销商品
@@ -408,13 +414,7 @@ public class OrderAPIController extends BaseAPIController {
 
 		//优惠前总金额
 		Double marketPrice = MathUtil.multiply(goods.getMarketPrice(), 1);
-		PriceResult totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(groupBuy.getUniprice().toString()));
 
-		if(isSinglepurchase){
-			 totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(groupBuy.getPrice().toString()));
-		}else {
-			 totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(groupBuy.getUniprice().toString()));
-		}
 
 		PriceResult oldTotalPrice = new PriceResult("商品优惠前总金额","¥ "+MathUtil.getInt(price.toString()));
 		PriceResult deliveryPrice = new PriceResult("运费","¥ "+ MathUtil.getInt(delivery.getPrice().toString()));
@@ -434,7 +434,7 @@ public class OrderAPIController extends BaseAPIController {
 		//支付金额
 		Double amountpaid = MathUtil.subtract(realPriced ,favoritePrice);
 		//优惠总额
-		favoritePrice = MathUtil.getInt(new BigDecimal(favoritePrice).add(new BigDecimal(marketPrice)).subtract(new BigDecimal(price)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		favoritePrice = MathUtil.getInt(new BigDecimal(favoritePrice).add(new BigDecimal(marketPrice)).subtract(new BigDecimal(price.getPrice())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 
 		if(amountpaid < 0){
 			miaobi = miaobi + amountpaid;
@@ -465,6 +465,20 @@ public class OrderAPIController extends BaseAPIController {
 
 		Member member = memberService.getCurrent();
 		Long receiverId = getParaToLong("receiverId"); //收货人
+
+        //是否是单购  1是  0否
+        boolean isSinglepurchase= getParaToBoolean("isSinglepurchase");
+        //是否是团长
+        Long fightGroupId = getParaToLong("fightGroupId");
+        Long tuanGouId = getParaToLong("tuanGouId");
+
+
+
+
+
+        GroupBuy groupBuy = groupBuyService.find(tuanGouId);
+        Product product = groupBuy.getProduct();
+
 
 
 		//1是 ，0否  是否開發票
