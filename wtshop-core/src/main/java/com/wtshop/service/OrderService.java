@@ -101,7 +101,15 @@ public class OrderService extends BaseService<Order> {
     public List<Order> findByfightgroupId(Long sn) {
         return orderDao.findByfightgroupId(sn);
     }
-
+    /**
+     * 根据编号查找订单
+     *
+     * @param sn 编号(忽略大小写)
+     * @return 订单，若不存在则返回null
+     */
+    public List<Order> findByfightgroupIdmemberId(Long sn,long memberId) {
+        return orderDao.findByfightgroupIdmemberId(sn,memberId);
+    }
     /**
      * 获取订单商品市场价格
      */
@@ -422,10 +430,10 @@ public class OrderService extends BaseService<Order> {
             List<Map<String, Object>> list = fuDaiService.luckDraw(order);
             //调用推送
         }
-        logger.info("测试团购getFightgroupId   :  " + order.getFightgroupId());
-        logger.info("测试团购order.getIsSinglepurchase()   :  " +order.getIsSinglepurchase());
-        logger.info("order.getType()  :  " +order.getType());
-        logger.info("Order.Type.group.ordinal()  :  " +Order.Type.group.ordinal());
+      //  logger.info("测试团购getFightgroupId   :  " + order.getFightgroupId());
+      //  logger.info("测试团购order.getIsSinglepurchase()   :  " +order.getIsSinglepurchase());
+      //  logger.info("order.getType()  :  " +order.getType());
+      //  logger.info("Order.Type.group.ordinal()  :  " +Order.Type.group.ordinal());
         //团购
         if (order.getType() == Order.Type.group.ordinal()) {
             FightGroup fightGroup=new FightGroup();
@@ -473,6 +481,7 @@ public class OrderService extends BaseService<Order> {
                 if(fightGroup.getCount()>=fightGroup.getGroupnum()){
                     fightGroup.setStatus(1);
                 }
+                fightGroupService.update(fightGroup);
                 //跟人家拼团
 
             }

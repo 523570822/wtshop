@@ -297,14 +297,25 @@ public class OrderAPIController extends BaseAPIController {
 	 */
 	@Before(Tx.class)
 	public void buyNowTuangou() {
-
 		Member member = memberService.getCurrent();
 		//是否是单购  1是  0否
 		boolean isSinglepurchase= getParaToBoolean("isSinglepurchase");
+
+
 		//是否是团长
 		Long fightGroupId = getParaToLong("fightGroupId");
+
         Long tuanGouId = getParaToLong("tuanGouId");
 
+
+
+			if(fightGroupId!=0&&!isSinglepurchase){
+				List<Order> order = orderService.findByfightgroupIdmemberId(fightGroupId, member.getId());
+
+				if(order.size()>0){
+					renderJson(ApiResult.fail("你个傻逼"));
+				}
+			}
 
 
 
