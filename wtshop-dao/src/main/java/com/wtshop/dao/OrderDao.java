@@ -297,20 +297,24 @@ public class OrderDao extends BaseDao<Order> {
 	 * @return 订单分页
 	 */
 	public Page<Order> findTuanGouPages(String status, Member member, Pageable pageable ) {
-		String select = " select o.type, o.id ,o.status ,o.quantity quantity,o.amount price ," +
+		String select = " select o.type, o.id ,o.status ,o.quantity quantity,o.amount price,o.groupbuy_id,o.fightgroup_id ," +
 				"o.sn , o.create_date ,o.freight, o.actOrderId fudaiId";
 		String sqlExceptSelect = "FROM `order` o WHERE 1 = 1 AND o.is_delete = 0 And o.type=7" ;
 
 		if(status != null){
 
 			if(status.equals("0")){
+			//	sqlExceptSelect = "FROM `order` o LEFT JOIN fight_group f on o.fightgroup_id=f.id  WHERE 1 = 1 AND o.is_delete = 0 And o.type=7 and and o.is_singlepurchase <>1 and f.count<f.groupnum" ;
+
 				sqlExceptSelect += " AND o.status in ('6','7','8','11') ";
 			}
 			if(status.equals("1")){
+				sqlExceptSelect = "FROM `order` o LEFT JOIN fight_group f on o.fightgroup_id=f.id  WHERE 1 = 1 AND o.is_delete = 0 And o.type=7  and o.is_singlepurchase <>1 and f.count>=f.groupnum" ;
 				sqlExceptSelect += " AND o.status in ('2','3','4','5','9','10') ";
 			}
 			if(status.equals("2")){
-				sqlExceptSelect += " AND o.status in('0','1') ";
+				sqlExceptSelect = "FROM `order` o LEFT JOIN fight_group f on o.fightgroup_id=f.id  WHERE 1 = 1 AND o.is_delete = 0 And o.type=7  and o.is_singlepurchase <>1 and f.count<f.groupnum" ;
+				sqlExceptSelect += " AND o.status in('0','1','2') ";
 			}
 
 		}
