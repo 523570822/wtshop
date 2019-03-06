@@ -478,7 +478,7 @@ public class OrderAPIController extends BaseAPIController {
 
 
 
-        if(fightGroupId==0){
+        if(fightGroupId!=0){
 			FightGroup fightGroup = fightGroupService.find(fightGroupId);
 
 			if(fightGroup.getCount()>=fightGroup.getGroupnum()){
