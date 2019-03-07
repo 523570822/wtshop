@@ -90,15 +90,20 @@ public void groupDetails() throws ParseException {
     Long fightGroupL = getParaToLong("fightGroup");
     Long tuanGouId = getParaToLong("tuanGouId");
     List<Order> order = orderService.findByfightgroupId(fightGroupL);
-    FightGroup fightGroup = fightGroupService.find(fightGroupL);
+
     GroupBuy ss = fuDaiService.find(tuanGouId);
 
     Long time = 0L;
     time = Calendar.getInstance().getTimeInMillis();
-
-
+    FightGroup fightGroup = fightGroupService.find(fightGroupL);
     fightGroup.setJiShi(fightGroup.getEndDate().getTime()- time);
     fightGroup.setSales(ss.getSales());
+if(fightGroupL==0){
+
+}else{
+
+}
+
     Map<String, Object> map = new HashedMap();
     map.put("goods", fightGroup.getProduct().getGoods());
     map.put("fightGroup",fightGroup);

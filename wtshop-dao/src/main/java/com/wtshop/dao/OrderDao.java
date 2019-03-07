@@ -309,11 +309,11 @@ public class OrderDao extends BaseDao<Order> {
 				sqlExceptSelect += " AND o.status in ('6','7','8','11') ";
 			}
 			if(status.equals("1")){
-				sqlExceptSelect = "FROM `order` o LEFT JOIN fight_group f on o.fightgroup_id=f.id  WHERE 1 = 1 AND o.is_delete = 0 And o.type=7  and o.is_singlepurchase <>1 and f.count>=f.groupnum" ;
+				sqlExceptSelect = "FROM `order` o LEFT JOIN fight_group f on o.fightgroup_id=f.id  WHERE 1 = 1 AND o.is_delete = 0 And o.type=7   and f.count>=f.groupnum" ;
 				sqlExceptSelect += " AND o.status in ('2','3','4','5','9','10') ";
 			}
 			if(status.equals("2")){
-				sqlExceptSelect = "FROM `order` o LEFT JOIN fight_group f on o.fightgroup_id=f.id  WHERE 1 = 1 AND o.is_delete = 0 And o.type=7  and o.is_singlepurchase <>1 and f.count<f.groupnum" ;
+				sqlExceptSelect = "FROM `order` o LEFT JOIN fight_group f on o.fightgroup_id=f.id  WHERE 1 = 1 AND o.is_delete = 0 And o.type=7  and f.count<f.groupnum" ;
 				sqlExceptSelect += " AND o.status in('0','1','2') ";
 			}
 

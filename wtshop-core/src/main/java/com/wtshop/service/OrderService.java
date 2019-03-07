@@ -215,6 +215,70 @@ public class OrderService extends BaseService<Order> {
         if (order.getStatus() == Order.Status.pendingShipment.ordinal()) {
             return ApiResult.fail("订单已完成支付,无需再次支付");
         }
+        //  logger.info("测试团购getFightgroupId   :  " + order.getFightgroupId());
+        //  logger.info("测试团购order.getIsSinglepurchase()   :  " +order.getIsSinglepurchase());
+        //  logger.info("order.getType()  :  " +order.getType());
+        //  logger.info("Order.Type.group.ordinal()  :  " +Order.Type.group.ordinal());
+        //团购
+        if (order.getType() == Order.Type.group.ordinal()) {
+            FightGroup fightGroup=new FightGroup();
+            GroupBuy groupBuy = groupBuyService.find(order.getGroupbuyId());
+            //判断有没有拼团id 并且判断是不是单购
+            if(order.getFightgroupId()==0&&order.getIsSinglepurchase()){
+                //单购
+
+
+            }else if (order.getFightgroupId()==0&&!order.getIsSinglepurchase()){
+                //自己租的团
+
+                //  fightGroup.
+                fightGroup.setTitle(groupBuy.getTitle());
+                fightGroup.setPrice(groupBuy.getPrice());
+                fightGroup.setUniprice(groupBuy.getUniprice());
+
+                //拼图状态  拼图中
+                fightGroup.setStatus(2);
+                fightGroup.setRule(groupBuy.getRule());
+                fightGroup.setExplain(groupBuy.getExplain());
+                fightGroup.setProductId(groupBuy.getProductId());
+                //已经参团人数
+                fightGroup.setCount(2);
+                fightGroup.setDispatchprice(groupBuy.getDispatchprice());
+                fightGroup.setGroupnum(groupBuy.getGroupnum());
+                fightGroup.setEndtime(groupBuy.getEndtime());
+                fightGroup.setMemberId(order.getMemberId());
+                Date nowDate = new Date();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(nowDate);
+                cal.add(Calendar.HOUR, groupBuy.getEndtime());// 24小时制
+                Date time = cal.getTime();
+
+                fightGroup.setEndDate(time);
+
+                fightGroup.setTuangouId(order.getGroupbuyId());
+
+                 fightGroup = fightGroupService.save(fightGroup);
+                order.setFightgroupId(fightGroup.getId());
+
+            }else{
+
+                fightGroup = fightGroupService.find(order.getFightgroupId());
+                fightGroup.setCount(fightGroup.getCount()+1);
+                if(fightGroup.getCount()>=fightGroup.getGroupnum()){
+                    fightGroup.setStatus(1);
+                }
+                fightGroupService.update(fightGroup);
+                //跟人家拼团
+
+            }
+
+            logger.info("开始调用团购————————————————————————");
+
+
+
+//			reverseExService.paySuccess(order.getActOrderId());
+        }
+
 
         BigDecimal amount = order.getAmount().subtract(order.getAmountPaid()).setScale(2, BigDecimal.ROUND_HALF_UP);
         Long memberId = order.getMemberId();
@@ -223,6 +287,8 @@ public class OrderService extends BaseService<Order> {
         order.setExpire(null);
         order.setLockExpire(null);
         order.setLockKey(null);
+
+
 
         logger.info("测试支付宝应保存金额   :  " + amount);
         if (StringUtils.isNotBlank(weiXinNo)) {
@@ -430,68 +496,7 @@ public class OrderService extends BaseService<Order> {
             List<Map<String, Object>> list = fuDaiService.luckDraw(order);
             //调用推送
         }
-      //  logger.info("测试团购getFightgroupId   :  " + order.getFightgroupId());
-      //  logger.info("测试团购order.getIsSinglepurchase()   :  " +order.getIsSinglepurchase());
-      //  logger.info("order.getType()  :  " +order.getType());
-      //  logger.info("Order.Type.group.ordinal()  :  " +Order.Type.group.ordinal());
-        //团购
-        if (order.getType() == Order.Type.group.ordinal()) {
-            FightGroup fightGroup=new FightGroup();
-            GroupBuy groupBuy = groupBuyService.find(order.getGroupbuyId());
-            //判断有没有拼团id 并且判断是不是单购
-            if(order.getFightgroupId()==0&&order.getIsSinglepurchase()){
-                //单购
 
-
-            }else if (order.getFightgroupId()==0&&!order.getIsSinglepurchase()){
-                //自己租的团
-
-              //  fightGroup.
-                fightGroup.setTitle(groupBuy.getTitle());
-                fightGroup.setPrice(groupBuy.getPrice());
-                fightGroup.setUniprice(groupBuy.getUniprice());
-
-                //拼图状态  拼图中
-                fightGroup.setStatus(2);
-                fightGroup.setRule(groupBuy.getRule());
-                fightGroup.setExplain(groupBuy.getExplain());
-                fightGroup.setProductId(groupBuy.getProductId());
-                //已经参团人数
-                fightGroup.setCount(2);
-                fightGroup.setDispatchprice(groupBuy.getDispatchprice());
-                fightGroup.setGroupnum(groupBuy.getGroupnum());
-                fightGroup.setEndtime(groupBuy.getEndtime());
-                fightGroup.setMemberId(order.getMemberId());
-                Date nowDate = new Date();
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(nowDate);
-                cal.add(Calendar.HOUR, groupBuy.getEndtime());// 24小时制
-                Date time = cal.getTime();
-
-                fightGroup.setEndDate(time);
-
-               fightGroup.setTuangouId(order.getGroupbuyId());
-
-                fightGroupService.save(fightGroup);
-
-            }else{
-
-                 fightGroup = fightGroupService.find(order.getFightgroupId());
-                fightGroup.setCount(fightGroup.getCount()+1);
-                if(fightGroup.getCount()>=fightGroup.getGroupnum()){
-                    fightGroup.setStatus(1);
-                }
-                fightGroupService.update(fightGroup);
-                //跟人家拼团
-
-            }
-
-            logger.info("开始调用团购————————————————————————");
-
-
-
-//			reverseExService.paySuccess(order.getActOrderId());
-        }
 
 
 
