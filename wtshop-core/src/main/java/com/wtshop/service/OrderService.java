@@ -226,7 +226,33 @@ public class OrderService extends BaseService<Order> {
             //判断有没有拼团id 并且判断是不是单购
             if(order.getFightgroupId()==0&&order.getIsSinglepurchase()){
                 //单购
+                fightGroup.setTitle(groupBuy.getTitle());
+                fightGroup.setPrice(groupBuy.getPrice());
+                fightGroup.setUniprice(groupBuy.getUniprice());
 
+                //拼图状态  拼图中
+                fightGroup.setStatus(1);
+                fightGroup.setRule(groupBuy.getRule());
+                fightGroup.setExplain(groupBuy.getExplain());
+                fightGroup.setProductId(groupBuy.getProductId());
+                //已经参团人数
+                fightGroup.setCount(1);
+                fightGroup.setDispatchprice(groupBuy.getDispatchprice());
+                fightGroup.setGroupnum(1);
+                fightGroup.setEndtime(groupBuy.getEndtime());
+                fightGroup.setMemberId(order.getMemberId());
+                Date nowDate = new Date();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(nowDate);
+                cal.add(Calendar.HOUR, groupBuy.getEndtime());// 24小时制
+                Date time = cal.getTime();
+
+                fightGroup.setEndDate(time);
+
+                fightGroup.setTuangouId(order.getGroupbuyId());
+
+                fightGroup = fightGroupService.save(fightGroup);
+                order.setFightgroupId(fightGroup.getId());
 
             }else if (order.getFightgroupId()==0&&!order.getIsSinglepurchase()){
                 //自己租的团
