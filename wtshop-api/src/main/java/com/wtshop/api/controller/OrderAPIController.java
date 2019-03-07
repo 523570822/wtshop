@@ -498,11 +498,13 @@ public class OrderAPIController extends BaseAPIController {
 				return;
 			}
 		}
+		GroupBuy groupBuy = groupBuyService.find(tuanGouId);
+		Double price = MathUtil.multiply(groupBuy.getUniprice(), 1);
+if(!isSinglepurchase){
+	 price = MathUtil.multiply(groupBuy.getPrice(), 1);
+}
 
 
-
-
-        GroupBuy groupBuy = groupBuyService.find(tuanGouId);
         Product product = groupBuy.getProduct();
 
 
@@ -527,7 +529,7 @@ public class OrderAPIController extends BaseAPIController {
 			return;
 		}
 
-		Double price = MathUtil.multiply(goods.getPrice(), 1);
+
 		String[] values = StringUtils.split(RedisUtil.getString("ORDERPARAM:" + member.getId()), ",");
 		Double[] skuids = values == null ? null :convertToDouble(values);
 
