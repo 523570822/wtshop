@@ -461,7 +461,7 @@ public class OrderDao extends BaseDao<Order> {
 	 * @return 订单数量
 	 */
 	public Long count(Order.Type type, Order.Status status, Member member, Goods goods, Boolean isPendingReceive, Boolean isPendingRefunds, Boolean isUseCouponCode, Boolean isExchangePoint, Boolean isAllocatedStock, Boolean hasExpired) {
-		String sql = "FROM `order` o WHERE 1 = 1 and o.is_delete = 0 ";
+		String sql = "FROM `order` o WHERE 1 = 1 and o.type<>7 and o.is_delete = 0 ";
 		if (type != null) {
 			sql += " AND o.type = " + type.ordinal();
 		}

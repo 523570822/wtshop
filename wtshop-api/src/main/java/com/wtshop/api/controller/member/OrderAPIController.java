@@ -127,6 +127,7 @@ public class OrderAPIController extends BaseAPIController {
 
 		HashMap<String, Object> hashMap = new HashMap<String, Object>();
 		hashMap.put("PageNumber",page.getPageNumber());
+		hashMap.put("memberId",member.getId());
 		hashMap.put("TotalPage",page.getTotalPage());
 		hashMap.put("TotalRow",page.getTotalRow());
 		hashMap.put("PageSize",page.getPageSize());
