@@ -105,6 +105,12 @@ public class MyHomeController extends BaseAPIController {
         Long miaobiGoodsId = getParaToLong("miaobiGoodsId");
         Map result = new HashMap();
         Member member = memberService.getCurrent();
+
+        if(StringUtils.isEmpty(member.getOnShareCode())){
+            renderJson(ApiResult.fail(7,"请填写邀请码"));
+            return;
+        }
+
         if (ObjectUtils.isEmpty(member)) {
             renderJson(ApiResult.success(0, "用户信息不存在"));
         }

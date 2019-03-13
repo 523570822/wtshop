@@ -108,7 +108,7 @@ public class GoodsAPIController extends BaseAPIController {
 		Long id = getParaToLong("goodIds");
 		String type = getPara("type"); //是否喵币商品
 		Goods goods = goodsService.find(id);
-		Member perosn=memberService.getCurrent();
+
 		Pageable pageable = new Pageable(1, 20);
 		Boolean favorite = false;
 		
@@ -175,16 +175,16 @@ public class GoodsAPIController extends BaseAPIController {
 
 		//插入会员足迹
 		if (m !=null){
-			boolean isHas = footPrintService.findByTime(goods.getId(),perosn.getId());
+			boolean isHas = footPrintService.findByTime(goods.getId(),m.getId());
 			if(!isHas){
 				Footprint footprint=new  Footprint();
 				footprint.setGoodsId(goods.getId());
-				footprint.setMemberId(perosn.getId());
+				footprint.setMemberId(m.getId());
 				footPrintService.save(footprint);
 			}
 		}
 		//收货地址
-		Receiver aDefault = receiverService.findDefault(perosn);
+		Receiver aDefault = receiverService.findDefault(m);
 
 		//商品配送
 		String receiveTime = null;
@@ -452,6 +452,19 @@ public class GoodsAPIController extends BaseAPIController {
 		Page<Goods> search = searchService.search(false, productCategoryId, brandList, areaId, effectIdList, keyword, startPrice, endPrice, pageable, modifyDate, sell, review, priceUp ,priceDown);
 		renderJson(ApiResult.success(search));
 	}
-
-
+/**
+ * 填写邀请码
+ */
+public void onShareCode(){
+	String onShareCode = getPara("onShareCode");
+	Member m=memberService.getCurrent();
+	List<Member> me = memberService.findByShareCode(onShareCode);
+	if(StringUtils.isNotEmpty(onShareCode)&&(me==null||me.size()==0)){
+		renderJson(ApiResult.fail("邀请码不存在!"));
+		return;
+	}
+	m.setOnShareCode(onShareCode);
+	memberService.update(m);
+	renderJson(ApiResult.success("绑定邀请码成功"));
+}
 }

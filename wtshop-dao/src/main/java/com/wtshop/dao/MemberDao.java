@@ -256,6 +256,21 @@ public class MemberDao extends BaseDao<Member> {
 			return null;
 		}
 	}
+	/**
+	 * 查询是否存在邀请码
+	 *
+	 */
+	public List<Member> findByShareCode(String onShareCode) {
+		if (StringUtils.isEmpty(onShareCode)) {
+			return null;
+		}
+		try {
+			String sql = "SELECT * FROM member WHERE is_enabled = 1 and is_delete = 0 and share_code = UPPER(?)";
+			return modelManager.find(sql, onShareCode);
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
 	/**
 	 * 根据手机号查找会员

@@ -360,6 +360,16 @@ if(StringUtils.isNotEmpty(onShareCode)){
 	}
 
 
+	/**
+	 * 判断邀请码是否存在
+	 *
+	 * @param onShareCode
+	 *            用户名(忽略大小写)
+	 * @return 会员，若不存在则返回null
+	 */
+	public List<Member> findByShareCode(String onShareCode) {
+		return memberDao.findByShareCode(onShareCode);
+	}
 
 
 

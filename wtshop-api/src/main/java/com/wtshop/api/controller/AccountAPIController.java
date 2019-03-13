@@ -119,7 +119,13 @@ public class AccountAPIController extends BaseAPIController {
         String password = getPara("password");
 		String pwdconfirm = getPara("pwdconfirm");
 		String onShareCode = getPara("onShareCode");
+		List<Member> me = memberService.findByShareCode(onShareCode);
 
+
+		if(StringUtils.isNotEmpty(onShareCode)&&(me==null||me.size()==0)){
+			renderJson(ApiResult.fail("邀请码不存在!"));
+			return;
+		}
 		if(StringUtils.isEmpty(username)){
 			renderJson(ApiResult.fail("登录名不能为空!"));
 			return;

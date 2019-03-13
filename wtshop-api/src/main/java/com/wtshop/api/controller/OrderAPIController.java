@@ -68,8 +68,9 @@ public class OrderAPIController extends BaseAPIController {
 
 		Member member = memberService.getCurrent();
 
-         if(StringUtils.isEmpty(member.getShareCode())){
+         if(StringUtils.isEmpty(member.getOnShareCode())){
 			 renderJson(ApiResult.fail(7,"请填写邀请码"));
+			 return;
 		 }
 
 
@@ -251,7 +252,10 @@ public class OrderAPIController extends BaseAPIController {
 		Member member = memberService.getCurrent();
 		Long receiverId = getParaToLong("receiverId"); //收货人
 
-
+		if(StringUtils.isEmpty(member.getOnShareCode())){
+			renderJson(ApiResult.fail(7,"请填写邀请码"));
+			return;
+		}
 		//1是 ，0否  是否開發票
 		Boolean isInvoice=getParaToBoolean("isInvoice");
 		//1是 ，0否  是否是個人发票还是单位发票
@@ -567,7 +571,10 @@ if(!isSinglepurchase){
 	public void checkout() {
 
 		Member member = memberService.getCurrent();
-
+		if(StringUtils.isEmpty(member.getOnShareCode())){
+			renderJson(ApiResult.fail(7,"请填写邀请码"));
+			return;
+		}
 		//product 的数组
 		String[] values = StringUtils.split(getPara("cartTokens"), ",");
 		Long[] skuids = values == null ? null :convertToLong(values);
@@ -965,7 +972,10 @@ if(!isSinglepurchase){
 		Long id = getParaToLong("id");
 		Order order = orderService.find(id);
 		Member member = memberService.getCurrent();
-
+		if(StringUtils.isEmpty(member.getOnShareCode())){
+			renderJson(ApiResult.fail(7,"请填写邀请码"));
+			return;
+		}
 		//支付倒计时 获取到期时间 支付金额 余额
 		Date expire = order.getExpire();
 		Date date = new Date();
@@ -973,6 +983,7 @@ if(!isSinglepurchase){
 			renderJson(ApiResult.fail("订单已过期,请重新下单购买"));
 			return;
 		}
+
 
 		double price = order.getAmount().doubleValue();
 		double balance = member.getBalance().doubleValue();
