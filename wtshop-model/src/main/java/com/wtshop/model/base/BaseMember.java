@@ -409,13 +409,60 @@ public abstract class BaseMember<M extends BaseMember<M>> extends Model<M> imple
 		return get("is_delete");
 	}
 
-
 	public void setRegisterType(Integer registerType) {
 		set("register_type", registerType);
 	}
 
 	public Integer getRegisterType() {
 		return get("register_type");
+	}
+
+	public void setHousekeeperId(Long housekeeperId) {
+		set("housekeeper_id", housekeeperId);
+	}
+
+	public Long getHousekeeperId() {
+		return get("housekeeper_id");
+	}
+
+	public void setShareCode(String shareCode) {
+		set("share_code", shareCode);
+	}
+
+	public String getShareCode() {
+		return get("share_code");
+	}
+
+	public void setOnShareCode(String onShareCode) {
+		set("on_share_code", onShareCode);
+	}
+
+	public String getOnShareCode() {
+		return get("on_share_code");
+	}
+
+	public void setLinkShareCode(String linkShareCode) {
+		set("link_share_code", linkShareCode);
+	}
+
+	public String getLinkShareCode() {
+		return get("link_share_code");
+	}
+
+	public void setWeChatNumber(String weChatNumber) {
+		set("we_chat_number", weChatNumber);
+	}
+
+	public String getWeChatNumber() {
+		return get("we_chat_number");
+	}
+
+	public void setWeChatQcode(String weChatQcode) {
+		set("we_chat_qcode", weChatQcode);
+	}
+
+	public String getWeChatQcode() {
+		return get("we_chat_qcode");
 	}
 
 }

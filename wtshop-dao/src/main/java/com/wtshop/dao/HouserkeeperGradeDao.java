@@ -1,8 +1,7 @@
 package com.wtshop.dao;
 
 import com.jfinal.plugin.activerecord.Db;
-import com.wtshop.model.HouserkeeperGrade;
-import com.wtshop.model.MemberRank;
+import com.wtshop.model.Houserkeeper;
 import com.wtshop.util.Assert;
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,13 +12,13 @@ import java.math.BigDecimal;
  * 
  * 
  */
-public class HouserkeeperGradeDao extends BaseDao<HouserkeeperGrade> {
+public class HouserkeeperGradeDao extends BaseDao<Houserkeeper> {
 
 	/**
 	 * 构造方法
 	 */
 	public HouserkeeperGradeDao() {
-		super(HouserkeeperGrade.class);
+		super(Houserkeeper.class);
 	}
 	/**
 	 * 判断名称是否存在
@@ -58,7 +57,7 @@ public class HouserkeeperGradeDao extends BaseDao<HouserkeeperGrade> {
 	 * 
 	 * @return 默认会员等级，若不存在则返回null
 	 */
-	public HouserkeeperGrade findDefault() {
+	public Houserkeeper findDefault() {
 		try {
 			String sql = "SELECT * FROM houserkeeper_grade WHERE is_default = true";
 			return modelManager.findFirst(sql);
@@ -74,7 +73,7 @@ public class HouserkeeperGradeDao extends BaseDao<HouserkeeperGrade> {
 	 *            消费金额
 	 * @return 会员等级，不包含特殊会员等级，若不存在则返回null
 	 */
-	public HouserkeeperGrade findByAmount(BigDecimal amount) {
+	public Houserkeeper findByAmount(BigDecimal amount) {
 		if (amount == null) {
 			return null;
 		}
@@ -88,7 +87,7 @@ public class HouserkeeperGradeDao extends BaseDao<HouserkeeperGrade> {
 	 * @param memberRank
 	 *            会员等级
 	 */
-	public void setDefault(HouserkeeperGrade memberRank) {
+	public void setDefault(Houserkeeper memberRank) {
 		Assert.notNull(memberRank);
 
 		memberRank.setIsDefault(true);

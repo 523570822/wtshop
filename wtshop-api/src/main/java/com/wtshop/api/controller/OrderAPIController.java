@@ -68,6 +68,11 @@ public class OrderAPIController extends BaseAPIController {
 
 		Member member = memberService.getCurrent();
 
+         if(StringUtils.isEmpty(member.getShareCode())){
+			 renderJson(ApiResult.fail(7,"请填写邀请码"));
+		 }
+
+
 		//获取商品和数量
 		Long productId = getParaToLong("productId");
 		Product product = productService.find(productId);

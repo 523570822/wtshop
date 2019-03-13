@@ -314,7 +314,13 @@ public class OrderService extends BaseService<Order> {
         order.setLockExpire(null);
         order.setLockKey(null);
 
-
+        // 生成会员激活码，福袋
+        if (order.getType() == Order.Type.fudai.ordinal()) {
+          // 生成邀请码
+            String code = ShareCodeUtils.idToCode(member.getId());
+            member.setShareCode(code);
+            //调用推送
+        }
 
         logger.info("测试支付宝应保存金额   :  " + amount);
         if (StringUtils.isNotBlank(weiXinNo)) {

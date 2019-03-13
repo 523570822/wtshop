@@ -3,10 +3,8 @@ package com.wtshop.controller.admin;
 import com.jfinal.ext.route.ControllerBind;
 import com.wtshop.Message;
 import com.wtshop.Pageable;
-import com.wtshop.model.HouserkeeperGrade;
-import com.wtshop.model.MemberRank;
+import com.wtshop.model.Houserkeeper;
 import com.wtshop.service.HouserkeeperGradeService;
-import com.wtshop.service.MemberRankService;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
@@ -58,7 +56,7 @@ public class HouserkeeperGradeController extends BaseController {
 	 * 保存
 	 */
 	public void save() {
-		HouserkeeperGrade memberRank = getModel(HouserkeeperGrade.class);
+		Houserkeeper memberRank = getModel(Houserkeeper.class);
 		Boolean isDefault = getParaToBoolean("isDefault", false);
 		Boolean isSpecial = getParaToBoolean("isSpecial", false);
 		memberRank.setIsDefault(isDefault);
@@ -93,12 +91,12 @@ public class HouserkeeperGradeController extends BaseController {
 	 * 更新
 	 */
 	public void update() {
-		HouserkeeperGrade memberRank = getModel(HouserkeeperGrade.class);
+		Houserkeeper memberRank = getModel(Houserkeeper.class);
 		Boolean isDefault = getParaToBoolean("isDefault", false);
 		Boolean isSpecial = getParaToBoolean("isSpecial", false);
 		memberRank.setIsDefault(isDefault);
 		memberRank.setIsSpecial(isSpecial);
-		HouserkeeperGrade pMemberRank = memberRankService.find(memberRank.getId());
+		Houserkeeper pMemberRank = memberRankService.find(memberRank.getId());
 		if (pMemberRank == null) {
 			redirect(ERROR_VIEW);
 			return;
@@ -139,7 +137,7 @@ public class HouserkeeperGradeController extends BaseController {
 		Long[] ids = getParaValuesToLong("ids");
 		if (ids != null) {
 			for (Long id : ids) {
-				HouserkeeperGrade memberRank = memberRankService.find(id);
+				Houserkeeper memberRank = memberRankService.find(id);
 				if (memberRank != null && memberRank.getMembers() != null && !memberRank.getMembers().isEmpty()) {
 					renderJson(Message.error("admin.memberRank.deleteExistNotAllowed", memberRank.getName()));
 					return;

@@ -2,9 +2,7 @@ package com.wtshop.service;
 
 import com.jfinal.aop.Enhancer;
 import com.wtshop.dao.HouserkeeperGradeDao;
-import com.wtshop.dao.MemberRankDao;
-import com.wtshop.model.HouserkeeperGrade;
-import com.wtshop.model.MemberRank;
+import com.wtshop.model.Houserkeeper;
 import com.wtshop.util.Assert;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -16,13 +14,13 @@ import java.math.BigDecimal;
  * 
  * 
  */
-public class HouserkeeperGradeService extends BaseService<HouserkeeperGrade> {
+public class HouserkeeperGradeService extends BaseService<Houserkeeper> {
 
 	/**
 	 * 构造方法
 	 */
 	public HouserkeeperGradeService() {
-		super(HouserkeeperGrade.class);
+		super(Houserkeeper.class);
 	}
 	
 	private HouserkeeperGradeDao memberRankDao = Enhancer.enhance(HouserkeeperGradeDao.class);
@@ -80,7 +78,7 @@ public class HouserkeeperGradeService extends BaseService<HouserkeeperGrade> {
 	 * 
 	 * @return 默认会员等级，若不存在则返回null
 	 */
-	public HouserkeeperGrade findDefault() {
+	public Houserkeeper findDefault() {
 		return memberRankDao.findDefault();
 	}
 
@@ -91,11 +89,11 @@ public class HouserkeeperGradeService extends BaseService<HouserkeeperGrade> {
 	 *            消费金额
 	 * @return 会员等级，不包含特殊会员等级，若不存在则返回null
 	 */
-	public HouserkeeperGrade findByAmount(BigDecimal amount) {
+	public Houserkeeper findByAmount(BigDecimal amount) {
 		return memberRankDao.findByAmount(amount);
 	}
 
-	public HouserkeeperGrade save(HouserkeeperGrade memberRank) {
+	public Houserkeeper save(Houserkeeper memberRank) {
 		Assert.notNull(memberRank);
 
 		if (BooleanUtils.isTrue(memberRank.getIsDefault())) {
@@ -104,7 +102,7 @@ public class HouserkeeperGradeService extends BaseService<HouserkeeperGrade> {
 		return super.save(memberRank);
 	}
 
-	public HouserkeeperGrade update(HouserkeeperGrade memberRank) {
+	public Houserkeeper update(Houserkeeper memberRank) {
 		Assert.notNull(memberRank);
 
 		if (BooleanUtils.isTrue(memberRank.getIsDefault())) {

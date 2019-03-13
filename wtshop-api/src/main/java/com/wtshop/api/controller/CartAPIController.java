@@ -45,6 +45,15 @@ public class CartAPIController extends BaseAPIController {
 		Long productId = getParaToLong("productIds");
 		Integer quantity = getParaToInt("quantitys");
 		Boolean buyNow = getParaToBoolean("buy_nows");
+
+		Member member = memberService.getCurrent();
+
+		if(StringUtils.isEmpty(member.getShareCode())){
+			renderJson(ApiResult.fail(7,"请填写邀请码"));
+			return;
+		}
+
+
 		if (quantity == null || quantity < 1) {
 			renderJson(ApiResult.fail("数量不能为空!"));
 			return ;
@@ -59,7 +68,7 @@ public class CartAPIController extends BaseAPIController {
 			return;
 		}
 
-		Member member = memberService.getCurrent();
+
 		Cart cart = cartService.getCurrent();
 		if (cart != null) {
 			if (cart.contains(product)) {

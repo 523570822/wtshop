@@ -310,7 +310,36 @@ public class MemberAPIController extends BaseAPIController {
 		memberService.update(member);
 		renderJson(ApiResult.successMsg("上传头像成功!"));
 	}
-
+	/**
+	 * 上传头像
+	 */
+	public void weChatUpload() {
+		UploadFile file = getFile();
+		FileType fileType = FileType.valueOf(getPara("fileType", "image"));
+		String weChatNumber = getPara("weChatNumber");
+		Member member = memberService.getCurrent();
+		if (member == null) {
+			renderJson(ApiResult.fail("当前用户不能为空!"));
+			return;
+		}
+		if (fileType == null || file == null || file.getFile().length() <= 0) {
+			renderJson(ApiResult.fail("请选择选图片"));
+			return;
+		}
+		if (!fileService.isValid(fileType, file)) {
+			renderJson(ApiResult.fail(Message.warn("admin.upload.invalid").toString()));
+			return;
+		}
+		String url = fileService.upload(fileType, file, true);
+		if (StringUtils.isEmpty(url)) {
+			renderJson(ApiResult.fail(Message.warn("admin.upload.error").toString()));
+			return;
+		}
+		member.setWeChatNumber(weChatNumber);
+		member.setWeChatQcode(url);
+		memberService.update(member);
+		renderJson(ApiResult.successMsg("上传头像成功!"));
+	}
 	/**
 	 * 意见反馈
 	 */

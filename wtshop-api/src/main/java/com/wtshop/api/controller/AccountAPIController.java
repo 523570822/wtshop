@@ -118,7 +118,8 @@ public class AccountAPIController extends BaseAPIController {
         String smsCode = getPara("smsCode");
         String password = getPara("password");
 		String pwdconfirm = getPara("pwdconfirm");
-        
+		String onShareCode = getPara("onShareCode");
+
 		if(StringUtils.isEmpty(username)){
 			renderJson(ApiResult.fail("登录名不能为空!"));
 			return;
@@ -167,7 +168,7 @@ public class AccountAPIController extends BaseAPIController {
 		}
 		String remoteAddr = getRequest().getRemoteAddr();
 
-		Member member = memberService.register(username, password, remoteAddr);
+		Member member = memberService.register(username, password, remoteAddr,onShareCode);
 
 
 

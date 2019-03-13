@@ -37,7 +37,10 @@ public class Code implements Serializable {
      * 接口不存在
      */
     public static final int NOT_FOUND = 404;
-
+/**
+ * 缺少邀请码
+ */
+public static final int NOT_SHARECODE = 7;
     /**
      * token无效
      */

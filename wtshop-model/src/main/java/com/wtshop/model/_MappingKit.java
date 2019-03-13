@@ -83,7 +83,7 @@ public class _MappingKit {
 		arp.addMapping("groups", "id", Groups.class);
 		arp.addMapping("groups_create", "id", GroupsCreate.class);
 		arp.addMapping("groups_join", "id", GroupsJoin.class);
-		arp.addMapping("houserkeeper_grade", "id", HouserkeeperGrade.class);
+		arp.addMapping("houserkeeper_grade", "id", Houserkeeper.class);
 		arp.addMapping("information", "id", Information.class);
 		arp.addMapping("interest_category", "id", InterestCategory.class);
 		arp.addMapping("like_commend", "id", LikeCommend.class);

@@ -153,7 +153,7 @@ public class MemberService extends BaseService<Member> {
 
 
 
-	public Member register(String username, String password, String nickname, String remoteAddr){
+	public Member register(String username, String password, String nickname, String remoteAddr,String onShareCode){
 		Setting setting = SystemUtils.getSetting();
 		//判断用户名是否是mongo数据库中数据
 		//查询mongo数据库
@@ -181,7 +181,9 @@ public class MemberService extends BaseService<Member> {
 				mixUserName = "-";
 			}
 		}
-
+if(StringUtils.isNotEmpty(onShareCode)){
+	member.setOnShareCode(onShareCode);
+}
 
 		member.setUsername(mixUserName);
 		member.setPassword(DigestUtils.md5Hex(password));
@@ -250,8 +252,8 @@ public class MemberService extends BaseService<Member> {
 	 * @return
 	 */
 
-	public Member register(String username,String password ,String remoteAddr){
-		return register(username, password, "", remoteAddr);
+	public Member register(String username,String password ,String remoteAddr,String onShareCode){
+		return register(username, password, "", remoteAddr,onShareCode);
 	}
 
 
