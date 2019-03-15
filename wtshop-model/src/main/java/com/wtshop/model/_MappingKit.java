@@ -44,6 +44,7 @@ public class _MappingKit {
 		arp.addMapping("certificates", "id", Certificates.class);
 		arp.addMapping("character_commend", "id", CharacterCommend.class);
 		arp.addMapping("commission_history", "id", CommissionHistory.class);
+		arp.addMapping("commission_log", "id", CommissionLog.class);
 		arp.addMapping("consultation", "id", Consultation.class);
 		arp.addMapping("coupon", "id", Coupon.class);
 		arp.addMapping("coupon_code", "id", CouponCode.class);
@@ -83,7 +84,8 @@ public class _MappingKit {
 		arp.addMapping("groups", "id", Groups.class);
 		arp.addMapping("groups_create", "id", GroupsCreate.class);
 		arp.addMapping("groups_join", "id", GroupsJoin.class);
-		arp.addMapping("houserkeeper_grade", "id", Houserkeeper.class);
+		arp.addMapping("houserkeeper", "id", Houserkeeper.class);
+		arp.addMapping("houserkeeper_grade", "id", HouserkeeperGrade.class);
 		arp.addMapping("information", "id", Information.class);
 		arp.addMapping("interest_category", "id", InterestCategory.class);
 		arp.addMapping("like_commend", "id", LikeCommend.class);

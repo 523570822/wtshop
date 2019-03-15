@@ -465,4 +465,36 @@ public abstract class BaseMember<M extends BaseMember<M>> extends Model<M> imple
 		return get("we_chat_qcode");
 	}
 
+	public void setCommissionPay(java.math.BigDecimal commissionPay) {
+		set("commission_pay", commissionPay);
+	}
+
+	public java.math.BigDecimal getCommissionPay() {
+		return get("commission_pay");
+	}
+
+	public void setDirectOffline(Integer directOffline) {
+		set("direct_offline", directOffline);
+	}
+
+	public Integer getDirectOffline() {
+		return get("direct_offline");
+	}
+
+	public void setCommissionUnarrived(java.math.BigDecimal commissionUnarrived) {
+		set("commission_unarrived", commissionUnarrived);
+	}
+
+	public java.math.BigDecimal getCommissionUnarrived() {
+		return get("commission_unarrived");
+	}
+
+	public void setTotalOffline(Integer totalOffline) {
+		set("total_offline", totalOffline);
+	}
+
+	public Integer getTotalOffline() {
+		return get("total_offline");
+	}
+
 }

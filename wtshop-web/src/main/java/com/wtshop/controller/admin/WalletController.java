@@ -30,9 +30,7 @@ public class WalletController extends BaseController{
             setAttr("member", member);
             setAttr("page", depositLogService.findPage(member, pageable,null));
         } else {
-
             Page<DepositLog> search = depositLogService.findPageBySearch(pageable);
-
             setAttr("page", search);
         }
         setAttr("pageable", pageable);

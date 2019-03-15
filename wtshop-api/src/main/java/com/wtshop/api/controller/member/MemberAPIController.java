@@ -134,11 +134,11 @@ public class MemberAPIController extends BaseAPIController {
         Double prestore = 0d;
 
 		//预存款和分佣金额
-		MrmfShop mrmfShop = mrmfShopService.findMrmfShop(member);
+/*		MrmfShop mrmfShop = mrmfShopService.findMrmfShop(member);
 		if(mrmfShop != null){
 			commission = mrmfShop.getCommission().doubleValue();
 			prestore = mrmfShop.getPrestore().doubleValue();
-		}
+		}*/
 
 		Record rechange = depositLogService.findRechange(member.getId());
 		String price = "0";
@@ -159,6 +159,13 @@ public class MemberAPIController extends BaseAPIController {
 
 	}
 
+	/**
+	 * 佣金首页
+	 */
+	public void commissionIndex() {
+		Member member = memberService.getCurrent();
+		renderJson(ApiResult.success(member));
+	}
 	/**
 	 * 审核用户名和身份证
 	 */
