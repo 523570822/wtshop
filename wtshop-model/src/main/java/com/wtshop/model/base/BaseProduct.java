@@ -129,4 +129,12 @@ public abstract class BaseProduct<M extends BaseProduct<M>> extends Model<M> imp
 		return get("goods_id");
 	}
 
+	public void setCommissionRate(Double commissionRate) {
+		set("commission_rate", commissionRate);
+	}
+
+	public Double getCommissionRate() {
+		return get("commission_rate");
+	}
+
 }

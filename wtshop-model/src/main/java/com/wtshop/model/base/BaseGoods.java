@@ -553,4 +553,12 @@ public abstract class BaseGoods<M extends BaseGoods<M>> extends Model<M> impleme
 		return get("verifyState");
 	}
 
+	public void setCommissionRate(Double commissionRate) {
+		set("commission_rate", commissionRate);
+	}
+
+	public Double getCommissionRate() {
+		return get("commission_rate");
+	}
+
 }

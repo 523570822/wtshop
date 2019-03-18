@@ -1156,12 +1156,14 @@ public class GoodsService extends BaseService<Goods> {
             defaultProduct.setMarketPrice(product.getMarketPrice());
             defaultProduct.setRewardPoint(product.getRewardPoint());
             defaultProduct.setExchangePoint(product.getExchangePoint());
+            defaultProduct.setCommissionRate(product.getCommissionRate());
             setValue(defaultProduct);
             productDao.update(defaultProduct);
         }
 
         goods.setPrice(product.getPrice());
         goods.setMarketPrice(product.getMarketPrice());
+        goods.setCommissionRate(product.getCommissionRate());
         setValue(goods);
         copyProperties(goods, pGoods, "sn", "check", "type", "score", "totalScore", "scoreCount", "hits", "weekHits", "monthHits", "sales", "weekSales", "monthSales", "weekHitsDate", "monthHitsDate", "weekSalesDate", "monthSalesDate", "generateMethod", "reviews", "consultations", "favoriteMembers",
                 "products", "createDate", "verifyState");

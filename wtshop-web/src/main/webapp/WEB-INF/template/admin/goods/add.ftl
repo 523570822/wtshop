@@ -38,6 +38,7 @@ $().ready(function() {
 	var $type = $("#type");
 	var $price = $("#price");
 	var $cost = $("#cost");
+	var $commissionRate = $("#commissionRate");
 	var $marketPrice = $("#marketPrice");
 	var $filePicker = $("#filePicker");
 	var $rewardPoint = $("#rewardPoint");
@@ -115,6 +116,9 @@ $().ready(function() {
 	
 	// 类型
 	$type.change(function() {
+
+
+  //  alert("到了");
 		changeView();
 		buildProductTable();
 	});
@@ -449,6 +453,9 @@ $().ready(function() {
 	
 	// 生成商品表
 	function buildProductTable() {
+        console.info("生成商品表");
+        console.info(!hasSpecification);
+
 		var type = $type.val();
 		var productValues = {};
 		var specificationItems = [];
@@ -571,6 +578,8 @@ $().ready(function() {
 	
 	// 笛卡尔积
 	function cartesianProductOf(array) {
+
+
 		function addTo(current, args) {
 			var i, copy;
 			var rest = args.slice(1);
@@ -704,6 +713,14 @@ $().ready(function() {
 					fraction: ${setting.priceScale}
 				}
 			},
+            "product.commissionRate": {
+                required: true,
+                min: 0,
+                decimal: {
+                    integer: 12,
+                    fraction: ${setting.priceScale}
+                }
+            },
 			"product.market_price": {
 				min: 0,
                 required: true,
@@ -771,9 +788,9 @@ $().ready(function() {
 			<li>
 				<input type="button" value="${message("admin.goods.attribute")}" />
 			</li>
-			[#--<li>--]
-				[#--<input type="button" value="${message("admin.goods.specification")}" />--]
-			[#--</li>--]
+			<li>
+				<input type="button" value="${message("admin.goods.specification")}" />
+			</li>
 		</ul>
 		<table class="input tabContent">
 			<tr>
@@ -872,6 +889,14 @@ $().ready(function() {
 					<input type="text" id="marketPrice" name="product.market_price" class="text" maxlength="16" title="${message("admin.goods.marketPriceTitle")}" />
 				</td>
 			</tr>
+            <tr>
+                <th>
+                    <span class="requiredField">*</span>佣金比例（%）
+                </th>
+                <td>
+                    <input type="text" id="commissionRate" name="product.commission_rate" class="text" maxlength="16" title="上级及本人优惠比例（如10%填写10）" />
+                </td>
+            </tr>
 			<tr>
 				<th>
 					${message("Goods.image")}:
@@ -1120,7 +1145,7 @@ $().ready(function() {
 					&nbsp;
 				</th>
 				<td>
-					<input type="submit" class="button" value="${message("admin.common.submit")}" />
+					<input type="submit" class="button" value="${message("admin.common.submit")}12213" />
 					<input type="button" class="button" value="${message("admin.common.back")}" onclick="history.back(); return false;" />
 				</td>
 			</tr>

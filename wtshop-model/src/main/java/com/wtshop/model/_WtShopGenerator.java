@@ -14,12 +14,12 @@ public class _WtShopGenerator {
 //		String jdbcUrl = "jdbc:mysql://127.0.0.1:3306/rxm_shop_db?useUnicode=true&characterEncoding=UTF-8";
 //		String user = "test";
 //		String password = "test";
-		String jdbcUrl = "jdbc:mysql://59.110.18.65:3306/rxm_shop_db?useUnicode=true&characterEncoding=UTF-8";
+	/*	String jdbcUrl = "jdbc:mysql://59.110.18.65:3306/rxm_shop_db?useUnicode=true&characterEncoding=UTF-8";
 		String user = "rxm_db";
-		String password = "2x1CpGT2C5URxfSE";
-	/*	String jdbcUrl = "jdbc:mysql://192.168.1.222:3306/rxm_shop_db?useUnicode=true&characterEncoding=UTF-8";
+		String password = "2x1CpGT2C5URxfSE";*/
+	String jdbcUrl = "jdbc:mysql://114.116.111.212:3306/rxm_shop_db?useUnicode=true&characterEncoding=UTF-8";
 		String user = "root";
-		String password = "root";*/
+		String password = "root";
 		DruidPlugin druidPlugin = new DruidPlugin(jdbcUrl, user, password);
 		druidPlugin.start();
 		return druidPlugin.getDataSource();

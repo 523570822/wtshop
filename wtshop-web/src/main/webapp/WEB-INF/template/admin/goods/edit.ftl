@@ -43,6 +43,7 @@
             var $price = $("#price");
             var $cost = $("#cost");
             var $marketPrice = $("#marketPrice");
+            var $commissionRate = $("#commissionRate");
             var $filePicker = $("#filePicker");
             var $rewardPoint = $("#rewardPoint");
             var $exchangePoint = $("#exchangePoint");
@@ -79,6 +80,7 @@
                         price: ${product.price},
                         cost: ${product.cost!"null"},
                         marketPrice: ${product.marketPrice},
+                        commissionRate: ${product.commissionRate},
                         rewardPoint: ${product.rewardPoint},
                         exchangePoint: ${product.exchangePoint},
                         stock: ${product.stock},
@@ -135,6 +137,9 @@
 
             // 修改视图
             function changeView() {
+
+
+            console.info(hasSpecification);
                 if (hasSpecification) {
                     $isDefault.prop("disabled", true);
                     $price.add($cost).add($marketPrice).add($rewardPoint).add($exchangePoint).add($stock).prop("disabled", true).closest("tr").hide();
@@ -257,8 +262,8 @@
                     $table.append(
                 [@compress single_line = true]
                         '<tr>
-                        < th >
-                        < input type = "text"
+                        <th >
+                        <input type = "text"
                     name = "parameterValueEntrys[' + parameterIndex + '].entries[' + parameterEntryIndex + '].name"
                     class
                     = "text parameterEntryName"
@@ -266,8 +271,8 @@
                     style = "width: 50px;" \/>
                     <\/
                     th >
-                    < td >
-                    < input
+                    <td >
+                    <input
                     type = "text"
                     name = "parameterValueEntrys[' + parameterIndex + '].entries[' + parameterEntryIndex + '].value"
                     class
@@ -275,12 +280,11 @@
                     maxlength = "200" \/>
                     <\/
                     td >
-                    < td >
-                    < a
+                    <td >
+                    <a
                     href = "javascript:;"
                     class
-                    = "remove" > [${message("admin.common.remove")}] <\/
-                    a >
+                    = "remove" > [${message("admin.common.remove")}] <a >
                     <\/
                     td >
                     <\/
@@ -305,30 +309,27 @@
                         var $parameterGroupTable = $(
                             [@compress single_line = true]
                                     '<tr>
-                                    < td colspan = "2" >
+                                    <td colspan = "2" >
                                     < table >
                                     < tr >
-                                    < th >
+                                    <th >
                             ${message("Parameter.group")}:
-                                <\/
-                                th >
-                                < td >
-                                < input
+                                <th >
+                                <td >
+                                <input
                                 type = "text"
                                 name = "parameterValues[' + parameterIndex + '].group"
                                 class
                                 = "text parameterGroup"
                                 value = "' + escapeHtml(parameter.group) + '"
                                 maxlength = "200" \/>
-                                <\/
-                                td >
-                                < td >
-                                < a
+                                <td >
+                                <td >
+                                <a
                                 href = "javascript:;"
                                 class
-                                = "remove group" > [${message("admin.common.remove")}] <\/
-                                a >
-                                < a
+                                = "remove group" > [${message("admin.common.remove")}] </a >
+                                <a
                                 href = "javascript:;"
                                 class
                                 = "add" > [${message("admin.common.add")}] <\/
@@ -352,8 +353,8 @@
                                     $parameterGroupTable.append(
                                 [@compress single_line = true]
                                         '<tr>
-                                        < th >
-                                        < input type = "text"
+                                        <th >
+                                        <input type = "text"
                                     name = "parameterValueEntrys[' + parameterIndex + '].entries[' + parameterEntryIndex + '].name"
                                     class
                                     = "text parameterEntryName"
@@ -362,8 +363,8 @@
                                     style = "width: 50px;" \/>
                                     <\/
                                     th >
-                                    < td >
-                                    < input
+                                    <td >
+                                    <input
                                     type = "text"
                                     name = "parameterValueEntrys[' + parameterIndex + '].entries[' + parameterEntryIndex + '].value"
                                     class
@@ -371,8 +372,8 @@
                                     maxlength = "200" \/>
                                     <\/
                                     td >
-                                    < td >
-                                    < a
+                                    <td >
+                                    <a
                                     href = "javascript:;"
                                     class
                                     = "remove" > [${message("admin.common.remove")}] <\/
@@ -406,12 +407,12 @@
                         var $select = $(
                             [@compress single_line = true]
                                     '<tr>
-                                    < th > ' + escapeHtml(attribute.name) + ':<\/
+                                    <th > ' + escapeHtml(attribute.name) + ':<\/
                                 th >
-                                < td >
-                                < select
+                                <td >
+                                <select
                                 name = "attribute_' + attribute.id + '" >
-                                        < option
+                                        <option
                                 value = "" >${message("admin.common.choose")}<\/
                                 option >
                                 <\/
@@ -536,6 +537,8 @@
                             price: $this.find("input.price").val(),
                             cost: $this.find("input.cost").val(),
                             marketPrice: $this.find("input.marketPrice").val(),
+                            commissionRate: $this.find("input.commissionRate").val(),
+
                             rewardPoint: $this.find("input.rewardPoint").val(),
                             exchangePoint: $this.find("input.exchangePoint").val(),
                             stock: $this.find("input.stock").val(),
@@ -548,22 +551,25 @@
                 $.each(specificationItems, function (i, specificationItem) {
                     $titleTr.append('<th>' + escapeHtml(specificationItem.name) + '<\/th>');
                 });
+
+               //console.info('${goods.typeName}');
+              // console.info('${goods.typeName}'== "general");
                     $titleTr.append(
                 [@compress single_line = true]
+
                 '[#if goods.typeName == "general"]
-                < th>
+                <th>
                 ${message("Product.price")}
-                <\/th >
+                <\th>
                 [/#if]
                 <th>
                 ${message("Product.cost")}
-                <\/
-                    th >
-                    < th >
+                <\th>
+                    <th>
                     ${message("Product.marketPrice")}
                     <\/th >
                     [#if goods.typeName == "general"]
-                    < th>
+                    <th>
                     ${message("Product.rewardPoint")}
                     <\/th >
                     [/#if]
@@ -576,11 +582,11 @@
                 ${message("Product.stock")}
                 <\/
                     th >
-                    < th >
+                    <th >
                     ${message("Product.isDefault")}
                     <\/
                     th >
-                    < th >
+                    <th >
                     ${message("admin.goods.isEnabled")}
                     <\/
                     th > '
@@ -596,12 +602,11 @@
                         [@compress single_line = true]
                                 '<td>
                             ' + escapeHtml(entry.value) + '
-                            < input
+                            <input
                             type = "hidden"
                             name = "productLists[' + i + '].specificationValues[' + j + '].id"
                             value = "' + entry.id + '" \/>
-                            <
-                            input
+                            <input
                             type = "hidden"
                             name = "productLists[' + i + '].specificationValues[' + j + '].value"
                             value = "' + escapeHtml(entry.value) + '" \/>
@@ -625,8 +630,8 @@
                         $productTr.append(
                     [@compress single_line = true]
                     '[#if goods.typeName == "general"]
-                    < td>
-                    < input type = "text"
+                    <td>
+                    <input type = "text"
                         name = "productList[' + i + '].price"
                         class
                         = "text price"
@@ -645,8 +650,8 @@
                         style = "width: 50px;" \/>
                         <\/
                         td >
-                        < td >
-                        < input
+                        <td >
+                        <input
                         type = "text"
                         name = "productList[' + i + '].market_price"
                         class
@@ -656,8 +661,8 @@
                         style = "width: 50px;" \/>
                         <\/td >
                         [#if goods.typeName == "general"]
-                        < td>
-                        < input type = "text"
+                        <td>
+                        <input type = "text"
                             name = "productList[' + i + '].reward_point"
                             class
                             = "text rewardPoint"
@@ -690,12 +695,12 @@
                         ' : '
                         ') + '
                         style = "width: 50px;" \/>
-                        ' + (initProductValue != null ? ' < a
+                        ' + (initProductValue != null ? ' <a
                         class
                         = hidden
                         href = "..\/stock\/stockIn.jhtml?productId=' + initProductValue.id + '"
                         title = "${message("admin.goods.stockIn")}" > + <\/
-                        a > < a
+                        a > <a
                         class
                         = hidden
                         href = "..\/stock\/stockOut.jhtml?productId=' + initProductValue.id + '"
@@ -704,8 +709,8 @@
                         ') + '
                         <\/
                         td >
-                        < td >
-                        < input
+                        <td >
+                        <input
                         type = "checkbox"
                         name = "productList[' + i + '].is_default"
                         class
@@ -715,15 +720,14 @@
                         checked = "checked"
                         ' : '
                         ') + ' \/>
-                        <
-                        input
+                        <input
                         type = "hidden"
                         name = "_productList[' + i + '].is_default"
                         value = "false" \/>
                         <\/
                         td >
-                        < td >
-                        < input
+                        <td >
+                        <input
                         type = "checkbox"
                         name = "isEnabled"
                         class
@@ -780,57 +784,51 @@
                     data: {productCategoryId: $productCategoryId.val()},
                     dataType: "json",
                     success: function (data) {
+
+
                         $specificationTable.find("tr:gt(0)").remove();
                         $productTable.empty();
                         $.each(data, function (i, specification) {
                         var $td = $(
                             [@compress single_line = true]
                                     '<tr>
-                                    < th >
-                                    < input type = "text"
+                                    <th>
+                                    <input type = "text"
                                 name = "specificationItems[' + i + '].name"
                                 class
                                 = "text specificationItemName"
                                 value = "' + escapeHtml(specification.name) + '"
                                 style = "width: 50px;" \/>
-                                <\/
-                                th >
-                                < td > <\/
-                                td >
-                                <\/
-                                tr > '
+                                <\th>
+                                <td> <\/
+                                td>
+                                <\tr> '
                             [/@compress]
                             ).
                             appendTo($specificationTable).find("input").data("value", specification.name).end().find("td");
                             $.each(specification.options, function (j, option) {
                                     $(
                                 [@compress single_line = true]
-                                        '<span>
-                                        < input type = "checkbox"
+                                        '<span> <input type = "checkbox"
                                     name = "specificationItemEntrys[' + i + '].entries[' + j + '].isSelected"
                                     value = "true" \/>
-                                    <
-                                    input
+                                    <input
                                     type = "hidden"
                                     name = "_specificationItemEntrys[' + i + '].entries[' + j + '].isSelected"
                                     value = "false" \/>
-                                    <
-                                    input
+                                    <input
                                     type = "hidden"
                                     name = "specificationItemEntrys[' + i + '].entries[' + j + '].id"
-                                    class
-                                    = "text specificationItemEntryId"
+                                    class= "text specificationItemEntryId"
                                     value = "' + specificationItemEntryId + '" \/>
-                                    <
-                                    input
+                                    <input
                                     type = "text"
                                     name = "specificationItemEntrys[' + i + '].entries[' + j + '].value"
                                     class
                                     = "text specificationItemEntryValue"
                                     value = "' + escapeHtml(option) + '"
                                     style = "width: 50px;" \/>
-                                    <\/
-                                    span > '
+                                    <\span > '
                                 [/@compress]
                                 ).
                                 appendTo($td).find("input.specificationItemEntryValue").data("value", option);
@@ -876,6 +874,13 @@
                         fraction: ${setting.priceScale}
                     }
                 },
+                commissionRate: {
+                    min: 0,
+                    decimal: {
+                        integer: 12,
+                        fraction: ${setting.priceScale}
+                    }
+                },
                 rewardPoint: {
                     digits: true
                 },
@@ -904,6 +909,14 @@
                         }
                     },
                     "product.cost": {
+                        required: true,
+                        min: 0,
+                        decimal: {
+                            integer: 12,
+                            fraction: ${setting.priceScale}
+                        }
+                    },
+                    "product.commissionRate": {
                         required: true,
                         min: 0,
                         decimal: {
@@ -1017,9 +1030,9 @@
         <li>
             <input type="button" value="${message("admin.goods.attribute")}"/>
         </li>
-        [#--<li>--]
-            [#--<input type="button" value="${message("admin.goods.specification")}"/>--]
-        [#--</li>--]
+        <li>
+           <input type="button" value="${message("admin.goods.specification")}"/>
+       </li>
     </ul>
     <table class="input tabContent">
         <tr>
@@ -1113,6 +1126,17 @@
                 <input type="text" id="marketPrice" name="product.market_price" class="text"
                        value="${goods.defaultProduct.marketPrice}" maxlength="16"
                        title="${message("admin.goods.marketPriceTitle")}"[#if goods.hasSpecification()]
+                       disabled="disabled"[/#if] />
+            </td>
+        </tr>
+        <tr[#if goods.hasSpecification()] class="hidden"[/#if]>
+            <th>
+                <span class="requiredField">*</span>佣金比例（%）
+            </th>
+            <td>
+                <input type="text" id="commissionRate" name="product.commission_rate" class="text"
+                       value="${goods.defaultProduct.commissionRate}" maxlength="16"
+                       title="上级及本人优惠比例（如10%填写10）"[#if goods.hasSpecification()]
                        disabled="disabled"[/#if] />
             </td>
         </tr>
