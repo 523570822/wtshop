@@ -524,6 +524,19 @@ public class OrderService extends BaseService<Order> {
                 order.setIsCommission(true);
                 member.getOnShareCode();
                 order.setOnShareCode(member.getOnShareCode());
+
+                //插入佣金变动记录
+                DepositLog depositLog = new DepositLog();
+                depositLog.setBalance(member.getBalance());
+             //   depositLog.setCredit(prom.getMoney());
+                depositLog.setDebit(BigDecimal.ZERO);
+                depositLog.setMemo("返现活动");
+                depositLog.setType(DepositLog.Type.adjustment.ordinal());
+                depositLog.setOrderId(order.getId());
+                depositLog.setMemberId(member.getId());
+                depositLogDao.save(depositLog);
+
+
                 double dd = order.getCommissionRate() * order.getPrice().doubleValue()/100;
 
                 BigDecimal b1 = new BigDecimal(dd);
