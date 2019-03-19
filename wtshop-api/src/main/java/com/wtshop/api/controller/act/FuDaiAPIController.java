@@ -13,6 +13,7 @@ import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.*;
 import com.wtshop.service.*;
 import com.wtshop.util.ApiResult;
+import com.wtshop.util.StringUtils;
 import org.apache.commons.collections.map.HashedMap;
 
 import java.util.List;
@@ -69,6 +70,12 @@ public class FuDaiAPIController extends BaseAPIController {
         Long fuDaiId = getParaToLong("fuDaiId");
         FuDai fuDai = fuDaiService.find(fuDaiId);
         Member member = memberService.getCurrent();
+
+
+        if(StringUtils.isEmpty(member.getOnShareCode())){
+            renderJson(ApiResult.fail(7,"请填写邀请码"));
+            return;
+        }
         //是否实名认证
         Certificates certificates = certificatesService.queryByMemberId(member.getId());
         if(certificates != null && certificates.getState() != 1){

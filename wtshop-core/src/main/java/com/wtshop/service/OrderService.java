@@ -49,6 +49,7 @@ public class OrderService extends BaseService<Order> {
     private OrderLogDao orderLogDao = Enhancer.enhance(OrderLogDao.class);
     private CartItemDao cartItemDao = Enhancer.enhance(CartItemDao.class);
     private DepositLogDao depositLogDao = Enhancer.enhance(DepositLogDao.class);
+    private CommissionLogDao commissionDao = Enhancer.enhance(CommissionLogDao.class);
     private SnDao snDao = Enhancer.enhance(SnDao.class);
     private PaymentDao paymentDao = Enhancer.enhance(PaymentDao.class);
     private ShippingDao shippingDao = Enhancer.enhance(ShippingDao.class);
@@ -526,16 +527,25 @@ public class OrderService extends BaseService<Order> {
                 order.setOnShareCode(member.getOnShareCode());
 
                 //插入佣金变动记录
-                DepositLog depositLog = new DepositLog();
+                CommissionLog depositLog = new CommissionLog();
                 depositLog.setBalance(member.getBalance());
-             //   depositLog.setCredit(prom.getMoney());
+           //     depositLog.setCredit(prom.getMoney());
                 depositLog.setDebit(BigDecimal.ZERO);
-                depositLog.setMemo("返现活动");
+                depositLog.setMemo("佣金回馈上级");
                 depositLog.setType(DepositLog.Type.adjustment.ordinal());
                 depositLog.setOrderId(order.getId());
                 depositLog.setMemberId(member.getId());
-                depositLogDao.save(depositLog);
 
+                commissionDao.save(depositLog);
+
+                CommissionLog depositLog1 = new CommissionLog();
+                depositLog1.setBalance(member.getBalance());
+                //     depositLog.setCredit(prom.getMoney());
+                depositLog1.setDebit(BigDecimal.ZERO);
+                depositLog1.setMemo("佣金回馈自己");
+                depositLog1.setType(DepositLog.Type.adjustment.ordinal());
+                depositLog1.setOrderId(order.getId());
+                depositLog1.setMemberId(member.getId());
 
                 double dd = order.getCommissionRate() * order.getPrice().doubleValue()/100;
 
