@@ -26,7 +26,7 @@ public class CommissionLog extends BaseCommissionLog<CommissionLog> {
 		/** 转账 2*/
 		transfer,
 
-		/** 消费返利 3*/
+		/** 消费佣金返利 3*/
 		adjustment,
 
 		/** 订单支付 4*/

@@ -108,7 +108,7 @@ public class ShareCodeUtils {
     }
 
     public static void main(String[] args) {
-        String code = idToCode(12L);
+        String code = idToCode(68L);
         System.out.println(code);
         System.out.println(codeToId(code));
     }

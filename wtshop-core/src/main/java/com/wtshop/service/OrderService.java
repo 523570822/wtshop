@@ -554,7 +554,8 @@ public class OrderService extends BaseService<Order> {
                 depositLog1.setMemo("佣金回馈自己");
                 depositLog1.setType(CommissionLog.Type.adjustment.ordinal());
                 depositLog1.setOrderId(order.getId());
-                depositLog1.setMemberId(member.getId());
+                Long dds = ShareCodeUtils.codeToId(member.getOnShareCode());
+                depositLog1.setMemberId(dds);
 
 
 
