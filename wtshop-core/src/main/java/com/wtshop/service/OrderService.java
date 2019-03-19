@@ -520,6 +520,10 @@ public class OrderService extends BaseService<Order> {
             }
         }
         if (Order.Type.general.ordinal()== order.getType()) {
+            double dd = order.getCommissionRate() * order.getPrice().doubleValue()/100;
+            BigDecimal b1 = new BigDecimal(dd);
+            member.setCommissionUnarrived(b1.add(member.getCommissionUnarrived()));
+
             //判断是否是管家
             if (StringUtils.isNotEmpty(member.getShareCode())) {
                 order.setIsCommission(true);
@@ -529,10 +533,14 @@ public class OrderService extends BaseService<Order> {
                 //插入佣金变动记录
                 CommissionLog depositLog = new CommissionLog();
                 depositLog.setBalance(member.getBalance());
-           //     depositLog.setCredit(prom.getMoney());
+                depositLog.setCredit(new BigDecimal(dd));
                 depositLog.setDebit(BigDecimal.ZERO);
                 depositLog.setMemo("佣金回馈上级");
-                depositLog.setType(DepositLog.Type.adjustment.ordinal());
+                depositLog.setType(CommissionLog.Type.adjustment.ordinal());
+                /**
+                 * 待定
+                 */
+                depositLog.setStatus(2);
                 depositLog.setOrderId(order.getId());
                 depositLog.setMemberId(member.getId());
 
@@ -540,17 +548,17 @@ public class OrderService extends BaseService<Order> {
 
                 CommissionLog depositLog1 = new CommissionLog();
                 depositLog1.setBalance(member.getBalance());
-                //     depositLog.setCredit(prom.getMoney());
+                depositLog1.setCredit(new BigDecimal(dd));
                 depositLog1.setDebit(BigDecimal.ZERO);
+                depositLog1.setStatus(2);
                 depositLog1.setMemo("佣金回馈自己");
-                depositLog1.setType(DepositLog.Type.adjustment.ordinal());
+                depositLog1.setType(CommissionLog.Type.adjustment.ordinal());
                 depositLog1.setOrderId(order.getId());
                 depositLog1.setMemberId(member.getId());
 
-                double dd = order.getCommissionRate() * order.getPrice().doubleValue()/100;
 
-                BigDecimal b1 = new BigDecimal(dd);
-                member.setCommissionUnarrived(b1.add(member.getCommissionUnarrived()));
+
+
                 memberService.update(member);
             }
         }
