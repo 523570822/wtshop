@@ -291,6 +291,9 @@ $().ready(function() {
 					<a href="javascript:;" class="sort" name="price">${message("Goods.price")}</a>
 				</th>
 				<th>
+					<a href="javascript:;" class="sort" name="commission_rate">佣金比例</a>
+				</th>
+				<th>
 					<a href="javascript:;" class="sort" name="is_marketable">${message("Goods.isMarketable")}</a>
 				</th>
 				<th>
@@ -333,6 +336,9 @@ $().ready(function() {
 					<td>
 						${currency(goods.price, true)}
 					</td>
+                    <td>
+						${goods.commissionRate}%
+                    </td>
 					<td>
 						<span class="${goods.isMarketable?string("true", "false")}Icon">&nbsp;</span>
 					</td>

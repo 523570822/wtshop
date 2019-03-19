@@ -16,11 +16,17 @@ public class CodeResult implements Serializable{
 
     private Long accountId;
 
-    public CodeResult(int code, String token, Long accountId) {
+    public CodeResult(int code, String token, Long accountId,String shareCode) {
         this.code = code;
         this.token = token;
         this.accountId = accountId;
+        this.shareCode = shareCode;
     }
+    private String shareCode;
+
+    public String getShareCode() { return shareCode; }
+
+    public void setShareCode(String shareCode) { this.shareCode = shareCode; }
 
     public Long getAccountId() {
         return accountId;

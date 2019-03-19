@@ -385,6 +385,7 @@ if(StringUtils.isNotEmpty(onShareCode)){
 		map.put("hasOrgan",false);
 		map.put("hasVip",false);
 		map.put("hasBangDing",false);
+		map.put("shareCode",member.getShareCode());
 
 		StaffMember staffMember = staffMemberDao.queryByMemberId(member.getId());
 	/*	MrmfShop mrmfShop = mrmfShopDao.findByMemberId(member.getId());

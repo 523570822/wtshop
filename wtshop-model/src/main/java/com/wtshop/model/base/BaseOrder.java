@@ -513,4 +513,20 @@ public abstract class BaseOrder<M extends BaseOrder<M>> extends Model<M> impleme
 		return get("is_singlepurchase");
 	}
 
+	public void setOnShareCode(String onShareCode) {
+		set("on_share_code", onShareCode);
+	}
+
+	public String getOnShareCode() {
+		return get("on_share_code");
+	}
+
+	public void setCommissionRate(Double commissionRate) {
+		set("commission_rate", commissionRate);
+	}
+
+	public Double getCommissionRate() {
+		return get("commission_rate");
+	}
+
 }

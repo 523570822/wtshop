@@ -309,6 +309,8 @@ public class OrderService extends BaseService<Order> {
         BigDecimal amount = order.getAmount().subtract(order.getAmountPaid()).setScale(2, BigDecimal.ROUND_HALF_UP);
         Long memberId = order.getMemberId();
         Member member = memberService.find(memberId);
+
+
         order.setStatus(Order.Status.pendingShipment.ordinal());
         order.setExpire(null);
         order.setLockExpire(null);
@@ -516,8 +518,19 @@ public class OrderService extends BaseService<Order> {
                 }
             }
         }
+        if (Order.Type.general.ordinal()== order.getType()) {
+            //判断是否是管家
+            if (StringUtils.isNotEmpty(member.getShareCode())) {
+                order.setIsCommission(true);
+                member.getOnShareCode();
+                order.setOnShareCode(member.getOnShareCode());
+                double dd = order.getCommissionRate() * order.getPrice().doubleValue()/100;
 
-
+                BigDecimal b1 = new BigDecimal(dd);
+                member.setCommissionUnarrived(b1.add(member.getCommissionUnarrived()));
+                memberService.update(member);
+            }
+        }
         //倒拍
         if (order.getType() == Order.Type.daopai.ordinal()) {
 //			reverseExService.paySuccess(order.getActOrderId());

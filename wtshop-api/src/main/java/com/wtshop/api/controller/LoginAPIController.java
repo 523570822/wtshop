@@ -168,7 +168,7 @@ public class LoginAPIController extends BaseAPIController {
         actCache.set("ORDERMMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("STAFFMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("SOUND:" + member.getId(),"default");
-        CodeResult codeResult = new CodeResult(codes,token, accountId);
+        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode());
         renderJson(ApiResult.success(codeResult, "登录成功"));
     }
 
@@ -236,7 +236,7 @@ public class LoginAPIController extends BaseAPIController {
         actCache.set("ORDERMMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("STAFFMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("SOUND:" + member.getId(),"default");
-        CodeResult codeResult = new CodeResult(codes,token, accountId);
+        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode());
         renderJson(ApiResult.success(codeResult, "登录成功"));
     }
 
@@ -306,7 +306,7 @@ public class LoginAPIController extends BaseAPIController {
         actCache.set("ORDERMMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("STAFFMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("SOUND:" + member.getId(),"default");
-        CodeResult codeResult = new CodeResult(codes,token, accountId);
+        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode());
         renderJson(ApiResult.success(codeResult , "登录成功"));
     }
 
