@@ -514,6 +514,7 @@ public class OrderService extends BaseService<Order> {
                         depositLog.setOrderId(order.getId());
                         depositLog.setMemberId(member.getId());
                         depositLogDao.save(depositLog);
+
                     }
 
                 }
