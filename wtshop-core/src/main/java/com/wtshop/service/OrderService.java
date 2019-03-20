@@ -318,10 +318,14 @@ public class OrderService extends BaseService<Order> {
         order.setLockKey(null);
 
         // 生成会员激活码，福袋
+
         if (order.getType() == Order.Type.fudai.ordinal()) {
           // 生成邀请码
+            Long dds = ShareCodeUtils.codeToId(member.getOnShareCode());
+            Member member1 = memberService.find(dds);
             String code = ShareCodeUtils.idToCode(member.getId());
             member.setShareCode(code);
+            member.setLinkShareCode(member1.getLinkShareCode()+"_"+member1.getShareCode());
             //调用推送
         }
 
