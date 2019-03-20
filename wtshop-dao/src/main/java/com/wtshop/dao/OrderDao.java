@@ -327,6 +327,46 @@ public class OrderDao extends BaseDao<Order> {
 		sqlExceptSelect += " order by o.modify_date desc";
 		return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
 	}
+	/**
+	 * 查找佣金订单分页
+	 *
+
+	 * @param status
+	 *            状态
+	 * @param member
+	 *            会员
+	 * @param pageable
+	 *            分页信息
+	 * @return 订单分页
+	 */
+	public Page<Order> findYongJinPages(String status, Member member, Pageable pageable ) {
+		String select = " select o.type, o.id ,o.status ,o.quantity quantity,o.amount price,o.groupbuy_id,o.fightgroup_id ," +
+				"o.sn , o.create_date ,o.freight, o.actOrderId fudaiId";
+		String sqlExceptSelect = "FROM `order` o WHERE 1 = 1 AND o.is_delete = 0 And o.type=0" ;
+
+		if(status != null){
+
+			if(status.equals("0")){
+
+				sqlExceptSelect += " AND o.status in ('6','7','8','11') ";
+			}
+			if(status.equals("1")){
+				sqlExceptSelect += " AND o.status in ('2','3','4','5','9','10') ";
+			}
+			if(status.equals("2")){
+				sqlExceptSelect += " AND o.status in('0','1','2') ";
+			}
+
+		}
+
+
+
+		if (member != null) {
+			sqlExceptSelect += " AND o.member_id = " + member.getId();
+		}
+		sqlExceptSelect += " order by o.modify_date desc";
+		return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
+	}
 
 	/**
 	 * 查找订单分页

@@ -521,6 +521,9 @@ public class OrderService extends BaseService<Order> {
         }
         if (Order.Type.general.ordinal()== order.getType()) {
             double dd = order.getCommissionRate() * order.getPrice().doubleValue()/100;
+
+            logger.info("开始计算佣金————————————————————————");
+            logger.info("佣金金额————————————————————————"+dd);
             BigDecimal b1 = new BigDecimal(dd);
             member.setCommissionUnarrived(b1.add(member.getCommissionUnarrived()));
 
@@ -529,7 +532,7 @@ public class OrderService extends BaseService<Order> {
                 order.setIsCommission(true);
                 member.getOnShareCode();
                 order.setOnShareCode(member.getOnShareCode());
-
+                order.setIsCommission(true);
                 //插入佣金变动记录
                 CommissionLog depositLog = new CommissionLog();
                 depositLog.setBalance(member.getBalance());
@@ -798,7 +801,9 @@ public class OrderService extends BaseService<Order> {
     public Page<Order> findTuanGouPages( String status, Member member, Pageable pageable) {
         return orderDao.findTuanGouPages(status, member, pageable);
     }
-
+    public Page<Order> findYongJinPages( String status, Member member, Pageable pageable) {
+        return orderDao.findYongJinPages(status, member, pageable);
+    }
 
     /**
      * 查询已完成的订单 且退货单中不存在

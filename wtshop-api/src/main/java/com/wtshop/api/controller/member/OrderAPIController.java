@@ -135,7 +135,42 @@ public class OrderAPIController extends BaseAPIController {
 		renderJson(ApiResult.success(hashMap));
 
 	}
+	public void yongJinList() {
+		Integer pageNumber = getParaToInt("pageNumbers");
+		String status = getPara("status");
+		Member member = memberService.getCurrent();
+		Pageable pageable = new Pageable(pageNumber, PAGE_SIZE);
+		//更新过期订单
+		orderService.updateExperce(member);
+		Page<Order> page = orderService.findTuanGouPages( status, member ,pageable );
 
+		List<Order> orderList = page.getList();
+		List<OrderGoods> orderGoodss = new ArrayList<>();
+		for(Order order : orderList){
+			//todo 退款订单显示问题 暂时这样修改
+			if(order.getStatus() == 11){
+				order.setStatus(110);
+			}
+
+			List<Goods> goodsList = goodsService.findGoodsByItemId(order.getId());
+			if (order.getType()==Order.Type.daopai.ordinal()){
+				//获取倒拍单价
+
+			}
+			OrderGoods orderGoods = new OrderGoods(goodsList, order);
+			orderGoodss.add(orderGoods);
+		}
+
+		HashMap<String, Object> hashMap = new HashMap<String, Object>();
+		hashMap.put("PageNumber",page.getPageNumber());
+		hashMap.put("memberId",member.getId());
+		hashMap.put("TotalPage",page.getTotalPage());
+		hashMap.put("TotalRow",page.getTotalRow());
+		hashMap.put("PageSize",page.getPageSize());
+		hashMap.put("orderGoodss",orderGoodss);
+		renderJson(ApiResult.success(hashMap));
+
+	}
 
 	/**
 	 * 提醒发货
