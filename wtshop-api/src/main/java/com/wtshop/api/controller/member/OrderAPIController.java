@@ -142,7 +142,7 @@ public class OrderAPIController extends BaseAPIController {
 		Pageable pageable = new Pageable(pageNumber, PAGE_SIZE);
 		//更新过期订单
 		orderService.updateExperce(member);
-		Page<Order> page = orderService.findTuanGouPages( status, member ,pageable );
+		Page<Order> page = orderService.findYongJinPages( status, member ,pageable );
 
 		List<Order> orderList = page.getList();
 		List<OrderGoods> orderGoodss = new ArrayList<>();

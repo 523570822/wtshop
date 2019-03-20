@@ -519,8 +519,9 @@ public class OrderService extends BaseService<Order> {
                 }
             }
         }
-        if (Order.Type.general.ordinal()== order.getType()) {
-            double dd = order.getCommissionRate() * order.getPrice().doubleValue()/100;
+        double dd = order.getCommissionRate() * order.getPrice().doubleValue()/100;
+        if (Order.Type.general.ordinal()== order.getType()&&dd>0) {
+
 
             logger.info("开始计算佣金————————————————————————");
             logger.info("佣金金额————————————————————————"+dd);
@@ -540,9 +541,9 @@ public class OrderService extends BaseService<Order> {
                 //插入佣金变动记录
                 CommissionLog depositLog = new CommissionLog();
                 depositLog.setBalance(member.getBalance());
-                depositLog.setCredit(new BigDecimal(dd));
+                depositLog.setCredit(b1);
                 depositLog.setDebit(BigDecimal.ZERO);
-                depositLog.setMemo("佣金回馈上级");
+                depositLog.setMemo("佣金回馈自己");
                 depositLog.setType(CommissionLog.Type.adjustment.ordinal());
                 /**
                  * 待定
@@ -553,22 +554,26 @@ public class OrderService extends BaseService<Order> {
 
                 commissionDao.save(depositLog);
 
-                CommissionLog depositLog1 = new CommissionLog();
-                depositLog1.setBalance(member.getBalance());
-                depositLog1.setCredit(new BigDecimal(dd));
-                depositLog1.setDebit(BigDecimal.ZERO);
-                depositLog1.setStatus(2);
-                depositLog1.setMemo("佣金回馈自己");
-                depositLog1.setType(CommissionLog.Type.adjustment.ordinal());
-                depositLog1.setOrderId(order.getId());
-                Long dds = ShareCodeUtils.codeToId(member.getOnShareCode());
-                depositLog1.setMemberId(dds);
-
-
-
-
                 memberService.update(member);
+
+
             }
+            Long dds = ShareCodeUtils.codeToId(member.getOnShareCode());
+            Member member1 = memberService.find(dds);
+            CommissionLog depositLog1 = new CommissionLog();
+            depositLog1.setBalance(member.getBalance());
+            depositLog1.setCredit(b1);
+            depositLog1.setDebit(BigDecimal.ZERO);
+            depositLog1.setStatus(2);
+            depositLog1.setMemo("佣金回馈上级");
+            depositLog1.setType(CommissionLog.Type.adjustment.ordinal());
+            depositLog1.setOrderId(order.getId());
+
+            depositLog1.setMemberId(dds);
+            member1.setCommissionUnarrived(b1.add(member1.getCommissionUnarrived()));
+            memberService.update(member1);
+            commissionDao.save(depositLog1);
+
         }
         //倒拍
         if (order.getType() == Order.Type.daopai.ordinal()) {

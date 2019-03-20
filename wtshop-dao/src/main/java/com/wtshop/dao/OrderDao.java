@@ -348,13 +348,13 @@ public class OrderDao extends BaseDao<Order> {
 
 			if(status.equals("0")){
 
-				sqlExceptSelect += " AND o.status in ('6','7','8','11') ";
+				sqlExceptSelect += " AND o.status in ('0') ";
 			}
 			if(status.equals("1")){
-				sqlExceptSelect += " AND o.status in ('2','3','4','5','9','10') ";
+				sqlExceptSelect += " AND o.status in ('3') ";
 			}
 			if(status.equals("2")){
-				sqlExceptSelect += " AND o.status in('0','1','2') ";
+				sqlExceptSelect += " AND o.status in('5','9','10') ";
 			}
 
 		}
@@ -362,7 +362,7 @@ public class OrderDao extends BaseDao<Order> {
 
 
 		if (member != null) {
-			sqlExceptSelect += " AND o.member_id = " + member.getId();
+			sqlExceptSelect += " AND ( o.member_id = " + member.getId()+ " or o.on_share_code ="+member.getShareCode()+" )";
 		}
 		sqlExceptSelect += " order by o.modify_date desc";
 		return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
