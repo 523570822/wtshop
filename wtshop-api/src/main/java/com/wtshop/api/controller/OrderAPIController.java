@@ -294,10 +294,11 @@ public class OrderAPIController extends BaseAPIController {
 
 		//满减金额
 		Double manjianPrice = skuids[4];
+		//佣金比例
+		Double rate = goods.getCommissionRate();
 
 
-
-		Order order = orderService.createBuyNow(Order.Type.general, member, goods, price, 1, manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,null,0,0);
+		Order order = orderService.createBuyNow(Order.Type.general, member, goods, price, 1, manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,null,0,0,rate);
 		renderJson(ApiResult.success(order.getId()));
 	}
 
@@ -557,10 +558,12 @@ if(!isSinglepurchase){
 		//满减金额
 		Double manjianPrice = skuids[4];
 
+		//佣金比例
+		Double rate = goods.getCommissionRate();
 
 
 		Order order = orderService.createBuyNow(Order.Type.group, member, goods, price, 1, manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney
-				, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,isSinglepurchase,fightGroupId,tuanGouId);
+				, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,isSinglepurchase,fightGroupId,tuanGouId,rate);
 		renderJson(ApiResult.success(order.getId()));
 	}
 	/**

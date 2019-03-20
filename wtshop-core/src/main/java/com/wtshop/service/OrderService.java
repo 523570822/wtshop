@@ -525,6 +525,10 @@ public class OrderService extends BaseService<Order> {
             logger.info("开始计算佣金————————————————————————");
             logger.info("佣金金额————————————————————————"+dd);
             BigDecimal b1 = new BigDecimal(dd);
+            if(member.getCommissionUnarrived()==null){
+                member.setCommissionUnarrived(BigDecimal.ZERO);
+
+            }
             member.setCommissionUnarrived(b1.add(member.getCommissionUnarrived()));
 
             //判断是否是管家
@@ -1407,7 +1411,7 @@ public class OrderService extends BaseService<Order> {
      */
 
     public Order createBuyNow(Order.Type type, Member member, Goods goods, Double price, int quantity, Double manjianPrice, Receiver receiver, Double amountMoney, Double deliveryMoney, Double
-        miaobiMoney, String memo, Double couponYunfei,Boolean isInvoice,Boolean isPersonal,String taxNumber,String companyName,Boolean isSinglepurchase,long fightGroupId,long tuanGouId) {
+        miaobiMoney, String memo, Double couponYunfei,Boolean isInvoice,Boolean isPersonal,String taxNumber,String companyName,Boolean isSinglepurchase,long fightGroupId,long tuanGouId,Double rate) {
 
 
         JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
@@ -1421,6 +1425,7 @@ public class OrderService extends BaseService<Order> {
         order.setIsPersonal(isPersonal);
         order.setTaxNumber(taxNumber);
         order.setCompanyName(companyName);
+        order.setCommissionRate(rate);
 
 
         order.setPrice(new BigDecimal(price));
