@@ -1,5 +1,5 @@
 echo "stop tomcat!"
- /mrmf/tomcat_shops/bin/shutdown.sh
+ service tomcat stop
 sleep 10
 echo "删除文件及缓存"
 sudo rm -rf /root/learngit/wtshop/wtshop-web/target/*
@@ -14,8 +14,8 @@ mvn -X install -Dmaven.test.skip=true
 #打包
 #mvn install -Dmaven.test.skip=true -U -P dev
 echo "拷贝到Tomcat下"
-rsync -rtlvz --exclude 'wtshop.properties' /root/learngit/wtshop/wtshop-web/target/wtshop-web/*  /mrmf/tomcat_shops/webapps/ROOT  ;   简化后 拷贝编译后的代码到指定tomcat服务器中sudo systemctl restart tomcat  启动Tomcat;
-rsync -rtlvz /mrmf/tomcat_shops/wtshop-web/WEB-INF/classes/wtshop.properties /mrmf/tomcat_shops/webapps/ROOT/WEB-INF/classes
+rsync -rtlvz --exclude 'wtshop.properties' /root/learngit/wtshop/wtshop-web/target/wtshop-web/*    /var/lib/tomcat/webapps  ;   简化后 拷贝编译后的代码到指定tomcat服务器中sudo systemctl restart tomcat  启动Tomcat;
+rsync -rtlvz /mrmf/tomcat_shops/wtshop-web/WEB-INF/classes/wtshop.properties /var/lib/tomcat/webapps/WEB-INF/classes
 
 echo "开启tomcat"
 sudo /mrmf/tomcat_shops/bin/startup.sh

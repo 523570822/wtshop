@@ -57,6 +57,9 @@ sudo systemctl restart tomcat
 
 **远程代码测试服务器101.201.106.61部署：**
 
+通过yum安装的tomcat
+  修改80端口  需要 更改防火墙iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+  通过  service tomcat start 启动
 第一次：
 mkdir learngit //创建文件夹
 cd learngit
@@ -79,10 +82,7 @@ git checkout  -b rxmshop  remotes/origin/master//远程分支   //切换到指�
  
  git pull origin rxmshop  --force ;//强制更新本地仓库
  mvn -X install -Dmaven.test.skip=true ; //通过maven自动编译代码
- tar zcvf /mrmf/tomcat_shops/webapps/ROOT$(date +%Y%m%d%H).tar.gz /mrmf/tomcat_shops/webapps/ROOT ;//备份语句根据实际情况修改
- 
- 
-rsync -rtlvz --exclude 'wtshop.properties'  /root/learngit/wtshop/target/wtshop-web/*  /mrmf/tomcat_shops/webapps/ROOT  ;   简化后 拷贝编译后的代码到指定tomcat服务器中sudo systemctl restart tomcat  启动Tomcat
+rsync -rtlvz --exclude 'wtshop.properties'  /root/learngit/wtshop/target/wtshop-web/*  /var/lib/tomcat/webapps  ;   简化后 拷贝编译后的代码到指定tomcat服务器中sudo systemctl restart tomcat  启动Tomcat
  
  
 
