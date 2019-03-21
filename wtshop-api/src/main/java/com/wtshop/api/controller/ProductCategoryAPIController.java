@@ -32,18 +32,7 @@ public class ProductCategoryAPIController extends BaseAPIController {
 	 */
 	public void index() {
 		List<ProductCategory> findOneAndTwoRoots = productCategoryService.findOneAndTwoRoots();
-		List<ProductCategoryModel> list = new ArrayList<>();
-
-
-		for(ProductCategory productCategory : findOneAndTwoRoots){
-			Long id = productCategory.getId();
-			List<ProductCategory> productCategories = productCategoryService.TwoRoots(id);
-			ProductCategoryModel productCategoryModel = new ProductCategoryModel(productCategory.getName(), productCategories);
-			list.add(productCategoryModel);
-		}
-
-		ProductCategoryResult productCategoryResult = new ProductCategoryResult(list);
-		ApiResult apiResult = ApiResult.success(productCategoryResult);
+		ApiResult apiResult = ApiResult.success(findOneAndTwoRoots);
 		renderJson(ApiResult.success(apiResult));
 	}
 
