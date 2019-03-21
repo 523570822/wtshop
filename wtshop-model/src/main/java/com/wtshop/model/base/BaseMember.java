@@ -497,4 +497,20 @@ public abstract class BaseMember<M extends BaseMember<M>> extends Model<M> imple
 		return get("total_offline");
 	}
 
+	public void setInvalidCommission(java.math.BigDecimal invalidCommission) {
+		set("invalid_commission", invalidCommission);
+	}
+
+	public java.math.BigDecimal getInvalidCommission() {
+		return get("invalid_commission");
+	}
+
+	public void setWaitingCommission(java.math.BigDecimal waitingCommission) {
+		set("waiting_commission", waitingCommission);
+	}
+
+	public java.math.BigDecimal getWaitingCommission() {
+		return get("waiting_commission");
+	}
+
 }

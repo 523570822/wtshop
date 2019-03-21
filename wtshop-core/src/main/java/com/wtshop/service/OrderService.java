@@ -539,7 +539,6 @@ public class OrderService extends BaseService<Order> {
             if (StringUtils.isNotEmpty(member.getShareCode())) {
                 order.setIsCommission(true);
                 member.getOnShareCode();
-                order.setOnShareCode(member.getOnShareCode());
                 order.setIsCommission(true);
                 //插入佣金变动记录
                 CommissionLog depositLog = new CommissionLog();
@@ -561,6 +560,7 @@ public class OrderService extends BaseService<Order> {
 
 
             }
+            order.setOnShareCode(member.getOnShareCode());
             Long dds = ShareCodeUtils.codeToId(member.getOnShareCode());
             Member member1 = memberService.find(dds);
             CommissionLog depositLog1 = new CommissionLog();

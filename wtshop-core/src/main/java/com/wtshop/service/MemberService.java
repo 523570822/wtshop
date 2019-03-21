@@ -3,6 +3,7 @@ package com.wtshop.service;
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Enhancer;
 import com.jfinal.ext.plugin.monogodb.MongoKit;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
@@ -16,6 +17,7 @@ import com.wtshop.dao.MemberDao;
 import com.wtshop.dao.MemberRankDao;
 import com.wtshop.dao.MrmfShopDao;
 import com.wtshop.dao.StaffMemberDao;
+import com.wtshop.entity.TeamManagement;
 import com.wtshop.exception.AppRuntimeException;
 import com.wtshop.model.*;
 import com.wtshop.util.*;
@@ -52,22 +54,16 @@ public class MemberService extends BaseService<Member> {
 
 
 
+	public List<Member> findMemberByOnShare(String shareCode){
+		return memberDao.findMemberByOnShare(shareCode);
+	}
+	public List<Member> findMemberByLinkShare(String shareCode){
+		return memberDao.findMemberByOnShare(shareCode);
+	}
+
 	public List<Member> findMemberList(Long[] memberList){
 		return memberDao.findMemberList(memberList);
 	}
-
-
-    @Before(Tx.class)
-	public ApiResult updateMemberBalance(Order order, Refunds refunds ,Member member){
-
-
-		return  null;
-
-
-	}
-
-
-
 	/**
 	 * 获取佣金技师
 	 */
@@ -523,7 +519,14 @@ if(StringUtils.isNotEmpty(onShareCode)){
 	public Member getCurrent() {
 		return getCurrent(false);
 	}
-
+/**
+ *团队管理
+ */
+public List<TeamManagement> getTeamManagementList(Long memberId){
+	String sql = "SELECT count(me.id) memeber_num, hec.* FROM member me LEFT JOIN ( SELECT m.avatar, m.share_code, count(o.id) order_num, sum(o.price) price_num, m.create_date, m.we_chat_number, m.phone, m.nickname FROM `order` o LEFT JOIN member m ON o.member_id = m.id WHERE o.on_share_code IS NOT NULL AND o.member_id = "+memberId+" ) hec ON me.link_share_code LIKE concat('%', hec.share_code, '%') WHERE hec.share_code IS NOT NULL\n";
+	List<TeamManagement>  teamManagementList = Db.query(sql);
+	return teamManagementList;
+}
 	/**
 	 * 获取当前登录会员
 	 * 

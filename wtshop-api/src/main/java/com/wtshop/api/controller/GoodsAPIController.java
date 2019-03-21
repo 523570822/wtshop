@@ -463,7 +463,8 @@ public void onShareCode(){
 		renderJson(ApiResult.fail("邀请码不存在!"));
 		return;
 	}
-	m.setOnShareCode(onShareCode);
+	String str = new String(onShareCode);
+	m.setOnShareCode(str.toUpperCase());
 	memberService.update(m);
 	renderJson(ApiResult.success("绑定邀请码成功"));
 }

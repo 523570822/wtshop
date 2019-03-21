@@ -5,6 +5,7 @@ import com.alibaba.common.logging.LoggerFactory;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 import com.wtshop.FileType;
@@ -14,6 +15,7 @@ import com.wtshop.api.common.result.PointResult;
 import com.wtshop.api.common.result.member.CountResult;
 import com.wtshop.api.common.result.member.MemberMessageResult;
 import com.wtshop.api.interceptor.TokenInterceptor;
+import com.wtshop.entity.TeamManagement;
 import com.wtshop.util.*;
 import com.wtshop.api.controller.BaseAPIController;
 import com.wtshop.api.interceptor.ErrorInterceptor;
@@ -164,7 +166,25 @@ public class MemberAPIController extends BaseAPIController {
 	 */
 	public void commissionIndex() {
 		Member member = memberService.getCurrent();
+
+		//直系下线
+
+		member.setDirectOffline(memberService.findMemberByOnShare(member.getShareCode()).size());
+		//总下线
+		member.setTotalOffline(memberService.findMemberByLinkShare(member.getShareCode()).size());
+
 		renderJson(ApiResult.success(member));
+	}
+	/**
+	 * 团队管理
+	 */
+	public void teamManagement(){
+		Member member = memberService.getCurrent();
+
+
+		List<TeamManagement> te = memberService.getTeamManagementList(member.getId());
+		renderJson(ApiResult.success(te));
+
 	}
 	/**
 	 * 审核用户名和身份证

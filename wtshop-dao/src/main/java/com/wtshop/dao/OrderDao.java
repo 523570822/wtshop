@@ -340,9 +340,9 @@ public class OrderDao extends BaseDao<Order> {
 	 * @return 订单分页
 	 */
 	public Page<Order> findYongJinPages(String status, Member member, Pageable pageable ) {
-		String select = " select o.type, o.id ,o.status ,o.quantity quantity,o.amount price,o.groupbuy_id,o.fightgroup_id ," +
+		String select = " select o.type, o.id ,o.status ,o.quantity quantity,o.amount price,o.commission_rate,o.groupbuy_id,o.fightgroup_id ," +
 				"o.sn , o.create_date ,o.freight, o.actOrderId fudaiId";
-		String sqlExceptSelect = "FROM `order` o WHERE 1 = 1 AND o.is_delete = 0 And o.type=0" ;
+		String sqlExceptSelect = "FROM `order` o WHERE 1 = 1 AND o.is_delete = 0 And o.type=0 and o.on_share_code is not null " ;
 
 		if(status != null){
 
@@ -359,12 +359,13 @@ public class OrderDao extends BaseDao<Order> {
 
 		}
 
-
-
-		if (member != null) {
-			sqlExceptSelect += " AND ( o.member_id = " + member.getId()+ " or o.on_share_code ="+member.getShareCode()+" )";
+		if (member != null &&StringUtils.isNotEmpty(member.getShareCode())) {
+			sqlExceptSelect += " AND ( o.member_id = " + member.getId()+ " or o.on_share_code ='"+member.getShareCode()+"' )";
+		}else if(member != null){
+			sqlExceptSelect +="  AND o.member_id = " + member.getId()+ " ";
 		}
-		sqlExceptSelect += " order by o.modify_date desc";
+
+		sqlExceptSelect += "  order by o.modify_date desc";
 		return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
 	}
 
