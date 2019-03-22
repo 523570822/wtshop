@@ -59,13 +59,14 @@ public class GroupBuyAPIController extends BaseAPIController {
      */
     public void list() {
         Integer pageNumber = getParaToInt("pageNumbers");
+        boolean status = getParaToBoolean("status");
 
 
         Map<String, Object> map = new HashedMap();
         Pageable pageable = new Pageable(pageNumber, PAGE_SIZE);
 
 
-        Page<GroupBuy> list = fuDaiService.findPages(pageable);
+        Page<GroupBuy> list = fuDaiService.findPages(pageable,status);
         // map.put("list", list);
         renderJson(ApiResult.success(list));
     }

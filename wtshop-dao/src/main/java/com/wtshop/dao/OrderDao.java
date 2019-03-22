@@ -360,10 +360,34 @@ public class OrderDao extends BaseDao<Order> {
 		}
 
 		if (member != null &&StringUtils.isNotEmpty(member.getShareCode())) {
-			sqlExceptSelect += " AND ( o.member_id = " + member.getId()+ " or o.on_share_code ='"+member.getShareCode()+"' )";
+			sqlExceptSelect += " AND ( o.share_code = '" + member.getShareCode()+ "' or o.on_share_code ='"+member.getShareCode()+"' )";
 		}else if(member != null){
-			sqlExceptSelect +="  AND o.member_id = " + member.getId()+ " ";
+			sqlExceptSelect +=" o.on_share_code ='"+member.getShareCode()+"' ";
 		}
+
+		sqlExceptSelect += "  order by o.modify_date desc";
+		return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
+	}	/**
+	 * 查找佣金订单分页
+	 *
+
+	 * @param memberId
+	 *            状态
+	 * @param member
+	 *            会员
+	 * @param pageable
+	 *            分页信息
+	 * @return 订单分页
+	 */
+	public Page<Order> findYongJinXiaPages(Integer memberId, Member member, Pageable pageable ) {
+		String select = " select o.type, o.id ,o.status ,o.quantity quantity,o.amount price,o.commission_rate,o.groupbuy_id,o.fightgroup_id ," +
+				"o.sn , o.create_date ,o.freight, o.actOrderId fudaiId";
+		String sqlExceptSelect = "FROM `order` o WHERE 1 = 1 AND o.is_delete = 0 And o.type=0 and o.on_share_code is not null " ;
+
+
+
+			sqlExceptSelect +=" and o.on_share_code ='"+member.getShareCode()+"' and o.member_id ="+memberId+" ";
+
 
 		sqlExceptSelect += "  order by o.modify_date desc";
 		return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);

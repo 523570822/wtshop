@@ -49,29 +49,24 @@ public class CommissionLogDao extends BaseDao<CommissionLog> {
 	 *            分页信息
 	 * @return 预存款记录分页
 	 */
-	public Page<CommissionLog> findPage(Member member, Pageable pageable ,Integer type) {
+	public Page<CommissionLog> findPage(Member member, Pageable pageable ,Integer type,Integer status) {
 		if (member == null) {
 			return null;
 		}
 		String sqlExceptSelect ="";
 		String select = "SELECT *  ";
 		if( type != null){
-			if( 0 == type ){
+
 				select = " SELECT * ";
-				sqlExceptSelect = " FROM deposit_log WHERE member_id = " + member.getId() + " AND type in (2 , 3 , 1 ,0 ,5 ,6)";
-				sqlExceptSelect += " order by create_date DESC";
-			}else if( 1 == type){
-//				select = " select o.name,o.price,o.create_date ";
-//				sqlExceptSelect = " FROM deposit_log d left join order_item o on d.order_id = o.order_id WHERE member_id = " + member.getId() + " AND d.type in (4)";
-//				sqlExceptSelect += " order by create_date DESC";
+		if(status==null){
+			sqlExceptSelect+=" from commission_log where type ="+type+" ";
+		}else {
+			sqlExceptSelect+=" from commission_log where type ="+type+" and status ="+status+ "";
+		}
 
-				select = " select i.name memo, o.amount_paid price, o.create_date ,f.title operator ,o.id orderId ";
-				sqlExceptSelect = " FROM deposit_log d left join order_item i on d.order_id = i.order_id LEFT JOIN `order` o ON d.order_id = o.id LEFT JOIN fu_dai f ON o.actOrderId = f.id WHERE d.member_id = " + member.getId() + " AND d.type in (4)";
-				sqlExceptSelect += " group by i.order_id  order by o.create_date DESC";
 
-			}else {
-				return null;
-			}
+
+			sqlExceptSelect += "  and member_id = " + member.getId()+ "   order by create_date DESC";
 		}else {
 			sqlExceptSelect = " FROM deposit_log WHERE member_id = " + member.getId() ;
 		}

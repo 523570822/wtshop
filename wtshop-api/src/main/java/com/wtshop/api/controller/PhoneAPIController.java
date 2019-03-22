@@ -39,7 +39,18 @@ public class PhoneAPIController extends BaseAPIController {
         }
         renderJson(ApiResult.success());
     }
+    /**
+     * 消息推送声音接口
+     */
+    public void phone(){
+        Member current = memberService.getCurrent();
 
+        Boolean sound = getParaToBoolean("status",true);
+        current.setPhoneStatus(sound);
+        memberService.update(current);
+
+        renderJson(ApiResult.success());
+    }
     /**
      * 版本
      */
@@ -76,6 +87,17 @@ public class PhoneAPIController extends BaseAPIController {
             status = false;
         }
         renderJson(ApiResult.success(status));
+    }
+    /**
+     * 推送按钮的默认状态
+     */
+    public void phoneStatus(){
+        Member current = memberService.getCurrent();
+        Boolean sound = current.getPhoneStatus();
+        if(sound==null){
+            sound=true;
+        }
+        renderJson(ApiResult.success(sound));
     }
 
 }

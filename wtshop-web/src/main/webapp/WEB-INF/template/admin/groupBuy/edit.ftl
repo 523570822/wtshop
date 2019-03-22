@@ -55,9 +55,18 @@
             // 表单验证
             $inputForm.validate({
                 rules: {
+                    "groupBuy.title":"required",
+                    "groupBuy.price":"required",
+                    "groupBuy.begin_date":"required",
+                    "groupBuy.end_date":"required",
+                    "groupBuy.uniprice":"required",
+                    "groupBuy.num": "required",
+                    "product_name":"required" ,
+
                     "freeUse.product_id":"required",
                     "freeUse.end_date":"required",
                     "ad.title": "required",
+                ,
                     adPositionId: "required",
                     "ad.path": {
                         required: true,
@@ -222,14 +231,24 @@
             <td>
                 <input type="text" name="groupBuy.groupnum"  value="${groupBuy.groupnum}"   class="text" maxlength="200"  />
             </td>
-        </tr><tr>
-        <th>
-            <span class="requiredField">*</span>${message("groupBuy.endtime")}:
-        </th>
-        <td>
-            <input type="text" name="groupBuy.endtime" class="text" value="${groupBuy.endtime}"  maxlength="200" title=${message("groupBuy.num.title")} />
-        </td>
-    </tr>
+        </tr>
+
+        <tr>
+            <th>
+                ${message("Promotion.beginDate")}:
+            </th>
+            <td>
+                <input type="text" id="beginDate" name="groupBuy.begin_date" class="text Wdate" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss', maxDate: '#F{$dp.$D(\'endDate\')}'});" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                ${message("Promotion.endDate")}:
+            </th>
+            <td>
+                <input type="text" id="endDate" name="groupBuy.end_date" class="text Wdate" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss', minDate: '#F{$dp.$D(\'beginDate\')}'});" />
+            </td>
+        </tr>
 
 
         <tr>

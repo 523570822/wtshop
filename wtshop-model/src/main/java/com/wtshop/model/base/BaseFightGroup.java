@@ -185,4 +185,12 @@ public abstract class BaseFightGroup<M extends BaseFightGroup<M>> extends Model<
 		return get("ji_shi");
 	}
 
+	public void setBeginDate(java.util.Date beginDate) {
+		set("begin_date", beginDate);
+	}
+
+	public java.util.Date getBeginDate() {
+		return get("begin_date");
+	}
+
 }

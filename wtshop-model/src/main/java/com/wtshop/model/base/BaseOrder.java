@@ -529,4 +529,12 @@ public abstract class BaseOrder<M extends BaseOrder<M>> extends Model<M> impleme
 		return get("commission_rate");
 	}
 
+	public void setShareCode(String shareCode) {
+		set("share_code", shareCode);
+	}
+
+	public String getShareCode() {
+		return get("share_code");
+	}
+
 }

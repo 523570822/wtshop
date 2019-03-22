@@ -240,16 +240,13 @@ public class OrderService extends BaseService<Order> {
                 fightGroup.setCount(1);
                 fightGroup.setDispatchprice(groupBuy.getDispatchprice());
                 fightGroup.setGroupnum(1);
-                fightGroup.setEndtime(groupBuy.getEndtime());
                 fightGroup.setMemberId(order.getMemberId());
-                Date nowDate = new Date();
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(nowDate);
-                cal.add(Calendar.HOUR, groupBuy.getEndtime());// 24小时制
-                Date time = cal.getTime();
 
-                fightGroup.setEndDate(time);
 
+
+                fightGroup.setBeginDate(groupBuy.getBeginDate());
+                fightGroup.setEndDate(groupBuy.getEndDate());
+              //  fightGroup.set
                 fightGroup.setTuangouId(order.getGroupbuyId());
 
                 fightGroup = fightGroupService.save(fightGroup);
@@ -272,15 +269,20 @@ public class OrderService extends BaseService<Order> {
                 fightGroup.setCount(2);
                 fightGroup.setDispatchprice(groupBuy.getDispatchprice());
                 fightGroup.setGroupnum(groupBuy.getGroupnum());
-                fightGroup.setEndtime(groupBuy.getEndtime());
+
                 fightGroup.setMemberId(order.getMemberId());
+
+
+/*
                 Date nowDate = new Date();
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(nowDate);
                 cal.add(Calendar.HOUR, groupBuy.getEndtime());// 24小时制
                 Date time = cal.getTime();
+*/
 
-                fightGroup.setEndDate(time);
+                fightGroup.setBeginDate(groupBuy.getBeginDate());
+                fightGroup.setEndDate(groupBuy.getEndDate());
 
                 fightGroup.setTuangouId(order.getGroupbuyId());
 
@@ -815,6 +817,9 @@ public class OrderService extends BaseService<Order> {
     }
     public Page<Order> findYongJinPages( String status, Member member, Pageable pageable) {
         return orderDao.findYongJinPages(status, member, pageable);
+    }
+    public Page<Order> findYongJinXiaPages( Integer memberId, Member member, Pageable pageable) {
+        return orderDao.findYongJinXiaPages(memberId, member, pageable);
     }
 
     /**
@@ -1434,8 +1439,8 @@ public class OrderService extends BaseService<Order> {
         order.setTaxNumber(taxNumber);
         order.setCompanyName(companyName);
         order.setCommissionRate(rate);
-
-
+        order.setOnShareCode(member.getOnShareCode());
+        order.setShareCode(member.getShareCode());
         order.setPrice(new BigDecimal(price));
         order.setFee(new BigDecimal(deliveryMoney));
         order.setFreight(new BigDecimal(couponYunfei ));

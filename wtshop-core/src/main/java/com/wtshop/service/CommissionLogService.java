@@ -127,8 +127,8 @@ public class CommissionLogService extends BaseService<CommissionLog> {
 	 *            分页信息
 	 * @return 预存款记录分页
 	 */
-	public Page<CommissionLog> findPage(Member member, Pageable pageable ,Integer type) {
-		Page<CommissionLog> page = depositLogDao.findPage(member, pageable, type);
+	public Page<CommissionLog> findPage(Member member, Pageable pageable ,Integer type,Integer status) {
+		Page<CommissionLog> page = depositLogDao.findPage(member, pageable, type,status);
 		for(CommissionLog depositLog : page.getList()){
 			if(depositLog.getOperator() != null){
 				depositLog.setMemo(depositLog.getOperator());

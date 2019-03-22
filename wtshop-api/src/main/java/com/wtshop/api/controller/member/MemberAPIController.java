@@ -2,20 +2,20 @@ package com.wtshop.api.controller.member;
 
 import com.alibaba.common.logging.Logger;
 import com.alibaba.common.logging.LoggerFactory;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
-import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 import com.wtshop.FileType;
 import com.wtshop.Message;
+import com.wtshop.Pageable;
 import com.wtshop.Setting;
 import com.wtshop.api.common.result.PointResult;
 import com.wtshop.api.common.result.member.CountResult;
 import com.wtshop.api.common.result.member.MemberMessageResult;
-import com.wtshop.api.interceptor.TokenInterceptor;
-import com.wtshop.entity.TeamManagement;
 import com.wtshop.util.*;
 import com.wtshop.api.controller.BaseAPIController;
 import com.wtshop.api.interceptor.ErrorInterceptor;
@@ -23,9 +23,9 @@ import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.*;
 import com.wtshop.service.*;
 import org.apache.commons.lang3.StringUtils;
-import org.bouncycastle.pqc.math.linearalgebra.IntUtils;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +35,8 @@ import java.util.Map;
 public class MemberAPIController extends BaseAPIController {
 
 	private Logger log = LoggerFactory.getLogger("MemberAPIController");
-
+	/** 每页记录数 */
+	private static final int PAGE_SIZE = 10;
 	/** 最新订单数 */
 	private static final int NEW_ORDER_COUNT = 6;
 	private OrderService orderService = enhance(OrderService.class);
@@ -172,6 +173,22 @@ public class MemberAPIController extends BaseAPIController {
 		member.setDirectOffline(memberService.findMemberByOnShare(member.getShareCode()).size());
 		//总下线
 		member.setTotalOffline(memberService.findMemberByLinkShare(member.getShareCode()).size());
+		Map<String, Object> item = new HashMap<String, Object>();
+		if(StringUtils.isNotEmpty(member.getOnShareCode())){
+
+			Member member1 =memberService.find(	ShareCodeUtils.codeToId(member.getOnShareCode()));
+
+			member.setAttributeValue0(member1.getWeChatQcode());
+			member.setAttributeValue1(member1.getWeChatNumber());
+		/*	item.put("member", member);
+
+			item.put("onWeChatNumber",member1.getWeChatNumber());
+			item.put("onWeChatQcode",member1.getWeChatQcode());*/
+		}
+
+
+
+
 
 		renderJson(ApiResult.success(member));
 	}
@@ -180,12 +197,50 @@ public class MemberAPIController extends BaseAPIController {
 	 */
 	public void teamManagement(){
 		Member member = memberService.getCurrent();
+		Integer pageNumber = getParaToInt("pageNumbers");
+
+		Pageable pageable = new Pageable(pageNumber, PAGE_SIZE);
+
+		Page<TeamManagement> page = memberService.getTeamManagementList(member.getShareCode(),pageable);
 
 
-		List<TeamManagement> te = memberService.getTeamManagementList(member.getId());
-		renderJson(ApiResult.success(te));
+		//List<TeamManagement> te = memberService.getTeamManagementList("ESA99Y");
+		if(page.getList().get(0).getId()==null){
+			page=null;
+		}
+
+		renderJson(ApiResult.success(page));
 
 	}
+
+	/**
+	 *调出 管家 昵称和邀请码
+	 */
+	public void housekeeperNickname(){
+		Member member = memberService.getCurrent();
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		if(StringUtils.isNotEmpty(member.getShareCode())){
+			resultMap.put("shareCode",member.getShareCode());
+			resultMap.put("avatar",member.getAvatar());
+			resultMap.put("nickName",member.getNickname());
+		}else{
+
+			Long idd = ShareCodeUtils.codeToId(member.getOnShareCode());
+
+			Member mem = memberService.find(idd);
+			resultMap.put("shareCode",mem.getShareCode());
+			resultMap.put("avatar",mem.getAvatar());
+			resultMap.put("nickName",mem.getNickname());
+		}
+
+		renderJson(ApiResult.success(resultMap));
+
+	}
+
+
+
+
+
 	/**
 	 * 审核用户名和身份证
 	 */
@@ -350,7 +405,9 @@ public class MemberAPIController extends BaseAPIController {
 			return;
 		}
 		if (fileType == null || file == null || file.getFile().length() <= 0) {
-			renderJson(ApiResult.fail("请选择选图片"));
+			member.setWeChatNumber(weChatNumber);
+			memberService.update(member);
+			renderJson(ApiResult.successMsg("上传成功!"));
 			return;
 		}
 		if (!fileService.isValid(fileType, file)) {
@@ -365,7 +422,7 @@ public class MemberAPIController extends BaseAPIController {
 		member.setWeChatNumber(weChatNumber);
 		member.setWeChatQcode(url);
 		memberService.update(member);
-		renderJson(ApiResult.successMsg("上传头像成功!"));
+		renderJson(ApiResult.successMsg("上传成功!"));
 	}
 	/**
 	 * 意见反馈

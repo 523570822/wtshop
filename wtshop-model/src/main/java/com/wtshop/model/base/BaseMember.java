@@ -505,6 +505,14 @@ public abstract class BaseMember<M extends BaseMember<M>> extends Model<M> imple
 		return get("invalid_commission");
 	}
 
+	public void setPhoneStatus(Boolean phoneStatus) {
+		set("phone_status", phoneStatus);
+	}
+
+	public Boolean getPhoneStatus() {
+		return get("phone_status");
+	}
+
 	public void setWaitingCommission(java.math.BigDecimal waitingCommission) {
 		set("waiting_commission", waitingCommission);
 	}

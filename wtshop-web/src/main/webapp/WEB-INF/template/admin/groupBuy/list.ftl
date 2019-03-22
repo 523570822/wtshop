@@ -106,7 +106,10 @@
                 <span>${message("groupBuy.groupnum")}</span>
             </th>
             <th>
-                <span> ${message("groupBuy.endtime")}:</span>
+                <span> 开始时间</span>
+            </th>
+            <th>
+                <span>结束时间</span>
             </th>
 
             <th>
@@ -158,7 +161,10 @@
                     ${groupBuy.groupnum}
                 </td>
                 <td>
-                    ${groupBuy.endtime}
+                    ${groupBuy.begin_date}
+                </td>
+                <td>
+                    ${groupBuy.end_date}
                 </td>
                 <td>
                 ${groupBuy.orders}

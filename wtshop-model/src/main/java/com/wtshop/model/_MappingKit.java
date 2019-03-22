@@ -62,6 +62,7 @@ public class _MappingKit {
 		arp.addMapping("flashsale_detail", "id", FlashsaleDetail.class);
 		arp.addMapping("footprint", "id", Footprint.class);
 		arp.addMapping("free_apply", "id", FreeApply.class);
+		arp.addMapping("team_management", "id", TeamManagement.class);
 		arp.addMapping("free_use", "id", FreeUse.class);
 		arp.addMapping("freight_config", "id", FreightConfig.class);
 		arp.addMapping("friend_link", "id", FriendLink.class);

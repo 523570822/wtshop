@@ -66,7 +66,7 @@ public class MemberDao extends BaseDao<Member> {
 	 * 查询所有直系下线会员
 	 */
 	public List<Member> findMemberByOnShare(String shareCode){
-		String sql = " select * from member where 1 = 1 AND is_delete = 0 And on_share_code and share_code is not null ";
+		String sql = " select * from member where 1 = 1 AND is_delete = 0 And on_share_code='"+shareCode+"' and share_code is not null ";
 		return modelManager.find(sql);
 	}
 	/**

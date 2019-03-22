@@ -158,8 +158,7 @@ public class AccountService extends BaseService<Account> {
      * @return
      */
     public Map<String,Object> getUserInfo(Map<String,Object> access_token){
-        StringBuilder requestUrl = new StringBuilder("https://api.weixin.qq.com/sns/userinfo?access_token=")
-                .append(access_token.get("access_token").toString()).append("&openid=").append(access_token.get("openid").toString()).append("&lang=zh_CN");
+        StringBuilder requestUrl = new StringBuilder("https://api.weixin.qq.com/sns/userinfo?access_token=").append(access_token.get("access_token").toString()).append("&openid=").append(access_token.get("openid").toString()).append("&lang=zh_CN");
         try {
             //String res = HttpService.doGet(requestUrl.toString());
             String results = HttpUtils.get(requestUrl.toString());

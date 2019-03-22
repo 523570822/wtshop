@@ -153,14 +153,6 @@ public abstract class BaseGroupBuy<M extends BaseGroupBuy<M>> extends Model<M> i
 		return get("groupnum");
 	}
 
-	public void setEndtime(Integer endtime) {
-		set("endtime", endtime);
-	}
-
-	public Integer getEndtime() {
-		return get("endtime");
-	}
-
 	public void setIsList(Boolean isList) {
 		set("is_list", isList);
 	}
@@ -183,6 +175,22 @@ public abstract class BaseGroupBuy<M extends BaseGroupBuy<M>> extends Model<M> i
 
 	public Boolean getIsSinglepurchase() {
 		return get("is_singlepurchase");
+	}
+
+	public void setBeginDate(java.util.Date beginDate) {
+		set("begin_date", beginDate);
+	}
+
+	public java.util.Date getBeginDate() {
+		return get("begin_date");
+	}
+
+	public void setEndDate(java.util.Date endDate) {
+		set("end_date", endDate);
+	}
+
+	public java.util.Date getEndDate() {
+		return get("end_date");
 	}
 
 }

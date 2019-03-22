@@ -265,9 +265,11 @@ public class CommissionAPIController extends BaseAPIController {
 		Integer pageNumber = getParaToInt("pageNumbers");
 		//类型 使用明细：0    消费记录 1
 		Integer type = getParaToInt("type");
+		Integer status = getParaToInt("status");
+
 		Member member = memberService.getCurrent();
 		Pageable pageable = new Pageable(pageNumber, PAGE_SIZE);
-		Page<CommissionLog> page = depositLogService.findPage(member, pageable ,type);
+		Page<CommissionLog> page = depositLogService.findPage(member, pageable ,type,status);
 		CommissionLogResult depositLogResult = new CommissionLogResult(page);
 		renderJson(ApiResult.success(depositLogResult));
 	}

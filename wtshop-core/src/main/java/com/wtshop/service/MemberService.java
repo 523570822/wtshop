@@ -1,23 +1,17 @@
 package com.wtshop.service;
 
-import com.jfinal.aop.Before;
 import com.jfinal.aop.Enhancer;
 import com.jfinal.ext.plugin.monogodb.MongoKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
-import com.jfinal.plugin.activerecord.tx.Tx;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.wtshop.Pageable;
 import com.wtshop.Principal;
 import com.wtshop.RequestContextHolder;
 import com.wtshop.Setting;
-import com.wtshop.dao.MemberDao;
-import com.wtshop.dao.MemberRankDao;
-import com.wtshop.dao.MrmfShopDao;
-import com.wtshop.dao.StaffMemberDao;
-import com.wtshop.entity.TeamManagement;
+import com.wtshop.dao.*;
 import com.wtshop.exception.AppRuntimeException;
 import com.wtshop.model.*;
 import com.wtshop.util.*;
@@ -46,6 +40,7 @@ public class MemberService extends BaseService<Member> {
 	}
 	
 	private MemberDao memberDao = Enhancer.enhance(MemberDao.class);
+	private TeamManagementDao teamManagementDao = Enhancer.enhance(TeamManagementDao.class);
 	private MemberRankDao memberRankDao = Enhancer.enhance(MemberRankDao.class);
 	private MailService mailService = Enhancer.enhance(MailService.class);
 	private SmsService smsService = Enhancer.enhance(SmsService.class);
@@ -522,10 +517,10 @@ if(StringUtils.isNotEmpty(onShareCode)){
 /**
  *团队管理
  */
-public List<TeamManagement> getTeamManagementList(Long memberId){
-	String sql = "SELECT count(me.id) memeber_num, hec.* FROM member me LEFT JOIN ( SELECT m.avatar, m.share_code, count(o.id) order_num, sum(o.price) price_num, m.create_date, m.we_chat_number, m.phone, m.nickname FROM `order` o LEFT JOIN member m ON o.member_id = m.id WHERE o.on_share_code IS NOT NULL AND o.member_id = "+memberId+" ) hec ON me.link_share_code LIKE concat('%', hec.share_code, '%') WHERE hec.share_code IS NOT NULL\n";
-	List<TeamManagement>  teamManagementList = Db.query(sql);
-	return teamManagementList;
+public Page<TeamManagement> getTeamManagementList(String onShareCode,Pageable pageable){
+	Page<TeamManagement> page = teamManagementDao.getTeamManagementList(onShareCode,pageable);
+
+	return page;
 }
 	/**
 	 * 获取当前登录会员

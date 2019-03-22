@@ -16,6 +16,7 @@ import com.wtshop.util.ApiResult;
 import com.wtshop.util.StringUtils;
 import org.apache.commons.collections.map.HashedMap;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -163,9 +164,14 @@ public class FuDaiAPIController extends BaseAPIController {
      *
      */
     public void goodsByOrderId() {
+
+        Map<String, Object> item = new HashMap<String, Object>();
+        Member member = memberService.getCurrent();
         Long orderId = getParaToLong("orderId");
         List<Goods> goodsByItemId = goodsService.findGoodsByItemId(orderId);
-        renderJson(ApiResult.success(goodsByItemId));
+        item.put("shareCode",member.getShareCode());
+        item.put("goodsByItemId",goodsByItemId);
+        renderJson(ApiResult.success(item));
     }
 
 
