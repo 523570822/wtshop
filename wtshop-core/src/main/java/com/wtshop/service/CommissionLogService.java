@@ -51,27 +51,26 @@ public class CommissionLogService extends BaseService<CommissionLog> {
 		Member member = memberService.getCurrent();
 
 		if(partner_trade_no.startsWith("B")){
-			BigDecimal balance = member.getBalance();
+			BigDecimal balance = member.getCommission();
+			BigDecimal balancep = member.getCommissionPay();
+
 			//获取充值金额 跟新余额
 			BigDecimal money = new BigDecimal(price);
 			BigDecimal bigDecimal = balance.subtract(money).setScale(2, BigDecimal.ROUND_HALF_DOWN);
-			member.setBalance(bigDecimal);
+			BigDecimal bigDecimalPay = balancep.add(money).setScale(2, BigDecimal.ROUND_HALF_DOWN);
+			member.setCommission(bigDecimal);
+			member.setCommissionPay(bigDecimalPay);
 			memberService.update(member);
 
 			CommissionLog depositLog = new CommissionLog();
 			depositLog.setMemberId(member.getId());
-			depositLog.setBalance(member.getBalance());
+			depositLog.setBalance(member.getCommission());
 			depositLog.setType(DepositLog.Type.withdraw.ordinal());
 			depositLog.setCredit(new BigDecimal(0));
 			depositLog.setDebit(new BigDecimal(price));
-			depositLog.setStatus(0);
-			depositLog.setMemo("余额提现支出");
+			depositLog.setStatus(1);
+			depositLog.setMemo("佣金余额提现支出");
 			//提现进度
-			ExchangeProgress exchangeProgress = new ExchangeProgress();
-			exchangeProgress.setDepositId(depositLog.getId());
-			exchangeProgress.setStatus(1);
-			exchangeService.save(exchangeProgress);
-
 			this.save(depositLog);
 		}else {
 			MrmfShop mrmfShop = mrmfShopService.findMrmfShop(member);

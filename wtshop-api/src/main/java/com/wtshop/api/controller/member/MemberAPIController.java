@@ -123,7 +123,17 @@ public class MemberAPIController extends BaseAPIController {
 		if(member != null && member.getBirth() != null){
 			birth = DateUtils.format(member.getBirth());
 		}
+		member.setDirectOffline(memberService.findMemberByOnShare(member.getShareCode()).size());
+		//总下线
+		member.setTotalOffline(memberService.findMemberByLinkShare(member.getShareCode()).size());
 
+		if(StringUtils.isNotEmpty(member.getOnShareCode())){
+
+			Member member1 =memberService.find(	ShareCodeUtils.codeToId(member.getOnShareCode()));
+
+			member.setAttributeValue0(member1.getWeChatQcode());
+			member.setAttributeValue1(member1.getWeChatNumber());
+		}
 		String phone = member.getPhone();
 		Integer gender = member.getGender();
 		String sign = member.getSign();
@@ -173,7 +183,7 @@ public class MemberAPIController extends BaseAPIController {
 		member.setDirectOffline(memberService.findMemberByOnShare(member.getShareCode()).size());
 		//总下线
 		member.setTotalOffline(memberService.findMemberByLinkShare(member.getShareCode()).size());
-		Map<String, Object> item = new HashMap<String, Object>();
+	/*	Map<String, Object> item = new HashMap<String, Object>();*/
 		if(StringUtils.isNotEmpty(member.getOnShareCode())){
 
 			Member member1 =memberService.find(	ShareCodeUtils.codeToId(member.getOnShareCode()));
@@ -217,6 +227,8 @@ public class MemberAPIController extends BaseAPIController {
 	 *调出 管家 昵称和邀请码
 	 */
 	public void housekeeperNickname(){
+
+
 		Member member = memberService.getCurrent();
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		if(StringUtils.isNotEmpty(member.getShareCode())){
@@ -232,7 +244,7 @@ public class MemberAPIController extends BaseAPIController {
 			resultMap.put("avatar",mem.getAvatar());
 			resultMap.put("nickName",mem.getNickname());
 		}else {
-			renderJson(ApiResult.fail("没有自己及上级邀请码"));
+			renderJson(ApiResult.fail(7,"没有自己及上级邀请码"));
 			return;
 		}
 

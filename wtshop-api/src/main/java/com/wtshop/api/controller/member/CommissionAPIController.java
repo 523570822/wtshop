@@ -171,20 +171,14 @@ public class CommissionAPIController extends BaseAPIController {
 			String price = getPara("price");
 			Integer type = getParaToInt("type");
 			//提现方式 余额1 /佣金 2
-			Integer balanceType = getParaToInt("balanceType");
+			Integer balanceType = getParaToInt("balanceType",2);
 			String ip = IpUtil.getIpAddr(getRequest());
 			if (StrKit.isBlank(ip) || ip.equals("0:0:0:0:0:0:0:1")) {
 				ip = "127.0.0.1";
 			}
 			Member member = memberService.getCurrent();
-			//获取用户余额
-			Double balance = member.getBalance().doubleValue();
-
-			//如果是技师用户
-			MrmfShop mrmfShop = mrmfShopService.findMrmfShop(member);
-			if(mrmfShop != null && 2 == balanceType){
-				balance = mrmfShop.getCommission().doubleValue();
-			}
+			//获取用户佣金余额
+			Double commission = member.getCommission().doubleValue();
 
 			//微信绑定
 			Account weiXinInfo = accountService.getUserInfo(member.getId(), 0);
@@ -195,7 +189,7 @@ public class CommissionAPIController extends BaseAPIController {
 			Double amount =  Double.parseDouble( price);
 			Integer money =Integer.parseInt( String.format("%.0f", amount * 100));
 			//判断输入金额 和 余额
-			BigDecimal scale = new BigDecimal(balance).subtract(new BigDecimal(price)).setScale(2, BigDecimal.ROUND_HALF_DOWN);
+			BigDecimal scale = new BigDecimal(commission).subtract(new BigDecimal(price)).setScale(2, BigDecimal.ROUND_HALF_DOWN);
 			if(scale.doubleValue() >= 0.00){
 				if( 0 == type){
 					if(weiXinInfo != null && weiXinInfo.getAccount() != null){

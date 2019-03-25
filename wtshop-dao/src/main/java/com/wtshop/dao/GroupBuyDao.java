@@ -26,7 +26,7 @@ public class GroupBuyDao extends BaseDao<GroupBuy>{
 
         String select = " SELECT f.*,g.name,g.image,g.market_price ";
         String  sqlExceptSelect="";
-        if(status){
+        if(!status){
               sqlExceptSelect="FROM group_buy f LEFT JOIN goods g ON f.product_id = g.id WHERE 1 = 1 AND unix_timestamp(now()) < unix_timestamp(f.end_date) AND unix_timestamp(now()) > unix_timestamp(f.begin_date) AND STATUS = 0 ORDER BY price DESC";
 
         }else{
