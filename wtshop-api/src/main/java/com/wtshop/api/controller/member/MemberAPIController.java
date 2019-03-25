@@ -223,7 +223,7 @@ public class MemberAPIController extends BaseAPIController {
 			resultMap.put("shareCode",member.getShareCode());
 			resultMap.put("avatar",member.getAvatar());
 			resultMap.put("nickName",member.getNickname());
-		}else{
+		}else if(StringUtils.isNotEmpty(member.getOnShareCode())){
 
 			Long idd = ShareCodeUtils.codeToId(member.getOnShareCode());
 
@@ -231,6 +231,9 @@ public class MemberAPIController extends BaseAPIController {
 			resultMap.put("shareCode",mem.getShareCode());
 			resultMap.put("avatar",mem.getAvatar());
 			resultMap.put("nickName",mem.getNickname());
+		}else {
+			renderJson(ApiResult.fail("没有自己及上级邀请码"));
+			return;
 		}
 
 		renderJson(ApiResult.success(resultMap));
