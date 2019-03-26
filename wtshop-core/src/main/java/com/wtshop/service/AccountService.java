@@ -27,6 +27,7 @@ import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
 import com.wtshop.CommonAttributes;
 import com.wtshop.dao.AccountDao;
 import com.wtshop.entity.WXPayReqData;
+import com.wtshop.entity.WXPaymentReqData;
 import com.wtshop.exception.AppRuntimeException;
 import com.wtshop.model.Account;
 import com.wtshop.util.AliPayUtil;
@@ -634,7 +635,7 @@ public class AccountService extends BaseService<Account> {
                 .setSSLSocketFactory(sslsf)
                 .build();
 
-        WXPayReqData reqData = WXPayReqData.buildWXPayReqDataForMchPay(partner_trade_no, openid, amount, desc, spbill_create_ip);
+        WXPaymentReqData reqData = WXPaymentReqData.buildWXPayReqDataForMchPay(partner_trade_no, openid, amount, desc, spbill_create_ip);
         XStream xStreamForRequestPostData = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
         String postDataXML = xStreamForRequestPostData.toXML(reqData);
         try {

@@ -13,9 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by sq on 2017/9/11.
+ * 微信付款
  */
-public class WXPayReqData {
+public class WXPaymentReqData {
 
 
 
@@ -36,8 +36,7 @@ public class WXPayReqData {
     private String spbill_create_ip;
     private String transaction_id;
     private String out_refund_no;
-    private int total_fee;
-    private int refund_fee;
+
 
     public String getAppid() {
         return appid;
@@ -167,21 +166,6 @@ public class WXPayReqData {
         this.out_refund_no = out_refund_no;
     }
 
-  public int getTotal_fee() {
-        return total_fee;
-    }
-
-    public void setTotal_fee(int total_fee) {
-        this.total_fee = total_fee;
-    }
-
-    public int getRefund_fee() {
-        return refund_fee;
-    }
-
-    public void setRefund_fee(int refund_fee) {
-        this.refund_fee = refund_fee;
-    }
 
     public String getRefund_desc() {
         return refund_desc;
@@ -200,9 +184,9 @@ public class WXPayReqData {
      * @param spbill_create_ip	调用接口的机器Ip地址
      * @return
      */
-   /* public static WXPayReqData buildWXPayReqDataForMchPay(String partner_trade_no,String openid,int amount,String desc,String spbill_create_ip){
+    public static WXPaymentReqData buildWXPayReqDataForMchPay(String partner_trade_no, String openid, int amount, String desc, String spbill_create_ip){
         Prop prop = PropKit.use(CommonAttributes.wtshop_PROPERTIES_PATH);
-        WXPayReqData reqData = new WXPayReqData();
+        WXPaymentReqData reqData = new WXPaymentReqData();
         reqData.setMch_appid(prop.get("AppID"));
         reqData.setMchid(prop.get("MCH_ID"));
         reqData.setCheck_name("NO_CHECK");
@@ -219,36 +203,8 @@ public class WXPayReqData {
         String sign = reqData.signReqData(reqData.toMap());
         reqData.setSign(sign);
         return reqData;
-    }*/
-
-
-    /**
-     * 微信退款
-     * @param transaction_id 订单号
-     * @param total_fee	订单金额，(分)
-     * @param refund_fee 退款金额，(分)
-     * @param desc	退款描述
-     * @return
-     */
-    public static WXPayReqData buildWXBackDataForMchPay(String transaction_id, int total_fee, int refund_fee, String desc){
-        Prop prop = PropKit.use(CommonAttributes.wtshop_PROPERTIES_PATH);
-        WXPayReqData reqData = new WXPayReqData();
-        reqData.setAppid(prop.get("AppID"));
-        reqData.setMch_id(prop.get("MCH_ID"));
-        reqData.setOut_refund_no(UUIDUtils.getLongUUID());
-        reqData.setTransaction_id(transaction_id);
-        reqData.setTotal_fee(total_fee);
-        reqData.setRefund_fee(refund_fee);
-        reqData.setRefund_desc(desc);
-        char[] RANDOM_CHARS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
-        String nonce_str = RandomStringUtils.random(32,RANDOM_CHARS).toUpperCase();
-        reqData.setNonce_str(nonce_str);
-        String sign = reqData.signReqData(reqData.toMap());
-        reqData.setSign(sign);
-        return reqData;
     }
+
 
     private Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<String, Object>();

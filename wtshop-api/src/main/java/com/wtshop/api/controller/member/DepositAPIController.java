@@ -170,7 +170,7 @@ public class DepositAPIController extends BaseAPIController {
 			String price = getPara("price");
 			Integer type = getParaToInt("type");
 			//提现方式 余额1 /佣金 2
-			Integer balanceType = getParaToInt("balanceType");
+			Integer balanceType = getParaToInt("balanceType",1);
 			String ip = IpUtil.getIpAddr(getRequest());
 			if (StrKit.isBlank(ip) || ip.equals("0:0:0:0:0:0:0:1")) {
 				ip = "127.0.0.1";
