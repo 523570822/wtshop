@@ -33,6 +33,7 @@ public class CommissionLogService extends BaseService<CommissionLog> {
 	private CommissionLogDao depositLogDao = Enhancer.enhance(CommissionLogDao.class);
 	private MemberDao memberDao = Enhancer.enhance(MemberDao.class);
 	private MemberService memberService = Enhancer.enhance(MemberService.class);
+	private  DepositLogService depositLogService= Enhancer.enhance(DepositLogService.class);
 	private ExchangeService exchangeService = Enhancer.enhance(ExchangeService.class);
 	private MrmfShopService mrmfShopService = Enhancer.enhance(MrmfShopService.class);
 	/**
@@ -52,6 +53,9 @@ public class CommissionLogService extends BaseService<CommissionLog> {
 
 		if(partner_trade_no.startsWith("B")){
 			BigDecimal balance = member.getCommission();
+			if( member.getCommissionPay()==null){
+				member.setCommissionPay(BigDecimal.ZERO);
+			}
 			BigDecimal balancep = member.getCommissionPay();
 
 			//获取充值金额 跟新余额
@@ -59,6 +63,7 @@ public class CommissionLogService extends BaseService<CommissionLog> {
 			BigDecimal bigDecimal = balance.subtract(money).setScale(2, BigDecimal.ROUND_HALF_DOWN);
 			BigDecimal bigDecimalPay = balancep.add(money).setScale(2, BigDecimal.ROUND_HALF_DOWN);
 			member.setCommission(bigDecimal);
+
 			member.setCommissionPay(bigDecimalPay);
 			memberService.update(member);
 
@@ -69,7 +74,7 @@ public class CommissionLogService extends BaseService<CommissionLog> {
 			depositLog.setCredit(new BigDecimal(0));
 			depositLog.setDebit(new BigDecimal(price));
 			depositLog.setStatus(1);
-			depositLog.setMemo("佣金余额提现支出");
+			depositLog.setMemo("佣金提现支出");
 			//提现进度
 			this.save(depositLog);
 		}else {
@@ -80,15 +85,56 @@ public class CommissionLogService extends BaseService<CommissionLog> {
 			mrmfShopService.update(mrmfShop);
 
 		}
-
-
-
-
-
-
-
 	}
 
+	/**
+	 * 提现成功，更新信息
+	 */
+	@Before(Tx.class)
+	public  void exchengeUpdate(String price){
+		Member member = memberService.getCurrent();
+			BigDecimal balance = member.getCommission();
+			if( member.getCommissionPay()==null){
+				member.setCommissionPay(BigDecimal.ZERO);
+			}
+			BigDecimal balancep = member.getCommissionPay();
+			BigDecimal balancepp = member.getBalance();
+
+
+			//获取充值金额 跟新余额
+			BigDecimal money = new BigDecimal(price);
+			BigDecimal bigDecimal = balance.subtract(money).setScale(2, BigDecimal.ROUND_HALF_DOWN);
+			BigDecimal bigDecimalPay = balancep.add(money).setScale(2, BigDecimal.ROUND_HALF_DOWN);
+			BigDecimal balanceppp = balancepp.add(money).setScale(2, BigDecimal.ROUND_HALF_DOWN);
+			member.setCommission(bigDecimal);
+			member.setCommissionPay(bigDecimalPay);
+			member.setBalance(balanceppp);
+			memberService.update(member);
+
+			CommissionLog commissionLog = new CommissionLog();
+				commissionLog.setMemberId(member.getId());
+				commissionLog.setBalance(member.getCommission());
+				commissionLog.setType(DepositLog.Type.withdraw.ordinal());
+				commissionLog.setCredit(new BigDecimal(0));
+				commissionLog.setDebit(new BigDecimal(price));
+				commissionLog.setStatus(1);
+				commissionLog.setMemo("佣金余额提现");
+
+				DepositLog depositLog=new DepositLog();
+				depositLog.setMemberId(member.getId());
+				depositLog.setBalance(member.getCommission());
+				depositLog.setType(DepositLog.Type.withdraw.ordinal());
+				depositLog.setCredit(new BigDecimal(0));
+				depositLog.setDebit(new BigDecimal(price));
+				depositLog.setStatus(1);
+				depositLog.setMemo("佣金余额到账");
+
+		depositLogService.save(depositLog);
+
+		//提现进度
+			this.save(commissionLog);
+
+	}
 
 	/**
 	 * 存款支付成功 更新信息

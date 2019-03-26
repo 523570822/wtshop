@@ -163,7 +163,7 @@ public class CommissionAPIController extends BaseAPIController {
 
 	/**
 	 * 提现
-	 * 0 微信 1 支付宝
+	 * 0 微信 1 支付宝 2余额提现
 	 */
 	@Before(Tx.class)
 	public void exchange(){
@@ -197,6 +197,8 @@ public class CommissionAPIController extends BaseAPIController {
 						String str_no = "";
 						if(1 == balanceType){
 							str_no = "B" + UUIDUtils.getLongUUID();
+						}else if(1 == balanceType){
+							str_no = "Y" + UUIDUtils.getLongUUID();
 						}
 						Map<String, String> map = accountService.CashToWeChat(str_no, weiXinInfo.getAccount(), money, "任性猫提现", ip);
 						logger.info("任性猫提现[微信] {}", map);
@@ -237,9 +239,13 @@ public class CommissionAPIController extends BaseAPIController {
 						renderJson(ApiResult.fail("提现请先绑定支付宝社交账号!"));
 						return;
 					}
+				}if(2 == type){
+					depositLogService.exchengeUpdate(price);
+					renderJson(ApiResult.success("提现成功!"));
+					return;
 				}
 			}else {
-				renderJson(ApiResult.fail("您的余额不足,请重新输入!"));
+				renderJson(ApiResult.fail("您的佣金余额不足,请重新输入!"));
 				return;
 			}
 

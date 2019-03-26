@@ -521,4 +521,12 @@ public abstract class BaseMember<M extends BaseMember<M>> extends Model<M> imple
 		return get("waiting_commission");
 	}
 
+	public void setBalanceUnarrived(java.math.BigDecimal balanceUnarrived) {
+		set("balance_unarrived", balanceUnarrived);
+	}
+
+	public java.math.BigDecimal getBalanceUnarrived() {
+		return get("balance_unarrived");
+	}
+
 }
