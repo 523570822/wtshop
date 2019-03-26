@@ -197,7 +197,7 @@ public class CommissionAPIController extends BaseAPIController {
 						String str_no = "";
 						if(1 == balanceType){
 							str_no = "B" + UUIDUtils.getLongUUID();
-						}else if(1 == balanceType){
+						}else if(2 == balanceType){
 							str_no = "Y" + UUIDUtils.getLongUUID();
 						}
 						Map<String, String> map = accountService.CashToWeChat(str_no, weiXinInfo.getAccount(), money, "任性猫提现", ip);
