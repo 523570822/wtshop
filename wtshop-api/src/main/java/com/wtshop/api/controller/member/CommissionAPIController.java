@@ -210,7 +210,7 @@ public class CommissionAPIController extends BaseAPIController {
 								String partner_trade_no = map.get("partner_trade_no");
 								//更新信息
 								depositLogService.exchengeUpdate(price, partner_trade_no);
-								renderJson(ApiResult.success("提现成功!"));
+								renderJson(ApiResult.success("提现成功!","提现成功!"));
 								return;
 							}
 						}
@@ -221,13 +221,13 @@ public class CommissionAPIController extends BaseAPIController {
 
 				}else if(1 == type){
 					if(aLiInfo != null && aLiInfo.getAccount() != null){
-						JSONObject jsonObject = accountService.CashToAliPay(aLiInfo.getAccount(), amount);
+						JSONObject jsonObject = accountService.CashToAliPay(aLiInfo.getAccount(), amount,"Y");
 						logger.info("任性猫提现[支付宝] {}", jsonObject);
 						if( jsonObject != null && "10000".equals(jsonObject.get("code"))){
 							String out_biz_no = jsonObject.getString("out_biz_no");
 							//更新信息
 								depositLogService.exchengeUpdate(price, out_biz_no);
-								renderJson(ApiResult.success("提现成功!"));
+								renderJson(ApiResult.success("提现成功!","提现成功!"));
 								return;
 						}else {
 								renderJson(ApiResult.fail("系统错误,请稍后尝试"));
@@ -241,7 +241,7 @@ public class CommissionAPIController extends BaseAPIController {
 					}
 				}if(2 == type){
 					depositLogService.exchengeUpdate(price);
-					renderJson(ApiResult.success("提现成功!"));
+					renderJson(ApiResult.success("提现成功!","提现成功!"));
 					return;
 				}
 			}else {

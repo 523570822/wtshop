@@ -475,11 +475,11 @@ public class AccountService extends BaseService<Account> {
     /**
      * 支付宝提现
      */
-    public JSONObject CashToAliPay(String openid, Double amount){
+    public JSONObject CashToAliPay(String openid, Double amount,String uu){
         Logger cashToAliPay = Logger.getLogger("CashToAliPay");
         JSONObject json = null;
         AlipayFundTransToaccountTransferModel model = new AlipayFundTransToaccountTransferModel();
-        model.setOutBizNo("B"+UUIDUtils.getLongUUID());//生成订单号
+        model.setOutBizNo(uu+UUIDUtils.getLongUUID());//生成订单号
         model.setPayeeType("ALIPAY_USERID");//固定值
         model.setPayeeAccount(openid);//转账收款账户
         model.setAmount(String.format("%.2f", amount));

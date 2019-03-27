@@ -24,7 +24,9 @@ import com.wtshop.model.*;
 import com.wtshop.service.*;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -205,6 +207,7 @@ public class MemberAPIController extends BaseAPIController {
 	/**
 	 * 团队管理
 	 */
+	@Deprecated
 	public void teamManagement(){
 		Member member = memberService.getCurrent();
 		Integer pageNumber = getParaToInt("pageNumbers");
@@ -216,6 +219,30 @@ public class MemberAPIController extends BaseAPIController {
 
 		//List<TeamManagement> te = memberService.getTeamManagementList("ESA99Y");
 		if(page.getList().get(0).getId()==null){
+			page=null;
+		}
+
+		renderJson(ApiResult.success(page));
+
+	}
+	/**
+	 * 团队管理
+	 */
+	public void teamManagementFind() throws UnsupportedEncodingException {
+		Member member = memberService.getCurrent();
+
+
+		//String str = getPara("str");
+		String str =  URLDecoder.decode(getPara("str"),"UTF-8");
+		Integer pageNumber = getParaToInt("pageNumbers");
+
+		Pageable pageable = new Pageable(pageNumber, PAGE_SIZE);
+
+		Page<TeamManagement> page = memberService.getTeamManagementListFind(member.getShareCode(),pageable,str);
+
+
+		//List<TeamManagement> te = memberService.getTeamManagementList("ESA99Y");
+		if(page.getList().size()>0&&page.getList().get(0).getId()==null){
 			page=null;
 		}
 

@@ -521,6 +521,13 @@ public Page<TeamManagement> getTeamManagementList(String onShareCode,Pageable pa
 	Page<TeamManagement> page = teamManagementDao.getTeamManagementList(onShareCode,pageable);
 
 	return page;
+}/**
+ *团队管理
+ */
+public Page<TeamManagement> getTeamManagementListFind(String onShareCode,Pageable pageable,String str){
+	Page<TeamManagement> page = teamManagementDao.getTeamManagementList(onShareCode,pageable,str);
+
+	return page;
 }
 	/**
 	 * 获取当前登录会员

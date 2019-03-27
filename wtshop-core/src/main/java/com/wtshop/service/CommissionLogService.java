@@ -51,7 +51,7 @@ public class CommissionLogService extends BaseService<CommissionLog> {
 	public  void exchengeUpdate(String price, String partner_trade_no){
 		Member member = memberService.getCurrent();
 
-		if(partner_trade_no.startsWith("B")){
+		if(partner_trade_no.startsWith("Y")){
 			BigDecimal balance = member.getCommission();
 			if( member.getCommissionPay()==null){
 				member.setCommissionPay(BigDecimal.ZERO);
@@ -124,8 +124,8 @@ public class CommissionLogService extends BaseService<CommissionLog> {
 				depositLog.setMemberId(member.getId());
 				depositLog.setBalance(member.getCommission());
 				depositLog.setType(DepositLog.Type.withdraw.ordinal());
-				depositLog.setCredit(new BigDecimal(0));
-				depositLog.setDebit(new BigDecimal(price));
+				depositLog.setDebit(new BigDecimal(0));
+				depositLog.setCredit(new BigDecimal(price));
 				depositLog.setStatus(1);
 				depositLog.setMemo("佣金余额到账");
 
