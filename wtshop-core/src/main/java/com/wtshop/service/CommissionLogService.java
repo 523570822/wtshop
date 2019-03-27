@@ -123,7 +123,7 @@ public class CommissionLogService extends BaseService<CommissionLog> {
 				DepositLog depositLog=new DepositLog();
 				depositLog.setMemberId(member.getId());
 				depositLog.setBalance(member.getCommission());
-				depositLog.setType(DepositLog.Type.withdraw.ordinal());
+				depositLog.setType(DepositLog.Type.transfer.ordinal());
 				depositLog.setDebit(new BigDecimal(0));
 				depositLog.setCredit(new BigDecimal(price));
 				depositLog.setStatus(1);
