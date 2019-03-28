@@ -17,7 +17,7 @@ public class _WtShopGenerator {
 	/*	String jdbcUrl = "jdbc:mysql://59.110.18.65:3306/rxm_shop_db?useUnicode=true&characterEncoding=UTF-8";
 		String user = "rxm_db";
 		String password = "2x1CpGT2C5URxfSE";*/
-	String jdbcUrl = "jdbc:mysql://114.116.111.212:3306/rxm_shop_db?useUnicode=true&characterEncoding=UTF-8";
+	String jdbcUrl = "jdbc:mysql://114.116.111.212:3306/rxm_news_db?useUnicode=true&characterEncoding=UTF-8";
 		String user = "root";
 		String password = "root";
 		DruidPlugin druidPlugin = new DruidPlugin(jdbcUrl, user, password);

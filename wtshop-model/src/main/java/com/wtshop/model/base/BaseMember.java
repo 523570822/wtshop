@@ -497,4 +497,20 @@ public abstract class BaseMember<M extends BaseMember<M>> extends Model<M> imple
 		return get("total_offline");
 	}
 
+	public void setPrefList(String prefList) {
+		set("pref_list", prefList);
+	}
+
+	public String getPrefList() {
+		return get("pref_list");
+	}
+
+	public void setLatestLogTime(java.util.Date latestLogTime) {
+		set("latest_log_time", latestLogTime);
+	}
+
+	public java.util.Date getLatestLogTime() {
+		return get("latest_log_time");
+	}
+
 }

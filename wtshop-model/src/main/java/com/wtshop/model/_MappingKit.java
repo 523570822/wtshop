@@ -108,6 +108,8 @@ public class _MappingKit {
 		arp.addMapping("mrmf_shop", "id", MrmfShop.class);
 		arp.addMapping("navigation", "id", Navigation.class);
 		arp.addMapping("newGoods_commend", "id", NewgoodsCommend.class);
+		arp.addMapping("newslogs", "id", Newslogs.class);
+		arp.addMapping("newsmodules", "id", Newsmodules.class);
 		arp.addMapping("nodify_goods_send", "id", NodifyGoodsSend.class);
 		arp.addMapping("order", "id", Order.class);
 		arp.addMapping("order_cancel", "id", OrderCancel.class);
@@ -141,6 +143,7 @@ public class _MappingKit {
 		arp.addMapping("promotion_member_rank", "member_ranks,promotions", PromotionMemberRank.class);
 		arp.addMapping("raffle", "id", Raffle.class);
 		arp.addMapping("receiver", "id", Receiver.class);
+		arp.addMapping("recommendations", "id", Recommendations.class);
 		arp.addMapping("referrer_config", "id", ReferrerConfig.class);
 		arp.addMapping("referrer_goods", "id", ReferrerGoods.class);
 		arp.addMapping("refunds", "id", Refunds.class);
