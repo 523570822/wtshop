@@ -419,6 +419,9 @@ if(StringUtils.isNotEmpty(onShareCode)){
 	public Member findByUsernames(String phone ,String password) {
 		Member member = memberDao.findByUsername(phone);
 			//判断mongo是否存在 存在 更新mogo中密码  不存在插入数据
+
+
+
 			return member;
 
 
