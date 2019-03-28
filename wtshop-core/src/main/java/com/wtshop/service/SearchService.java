@@ -283,15 +283,15 @@ public class SearchService {
 	public Page<Goods> search(Boolean is_vip, Long productCategoryId, Long[] brandId, Long[] areaId, Long[] functionId, String keyword, BigDecimal startPrice, BigDecimal endPrice, Pageable pageable, Boolean modify_date, Boolean sell, Boolean review, Boolean priceUp ,Boolean priceDown){
 
 		List<Long> productCategoryList = new ArrayList<>();
-
-		if(productCategoryId != null){
+		productCategoryList.add(productCategoryId);
+	/*	if(productCategoryId != null){
 			List<ProductCategory> children = productCategoryService.findChildren(productCategoryId, true, null, false);
 			if(children != null && children.size() > 0){
 				for(ProductCategory productCategory : children){
 					productCategoryList.add(productCategory.getId());
 				}
 			}
-		}
+		}*/
 		List<Long> areaList = new ArrayList<>();
 		if(areaId != null &&  areaId.length > 0){
 			for(Long areaIds : areaId){
@@ -304,6 +304,8 @@ public class SearchService {
 				}
 			}
 		}
+
+
 
 		return goodsDao.search(is_vip, productCategoryList, brandId, areaList, functionId, keyword, startPrice, endPrice, pageable, modify_date, sell, review, priceUp, priceDown);
 	}

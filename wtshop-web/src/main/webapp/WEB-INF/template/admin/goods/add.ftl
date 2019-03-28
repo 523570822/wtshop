@@ -795,18 +795,18 @@ $().ready(function() {
 		<table class="input tabContent">
 			<tr>
 				<th>
-					${message("Goods.productCategory")}:
+					${message("Goods.productCategory")}:123123
 				</th>
 				<td>
 					<select id="productCategoryId" name="productCategoryId">
 						[#list productCategoryTree as productCategory]
 
 							[#if productCategory.grade == 0]
-                                <option value="${productCategory.id}" disabled="disabled" style="color: #888;">
+                                <option value="${productCategory.id}"  style="color: #888;">
 								${productCategory.name}
                                 </option>
 							[#elseif productCategory.grade == 1]
-                                <option value="${productCategory.id}" disabled="disabled" style="color: #888;">
+                                <option value="${productCategory.id}"  style="color: #888;">
 									&nbsp;&nbsp;
 								${productCategory.name}
                                 </option>

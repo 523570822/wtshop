@@ -312,7 +312,7 @@ function message(code) {
 		// 文件上传
 		uploader: function(options) {
 			var settings = {
-				url: '../../admin/file/upload.jhtml',
+				url: '../../admin/file/upload456.jhtml',
 				fileType: "image",
 				fileName: "file",
 				data: {},
@@ -403,7 +403,7 @@ function message(code) {
 		editor: function(options) {
 			window.UEDITOR_CONFIG = {
 				UEDITOR_HOME_URL: '../../resources/admin/ueditor/',
-				serverUrl: '/admin/file/upload.jhtml?fullpath=1',
+				serverUrl: '../../../../../admin/file/upload.jhtml?fullpath=1',
 				imageActionName: "uploadImage",
 				imageFieldName: "file",
 				imageMaxSize: 10485760,
