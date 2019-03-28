@@ -418,35 +418,9 @@ if(StringUtils.isNotEmpty(onShareCode)){
 
 	public Member findByUsernames(String phone ,String password) {
 		Member member = memberDao.findByUsername(phone);
-		if (member != null) {
 			//判断mongo是否存在 存在 更新mogo中密码  不存在插入数据
-			BasicDBObject basicDBObject = new BasicDBObject();
-			basicDBObject.put("phone",phone);
-			DBObject user = MongoKit.getCollection("user").findOne(basicDBObject);
-
-			DBObject staff = MongoKit.getCollection("staff").findOne(basicDBObject);
-
-			DBObject organ = MongoKit.getCollection("organ").findOne(basicDBObject);
-
-			if(user != null){
-				user.put("shopPassword", DigestUtils.md5Hex(password));
-				MongoKit.getCollection("user").save(user);
-
-			}else if(staff != null){
-				staff.put("shopPassword",DigestUtils.md5Hex(password));
-				MongoKit.getCollection("staff").save(staff);
-
-			}else if(organ != null){
-				organ.put("shopPassword",DigestUtils.md5Hex(password));
-				MongoKit.getCollection("organ").save(organ);
-			}else{
-				Record record = new Record().set("phone" ,phone).set("shopPassword" ,password);
-				MongoKit.save("user",record);
-			}
 			return member;
 
-		}
-		return member;
 
 	}
 
