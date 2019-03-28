@@ -84,6 +84,8 @@ git checkout  -b rxmshop  remotes/origin/master//远程分支   //切换到指�
  cd wtshop   //进入项目目录
  
  git pull origin rxmshop  --force ;//强制更新本地仓库
+ 
+ 
  mvn -X install -Dmaven.test.skip=true ; //通过maven自动编译代码
 rsync -rtlvz   /root/learngit/wtshop/wtshop-web/target/wtshop-web/*  /var/lib/tomcat/webapps/news  ;   简化后 拷贝编译后的代码到指定tomcat服务器中sudo systemctl restart tomcat  启动Tomcat
  
