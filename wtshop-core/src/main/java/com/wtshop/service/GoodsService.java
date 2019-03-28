@@ -139,7 +139,12 @@ public class GoodsService extends BaseService<Goods> {
     public List<Goods> findCharactersList() {
         return goodsDao.findCharactersList();
     }
-
+    /**
+     *  新闻推荐
+     */
+    public List<Goods> recommendList() {
+        return goodsDao.recommendList();
+    }
     /**
      * 销量由高到低
      */

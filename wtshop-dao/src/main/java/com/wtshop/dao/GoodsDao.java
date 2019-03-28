@@ -131,6 +131,15 @@ public class GoodsDao extends BaseDao<Goods> {
 
 		return modelManager.find(sql);
 
+	}	/**
+	 * 新品推荐
+	 */
+	public List<Goods> recommendList(){
+
+		String sql = " select g.id,g.name,g.price,g.market_price,g.image,g.caption,g.sales,g.commission_rate from character_commend n left join goods g on n.goods_id = g.id where 1 = 1 and g.is_delete = 0 and g.is_marketable = 1";
+
+
+		return modelManager.find(sql);
 	}
 
 
