@@ -190,7 +190,8 @@
 									</div>
 					[#break /]
 				[/@shiro.hasPermission]
-			[/#list]--][#--	[#list ["admin:cartMember" ,"admin:follow", "admin:cartGoods", "admin:referrerGoods", "admin:point", "admin:footprint", "admin:interestCategory"] as permission]
+			[/#list]--]
+				[#--	[#list ["admin:cartMember" ,"admin:follow", "admin:cartGoods", "admin:referrerGoods", "admin:point", "admin:footprint", "admin:interestCategory"] as permission]
 				[@shiro.hasPermission name = permission]
 									<div class="panel panel-default">
 										<div class="panel-heading">
@@ -250,11 +251,17 @@
                                         <ul class="nav nav-pills nav-stacked">
 
 
-											[@shiro.hasPermission name="admin:productCategory"]
+						[#--					[@shiro.hasPermission name="admin:productCategory"]
                                                 <li><a href="../product_category/list.jhtml" target="iframe">新闻分类</a></li>
+											[/@shiro.hasPermission]--]
+
+											[@shiro.hasPermission name="admin:footprint"]
+                                                        <li><a href="../footprint/list.jhtml" target="iframe">${message("admin.footprint")}</a></li>
 											[/@shiro.hasPermission]
 
-
+													[@shiro.hasPermission name="admin:interestCategory"]
+                                                        <li><a href="../interestCategory/list.jhtml" target="iframe">新闻分类</a></li>
+													[/@shiro.hasPermission]
 
 											[@shiro.hasPermission name="admin:tag"]
                                                 <li><a href="../tag/list.jhtml" target="iframe">${message("admin.main.tag")}</a></li>
