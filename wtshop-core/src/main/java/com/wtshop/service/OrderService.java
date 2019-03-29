@@ -528,6 +528,10 @@ public class OrderService extends BaseService<Order> {
             String code = ShareCodeUtils.idToCode(member.getId());
             member.setShareCode(code);
             member.setLinkShareCode(member1.getLinkShareCode()+"_"+member.getOnShareCode());
+            if(member.getHousekeeperId()==0||member.getHousekeeperId()<=1){
+                member.setHousekeeperId(2L);
+            }
+
 
 
             order.setOnShareCode(member.getOnShareCode());
