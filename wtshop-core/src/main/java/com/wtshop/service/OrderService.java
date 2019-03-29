@@ -312,20 +312,15 @@ public class OrderService extends BaseService<Order> {
         BigDecimal amount = order.getAmount().subtract(order.getAmountPaid()).setScale(2, BigDecimal.ROUND_HALF_UP);
         Long memberId = order.getMemberId();
         Member member = memberService.find(memberId);
-
+        Long dds = ShareCodeUtils.codeToId(member.getOnShareCode());
+        Member member1 = memberService.find(dds);
 
         order.setStatus(Order.Status.pendingShipment.ordinal());
         order.setExpire(null);
         order.setLockExpire(null);
         order.setLockKey(null);
 
-        // 生成会员激活码，福袋
-        if (order.getType() == Order.Type.fudai.ordinal()) {
-          // 生成邀请码
-            String code = ShareCodeUtils.idToCode(member.getId());
-            member.setShareCode(code);
-            //调用推送
-        }
+
 
         logger.info("测试支付宝应保存金额   :  " + amount);
         if (StringUtils.isNotBlank(weiXinNo)) {
@@ -432,7 +427,7 @@ public class OrderService extends BaseService<Order> {
         //赠送喵币逻辑
         boolean isSendMiaoBi = redisSetting.getBoolean("isSendMiaoBi") ? true : false;
         if (isSendMiaoBi && order.getType() == 0 && order.getCouponCode() == null && order.getMiaobiPaid().doubleValue() == 0) {
-            Member member1 = memberService.find(order.getMemberId());
+
             Double price = order.getAmount().doubleValue();
             //喵币赠送金额
             BigDecimal sendMiaoBi = new BigDecimal(price).multiply(new BigDecimal(sendMiaoBiLimit)).setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -442,16 +437,16 @@ public class OrderService extends BaseService<Order> {
             miaobiLog.setDebit(BigDecimal.ZERO);
             miaobiLog.setType(0);
             miaobiLog.setMemo("订单赠送");
-            miaobiLog.setBalance(member1.getPoint().add(sendMiaoBi).setScale(2, BigDecimal.ROUND_HALF_UP));
+            miaobiLog.setBalance(member.getPoint().add(sendMiaoBi).setScale(2, BigDecimal.ROUND_HALF_UP));
             miaobiLogService.save(miaobiLog);
             //更新用户喵币
-            member1.setPoint(member1.getPoint().add(sendMiaoBi).setScale(2, BigDecimal.ROUND_HALF_UP));
-            memberService.update(member1);
+            member.setPoint(member.getPoint().add(sendMiaoBi).setScale(2, BigDecimal.ROUND_HALF_UP));
+            memberService.update(member);
 
         }
 
         //  佣金计算
-        if ( Order.Type.general.ordinal()== order.getType() ) {
+       /* if ( Order.Type.general.ordinal()== order.getType() ) {
             List<Goods> goodsLists = goodsService.findGoodsByPt(order.getId());
             List<Long> goodsList = new ArrayList<>();
             if (goodsLists != null && goodsLists.size() > 0) {
@@ -478,7 +473,7 @@ public class OrderService extends BaseService<Order> {
 
             }
 
-        }
+        }*/
         if (Order.Type.general.ordinal()== order.getType()) {
             //商品返现
             List<Goods> goodList = goodsService.findGoodsByOrderItemId(order.getId());
@@ -525,6 +520,34 @@ public class OrderService extends BaseService<Order> {
             }
         }
         double dd = order.getCommissionRate() * order.getPrice().doubleValue()/100;
+
+        // 生成会员激活码，福袋
+        if (order.getType() == Order.Type.fudai.ordinal()) {
+            // 生成邀请码
+            String code = ShareCodeUtils.idToCode(member.getId());
+            member.setShareCode(code);
+            member.setLinkShareCode(member1.getLinkShareCode()+"_"+member.getOnShareCode());
+
+
+            order.setOnShareCode(member.getOnShareCode());
+
+            CommissionLog depositLog1 = new CommissionLog();
+            depositLog1.setBalance(member1.getBalance());
+            depositLog1.setCredit(BigDecimal.valueOf(100L));
+            depositLog1.setDebit(BigDecimal.ZERO);
+            depositLog1.setStatus(1);
+            depositLog1.setMemo("福袋上级返现");
+            depositLog1.setType(CommissionLog.Type.fudan.ordinal());
+            depositLog1.setOrderId(order.getId());
+
+            depositLog1.setMemberId(member1.getId());
+            member1.setCommission(BigDecimal.valueOf(100L).add(member1.getCommission()));
+            memberService.update(member1);
+            commissionDao.save(depositLog1);
+            //调用推送
+        }
+
+
         if (Order.Type.general.ordinal()== order.getType()&&dd>0) {
 
 
@@ -563,10 +586,9 @@ public class OrderService extends BaseService<Order> {
 
             }
             order.setOnShareCode(member.getOnShareCode());
-            Long dds = ShareCodeUtils.codeToId(member.getOnShareCode());
-            Member member1 = memberService.find(dds);
+
             CommissionLog depositLog1 = new CommissionLog();
-            depositLog1.setBalance(member.getBalance());
+            depositLog1.setBalance(member1.getBalance());
             depositLog1.setCredit(b1);
             depositLog1.setDebit(BigDecimal.ZERO);
             depositLog1.setStatus(2);
