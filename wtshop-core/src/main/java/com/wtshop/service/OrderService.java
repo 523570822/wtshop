@@ -216,6 +216,7 @@ public class OrderService extends BaseService<Order> {
         if (order.getStatus() == Order.Status.pendingShipment.ordinal()) {
             return ApiResult.fail("订单已完成支付,无需再次支付");
         }
+
         //  logger.info("测试团购getFightgroupId   :  " + order.getFightgroupId());
         //  logger.info("测试团购order.getIsSinglepurchase()   :  " +order.getIsSinglepurchase());
         //  logger.info("order.getType()  :  " +order.getType());
@@ -559,7 +560,6 @@ public class OrderService extends BaseService<Order> {
 
             }
             member.setCommissionUnarrived(b1.add(member.getCommissionUnarrived()));
-
             //判断是否是管家
             if (StringUtils.isNotEmpty(member.getShareCode())) {
                 order.setIsCommission(true);
@@ -597,6 +597,9 @@ public class OrderService extends BaseService<Order> {
             depositLog1.setOrderId(order.getId());
 
             depositLog1.setMemberId(dds);
+           if( member1.getCommissionUnarrived()==null){
+               member1.setCommissionUnarrived(BigDecimal.ZERO);
+           }
             member1.setCommissionUnarrived(b1.add(member1.getCommissionUnarrived()));
             memberService.update(member1);
             commissionDao.save(depositLog1);
