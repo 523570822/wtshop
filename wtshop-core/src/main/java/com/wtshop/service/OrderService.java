@@ -543,6 +543,7 @@ public class OrderService extends BaseService<Order> {
             depositLog1.setMemberId(member1.getId());
             member1.setCommission(BigDecimal.valueOf(100L).add(member1.getCommission()));
             memberService.update(member1);
+            memberService.update(member);
             commissionDao.save(depositLog1);
             //调用推送
         }
