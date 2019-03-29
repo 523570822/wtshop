@@ -840,38 +840,10 @@ public class GoodsService extends BaseService<Goods> {
     public Goods save(Goods goods, Product product, Admin operator) {
         Assert.notNull(goods);
         Assert.isTrue(goods.isNew());
-        Assert.notNull(goods.getType());
         Assert.isTrue(!goods.hasSpecification());
         Assert.notNull(product);
         Assert.isTrue(product.isNew());
         Assert.state(!product.hasSpecification());
-
-        switch (goods.getTypeName()) {
-            case general:
-                product.setExchangePoint(0L);
-                break;
-            case exchange:
-                product.setPrice(BigDecimal.ZERO);
-                product.setRewardPoint(0L);
-                goods.setPromotions(null);
-                break;
-            case gift:
-                product.setPrice(BigDecimal.ZERO);
-                product.setRewardPoint(0L);
-                product.setExchangePoint(0L);
-                goods.setPromotions(null);
-                break;
-            case auction:
-                product.setRewardPoint(0L);
-                product.setExchangePoint(0L);
-                break;
-        }
-        if (product.getMarketPrice() == null) {
-            product.setMarketPrice(calculateDefaultMarketPrice(product.getPrice()));
-        }
-        if (product.getRewardPoint() == null) {
-            product.setRewardPoint(calculateDefaultRewardPoint(product.getPrice()));
-        }
         product.setAllocatedStock(0);
         product.setIsDefault(true);
         product.setGoods(goods);
@@ -908,8 +880,12 @@ public class GoodsService extends BaseService<Goods> {
         goodsDao.save(goods);
 
         setValue(product);
+        product.setPrice(BigDecimal.ZERO);
         product.setGoodsId(goods.getId());
-
+        product.setExchangePoint(0L);
+        product.setRewardPoint(0L);
+        product.setMarketPrice(BigDecimal.ZERO);
+        product.setStock(999);
         productDao.save(product);
         stockIn(product, operator, false);
 
@@ -1493,7 +1469,6 @@ public class GoodsService extends BaseService<Goods> {
      * @return 默认市场价
      */
     private BigDecimal calculateDefaultMarketPrice(BigDecimal price) {
-        Assert.notNull(price);
 
         Setting setting = SystemUtils.getSetting();
         Double defaultMarketPriceScale = setting.getDefaultMarketPriceScale();

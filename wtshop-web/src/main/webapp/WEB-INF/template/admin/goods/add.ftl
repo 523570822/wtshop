@@ -777,19 +777,7 @@ $().ready(function() {
 				<input type="button" value="${message("admin.goods.base")}" />
 			</li>
 			<li>
-				<input type="button" value="${message("admin.goods.introduction")}" />
-			</li>
-			<li>
-				<input type="button" value="${message("admin.goods.productImage")}" />
-			</li>
-			<li>
-				<input type="button" value="${message("admin.goods.parameter")}" />
-			</li>
-			<li>
-				<input type="button" value="${message("admin.goods.attribute")}" />
-			</li>
-			<li>
-				<input type="button" value="${message("admin.goods.specification")}" />
+				<input type="button" value="新闻详情" />
 			</li>
 		</ul>
 		<table class="input tabContent">
@@ -801,55 +789,46 @@ $().ready(function() {
 					<select id="productCategoryId" name="productCategoryId">
 						[#list productCategoryTree as productCategory]
 
-							[#if productCategory.grade == 0]
-                                <option value="${productCategory.id}"  style="color: #888;">
-								${productCategory.name}
-                                </option>
-							[#elseif productCategory.grade == 1]
-                                <option value="${productCategory.id}"  style="color: #888;">
-									&nbsp;&nbsp;
-								${productCategory.name}
-                                </option>
-							[#elseif productCategory.grade == 2]
+
                                 <option value="${productCategory.id}"  style="color: #333;">
                                     &nbsp;&nbsp; &nbsp;&nbsp;
 								${productCategory.name}
                                 </option>
-							[/#if]
+
 
 						[/#list]
 					</select>
 				</td>
 			</tr>
-			<tr>
+		[#--	<tr>
 				<th>
 					${message("Goods.type")}:
 				</th>
 				<td>
-					<select id="type" name="type">
+					<select id="type" name="type" disabled>
 						[#list types as type]
 							<option value="${type}">${message("Goods.Type." + type)}</option>
 						[/#list]
 					</select>
 				</td>
-			</tr>
-			<tr>
+			</tr>--]
+			[#--<tr>
 				<th>
 					${message("Goods.sn")}:
 				</th>
 				<td>
 					<input type="text" name="goods.sn" class="text" maxlength="100" title="${message("admin.goods.snTitle")}" />
 				</td>
-			</tr>
+			</tr>--]
 			<tr>
 				<th>
-					<span class="requiredField">*</span>${message("Goods.name")}:
+					<span class="requiredField">*</span>标题:
 				</th>
 				<td>
 					<input type="text" name="goods.name" class="text" maxlength="200" />
 				</td>
 			</tr>
-			<tr>
+			[#--<tr>
 				<th>
 					${message("Goods.caption")}:
 				</th>
@@ -896,7 +875,7 @@ $().ready(function() {
                 <td>
                     <input type="text" id="commissionRate" name="product.commission_rate" class="text" maxlength="16" title="上级及本人优惠比例（如10%填写10）" />
                 </td>
-            </tr>
+            </tr>--]
 			<tr>
 				<th>
 					${message("Goods.image")}:
@@ -908,7 +887,7 @@ $().ready(function() {
 					</span>
 				</td>
 			</tr>
-			<tr>
+	[#--		<tr>
 				<th>
 					${message("Goods.unit")}:
 				</th>
@@ -923,7 +902,7 @@ $().ready(function() {
 				<td>
 					<input type="text" name="goods.weight" class="text" maxlength="9" title="${message("admin.goods.weightTitle")}" />
 				</td>
-			</tr>
+			</tr>--]
 			[#--<tr>--]
 				[#--<th>--]
 					[#--${message("Product.rewardPoint")}:--]
@@ -932,7 +911,7 @@ $().ready(function() {
 					[#--<input type="text" id="rewardPoint" name="product.reward_point" class="text" maxlength="9" title="${message("admin.goods.rewardPointTitle")}" />--]
 				[#--</td>--]
 			[#--</tr>--]
-			<tr class="hidden">
+		[#--	<tr class="hidden">
 				<th>
 					<span class="requiredField">*</span>${message("Product.exchangePoint")}:
 				</th>
@@ -942,7 +921,7 @@ $().ready(function() {
 			</tr>
 			<tr>
 				<th>
-					<span class="requiredField">*</span>${message("Product.stock")}:
+					<span class="requiredField">*</span>${message("Product.sto·ck")}:
 				</th>
 				<td>
 					<input type="text" id="stock" name="product.stock" class="text" value="999" maxlength="9" />
@@ -958,8 +937,8 @@ $().ready(function() {
 					</span>
                 </td>
 
-			</tr>
-			<tr>
+			</tr>--]
+			[#--<tr>
 				<th>
 					${message("Goods.brand")}:
 				</th>
@@ -973,22 +952,22 @@ $().ready(function() {
 						[/#list]
 					</select>
 				</td>
-			</tr>
-			[#if promotions?has_content]
+			</tr>--]
+[#if tags?has_content]
 				<tr>
-					<th>
-						${message("Goods.promotions")}:
-					</th>
-					<td>
-						[#list promotions as promotion]
-							<label title="${promotion.title}">
-								<input type="checkbox" name="promotionIds" value="${promotion.id}" />${promotion.name}
-							</label>
+                    <th>
+						${message("Goods.tags")}:
+                    </th>
+                    <td>
+						[#list tags as tag]
+                            <label>
+                                <input type="checkbox" name="tagIds" value="${tag.id}" />${tag.name}
+                            </label>
 						[/#list]
-					</td>
-				</tr>
-			[/#if]
-
+                    </td>
+                </tr>
+[/#if]
+[#--
 			<tr>
 				<th>
 				 vip:
@@ -1001,20 +980,7 @@ $().ready(function() {
 				</td>
 			</tr>
 
-			[#if tags?has_content]
-				<tr>
-					<th>
-						${message("Goods.tags")}:
-					</th>
-					<td>
-						[#list tags as tag]
-							<label>
-								<input type="checkbox" name="tagIds" value="${tag.id}" />${tag.name}
-							</label>
-						[/#list]
-					</td>
-				</tr>
-			[/#if]
+
 
 			[#if effects?has_content]
                 <tr>
@@ -1029,8 +995,8 @@ $().ready(function() {
 						[/#list]
                     </td>
                 </tr>
-			[/#if]
-			<tr>
+			[/#if]--]
+			[#--<tr>
 				<th>
 					${message("admin.common.setting")}:
 				</th>
@@ -1052,8 +1018,8 @@ $().ready(function() {
 						<input type="hidden" name="_isDelivery" value="false" />
 					</label>
 				</td>
-			</tr>
-			<tr>
+			</tr>--]
+			[#--<tr>
 				<th>
 					${message("Goods.memo")}:
 				</th>
@@ -1084,7 +1050,7 @@ $().ready(function() {
 				<td>
 					<input type="text" name="goods.seo_description" title=${message("Goods.prepar")} class="text" maxlength="200" />
 				</td>
-			</tr>
+			</tr>--]
 		</table>
 		<table class="input tabContent">
 			<tr>

@@ -1044,11 +1044,6 @@
                     [#list productCategoryTree as productCategory]
                         <option value="${productCategory.id}"[#if productCategory == goods.productCategory]
                                 selected="selected"[/#if]>
-                            [#if productCategory.grade != 0]
-                                [#list 1..productCategory.grade as i]
-                                    &nbsp;&nbsp;
-                                [/#list]
-                            [/#if]
                         ${productCategory.name}
                         </option>
                     [/#list]

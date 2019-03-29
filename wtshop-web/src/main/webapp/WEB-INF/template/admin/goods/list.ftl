@@ -269,12 +269,6 @@ $().ready(function() {
 						<span title="${goods.name}">
 							${abbreviate(goods.name, 30, "...")}
 						</span>
-						[#if goods.typeName == "auction"]
-							<span class="red">*倒拍商品</span>
-						[/#if]
-						[#list goods.validPromotions as promotion]
-							<span class="promotion" title="${promotion.title}">${promotion.name}</span>
-						[/#list]
 					</td>
 					<td>
 						${goods.productCategory.name}
@@ -290,49 +284,14 @@ $().ready(function() {
 					</td>
 					<td>
 
-						[#if goods.check > State_Review_FinanceDirector ]
-                            <a href="edit.jhtml?id=${goods.id}">[修改]</a>
-                            <a onclick="getId(this);return false;"">[${message("admin.common.ids")}]</a>
-						&nbsp;|&nbsp;
-						[/#if]
 
-						[#--产品--]
-						[@shiro.hasAnyRoles name="R_ProductSpecialist"]
-							[#if goods.check == State_Draft || goods.check == State_Review_ProductSpecialist]
-                                <a href="edit.jhtml?id=${goods.id}${urlParam}">[${message("admin.common.edit")}]</a>
-                                <a href="javascript:void(0);" class="review" data-state="${State_Review_ProductManager}" data-id="${goods.id}">[提交产品主管审核]</a>
-							[/#if]
-							[#if goods.check == State_Review_ProductSpecialist]
-                                <a href="javascript:void(0);" class="comment" data-id="${goods.id}">[查看打回意见]</a>
-							[/#if]
-						[/@shiro.hasAnyRoles]
-					[#--产品主管--]
-						[@shiro.hasAnyRoles name="R_ProductManager"]
-							[#if goods.check == State_Review_ProductManager]
-                                <a href="edit.jhtml?id=${goods.id}${urlParam}">[${message("admin.common.edit")}]</a>
-                                <a href="javascript:void(0);" class="review" data-state="${State_Review_Financial}" data-id="${goods.id}">[提交财务审核]</a>
-                                <a href="javascript:void(0);" class="reject" data-state="${State_Review_ProductSpecialist}" data-id="${goods.id}">[打回]</a>
-							[/#if]
-						[/@shiro.hasAnyRoles]
-					[#--财务--]
-						[@shiro.hasAnyRoles name="R_Finance"]
-							[#if goods.check == State_Review_Financial]
-                                <a href="edit.jhtml?id=${goods.id}${urlParam}">[${message("admin.common.edit")}]</a>
-                                <a href="javascript:void(0);" class="review" data-state="${State_Review_FinanceDirector}" data-id="${goods.id}">[提交财务主管审核]</a>
-                                <a href="javascript:void(0);" class="reject" data-state="${State_Review_ProductSpecialist}" data-id="${goods.id}">[打回]</a>
-							[/#if]
-						[/@shiro.hasAnyRoles]
-					[#--财务主管--]
-						[@shiro.hasAnyRoles name="R_FinanceDirector"]
-							[#if goods.check == State_Review_FinanceDirector]
-                                <a href="edit.jhtml?id=${goods.id}${urlParam}">[${message("admin.common.edit")}]</a>
-                                <a href="javascript:void(0);" class="reject" data-state="${State_Review_ProductSpecialist}" data-id="${goods.id}">[打回]</a>
-                                <a href="javascript:void(0);" class="online" data-id="${goods.id}">[商品上架]</a>
-							[/#if]
-							[#if goods.check > State_Review_FinanceDirector ]
-                                <a href="javascript:void(0);" class="offline" data-id="${goods.id}">[商品下架]</a>
-							[/#if]
-						[/@shiro.hasAnyRoles]
+                            <a href="edit.jhtml?id=${goods.id}">[修改]</a>
+						     <a href="javascript:void(0);" class="online" data-id="${goods.id}">[新闻显示]</a>
+						 <a href="javascript:void(0);" class="offline" data-id="${goods.id}">[新闻隐身]</a>
+                      [#--      <a onclick="getId(this);return false;"">[${message("admin.common.ids")}]</a>--]
+
+
+
 
 					</td>
 				</tr>

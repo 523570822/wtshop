@@ -50,7 +50,7 @@ public class GoodsController extends BaseController {
     private EffectService effectService = enhance(EffectService.class);
     private GoodEffectService goodEffectService = enhance(GoodEffectService.class);
     private GoodsReviewService goodsReviewService = enhance(GoodsReviewService.class);
-
+    private InterestCategoryService interestCategoryService = enhance(InterestCategoryService.class);
     public final static String kGoodsComment = "Goods:Comment:";
 
     /**
@@ -130,9 +130,10 @@ public class GoodsController extends BaseController {
      * 添加
      */
     public void add() {
+        List<InterestCategory> interestCategory = interestCategoryService.findAll();
         setAttr("area", areaService.findAll());
         setAttr("types", Goods.Type.values());
-        setAttr("productCategoryTree", productCategoryService.findTree());
+        setAttr("productCategoryTree",interestCategory);
         setAttr("brands", brandService.findAll());
         setAttr("effects", effectService.findAll());
         setAttr("promotions", promotionService.findAll());
@@ -313,51 +314,8 @@ public class GoodsController extends BaseController {
             productImageService.filter(goods.getProductImagesConverter());
         }
 
-        // 参数
-        Integer parameterIndex = getBeans(ParameterValue.class, "parameterValues").size();
-        if (0 < parameterIndex) {
-            List<ParameterValue> parameterValues = new ArrayList<ParameterValue>();
-            for (int i = 0; i < parameterIndex; i++) {
-                ParameterValue parameterValue = getBean(ParameterValue.class, "parameterValues[" + i + "]");
-                List<ParameterValue.Entry> entries = getBeans(ParameterValue.Entry.class, "parameterValueEntrys[" + i + "].entries");
-                parameterValue.setEntries(entries);
-                parameterValues.add(parameterValue);
-            }
-            goods.setParameterValues(JSONArray.toJSONString(parameterValues));
-            goods.setParameterValuesConverter(parameterValues);
-            parameterValueService.filter(goods.getParameterValuesConverter());
-        }
 
-        // 产品组
-        Integer productsIndex = getBeans(Product.class, "productList").size();
-        List<Product> products = new ArrayList<Product>();
-        if (0 < productsIndex) {
-            for (int i = 0; i < productsIndex; i++) {
-                Product sProduct = getModel(Product.class, "productList[" + i + "]");
-                List<SpecificationValue> specificationValues = getBeans(SpecificationValue.class, "productLists[" + i + "].specificationValues");
-                sortList(specificationValues, "id", "ASC");
-                sProduct.setSpecificationValues(JSONArray.toJSONString(specificationValues));
-                products.add(sProduct);
-            }
-            productService.filter(products);
-        }
-
-        // 规格
-        Integer specificationItemsIndex = getBeans(SpecificationItem.class, "specificationItems").size();
-        List<SpecificationItem> specificationItems = new ArrayList<SpecificationItem>();
-        if (0 < specificationItemsIndex) {
-            for (int i = 0; i < specificationItemsIndex; i++) {
-                SpecificationItem specificationItem = getBean(SpecificationItem.class, "specificationItems[" + i + "]");
-                List<SpecificationItem.Entry> entries = getBeans(SpecificationItem.Entry.class, "specificationItemEntrys[" + i + "].entries");
-                specificationItem.setEntries(entries);
-                specificationItems.add(specificationItem);
-            }
-            goods.setSpecificationItems(JSONArray.toJSONString(specificationItems));
-            goods.setSpecificationItemConverter(specificationItems);
-            specificationItemService.filter(goods.getSpecificationItemsConverter());
-        }
-
-        ProductCategory productCategory = productCategoryService.find(productCategoryId);
+        InterestCategory productCategory = interestCategoryService.find(productCategoryId);
         if (productCategory != null) {
             goods.setProductCategoryId(productCategory.getId());
         }
@@ -369,13 +327,6 @@ public class GoodsController extends BaseController {
         goods.setTags(new ArrayList<Tag>(tagService.findList(tagIds)));
         goods.setEffects(new ArrayList<Effect>(effectService.findList(effectIds)));
 
-        //goods.removeAttributeValue();
-        for (Attribute attribute : goods.getProductCategory().getAttributes()) {
-            String value = getPara("attribute_" + attribute.getId());
-            String attributeValue = attributeService.toAttributeValue(attribute, value);
-            goods.setAttributeValue(attribute, attributeValue);
-        }
-
         if (StringUtils.isNotEmpty(goods.getSn()) && goodsService.snExists(goods.getSn())) {
             addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error, "商品编号不能为空或已存在!"));
             redirect("list.jhtml");
@@ -383,25 +334,10 @@ public class GoodsController extends BaseController {
         }
 
         //	添加的商品默认是待审核状态
-        goods.setVerifyState(Goods.VerifyState.draft.ordinal());
+        goods.setVerifyState(Goods.VerifyState.productManageAudit.ordinal());
 
         Admin admin = adminService.getCurrent();
-        if (goods.hasSpecification()) {
-            if (CollectionUtils.isEmpty(products)) {
-                addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error, "商品规格不能为空!"));
-                redirect("list.jhtml");
-                return;
-            }
-            goodsService.save(goods, products, admin);
-        } else {
-            if (product == null) {
-                addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error, "产品不能为空!"));
-                redirect("list.jhtml");
-                return;
-            }
-            goodsService.save(goods, product, admin);
-        }
-
+        goodsService.save(goods, product, admin);
         addFlashMessage(SUCCESS_MESSAGE);
         redirect("list.jhtml");
     }
@@ -411,9 +347,10 @@ public class GoodsController extends BaseController {
      * 编辑
      */
     public void edit() {
+        List<InterestCategory> interestCategory = interestCategoryService.findAll();
         Long id = getParaToLong("id");
         setAttr("types", Goods.Type.values());
-        setAttr("productCategoryTree", productCategoryService.findTree());
+        setAttr("productCategoryTree",interestCategory);
         setAttr("brands", brandService.findAll());
         setAttr("effects", effectService.findAll());
         setAttr("promotions", promotionService.findAll());

@@ -61,7 +61,7 @@ public class Goods extends BaseGoods<Goods> {
 
     //  审核状态
     public enum VerifyState {
-        draft,
+        draft,//待审核
         productAudit,
         productManageAudit,
         financeAudit,
