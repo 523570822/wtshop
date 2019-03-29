@@ -539,7 +539,6 @@ public class OrderService extends BaseService<Order> {
             depositLog1.setMemo("福袋上级返现");
             depositLog1.setType(CommissionLog.Type.fudan.ordinal());
             depositLog1.setOrderId(order.getId());
-
             depositLog1.setMemberId(member1.getId());
             member1.setCommission(BigDecimal.valueOf(100L).add(member1.getCommission()));
             memberService.update(member1);
