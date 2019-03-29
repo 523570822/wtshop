@@ -270,8 +270,8 @@ public class Goods extends BaseGoods<Goods> {
     /**
      * 商品分类
      */
-    private ProductCategory productCategory;
-
+   // private ProductCategory productCategory;
+    private InterestCategory productCategory;
     /**
      * 品牌
      */
@@ -299,9 +299,9 @@ public class Goods extends BaseGoods<Goods> {
      *
      * @return 商品分类
      */
-    public ProductCategory getProductCategory() {
+    public InterestCategory getProductCategory() {
         if (ObjectUtils.isEmpty(productCategory)) {
-            productCategory = ProductCategory.dao.findById(getProductCategoryId());
+            productCategory = InterestCategory.dao.findById(getProductCategoryId());
         }
         return productCategory;
     }
@@ -311,7 +311,7 @@ public class Goods extends BaseGoods<Goods> {
      *
      * @param productCategory 商品分类
      */
-    public void setProductCategory(ProductCategory productCategory) {
+    public void setProductCategory(InterestCategory productCategory) {
         this.productCategory = productCategory;
     }
 

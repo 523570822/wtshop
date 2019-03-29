@@ -463,13 +463,6 @@ public class GoodsController extends BaseController {
         goods.setTags(new ArrayList<Tag>(tagService.findList(tagIds)));
         goods.setEffects(new ArrayList<Effect>(effectService.findList(effectIds)));
 
-
-        for (Attribute attribute : goods.getProductCategory().getAttributes()) {
-            String value = getRequest().getParameter("attribute_" + attribute.getId());
-            String attributeValue = attributeService.toAttributeValue(attribute, value);
-            goods.setAttributeValue(attribute, attributeValue);
-        }
-
         Admin admin = adminService.getCurrent();
         if (goods.hasSpecification()) {
             if (CollectionUtils.isEmpty(products)) {
@@ -629,12 +622,6 @@ public class GoodsController extends BaseController {
 
         goods.setEffects(new ArrayList<Effect>(effectService.findList(effectIds)));
         goods.put("effects", goods.getEffects());
-
-        for (Attribute attribute : goods.getProductCategory().getAttributes()) {
-            String value = getRequest().getParameter("attribute_" + attribute.getId());
-            String attributeValue = attributeService.toAttributeValue(attribute, value);
-            goods.setAttributeValue(attribute, attributeValue);
-        }
 
         if (!goods.hasSpecification()) {
             if (product == null) {

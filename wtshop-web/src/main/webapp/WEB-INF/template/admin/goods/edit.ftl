@@ -551,72 +551,9 @@
                 $.each(specificationItems, function (i, specificationItem) {
                     $titleTr.append('<th>' + escapeHtml(specificationItem.name) + '<\/th>');
                 });
-
-               //console.info('${goods.typeName}');
-              // console.info('${goods.typeName}'== "general");
-                    $titleTr.append(
-                [@compress single_line = true]
-
-                '[#if goods.typeName == "general"]
-                <th>
-                ${message("Product.price")}
-                <\th>
-                [/#if]
-                <th>
-                ${message("Product.cost")}
-                <\th>
-                    <th>
-                    ${message("Product.marketPrice")}
-                    <\/th >
-                    [#if goods.typeName == "general"]
-                    <th>
-                    ${message("Product.rewardPoint")}
-                    <\/th >
-                    [/#if]
-                    [#if goods.typeName == "exchange"]
-                    <th>
-                    ${message("Product.exchangePoint")}
-                    <\/th >
-                    [/#if]
-                <th>
-                ${message("Product.stock")}
-                <\/
-                    th >
-                    <th >
-                    ${message("Product.isDefault")}
-                    <\/
-                    th >
-                    <th >
-                    ${message("admin.goods.isEnabled")}
-                    <\/
-                    th > '
-                [/@compress]
-            )
-                ;
-
                 $.each(products, function (i, entries) {
                     var ids = [];
                     $productTr = $('<tr><\/tr>').appendTo($productTable);
-                    $.each(entries, function (j, entry) {
-                            $productTr.append(
-                        [@compress single_line = true]
-                                '<td>
-                            ' + escapeHtml(entry.value) + '
-                            <input
-                            type = "hidden"
-                            name = "productLists[' + i + '].specificationValues[' + j + '].id"
-                            value = "' + entry.id + '" \/>
-                            <input
-                            type = "hidden"
-                            name = "productLists[' + i + '].specificationValues[' + j + '].value"
-                            value = "' + escapeHtml(entry.value) + '" \/>
-                            <\/
-                            td > '
-                        [/@compress]
-                        )
-                        ;
-                        ids.push(entry.id);
-                    });
                     var initProductValue = initProductValues[ids.join(",")];
                     var productValue = productValues[ids.join(",")];
                     var price = productValue != null && productValue.price != null ? productValue.price : "";
@@ -627,120 +564,6 @@
                     var stock = productValue != null && productValue.stock != null ? productValue.stock : "";
                     var isDefault = productValue != null && productValue.isDefault != null ? productValue.isDefault : false;
                     var isEnabled = productValue != null && productValue.isEnabled != null ? productValue.isEnabled : false;
-                        $productTr.append(
-                    [@compress single_line = true]
-                    '[#if goods.typeName == "general"]
-                    <td>
-                    <input type = "text"
-                        name = "productList[' + i + '].price"
-                        class
-                        = "text price"
-                        value = "' + price + '"
-                        maxlength = "16"
-                        style = "width: 50px;" \/>
-                        <\/td >
-                    [/#if]
-                    <td>
-                    <input type = "text"
-                        name = "productList[' + i + '].cost"
-                        class
-                        = "text cost"
-                        value = "' + cost + '"
-                        maxlength = "16"
-                        style = "width: 50px;" \/>
-                        <\/
-                        td >
-                        <td >
-                        <input
-                        type = "text"
-                        name = "productList[' + i + '].market_price"
-                        class
-                        = "text marketPrice"
-                        value = "' + marketPrice + '"
-                        maxlength = "16"
-                        style = "width: 50px;" \/>
-                        <\/td >
-                        [#if goods.typeName == "general"]
-                        <td>
-                        <input type = "text"
-                            name = "productList[' + i + '].reward_point"
-                            class
-                            = "text rewardPoint"
-                            value = "' + rewardPoint + '"
-                            maxlength = "9"
-                            style = "width: 50px;" \/>
-                            <\/td >
-                        [/#if]
-                        [#if goods.typeName == "exchange"]
-                        <td>
-                        <input type = "text"
-                            name = "productList[' + i + '].exchange_point"
-                            class
-                            = "text exchangePoint"
-                            value = "' + exchangePoint + '"
-                            maxlength = "9"
-                            style = "width: 50px;" \/>
-                            <\/td >
-                        [/#if]
-                    <td>
-                    <input type = "text"
-                        name = "productList[' + i + '].stock"
-                        class
-                        = "text stock"
-                        value = "' + (initProductValue != null ? initProductValue.stock : stock) + '"
-                        maxlength = "9"
-                        ' + (initProductValue != null ? '
-                        title = "${message("Product.allocatedStock")}: ' + initProductValue.allocatedStock + '"
-                        readonly = "readonly"
-                        ' : '
-                        ') + '
-                        style = "width: 50px;" \/>
-                        ' + (initProductValue != null ? ' <a
-                        class
-                        = hidden
-                        href = "..\/stock\/stockIn.jhtml?productId=' + initProductValue.id + '"
-                        title = "${message("admin.goods.stockIn")}" > + <\/
-                        a > <a
-                        class
-                        = hidden
-                        href = "..\/stock\/stockOut.jhtml?productId=' + initProductValue.id + '"
-                        title = "${message("admin.goods.stockOut")}" > - <\/
-                        a > ' : '
-                        ') + '
-                        <\/
-                        td >
-                        <td >
-                        <input
-                        type = "checkbox"
-                        name = "productList[' + i + '].is_default"
-                        class
-                        = "isDefault"
-                        value = "true"
-                        ' + (isDefault ? '
-                        checked = "checked"
-                        ' : '
-                        ') + ' \/>
-                        <input
-                        type = "hidden"
-                        name = "_productList[' + i + '].is_default"
-                        value = "false" \/>
-                        <\/
-                        td >
-                        <td >
-                        <input
-                        type = "checkbox"
-                        name = "isEnabled"
-                        class
-                        = "isEnabled"
-                        value = "true"
-                        ' + (isEnabled ? '
-                        checked = "checked"
-                        ' : '
-                        ') + ' \/>
-                        <\/
-                        td > '
-                    [/@compress]
-                    ).
                     data("ids", ids.join(","));
                     if (initProductValue != null) {
                         $productTr.addClass("current").attr("title", "${message("Product.sn")}: " + initProductValue.sn);
@@ -1021,18 +844,6 @@
         <li>
             <input type="button" value="${message("admin.goods.introduction")}"/>
         </li>
-        <li>
-            <input type="button" value="${message("admin.goods.productImage")}"/>
-        </li>
-        <li>
-            <input type="button" value="${message("admin.goods.parameter")}"/>
-        </li>
-        <li>
-            <input type="button" value="${message("admin.goods.attribute")}"/>
-        </li>
-        <li>
-           <input type="button" value="${message("admin.goods.specification")}"/>
-       </li>
     </ul>
     <table class="input tabContent">
         <tr>
@@ -1042,7 +853,8 @@
             <td>
                 <select id="productCategoryId" name="productCategoryId">
                     [#list productCategoryTree as productCategory]
-                        <option value="${productCategory.id}"[#if productCategory == goods.productCategory]
+                        <option value="${productCategory.id}"
+                            [#if productCategory == goods.productCategory]
                                 selected="selected"[/#if]>
                         ${productCategory.name}
                         </option>
@@ -1050,91 +862,17 @@
                 </select>
             </td>
         </tr>
+
         <tr>
             <th>
-            ${message("Goods.type")}:
-            </th>
-            <td>
-            ${message("Goods.Type." + goods.typeName)}
-            </td>
-        </tr>
-        <tr>
-            <th>
-            ${message("Goods.sn")}:
-            </th>
-            <td>
-                <input type="text" name="goods.sn" class="text" value="${goods.sn}" maxlength="200" readonly/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("Goods.name")}:
+                <span class="requiredField">*</span>标题
             </th>
             <td>
                 <input type="text" name="goods.name" class="text" value="${goods.name}" maxlength="200"/>
             </td>
         </tr>
-        <tr>
-            <th>
-            ${message("Goods.caption")}:
-            </th>
-            <td>
-                <input type="text" name="goods.caption" class="text" value="${goods.caption}" maxlength="200"/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-            ${message("Goods.keyword")}:
-            </th>
-            <td>
-                <input type="text" name="goods.keyword" class="text" value="${goods.keyword}" maxlength="200"
-                       title="${message("admin.goods.keywordTitle")}"/>
-            </td>
-        </tr>
-        [#if goods.typeName == "general" || goods.typeName == "auction"]
-            <tr[#if goods.hasSpecification()] class="hidden"[/#if]>
-                <th>
-                    <span class="requiredField">*</span>${message("Product.price")}:
-                </th>
-                <td>
-                    <input type="text" id="price" name="product.price" class="text"
-                           value="${goods.defaultProduct.price}" maxlength="16"[#if goods.hasSpecification()]
-                           disabled="disabled"[/#if] />
-                </td>
-            </tr>
-        [/#if]
-        <tr[#if goods.hasSpecification()] class="hidden"[/#if]>
-            <th>
-                <span class="requiredField">*</span>${message("Product.cost")}:
-            </th>
-            <td>
-                <input type="text" id="cost" name="product.cost" class="text" value="${goods.defaultProduct.cost}"
-                       maxlength="16" title="${message("admin.goods.costTitle")}"[#if goods.hasSpecification()]
-                       disabled="disabled"[/#if] />
-            </td>
-        </tr>
-        <tr[#if goods.hasSpecification()] class="hidden"[/#if]>
-            <th>
-                <span class="requiredField">*</span>${message("Product.marketPrice")}:
-            </th>
-            <td>
-                <input type="text" id="marketPrice" name="product.market_price" class="text"
-                       value="${goods.defaultProduct.marketPrice}" maxlength="16"
-                       title="${message("admin.goods.marketPriceTitle")}"[#if goods.hasSpecification()]
-                       disabled="disabled"[/#if] />
-            </td>
-        </tr>
-        <tr[#if goods.hasSpecification()] class="hidden"[/#if]>
-            <th>
-                <span class="requiredField">*</span>佣金比例（%）
-            </th>
-            <td>
-                <input type="text" id="commissionRate" name="product.commission_rate" class="text"
-                       value="${goods.defaultProduct.commissionRate}" maxlength="16"
-                       title="上级及本人优惠比例（如10%填写10）"[#if goods.hasSpecification()]
-                       disabled="disabled"[/#if] />
-            </td>
-        </tr>
+
+
         <tr>
             <th>
             ${message("Goods.image")}:
@@ -1150,130 +888,10 @@
 					</span>
             </td>
         </tr>
-        <tr>
-            <th>
-            ${message("Goods.unit")}:
-            </th>
-            <td>
-                <input type="text" name="goods.unit" class="text" value="${goods.unit}" maxlength="200"/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("Goods.weight")}:
-            </th>
-            <td>
-                <input type="text" name="goods.weight" class="text" value="${goods.weight}" maxlength="9"
-                       title="${message("admin.goods.weightTitle")}"/>
-            </td>
-        </tr>
-        [#if goods.typeName == "general"]
-            <tr[#if goods.hasSpecification()] class="hidden"[/#if]>
-                <th>
-                ${message("Product.rewardPoint")}:
-                </th>
-                <td>
-                    <input type="text" id="rewardPoint" name="product.reward_point" class="text"
-                           value="${goods.defaultProduct.rewardPoint}" maxlength="9"
-                           title="${message("admin.goods.rewardPointTitle")}"[#if goods.hasSpecification()]
-                           disabled="disabled"[/#if] />
-                </td>
-            </tr>
-        [/#if]
-        [#if goods.typeName == "exchange"]
-            <tr[#if goods.hasSpecification()] class="hidden"[/#if]>
-                <th>
-                    <span class="requiredField">*</span>${message("Product.exchangePoint")}:
-                </th>
-                <td>
-                    <input type="text" id="exchangePoint" name="product.exchange_point" class="text"
-                           value="${goods.defaultProduct.exchangePoint}" maxlength="9"[#if goods.hasSpecification()]
-                           disabled="disabled"[/#if] />
-                </td>
-            </tr>
-        [/#if]
-        [#if goods.hasSpecification()]
-            <tr class="hidden">
-                <th>
-                    <span class="requiredField">*</span>${message("Product.stock")}:
-                </th>
-                <td>
-                    <input type="text" id="stock" name="product.stock" class="text" value="1" maxlength="9"
-                           disabled="disabled"/>
-                </td>
-            </tr>
-        [#else]
-            <tr>
-                <th>
-                    <span class="requiredField">*</span>${message("Product.stock")}:
-                </th>
-                <td>
-                    <input type="text" id="stock" name="product.stock" class="text"
-                           value="${goods.defaultProduct.stock}" maxlength="9"
-                           title="${message("Product.allocatedStock")}: ${goods.defaultProduct.allocatedStock}"
-                           readonly="readonly"/>
-                    <a class="hidden" href="../stock/stockIn.jhtml?productId=${goods.defaultProduct.id}"
-                       title="${message("admin.goods.stockIn")}">+</a>
-                    <a class="hidden" href="../stock/stockOut.jhtml?productId=${goods.defaultProduct.id}"
-                       title="${message("admin.goods.stockOut")}">-</a>
-                </td>
-            </tr>
-        [/#if]
-        <tr>
-            <th>
-                <span class="requiredField">*</span>产地:
-            </th>
-            <td>
-					<span class="fieldSet">
-						<input type="hidden" id="areaId" name="areaId" value="${(goods.area.id)!}"
-                               treePath="${(goods.area.treePath)!}"/>
-					</span>
-            </td>
 
-        </tr>
-        <tr>
-            <th>
-            ${message("Goods.brand")}:
-            </th>
-            <td>
-                <select name="brandId">
-                    <option value="">${message("admin.common.choose")}</option>
-                    [#list brands as brand]
-                        <option value="${brand.id}"[#if brand == goods.brand] selected="selected"[/#if]>
-                        ${brand.name}
-                        </option>
-                    [/#list]
-                </select>
-            </td>
-        </tr>
-        [#if goods.typeName == "general" && promotions?has_content]
-            <tr>
-                <th>
-                ${message("Goods.promotions")}:
-                </th>
-                <td>
-                    [#list promotions as promotion]
-                        <label title="${promotion.title}">
-                            <input type="checkbox" name="promotionIds"
-                                   value="${promotion.id}"[#if goods.promotions?seq_contains(promotion)]
-                                   checked="checked"[/#if] />${promotion.name}
-                        </label>
-                    [/#list]
-                </td>
-            </tr>
-        [/#if]
 
-        <tr>
-            <th>
-                VIP:
-            </th>
-            <td>
-                <label>
-                    <input type="checkbox" name="isVip" value="true" [#if goods.isVip] checked="checked"[/#if] />${message("Goods.Type.vip")}
-                    <input type="hidden" name="_isVip" value="false"/>
-                </label>
-            </td>
-        </tr>
+
+
 
         [#if tags?has_content]
             <tr>
@@ -1291,78 +909,9 @@
             </tr>
         [/#if]
 
-        [#if effects?has_content]
-            <tr>
-                <th>
-                ${message("Goods.effects")}:
-                </th>
-                <td>
-                    [#list effects as effect]
-                        <label>
-                            <input type="checkbox" name="effectIds"
-                                   value="${effect.id}"[#if goods.effectIdList?seq_contains("${effect.id}")]
-                                   checked="checked"[/#if] />${effect.name}
-                        </label>
-                    [/#list]
-                </td>
-            </tr>
-        [/#if]
-        <tr>
-            <th>
-            ${message("admin.common.setting")}:
-            </th>
-            <td>
-                <input type="hidden" name="isMarketable" value="${goods.isMarketable}"/>
-                <label>
-                    <input type="checkbox" name="isList" value="true"[#if goods.isList]
-                           checked="checked"[/#if] />${message("Goods.isList")}
-                    <input type="hidden" name="_isList" value="false"/>
-                </label>
-                <label>
-                    <input type="checkbox" name="isTop" value="true"[#if goods.isTop]
-                           checked="checked"[/#if] />${message("Goods.isTop")}
-                    <input type="hidden" name="_isTop" value="false"/>
-                </label>
-                <label>
-                    <input type="checkbox" name="isDelivery" value="true"[#if goods.isDelivery]
-                           checked="checked"[/#if] />${message("Goods.isDelivery")}
-                    <input type="hidden" name="_isDelivery" value="false"/>
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <th>
-            ${message("Goods.memo")}:
-            </th>
-            <td>
-                <input type="text" name="goods.memo" class="text" value="${goods.memo}" maxlength="200"/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-            ${message("Goods.seoTitle")}:
-            </th>
-            <td>
-                <input type="text" name="goods.seo_title" class="text" value="${goods.seoTitle}" maxlength="200"/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-            ${message("Goods.seoKeywords")}:
-            </th>
-            <td>
-                <input type="text" name="goods.seo_keywords" class="text" value="${goods.seoKeywords}" maxlength="200"/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-            ${message("Goods.seoDescription")}:
-            </th>
-            <td>
-                <input type="text" name="goods.seo_description" class="text" value="${goods.seoDescription}"
-                       maxlength="200"/>
-            </td>
-        </tr>
+
+
+
     </table>
     <table class="input tabContent">
         <tr>
