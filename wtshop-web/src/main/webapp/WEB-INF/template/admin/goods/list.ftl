@@ -394,7 +394,7 @@ $().ready(function() {
             goodsId = $(this).attr('data-id');
             $.dialog({
                 type: "warn",
-                content: '是否上架商品',
+                content: '是否显示新闻',
                 ok: message("admin.dialog.ok"),
                 cancel: message("admin.dialog.cancel"),
                 onOk: function () {

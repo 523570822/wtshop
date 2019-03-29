@@ -339,7 +339,7 @@ public class GoodsController extends BaseController {
         Admin admin = adminService.getCurrent();
         goodsService.save(goods, product, admin);
         addFlashMessage(SUCCESS_MESSAGE);
-        redirect("list.jhtml");
+        redirect("/admin/goods/list.jhtml");
     }
 
 

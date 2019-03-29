@@ -39,7 +39,7 @@ public class InterestCategoryController extends BaseController{
         InterestCategory model = getModel(InterestCategory.class);
         interestCategoryService.save(model);
         addFlashMessage(SUCCESS_MESSAGE);
-        redirect("list.jhtml");
+        render("/admin/interest_category/list.jhtml");
     }
 
     /**
@@ -58,7 +58,7 @@ public class InterestCategoryController extends BaseController{
         InterestCategory model = getModel(InterestCategory.class);
         interestCategoryService.update(model);
         addFlashMessage(SUCCESS_MESSAGE);
-        redirect("list.jhtml");
+        redirect("/admin/interestCategory/list.jhtml");
     }
 
     /**
