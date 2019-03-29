@@ -223,55 +223,10 @@ $().ready(function() {
 				<a href="javascript:;" id="refreshButton" class="iconButton">
 					<span class="refreshIcon">&nbsp;</span>${message("admin.common.refresh")}
 				</a>
-				<div id="filterMenu" class="dropdownMenu">
-					<a href="javascript:;" class="button">
-						${message("admin.goods.filter")}<span class="arrow">&nbsp;</span>
-					</a>
-					<ul class="check">
-						<li name="isMarketable"[#if isMarketable?? && isMarketable] class="checked"[/#if] val="true">${message("admin.goods.isMarketable")}</li>
-						<li name="isMarketable"[#if isMarketable?? && !isMarketable] class="checked"[/#if] val="false">${message("admin.goods.notMarketable")}</li>
-						<li class="divider">&nbsp;</li>
-						<li name="isList"[#if isList?? && isList] class="checked"[/#if] val="true">${message("admin.goods.isList")}</li>
-						<li name="isList"[#if isList?? && !isList] class="checked"[/#if] val="false">${message("admin.goods.notList")}</li>
-						<li class="divider">&nbsp;</li>
-						<li name="isTop"[#if isTop?? && isTop] class="checked"[/#if] val="true">${message("admin.goods.isTop")}</li>
-						<li name="isTop"[#if isTop?? && !isTop] class="checked"[/#if] val="false">${message("admin.goods.notTop")}</li>
-						<li class="divider">&nbsp;</li>
-						<li name="isOutOfStock"[#if isOutOfStock?? && !isOutOfStock] class="checked"[/#if] val="false">${message("admin.goods.isStack")}</li>
-						<li name="isOutOfStock"[#if isOutOfStock?? && isOutOfStock] class="checked"[/#if] val="true">${message("admin.goods.isOutOfStack")}</li>
-						<li class="divider">&nbsp;</li>
-						<li name="isStockAlert"[#if isStockAlert?? && !isStockAlert] class="checked"[/#if] val="false">${message("admin.goods.normalStore")}</li>
-						<li name="isStockAlert"[#if isStockAlert?? && isStockAlert] class="checked"[/#if] val="true">${message("admin.goods.isStockAlert")}</li>
-                        <li class="divider">&nbsp;</li>
-                        <li name="isVip"[#if isVip?? && !isVip] class="checked"[/#if] val="false">非vip商品</li>
-                        <li name="isVip"[#if isVip?? && isVip] class="checked"[/#if] val="true">vip商品</li>
-					</ul>
-				</div>
-				<a href="javascript:;" id="moreButton" class="button">${message("admin.goods.moreOption")}</a>
-				<div id="pageSizeMenu" class="dropdownMenu">
-					<a href="javascript:;" class="button">
-						${message("admin.page.pageSize")}<span class="arrow">&nbsp;</span>
-					</a>
-					<ul>
-						<li[#if page.pageSize == 10] class="current"[/#if] val="10">10</li>
-						<li[#if page.pageSize == 20] class="current"[/#if] val="20">20</li>
-						<li[#if page.pageSize == 50] class="current"[/#if] val="50">50</li>
-						<li[#if page.pageSize == 100] class="current"[/#if] val="100">100</li>
-					</ul>
-				</div>
+
+
 			</div>
-			<div id="searchPropertyMenu" class="dropdownMenu">
-				<div class="search">
-					<span class="arrow">&nbsp;</span>
-					<input type="text" id="searchValue" name="pageable.searchValue" value="${pageable.searchValue}" maxlength="200" />
-					<button type="submit">&nbsp;</button>
-				</div>
-				<ul>
-					<li[#if pageable.searchProperty == "sn"] class="current"[/#if] val="sn">${message("Goods.sn")}</li>
-					<li[#if pageable.searchProperty == "name"] class="current"[/#if] val="name">${message("Goods.name")}</li>
-                    <li[#if pageable.searchProperty == "keyword"] class="current"[/#if] val="keyword">${message("admin.seo.keyword")}</li>
-				</ul>
-			</div>
+
 		</div>
 		<table id="listTable" class="list">
 			<tr>
@@ -282,28 +237,19 @@ $().ready(function() {
 					<a href="javascript:;" class="sort" name="sn">${message("Goods.sn")}</a>
 				</th>
 				<th>
-					<a href="javascript:;" class="sort" name="name">${message("Goods.name")}</a>
+					<a href="javascript:;" class="sort" name="name">标题</a>
 				</th>
 				<th>
-					<a href="javascript:;" class="sort" name="product_category_id">${message("Goods.productCategory")}</a>
+					<a href="javascript:;" class="sort" name="product_category_id">分类</a>
 				</th>
 				<th>
-					<a href="javascript:;" class="sort" name="price">${message("Goods.price")}</a>
-				</th>
-				<th>
-					<a href="javascript:;" class="sort" name="commission_rate">佣金比例</a>
-				</th>
-				<th>
-					<a href="javascript:;" class="sort" name="is_marketable">${message("Goods.isMarketable")}</a>
+					<a href="javascript:;" class="sort" name="is_marketable">是否显示</a>
 				</th>
 				<th>
 					<a href="javascript:;" class="sort" name="create_date">${message("admin.common.createDate")}</a>
 				</th>
                 <th>
                     <span>${message("admin.seo.IP")}</span>
-                </th>
-                <th>
-					<span>${message("admin.status.operator")}</span>
                 </th>
 				<th>
 					<span>${message("admin.common.action")}</span>
@@ -334,12 +280,6 @@ $().ready(function() {
 						${goods.productCategory.name}
 					</td>
 					<td>
-						${currency(goods.price, true)}
-					</td>
-                    <td>
-						${goods.commissionRate}%
-                    </td>
-					<td>
 						<span class="${goods.isMarketable?string("true", "false")}Icon">&nbsp;</span>
 					</td>
                     <td>
@@ -349,26 +289,9 @@ $().ready(function() {
 						${goods.operate_ip}
 					</td>
 					<td>
-						[#if goods.check == State_Draft]
-                            <span class="red">草稿</span>
-						[#elseif goods.check == State_Review_ProductSpecialist]
-                            <span class="black">打回待修改</span>
-						[#elseif goods.check == State_Review_ProductManager]
-                            <span class="black">待产品主管审核</span>
-						[#elseif goods.check == State_Review_Financial]
-                            <span class="black">待财务审核</span>
-						[#elseif goods.check == State_Review_FinanceDirector]
-                            <span class="black">待财务主管审核</span>
-						[#elseif goods.check == State_Publish]
-                            <span class="green">已上架</span>
-						[#else]
-                            <span class="silver">未知状态</span>
-						[/#if]
-					</td>
-					<td>
 
 						[#if goods.check > State_Review_FinanceDirector ]
-                            <a href="edit.jhtml?id=${goods.id}">[申请修改]</a>
+                            <a href="edit.jhtml?id=${goods.id}">[修改]</a>
                             <a onclick="getId(this);return false;"">[${message("admin.common.ids")}]</a>
 						&nbsp;|&nbsp;
 						[/#if]

@@ -131,7 +131,9 @@ public class GoodsAPIController extends BaseAPIController {
 		
 		RequestContextHolder.setRequestAttributes(getRequest());
 		Member m=memberService.getCurrent();
-		if (goods.getFavoriteMembers().contains(m)) {
+
+		List<Member> dd1 = goods.getFavoriteMembers();
+		if (dd1.contains(m)) {
 			favorite = true;
 		}
 		Page<Consultation> consultationPages = consultationService.findPage(null, goods, true, pageable);
