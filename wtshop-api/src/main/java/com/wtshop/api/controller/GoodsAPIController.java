@@ -431,6 +431,7 @@ public class GoodsAPIController extends BaseAPIController {
 			MemberInterestCategory memberInterestCategory = new MemberInterestCategory();
 			memberInterestCategory.setMembers(m.getId());
 			memberInterestCategory.setInterestCategory(productCategoryId);
+			memberInterestCategory.setWeights(1);
 			memberInterestService.save(memberInterestCategory);
 
 		}else{
