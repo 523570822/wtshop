@@ -275,14 +275,11 @@ public class GoodsDao extends BaseDao<Goods> {
 		if(sell){
 			sqlExceptSelect += " AND o.`status` in (5,9,10) ";
 		}
-		sqlExceptSelect += " ) n ON n.goods_id =g.id LEFT JOIN product j ON j.goods_id = g.id WHERE 1 = 1 and g.is_delete = 0 and g.is_marketable = 1";
+		sqlExceptSelect += " ) n ON n.goods_id =g.id LEFT JOIN product j ON j.goods_id = g.id WHERE 1 = 1 and g.is_delete = 0 ";
 		String select = " select m.*,p.stock ";
 
 		if(functionId != null){
 			sqlExceptSelect += " AND e.effect in " + SqlUtils.getSQLIn(Arrays.asList(functionId));
-		}
-		if(is_vip != null){
-			sqlExceptSelect += " AND g.is_vip = " + is_vip;
 		}
 		if(keyword != null){
 			sqlExceptSelect += " AND (g.name like '%"+ keyword +"%' OR g.caption like '%"+ keyword +"%'  OR g.keyword like '%"+ keyword +"%' )";

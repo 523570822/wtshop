@@ -127,7 +127,8 @@ public class MemberAPIController extends BaseAPIController {
 		Certificates certificates = certificatesService.queryByMemberId(member.getId());
 		Receiver aDefault = receiverService.findDefault(member);
 		List<Member> interest = memberService.findMySelfInterest(member.getId());
-		List<InterestCategory> interestCategories = interestCategoryService.findAll();
+	//	List<InterestCategory> interestCategories = interestCategoryService.findAll();
+		List<InterestCategory> interestCategories = interestCategoryService.findByMember(member.getId());
 		List<Member> skin = memberService.findMySelfSkin(member.getId());
 		List<SkinType> skinTypes = skinTypeService.findAll();
         Double commission = 0d;
