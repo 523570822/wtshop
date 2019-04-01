@@ -127,7 +127,7 @@ public class GoodsAPIController extends BaseAPIController {
 			return;
 		}
 		List<Area> areas = areaService.findParents(goods.getArea(), true, null);
-		goods.setAttributeValue0(areas.get(0).getName());
+		//goods.setAttributeValue0(areas.get(0).getName());
 		
 		RequestContextHolder.setRequestAttributes(getRequest());
 		Member m=memberService.getCurrent();
