@@ -725,6 +725,7 @@
                                         <ul class="nav nav-pills nav-stacked">
 											[@shiro.hasPermission name="admin:deliveryCenter"]
                                                 <li><a href="../delivery_center/list.jhtml" target="iframe">${message("admin.main.deliveryCenter")}</a></li>
+                                                <li><a href="../targetPath//list.jhtml" target="iframe">测试</a></li>
 											[/@shiro.hasPermission]
 
 											[@shiro.hasPermission name="admin:deliveryTemplate"]
