@@ -56,6 +56,7 @@ public class CommonAPIController extends BaseAPIController {
         //首页顶部广告位
         List<Ad> adList = adService.findAdList(7L);
         List<Ad> fudaiList = adService.findAdList(8L);
+        List<Ad> shouYeList = adService.findAdList(16L);
         //商品倒拍
         Long id = null;
 //        long currActId = ReverseScan.getCurrActId();
@@ -75,7 +76,7 @@ public class CommonAPIController extends BaseAPIController {
         List<Ad> charactersAdList = adService.findAdList(12L);
 
 
-        IndexResult indexResult = new IndexResult(adList, fudaiList, vipList, goodsList, newGoodsList, charactersList, newGoodsAdList, charactersAdList);
+        IndexResult indexResult = new IndexResult(adList, fudaiList, vipList, goodsList, newGoodsList, charactersList, newGoodsAdList, charactersAdList,shouYeList);
         renderJson(ApiResult.success(indexResult));
     }
 

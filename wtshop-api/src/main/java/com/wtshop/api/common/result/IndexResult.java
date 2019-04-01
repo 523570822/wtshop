@@ -30,9 +30,10 @@ public class IndexResult implements Serializable{
     private List<Ad> newGoodsAdList;
 
     private List<Ad> charactersAdList;
+    private List<Ad> shouYeList;
 
 
-    public IndexResult(List<Ad> adList, List<Ad> fudaiList, List<Ad> vipList, List<Goods> goodsList, List<Goods> newGoodsList, List<Goods> findCharactersList, List<Ad> newGoodsAdList, List<Ad> charactersAdList) {
+    public IndexResult(List<Ad> adList, List<Ad> fudaiList, List<Ad> vipList, List<Goods> goodsList, List<Goods> newGoodsList, List<Goods> findCharactersList, List<Ad> newGoodsAdList, List<Ad> charactersAdList, List<Ad> shouYeList) {
         this.adList = adList;
         this.fudaiList = fudaiList;
         this.vipList = vipList;
@@ -41,8 +42,16 @@ public class IndexResult implements Serializable{
         this.findCharactersList = findCharactersList;
         this.newGoodsAdList = newGoodsAdList;
         this.charactersAdList = charactersAdList;
+        this.shouYeList = shouYeList;
     }
 
+    public List<Ad> getShouYeList() {
+        return shouYeList;
+    }
+
+    public void setShouYeList(List<Ad> shouYeList) {
+        this.shouYeList = shouYeList;
+    }
 
     public List<Ad> getNewGoodsAdList() {
         return newGoodsAdList;
