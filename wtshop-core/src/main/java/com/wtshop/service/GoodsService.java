@@ -142,8 +142,13 @@ public class GoodsService extends BaseService<Goods> {
     /**
      *  新闻推荐
      */
-    public List<Goods> recommendList() {
-        return goodsDao.recommendList();
+    public List<Goods> recommendList(long id) {
+        return goodsDao.recommendList(id);
+    }    /**
+     *  新闻推荐
+     */
+    public List<Goods> remainingRecommendList(long id) {
+        return goodsDao.remainingRecommendList(id);
     }
     /**
      * 销量由高到低
