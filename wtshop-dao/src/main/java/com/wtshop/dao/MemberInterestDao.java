@@ -36,5 +36,12 @@ public class MemberInterestDao extends BaseDao<MemberInterestCategory>{
      */
     public void deleteRecord(Long memberId){
         Db.update("delete from  member_interest_category where members = " + memberId);
+    }   /**
+     * 删除会员记录
+     */
+    public void updateWeigth(MemberInterestCategory memberInterestCategory){
+
+
+        Db.update("UPDATE member_interest_category  m set m.weights="+memberInterestCategory.getWeights()+" where m.interest_category="+memberInterestCategory.getInterestCategory()+" and m.members="+memberInterestCategory.getMembers()+"");
     }
 }

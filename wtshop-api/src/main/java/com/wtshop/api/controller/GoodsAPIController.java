@@ -436,7 +436,7 @@ public class GoodsAPIController extends BaseAPIController {
 		}else{
 			Integer dddd = ddd.getWeights();
 			ddd.setWeights(dddd+1);
-			memberInterestService.update(ddd);
+			memberInterestService.updateWeigth(ddd);
 		}
 	//	memberInterestService.save()
 

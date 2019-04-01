@@ -32,5 +32,7 @@ public class MemberInterestService extends BaseService<MemberInterestCategory>{
          memberInterestDao.deleteRecord(memberId);
     }
 
-
+    public void   updateWeigth(MemberInterestCategory ddd){
+        memberInterestDao.updateWeigth(ddd);
+    };
 }
