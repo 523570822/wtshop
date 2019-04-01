@@ -61,13 +61,22 @@ public class ProfileAPIController extends BaseAPIController {
 		if( sex != null){
 			member.setGender(sex);
 		}
+
+
+
 		if( interests != null && interests.length > 0){
-			memberInterestService.deleteRecord(member.getId());
+			memberInterestService.deleteRecordList(getPara("interestid"),member.getId());
 			for(Long inter : interests){
-				MemberInterestCategory memberInterestCategory = new MemberInterestCategory();
-				memberInterestCategory.setMembers(member.getId());
-				memberInterestCategory.setInterestCategory(inter);
-				memberInterestService.save(memberInterestCategory);
+				MemberInterestCategory dddd = memberInterestService.findRecord(member.getId(), inter);
+
+				if (dddd==null){
+					MemberInterestCategory memberInterestCategory = new MemberInterestCategory();
+					memberInterestCategory.setMembers(member.getId());
+					memberInterestCategory.setInterestCategory(inter);
+					memberInterestService.save(memberInterestCategory);
+				}
+
+
 			}
 		}
 		if( skins != null && skins.length > 0){

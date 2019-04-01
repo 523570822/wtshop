@@ -32,6 +32,12 @@ public class MemberInterestService extends BaseService<MemberInterestCategory>{
          memberInterestDao.deleteRecord(memberId);
     }
 
+    /**
+     * 删除会员记录
+     */
+    public void deleteRecordList(String ins,Long memberId){
+        memberInterestDao.deleteRecordList( ins,memberId);
+    }
     public void   updateWeigth(MemberInterestCategory ddd){
         memberInterestDao.updateWeigth(ddd);
     };
