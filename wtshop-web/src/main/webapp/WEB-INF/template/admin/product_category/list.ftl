@@ -77,7 +77,7 @@ $().ready(function() {
 			<tr>
 				<td>
 					<span style="margin-left: ${productCategory.grade * 20}px;[#if productCategory.grade == 0] color: #000000;[/#if]">
-						${productCategory.name}
+						${productCategory.name} (${productCategory.id})
 					</span>
 				</td>
                 <td>

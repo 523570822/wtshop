@@ -100,11 +100,13 @@ function sublevel() {
 }
 function checkParam() {
     var num = $("#targetTitleId").find("option:selected").attr("data");
-    if(num!=3){
-        $("#param").attr("readonly",true);
-    }else {
+    if(num==3 ||num==10 ){
         $("#param").attr("readonly",false);
+    }else {
+        $("#param").attr("readonly",true);
+
     }
+
 }
 </script>
 </head>
@@ -116,7 +118,7 @@ function checkParam() {
 		<table class="input">
 			<tr>
 				<th>
-					<span class="requiredField">123*</span>${message("Ad.title")}:
+					<span class="requiredField">*</span>${message("Ad.title")}:
 				</th>
 				<td>
 					<input type="text" name="ad.title" class="text" maxlength="200" />
