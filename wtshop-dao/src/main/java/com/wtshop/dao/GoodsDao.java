@@ -151,6 +151,7 @@ public class GoodsDao extends BaseDao<Goods> {
 
 
 
+
 	/**
 	 * 销量由高到低
 	 */

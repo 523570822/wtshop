@@ -54,7 +54,7 @@ public class GoodsAPIController extends BaseAPIController {
 	private AreaService areaService = enhance(AreaService.class);
 	private ReceiverService receiverService = enhance(ReceiverService.class);
 	private AreaDescribeService areaDescribeService = enhance(AreaDescribeService.class);
-	private MiaoBiGoodsService miaoBiGoodsService = enhance(MiaoBiGoodsService.class);
+	private MemberInterestService memberInterestService= enhance(MemberInterestService.class);
 	
 	/**
 	 * 列表
@@ -104,11 +104,10 @@ public class GoodsAPIController extends BaseAPIController {
 	 */
 	public void recommendList() {
 		Member m=memberService.getCurrent();
-		Integer pageNumber = getParaToInt("pageNumbers", 1);
-		Integer pageSize = getParaToInt("pageSizes", 20);
-		Pageable pageable = new Pageable(pageNumber, pageSize);
 		List<Goods> page = goodsService.recommendList( m.getId());
-		goodsService.remainingRecommendList( m.getId());
+		List<Goods> page1=goodsService.remainingRecommendList( m.getId());
+		page.addAll(page1);
+
 		renderJson(ApiResult.success(page));
 	}
 
@@ -422,9 +421,29 @@ public class GoodsAPIController extends BaseAPIController {
 
 		Integer pageNumber = getParaToInt("pageNumber");
 		Integer pageSize = getParaToInt("pageSizes", 999);
+		Long productCategoryId = getParaToLong("productCategoryId");
+
 		Pageable pageable = new Pageable(pageNumber, pageSize);
 
-		Long productCategoryId = getParaToLong("productCategoryId");
+		Member m=memberService.getCurrent();
+		MemberInterestCategory ddd = memberInterestService.findRecord(m.getId(), productCategoryId);
+		if(ddd==null){
+			MemberInterestCategory memberInterestCategory = new MemberInterestCategory();
+			memberInterestCategory.setMembers(m.getId());
+			memberInterestCategory.setInterestCategory(productCategoryId);
+			memberInterestService.save(memberInterestCategory);
+
+		}else{
+			Integer dddd = ddd.getWeights();
+			ddd.setWeights(dddd+1);
+			memberInterestService.update(ddd);
+		}
+	//	memberInterestService.save()
+
+
+
+
+
 
 		//关键字
 		String keyword = getPara("keyword");

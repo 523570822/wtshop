@@ -49,4 +49,12 @@ public abstract class BaseMemberInterestCategory<M extends BaseMemberInterestCat
 		return get("version");
 	}
 
+	public void setWeights(Integer weights) {
+		set("weights", weights);
+	}
+
+	public Integer getWeights() {
+		return get("weights");
+	}
+
 }
