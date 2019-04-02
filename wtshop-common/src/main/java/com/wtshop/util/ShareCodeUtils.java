@@ -110,7 +110,7 @@ public class ShareCodeUtils {
     public static void main(String[] args) {
         String code = idToCode(68L);
         System.out.println(code);
-        System.out.println(codeToId(code));
+        System.out.println(codeToId("V9A8VI"));
     }
 
 }

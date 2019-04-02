@@ -63,7 +63,15 @@
                     "groupBuy.end_date":"required",
                     "groupBuy.uniprice":"required",
                     "groupBuy.num": "required",
-                    "product_name":"required"
+                    "product_name":"required",
+                    "product.groupRate": {
+                        required: true,
+                        min: 0,
+                        decimal: {
+                            integer: 12,
+                            fraction: ${setting.priceScale}
+                        }
+                    },
 
                 }
             });
@@ -107,6 +115,14 @@
             </th>
             <td>
                 <input type="text" name="groupBuy.price" class="text" maxlength="200" title= ${message("groupBuy.sale.title")} />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <span class="requiredField">*</span>佣金比例（%）
+            </th>
+            <td>
+                <input type="text" id="groupRate" name="product.group_rate" class="text" maxlength="16" title="团长优惠比例（如10%填写10）" />
             </td>
         </tr>
         <tr>

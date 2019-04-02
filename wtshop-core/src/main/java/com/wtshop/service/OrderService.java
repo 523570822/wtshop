@@ -524,9 +524,15 @@ public class OrderService extends BaseService<Order> {
 
         // 生成会员激活码，福袋
         if (order.getType() == Order.Type.fudai.ordinal()) {
+
+      if(StringUtils.isNotEmpty(member.getShareCode())){
+
+      }else{
             // 生成邀请码
-            String code = ShareCodeUtils.idToCode(member.getId());
-            member.setShareCode(code);
+          String code = ShareCodeUtils.idToCode(member.getId());
+          member.setShareCode(code);
+      }
+
             member.setLinkShareCode(member1.getLinkShareCode()+"_"+member.getOnShareCode());
             if(member.getHousekeeperId()==0||member.getHousekeeperId()<=1){
                 member.setHousekeeperId(2L);

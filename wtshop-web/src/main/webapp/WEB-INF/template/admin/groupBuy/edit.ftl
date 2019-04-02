@@ -162,6 +162,17 @@
                 <input type="text" name="groupBuy.price" class="text" maxlength="200" value="${groupBuy.price}"  title= ${message("groupBuy.sale.title")}/>
             </td>
         </tr>
+
+        <tr>
+            <th>
+                <span class="requiredField">*</span>团购比例（%）
+            </th>
+            <td>
+                <input type="text" id="groupRate" name="groupBuy.group_rate" class="text"
+                       value="${groupBuy.groupRate}" maxlength="16"
+                       title="团购比例（如10%填写10）" />
+            </td>
+        </tr>
         <tr>
             <th>
                 <span class="requiredField">*</span>${message("groupBuy.uniprice")}:

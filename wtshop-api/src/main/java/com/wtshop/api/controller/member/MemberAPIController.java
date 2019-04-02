@@ -204,6 +204,13 @@ public class MemberAPIController extends BaseAPIController {
 		renderJson(ApiResult.success(member));
 	}
 	/**
+	 * 佣金首页
+	 */
+	public void commissionNumber() {
+
+	}
+
+	/**
 	 * 团队管理
 	 */
 	@Deprecated

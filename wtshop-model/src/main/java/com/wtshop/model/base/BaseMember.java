@@ -529,4 +529,12 @@ public abstract class BaseMember<M extends BaseMember<M>> extends Model<M> imple
 		return get("balance_unarrived");
 	}
 
+	public void setNumber(Integer number) {
+		set("number", number);
+	}
+
+	public Integer getNumber() {
+		return get("number");
+	}
+
 }

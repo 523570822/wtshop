@@ -537,6 +537,7 @@ if(!isSinglepurchase){
 
 		//是否实名认证
 		Certificates certificates = certificatesService.queryByMemberId(member.getId());
+
 		if(certificates != null && certificates.getState() != 1){
 			renderJson(new ApiResult(101,"请先进行实名认证!"));
 			return;
@@ -562,7 +563,7 @@ if(!isSinglepurchase){
 		Double manjianPrice = skuids[4];
 
 		//佣金比例
-		Double rate = goods.getCommissionRate();
+		Double rate =groupBuy.getGroupRate();
 
 
 		Order order = orderService.createBuyNow(Order.Type.group, member, goods, price, 1, manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney

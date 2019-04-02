@@ -100,7 +100,7 @@
                     </form>
                 </div>
                 <div class="login-links">
-                    <p> &copy; 2017 All Rights Reserved.</p>
+                    <p> &copy; 2019 All Rights Reserved.</p>
                 </div>
             </div>
         </section>

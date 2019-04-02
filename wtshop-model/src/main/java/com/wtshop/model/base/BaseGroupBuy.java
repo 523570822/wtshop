@@ -193,4 +193,12 @@ public abstract class BaseGroupBuy<M extends BaseGroupBuy<M>> extends Model<M> i
 		return get("end_date");
 	}
 
+	public void setGroupRate(Double groupRate) {
+		set("group_rate", groupRate);
+	}
+
+	public Double getGroupRate() {
+		return get("group_rate");
+	}
+
 }
