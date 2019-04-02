@@ -120,7 +120,21 @@ public class GoodsAPIController extends BaseAPIController {
 		Long id = getParaToLong("goodIds");
 		String type = getPara("type"); //是否喵币商品
 		Goods goods = goodsService.find(id);
+		Member m=memberService.getCurrent();
+		MemberInterestCategory ddd = memberInterestService.findRecord(m.getId(), goods.getProductCategoryId());
+		if(ddd==null){
+			MemberInterestCategory memberInterestCategory = new MemberInterestCategory();
+			memberInterestCategory.setMembers(m.getId());
+			memberInterestCategory.setInterestCategory( goods.getProductCategoryId());
+			memberInterestCategory.setWeights(1);
 
+			memberInterestService.save(memberInterestCategory);
+
+		}else{
+			Integer dddd = ddd.getWeights();
+			ddd.setWeights(dddd+1);
+			memberInterestService.updateWeigth(ddd);
+		}
 		Pageable pageable = new Pageable(1, 20);
 		Boolean favorite = false;
 		
@@ -131,7 +145,6 @@ public class GoodsAPIController extends BaseAPIController {
 		//goods.setAttributeValue0(areas.get(0).getName());
 		
 		RequestContextHolder.setRequestAttributes(getRequest());
-		Member m=memberService.getCurrent();
 
 		List<Member> dd1 = goods.getFavoriteMembers();
 		if (dd1.contains(m)) {
