@@ -514,6 +514,8 @@ public class GoodsController extends BaseController {
         goods.setIsVip(getParaToBoolean("isVip", false));
         goods.setIsDelete(false);
         goods.setAreaId(areaId);
+        goods.setPrice(BigDecimal.ZERO);
+        goods.setMarketPrice(BigDecimal.ZERO);
         goods.setOperateIp(request.getRemoteAddr());
         Goods pGoods = goodsService.find(goods.getId());
         goods.setType(pGoods.getType());
