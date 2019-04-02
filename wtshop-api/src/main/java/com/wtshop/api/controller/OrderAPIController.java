@@ -76,8 +76,10 @@ public class OrderAPIController extends BaseAPIController {
 
 		//获取商品和数量
 		Long productId = getParaToLong("productId");
+		Long quantity = getParaToLong("quantity",1L);
 		Product product = productService.find(productId);
 		Goods goods = goodsService.findGoodsByPro(productId);
+
 		if (!product.getIsMarketable()) {
 			renderJson(ApiResult.fail(resZh.format("shop.cart.productNotMarketable")));
 			return;
@@ -87,7 +89,7 @@ public class OrderAPIController extends BaseAPIController {
 		Boolean isUseMiao = getParaToBoolean("isUseMiao",false);
 
 		//获取商品价格
-		Double price = MathUtil.multiply(goods.getPrice(), 1);
+		Double price = MathUtil.multiply(goods.getPrice(), quantity);
 
 
 		//判断商品是否是促销商品
@@ -197,7 +199,7 @@ public class OrderAPIController extends BaseAPIController {
 		}
 
 		//优惠前总金额
-		Double marketPrice = MathUtil.multiply(goods.getMarketPrice(), 1);
+		Double marketPrice = MathUtil.multiply(goods.getMarketPrice(), quantity);
 		PriceResult totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(price.toString()));
 		PriceResult oldTotalPrice = new PriceResult("商品优惠前总金额","¥ "+ MathUtil.getInt(marketPrice.toString()));
 		PriceResult deliveryPrice = new PriceResult("运费","¥ "+ MathUtil.getInt(delivery.getPrice().toString()));
@@ -234,7 +236,7 @@ public class OrderAPIController extends BaseAPIController {
 		String params = deliver.toString() + "," + miaobi.toString() + "," +amountpaid.toString() + "," +couponYunfei.toString() + "," +manJianPrices.toString() ;
 
 			realPrice =  MathUtil.getInt(amountpaid.toString());
-		OrderBuyNowResult orderBuyNowResult = new OrderBuyNowResult(taxUrl, yunfei, member, defaultReceiver, goods, 1, receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, priceList,
+		OrderBuyNowResult orderBuyNowResult = new OrderBuyNowResult(taxUrl, yunfei, member, defaultReceiver, goods, Integer.valueOf(quantity+""), receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, priceList,
 			realPrice, favoritePrice, param, is_promotion, amountpaid);
 		RedisUtil.setString("ORDERPARAM:"+member.getId(), params);
 
@@ -251,6 +253,7 @@ public class OrderAPIController extends BaseAPIController {
 	public void createByNowOrder() {
 		Member member = memberService.getCurrent();
 		Long receiverId = getParaToLong("receiverId"); //收货人
+		Long quantity  = getParaToLong("quantity",1L); //收货人
 
 		if(StringUtils.isEmpty(member.getOnShareCode())){
 			renderJson(ApiResult.fail(7,"请填写邀请码"));
@@ -298,7 +301,7 @@ public class OrderAPIController extends BaseAPIController {
 		Double rate = goods.getCommissionRate();
 
 
-		Order order = orderService.createBuyNow(Order.Type.general, member, goods, price, 1, manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,null,0,0,rate);
+		Order order = orderService.createBuyNow(Order.Type.general, member, goods, price, Integer.valueOf(quantity+""), manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,null,0,0,rate);
 		renderJson(ApiResult.success(order.getId()));
 	}
 

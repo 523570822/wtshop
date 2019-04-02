@@ -62,11 +62,10 @@
                     "groupBuy.uniprice":"required",
                     "groupBuy.num": "required",
                     "product_name":"required" ,
-
                     "freeUse.product_id":"required",
                     "freeUse.end_date":"required",
                     "ad.title": "required",
-                ,
+
                     adPositionId: "required",
                     "ad.path": {
                         required: true,
@@ -177,8 +176,9 @@
             </th>
             <td>
                 <input type="hidden" name="productId" id="product_id" class="text" maxlength="200" value="${groupBuy.groupBuyProduct.product_id}"/>
-                <input disabled type="text" class="text" maxlength="200" id="product_name" title=${message("groupBuy.phone.title")}   value="${groupBuy.product.goods.name}" />
-                <input type="button" value="${message("groupBuy.select")}" class="button" id="addProduct"/>
+                <input disabled type="text" class="text" maxlength="200" name="product_name" id="product_name" title=${message("groupBuy.phone.title")}   value="${groupBuy.product.goods.name}" />
+                <input type="button" value="选择产品" class="button" id="addProduct"/>
+
             </td>
         </tr>
 
@@ -238,7 +238,7 @@
                 ${message("Promotion.beginDate")}:
             </th>
             <td>
-                <input type="text" id="beginDate" name="groupBuy.begin_date" class="text Wdate" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss', maxDate: '#F{$dp.$D(\'endDate\')}'});" />
+                <input type="text" id="beginDate" value="${groupBuy.begin_date}" name="groupBuy.begin_date" class="text Wdate" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss', maxDate: '#F{$dp.$D(\'endDate\')}'});" />
             </td>
         </tr>
         <tr>
@@ -246,7 +246,7 @@
                 ${message("Promotion.endDate")}:
             </th>
             <td>
-                <input type="text" id="endDate" name="groupBuy.end_date" class="text Wdate" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss', minDate: '#F{$dp.$D(\'beginDate\')}'});" />
+                <input type="text" id="endDate" name="groupBuy.end_date" value="${groupBuy.begin_date}" class="text Wdate" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss', minDate: '#F{$dp.$D(\'beginDate\')}'});" />
             </td>
         </tr>
 

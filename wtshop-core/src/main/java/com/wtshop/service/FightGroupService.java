@@ -36,16 +36,23 @@ public class FightGroupService extends BaseService<FightGroup> {
  * 根据商品id   product_id 获取参团信息
  */
     public  List<FightGroup> findByProductId (Long productId){
+        List<FightGroup> fightGroupList1=new ArrayList<FightGroup>();
         List<FightGroup> fightGroupList = fuDaiProductDao.findByProductId(productId);
         for (FightGroup fightGroup:fightGroupList) {
             Long time = 0L;
             time = Calendar.getInstance().getTimeInMillis();
            // fightGroup.set("ji_shi",fightGroup.getEndDate().getTime()- time);
+
+            long sss = fightGroup.getEndDate().getTime() - time;
             fightGroup.setJiShi(fightGroup.getEndDate().getTime()- time);
+
+            if(sss>0){
+                fightGroupList1.add(fightGroup);
+           }
 
             
         }
-    return    fightGroupList;
+    return    fightGroupList1;
     }
 
 
