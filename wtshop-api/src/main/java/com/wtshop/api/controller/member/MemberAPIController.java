@@ -208,6 +208,7 @@ public class MemberAPIController extends BaseAPIController {
 	 */
 	public void commissionNumber() {
 
+
 	}
 
 	/**
