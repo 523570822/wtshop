@@ -19,11 +19,11 @@ public class FuDaiDao extends BaseDao<FuDai>{
     /**
      * 获取当前正在使用的福袋
      */
-    public List<Record> findLists(){
+    public List<FuDai> findLists(){
 
         String sql = " SELECT f.* FROM fu_dai f  \n" +
                 " where 1 = 1 AND status = 0 order by price desc";
-        return Db.find(sql);
+        return modelManager.find(sql);
 
     }
 

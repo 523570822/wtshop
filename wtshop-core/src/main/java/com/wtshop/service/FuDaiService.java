@@ -80,8 +80,13 @@ public class FuDaiService extends BaseService<FuDai> {
     /**
      * 获取当前正在使用的福袋
      */
-    public List<Record> findLists() {
-        return fuDaiDao.findLists();
+    public List<FuDai> findLists() {
+        List<FuDai> dddd = fuDaiDao.findLists();
+        for ( FuDai fuDai:dddd) {
+            fuDai.setExplain("rxm/goods/fuDai.html");
+
+        }
+        return dddd;
     }
 
 

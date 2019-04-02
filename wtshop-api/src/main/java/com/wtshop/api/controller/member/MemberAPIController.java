@@ -198,7 +198,7 @@ public class MemberAPIController extends BaseAPIController {
 			item.put("onWeChatQcode",member1.getWeChatQcode());*/
 		}
 
-
+		member.setAttributeValue2("rxm/goods/commission.html");
 
 
 

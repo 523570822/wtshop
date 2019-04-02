@@ -43,8 +43,7 @@ public class FuDaiAPIController extends BaseAPIController {
      * 福袋主页
      */
     public void fudai() {
-        List<Record> list = fuDaiService.findLists();
-
+        List<FuDai> list = fuDaiService.findLists();
         renderJson(list);
     }
 
