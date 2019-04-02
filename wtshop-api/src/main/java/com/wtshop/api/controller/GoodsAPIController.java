@@ -137,7 +137,7 @@ public class GoodsAPIController extends BaseAPIController {
 		}
 		Pageable pageable = new Pageable(1, 20);
 		Boolean favorite = false;
-		
+
 		if (goods == null) {
 			return;
 		}
