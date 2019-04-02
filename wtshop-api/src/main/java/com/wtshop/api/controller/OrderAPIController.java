@@ -24,9 +24,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -568,7 +566,11 @@ if(!isSinglepurchase){
 
 		Order order = orderService.createBuyNow(Order.Type.group, member, goods, price, 1, manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney
 				, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,isSinglepurchase,fightGroupId,tuanGouId,rate);
-		renderJson(ApiResult.success(order.getId()));
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("order",order.getId()+"");
+		map.put("rate",rate);
+		renderJson(ApiResult.success());
 	}
 	/**
 	 * 普通订单-结算
