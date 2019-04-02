@@ -1580,31 +1580,11 @@ public class GoodsService extends BaseService<Goods> {
         Assert.state(!product.hasSpecification());
 
         Goods pGoods = goodsDao.find(goods.getId());
-        switch (pGoods.getTypeName()) {
-            case general:
-                product.setExchangePoint(0L);
-                break;
-            case exchange:
-                product.setPrice(BigDecimal.ZERO);
-                product.setRewardPoint(0L);
-                goods.setPromotions(null);
-                break;
-            case gift:
-                product.setPrice(BigDecimal.ZERO);
-                product.setRewardPoint(0L);
-                product.setExchangePoint(0L);
-                goods.setPromotions(null);
-                break;
-            case auction:
-                product.setRewardPoint(0L);
-                product.setExchangePoint(0L);
-                break;
-        }
         if (product.getMarketPrice() == null) {
-            product.setMarketPrice(calculateDefaultMarketPrice(product.getPrice()));
+            product.setMarketPrice(BigDecimal.ZERO);
         }
         if (product.getRewardPoint() == null) {
-            product.setRewardPoint(calculateDefaultRewardPoint(product.getPrice()));
+            product.setRewardPoint(0l);
         }
         product.setAllocatedStock(0);
         product.setIsDefault(true);

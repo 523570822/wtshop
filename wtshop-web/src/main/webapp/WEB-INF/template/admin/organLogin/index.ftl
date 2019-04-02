@@ -69,7 +69,7 @@
 			</form>
 
 			<div class="links_b links_btm clearfix">
-				<span class="linkform">&copy; 2017 All Rights Reserved. wangtiansoft.com</span>
+				<span class="linkform">&copy; 2019 All Rights Reserved. wangtiansoft.com</span>
 			</div>
 
 		</div>

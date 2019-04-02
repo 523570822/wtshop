@@ -24,6 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -290,6 +291,8 @@ public class GoodsController extends BaseController {
         goods.setIsDelivery(getParaToBoolean("isDelivery", false));
         goods.setIsVip(getParaToBoolean("isVip", false));
         goods.setIsDelete(false);
+        goods.setPrice(BigDecimal.ZERO);
+        goods.setMarketPrice(BigDecimal.ZERO);
         Long areaId = getParaToLong("areaId");
         goods.setAreaId(areaId);
         Product product = getModel(Product.class);
@@ -378,6 +381,8 @@ public class GoodsController extends BaseController {
         String introduction=getPara("introduction");
 
         Goods goods = getModel(Goods.class);
+        goods.setPrice(BigDecimal.ZERO);
+        goods.setMarketPrice(BigDecimal.ZERO);
         goods.setIntroduction(introduction);
         goods.setIsMarketable(getParaToBoolean("isMarketable", false));
         goods.setIsList(getParaToBoolean("isList", false));
