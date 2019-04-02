@@ -235,6 +235,8 @@ public class MemberController extends BaseController {
 	 * 列表
 	 */
 	public void list() {
+
+
 		Pageable pageable = getBean(Pageable.class);
 		Page<Member> pages = memberService.findPages(pageable, null);
 		setAttr("memberRanks", memberRankService.findAll());
