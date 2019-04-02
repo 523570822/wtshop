@@ -570,7 +570,7 @@ if(!isSinglepurchase){
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("order",order.getId()+"");
 		map.put("rate",rate);
-		renderJson(ApiResult.success());
+		renderJson(ApiResult.success(map));
 	}
 	/**
 	 * 普通订单-结算
