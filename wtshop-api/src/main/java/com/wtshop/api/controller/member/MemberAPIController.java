@@ -276,6 +276,8 @@ public class MemberAPIController extends BaseAPIController {
 			resultMap.put("shareCode",member.getShareCode());
 			resultMap.put("avatar",member.getAvatar());
 			resultMap.put("nickName",member.getNickname());
+			resultMap.put("zongHe",zongHe);
+			resultMap.put("shareSending",shareSending);
 		}else if(StringUtils.isNotEmpty(member.getOnShareCode())){
 
 			Long idd = ShareCodeUtils.codeToId(member.getOnShareCode());
