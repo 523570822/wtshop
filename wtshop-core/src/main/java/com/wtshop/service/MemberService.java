@@ -521,7 +521,8 @@ if(StringUtils.isNotEmpty(onShareCode)){
 			Principal principal = request != null ? (Principal) request.getSession().getAttribute(Member.PRINCIPAL_ATTRIBUTE_NAME) : null;
 			Long id = principal != null ? principal.getId() : null;
 			if (id == null) {
-				return memberDao.find(Long.valueOf("155"));
+				throw new AppRuntimeException(422, "请先登录");
+				//return memberDao.find(Long.valueOf("155"));
 			}
 			return memberDao.find(Long.valueOf(id));
 		}
