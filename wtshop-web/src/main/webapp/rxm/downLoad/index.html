@@ -76,6 +76,7 @@
         }
 
         function checkQuery(key, url) {
+
             let host = GetQueryString(key);
             let params = ''
             if (host == 'auction') {
@@ -85,6 +86,9 @@
             } else if (host == 'goods') {
                 host = 'ShopCartGoodDetail'
                 params = '?goodId=' + GetQueryString('params') + '&type=null';
+            } else if (host == 'primary') {
+                host = 'primary'
+                params = '?goodId=' + GetQueryString('params') + '&tuanGouId='+GetQueryString('tuanGouId') +'&qishu='+GetQueryString('qishu') +'&type=null';
             }
             if (host != null) {
                 url = url + host + params

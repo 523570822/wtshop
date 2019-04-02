@@ -1334,6 +1334,9 @@ $().ready(function() {
 					[/#if]
                 </td>
             </tr>
+
+
+
             <tr>
                 <th>
                     ${message("setting.sendmiao.number")}:
@@ -1343,6 +1346,43 @@ $().ready(function() {
 						<input id="registerSending" type="text" name="setting.registerSending" class="text" value="${redisSetting.registerSending}" title=" ${message("setting.sendmiao.set")}" maxlength="200" />
 					[#else ]
 						<input id="registerSending" type="text" name="setting.registerSending" class="text" value="${setting.registerSending}" title=" ${message("setting.sendmiao.set")}"  maxlength="200" />
+					[/#if]
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+					邀请码赠送喵币：
+                </th>
+                <td>
+					[#if redisSetting.registerSending??]
+                        <input id="vipSending" type="text" name="setting.vipSending" class="text" value="${redisSetting.vipSending}" title=" ${message("setting.sendmiao.set")}" maxlength="200" />
+					[#else ]
+						<input id="vipSending" type="text" name="setting.vipSending" class="text" value="${setting.vipSending}" title=" ${message("setting.sendmiao.set")}"  maxlength="200" />
+					[/#if]
+                </td>
+            </tr>
+            <tr>
+                <th>
+				购买福袋赠送喵币：
+                </th>
+                <td>
+					[#if redisSetting.registerSending??]
+                        <input id="housekeeperSending" type="text" name="setting.housekeeperSending" class="text" value="${redisSetting.housekeeperSending}" title=" ${message("setting.sendmiao.set")}" maxlength="200" />
+					[#else ]
+						<input id="housekeeperSending" type="text" name="setting.housekeeperSending" class="text" value="${setting.housekeeperSending}" title=" ${message("setting.sendmiao.set")}"  maxlength="200" />
+					[/#if]
+                </td>
+            </tr>
+            <tr>
+                <th>
+				分享赠送喵币：
+                </th>
+                <td>
+					[#if redisSetting.registerSending??]
+                        <input id="shareSending" type="text" name="setting.shareSending" class="text" value="${redisSetting.shareSending}" title=" ${message("setting.sendmiao.set")}" maxlength="200" />
+					[#else ]
+						<input id="shareSending" type="text" name="setting.shareSending" class="text" value="${setting.shareSending}" title=" ${message("setting.sendmiao.set")}"  maxlength="200" />
 					[/#if]
                 </td>
             </tr>

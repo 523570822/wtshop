@@ -171,6 +171,9 @@ public class SettingController extends BaseController {
 		redisSetting.put("isSendMiaoBi",setting.getIsSendMiaoBi());
 		redisSetting.put("isRegisterSending",setting.getIsRegisterSending());
 		redisSetting.put("registerSending",setting.getRegisterSending());
+		redisSetting.put("vipSending",setting.getVipSending());
+		redisSetting.put("shareSending",setting.getShareSending());
+		redisSetting.put("housekeeperSending",setting.getHousekeeperSending());
 
 		RedisUtil.setString("redisSetting",redisSetting.toJSONString());
 		RedisUtil.setString("freeMoney",setting.getFreeMoney()+"");

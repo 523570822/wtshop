@@ -12,6 +12,30 @@ import java.math.BigDecimal;
  */
 public class Setting implements Serializable {
 
+	public Double getVipSending() {
+		return vipSending;
+	}
+
+	public void setVipSending(Double vipSending) {
+		this.vipSending = vipSending;
+	}
+
+	public Double getShareSending() {
+		return shareSending;
+	}
+
+	public void setShareSending(Double shareSending) {
+		this.shareSending = shareSending;
+	}
+
+	public Double getHousekeeperSending() {
+		return housekeeperSending;
+	}
+
+	public void setHousekeeperSending(Double housekeeperSending) {
+		this.housekeeperSending = housekeeperSending;
+	}
+
 	private static final long serialVersionUID = -1478999889661796840L;
 
 	/** 缓存名称 */
@@ -483,6 +507,19 @@ public class Setting implements Serializable {
 
 	/** 赠送喵币数量 */
 	private Double registerSending;
+	/**
+	 * 填写邀请码赠送喵币数量
+	 */
+	private Double vipSending;
+	/**
+	 * 分享赠送喵币数量
+	 */
+	private Double shareSending;
+	/**
+	 * 购买福袋赠送喵币数量
+	 */
+	private Double housekeeperSending;
+
 
 
 

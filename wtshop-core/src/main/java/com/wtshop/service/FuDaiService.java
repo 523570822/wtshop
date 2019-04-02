@@ -83,7 +83,7 @@ public class FuDaiService extends BaseService<FuDai> {
     public List<FuDai> findLists() {
         List<FuDai> dddd = fuDaiDao.findLists();
         for ( FuDai fuDai:dddd) {
-            fuDai.setExplain("rxm/goods/fuDai.html");
+           fuDai.setExplain("rxm/goods/fuDai.html");
 
         }
         return dddd;

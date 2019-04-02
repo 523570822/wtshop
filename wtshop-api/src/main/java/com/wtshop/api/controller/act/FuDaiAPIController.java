@@ -53,6 +53,7 @@ public class FuDaiAPIController extends BaseAPIController {
     public void primary() {
         Long fuDaiId = getParaToLong("fuDaiId");
         FuDai fuDai = fuDaiService.find(fuDaiId);
+        fuDai.setExplain("rxm/goods/fuDai.html");
         FudaiProduct fudaiProduct = fuDaiProductService.findPrimary(fuDaiId);
         Product p = productService.find(fudaiProduct.getProductId()); //获取规格
         Goods goods = p.getGoods();

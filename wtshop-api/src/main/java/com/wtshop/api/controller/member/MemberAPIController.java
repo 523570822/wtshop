@@ -64,7 +64,6 @@ public class MemberAPIController extends BaseAPIController {
 		MiaobiLog miaobiLog = miaobiLogService.findLogByMemberId(member.getId());
 		boolean isRegisterSending= redisSetting.getBoolean("isRegisterSending") ? true : false;
 		if(isRegisterSending && miaobiLog == null ){
-
 			Double registerSending = redisSetting.getDouble("registerSending");
 			member.setPoint(new BigDecimal(registerSending));
 			memberService.update(member);
@@ -254,8 +253,11 @@ public class MemberAPIController extends BaseAPIController {
 	 *调出 管家 昵称和邀请码
 	 */
 	public void housekeeperNickname(){
-
-
+		JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
+		Double shareSending = redisSetting.getDouble("shareSending");
+		Double registerSending = redisSetting.getDouble("registerSending");
+		Double vipSending = redisSetting.getDouble("vipSending");
+		Double zongHe=registerSending+vipSending;
 		Member member = memberService.getCurrent();
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		if(StringUtils.isNotEmpty(member.getShareCode())){
@@ -270,6 +272,8 @@ public class MemberAPIController extends BaseAPIController {
 			resultMap.put("shareCode",mem.getShareCode());
 			resultMap.put("avatar",mem.getAvatar());
 			resultMap.put("nickName",mem.getNickname());
+			resultMap.put("zongHe",zongHe);
+			resultMap.put("shareSending",shareSending);
 		}else {
 			renderJson(ApiResult.fail(7,"没有自己及上级邀请码"));
 			return;
