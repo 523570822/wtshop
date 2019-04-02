@@ -207,8 +207,12 @@ public class MemberAPIController extends BaseAPIController {
 	 * 佣金首页
 	 */
 	public void commissionNumber() {
-
-
+        Member member = memberService.getCurrent();
+        Integer num = member.getNumber();
+        num++;
+        member.setNumber(num);
+        memberService.update(member);
+        renderJson(ApiResult.success("成功"));
 	}
 
 	/**
