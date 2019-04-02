@@ -1099,6 +1099,7 @@ public class GoodsService extends BaseService<Goods> {
         product.setIsDefault(true);
         product.setGoodsId(pGoods.getId());
         product.setSpecificationValues(null);
+
         product.setCartItems(null);
         product.setOrderItems(null);
         product.setShippingItems(null);
