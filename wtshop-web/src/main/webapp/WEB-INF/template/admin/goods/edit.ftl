@@ -1088,7 +1088,7 @@
                         <input type="submit" class="button" value="保存"/>
                     [/#if]
                     [#if goods.check == State_Publish ]
-                        <input type="button" class="button updateReview" value="提交修改申请"/>
+                        <input type="button" class="button updateReview" value="提交"/>
                     [/#if]
                 [/#if]
                 [@shiro.hasAnyRoles name="R_FinanceDirector"]

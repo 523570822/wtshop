@@ -312,7 +312,7 @@ function message(code) {
 		// 文件上传
 		uploader: function(options) {
 			var settings = {
-				url: '../../admin/file/upload456.jhtml',
+				url: '../../admin/file/upload.jhtml',
 				fileType: "image",
 				fileName: "file",
 				data: {},

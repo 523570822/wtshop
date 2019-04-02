@@ -1111,7 +1111,7 @@ $().ready(function() {
 					&nbsp;
 				</th>
 				<td>
-					<input type="submit" class="button" value="${message("admin.common.submit")}12213" />
+					<input type="submit" class="button" value="${message("admin.common.submit")}" />
 					<input type="button" class="button" value="${message("admin.common.back")}" onclick="history.back(); return false;" />
 				</td>
 			</tr>

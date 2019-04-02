@@ -1106,7 +1106,8 @@ public class GoodsService extends BaseService<Goods> {
         product.setProductNotifies(null);
         product.setStockLogs(null);
         product.setGiftPromotions(null);
-
+        product.setPrice(BigDecimal.ZERO);
+        product.setExchangePoint(0L);
         if (pGoods.hasSpecification()) {
             for (Product pProduct : pGoods.getProducts()) {
                 productDao.remove(pProduct);
@@ -1125,6 +1126,7 @@ public class GoodsService extends BaseService<Goods> {
             defaultProduct.setRewardPoint(product.getRewardPoint());
             defaultProduct.setExchangePoint(product.getExchangePoint());
             defaultProduct.setCommissionRate(product.getCommissionRate());
+            defaultProduct.setExchangePoint(0L);
             setValue(defaultProduct);
             productDao.update(defaultProduct);
         }
@@ -1136,7 +1138,7 @@ public class GoodsService extends BaseService<Goods> {
         copyProperties(goods, pGoods, "sn", "check", "type", "score", "totalScore", "scoreCount", "hits", "weekHits", "monthHits", "sales", "weekSales", "monthSales", "weekHitsDate", "monthHitsDate", "weekSalesDate", "monthSalesDate", "generateMethod", "reviews", "consultations", "favoriteMembers",
                 "products", "createDate", "verifyState");
         pGoods.setGenerateMethod(Goods.GenerateMethod.eager.ordinal());
-        goodsDao.update(pGoods);
+        goodsDao.update(goods);
 
         List<Promotion> promotions = goods.getPromotions();
         if (CollectionUtils.isNotEmpty(promotions)) {
