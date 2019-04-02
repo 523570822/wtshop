@@ -860,8 +860,8 @@ public class GoodsService extends BaseService<Goods> {
         product.setStockLogs(null);
         product.setGiftPromotions(null);
 
-        goods.setPrice(product.getPrice());
-        goods.setMarketPrice(product.getMarketPrice());
+        goods.setPrice(BigDecimal.ZERO);
+        goods.setMarketPrice(BigDecimal.ZERO);
         goods.setScore(0F);
         goods.setTotalScore(0L);
         goods.setScoreCount(0L);
@@ -1088,31 +1088,12 @@ public class GoodsService extends BaseService<Goods> {
         Assert.state(!product.hasSpecification());
 
         Goods pGoods = goodsDao.find(goods.getId());
-        switch (pGoods.getTypeName()) {
-            case general:
-                product.setExchangePoint(0L);
-                break;
-            case exchange:
-                product.setPrice(BigDecimal.ZERO);
-                product.setRewardPoint(0L);
-                goods.setPromotions(null);
-                break;
-            case gift:
-                product.setPrice(BigDecimal.ZERO);
-                product.setRewardPoint(0L);
-                product.setExchangePoint(0L);
-                goods.setPromotions(null);
-                break;
-            case auction:
-                product.setRewardPoint(0L);
-                product.setExchangePoint(0L);
-                break;
-        }
+
         if (product.getMarketPrice() == null) {
-            product.setMarketPrice(calculateDefaultMarketPrice(product.getPrice()));
+            product.setMarketPrice(calculateDefaultMarketPrice(BigDecimal.ZERO));
         }
         if (product.getRewardPoint() == null) {
-            product.setRewardPoint(calculateDefaultRewardPoint(product.getPrice()));
+            product.setRewardPoint(calculateDefaultRewardPoint(BigDecimal.ZERO));
         }
         product.setAllocatedStock(0);
         product.setIsDefault(true);
@@ -1147,8 +1128,8 @@ public class GoodsService extends BaseService<Goods> {
             productDao.update(defaultProduct);
         }
 
-        goods.setPrice(product.getPrice());
-        goods.setMarketPrice(product.getMarketPrice());
+        goods.setPrice(BigDecimal.ZERO);
+        goods.setMarketPrice(BigDecimal.ZERO);
         goods.setCommissionRate(product.getCommissionRate());
         setValue(goods);
         copyProperties(goods, pGoods, "sn", "check", "type", "score", "totalScore", "scoreCount", "hits", "weekHits", "monthHits", "sales", "weekSales", "monthSales", "weekHitsDate", "monthHitsDate", "weekSalesDate", "monthSalesDate", "generateMethod", "reviews", "consultations", "favoriteMembers",

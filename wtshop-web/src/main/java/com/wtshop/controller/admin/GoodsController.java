@@ -469,21 +469,10 @@ public class GoodsController extends BaseController {
         goods.setEffects(new ArrayList<Effect>(effectService.findList(effectIds)));
 
         Admin admin = adminService.getCurrent();
-        if (goods.hasSpecification()) {
-            if (CollectionUtils.isEmpty(products)) {
-                addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error, "商品规格不能为空!"));
-                redirect("list.jhtml");
-                return;
-            }
-            goodsService.update(goods, products, admin, promotionIds, tagIds, effectIds);
-        } else {
-            if (product == null) {
-                addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error, "产品不能为空!"));
-                redirect("list.jhtml");
-                return;
-            }
+
+
             goodsService.update(goods, product, admin, promotionIds, tagIds, effectIds);
-        }
+
 
 
         addFlashMessage(SUCCESS_MESSAGE);
