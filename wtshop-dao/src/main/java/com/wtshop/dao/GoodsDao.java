@@ -136,7 +136,7 @@ public class GoodsDao extends BaseDao<Goods> {
 	 */
 	public List<Goods> recommendList(Long id){
 
-		String sql = " SELECT g.id,g.name,g.image,i.`name` attribute_value1 FROM goods g LEFT JOIN interest_category i ON g.product_category_id = i.id LEFT JOIN member_interest_category m ON i.id = m.interest_category WHERE m.members = '"+id+"' and g.is_delete<>1 ORDER BY m.weights * ( m.weights / ( SELECT SUM(m.weights) FROM goods g LEFT JOIN interest_category i ON g.product_category_id = i.id LEFT JOIN member_interest_category m ON i.id = m.interest_category WHERE m.members = '"+id+"' )) DESC LIMIT 14";
+		String sql = " SELECT g.id,g.name,g.image,i.`name` attribute_value1,g.caption,g.create_date FROM goods g LEFT JOIN interest_category i ON g.product_category_id = i.id LEFT JOIN member_interest_category m ON i.id = m.interest_category WHERE m.members = '"+id+"' and g.is_delete<>1 ORDER BY m.weights * ( m.weights / ( SELECT SUM(m.weights) FROM goods g LEFT JOIN interest_category i ON g.product_category_id = i.id LEFT JOIN member_interest_category m ON i.id = m.interest_category WHERE m.members = '"+id+"' )) DESC LIMIT 14";
 
 		return modelManager.find(sql);
 	}
@@ -144,7 +144,7 @@ public class GoodsDao extends BaseDao<Goods> {
 	 * 新品推荐
 	 */
 	public List<Goods> remainingRecommendList(Long id){
-		String sql = "SELECT g.id,g.name,g.image,i.`name` attribute_value1 FROM goods g LEFT JOIN interest_category i ON g.product_category_id = i.id LEFT JOIN member_interest_category m ON i.id = m.interest_category WHERE (m.members <> "+id+" OR m.members IS NOT NULL) and g.is_delete<>1 ORDER BY RAND() LIMIT 3";
+		String sql = "SELECT g.id,g.name,g.image,i.`name` attribute_value1 ,g.caption,g.create_date FROM goods g LEFT JOIN interest_category i ON g.product_category_id = i.id LEFT JOIN member_interest_category m ON i.id = m.interest_category WHERE (m.members <> "+id+" OR m.members IS NOT NULL) and g.is_delete<>1 ORDER BY RAND() LIMIT 3";
 		return modelManager.find(sql);
 	}
 
