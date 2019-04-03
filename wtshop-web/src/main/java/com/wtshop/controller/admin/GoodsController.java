@@ -378,12 +378,11 @@ public class GoodsController extends BaseController {
         Long[] tagIds = getParaValuesToLong("tagIds");
         Long areaId = getParaToLong("areaId");
         Long[] effectIds = getParaValuesToLong("effectIds");
-        String introduction=getPara("introduction");
 
         Goods goods = getModel(Goods.class);
         goods.setPrice(BigDecimal.ZERO);
         goods.setMarketPrice(BigDecimal.ZERO);
-        goods.setIntroduction(introduction);
+
         goods.setIsMarketable(getParaToBoolean("isMarketable", false));
         goods.setIsList(getParaToBoolean("isList", false));
         goods.setIsTop(getParaToBoolean("isTop", false));
