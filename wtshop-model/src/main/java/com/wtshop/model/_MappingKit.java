@@ -16,7 +16,6 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 public class _MappingKit {
 
 	public static void mapping(ActiveRecordPlugin arp) {
-		arp.addMapping("group_remind", "id", GroupRemind.class);
 		arp.addMapping("account", "id", Account.class);
 		arp.addMapping("act_introduce", "id", ActIntroduce.class);
 		arp.addMapping("activity", "id", Activity.class);
