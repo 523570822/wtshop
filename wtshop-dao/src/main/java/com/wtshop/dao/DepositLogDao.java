@@ -60,7 +60,7 @@ public class DepositLogDao extends BaseDao<DepositLog> {
 		if( type != null){
 			if( 0 == type ){
 				select = " SELECT * ";
-				sqlExceptSelect = " FROM deposit_log WHERE member_id = " + member.getId() + " AND type in (2 , 3 , 1 ,0 ,5 ,6)";
+				sqlExceptSelect = " FROM deposit_log WHERE member_id = " + member.getId() + " AND type in (2 , 3 , 1 ,0 ,5 ,6,7)";
 				sqlExceptSelect += " order by create_date DESC";
 			}else if( 1 == type){
 //				select = " select o.name,o.price,o.create_date ";

@@ -38,7 +38,8 @@ public class DepositLog extends BaseDepositLog<DepositLog> {
 
 		/** 钱包兑换 6*/
 		exchange,
-
+		/**  团购返利 7*/
+		tuangou,
 	}
 	
 	/** 会员 */

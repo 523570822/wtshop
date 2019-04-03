@@ -206,13 +206,17 @@ public class OrderService extends BaseService<Order> {
      */
     @Before(Tx.class)
     public ApiResult paySuccess(String sn, String money, String weiXinNo, String aliNo) {
+
         final Logger logger = Logger.getLogger("paySuccess");
         ApiResult returnStatus = ApiResult.fail();
         Setting setting = SystemUtils.getSetting();
         JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
 
         Order order = orderDao.findBySn(sn);
-
+        Long memberId = order.getMemberId();
+        Member member = memberService.find(memberId);
+        Long dds = ShareCodeUtils.codeToId(member.getOnShareCode());
+        Member member1 = memberService.find(dds);
         if (order.getStatus() == Order.Status.pendingShipment.ordinal()) {
             return ApiResult.fail("订单已完成支付,无需再次支付");
         }
@@ -226,7 +230,7 @@ public class OrderService extends BaseService<Order> {
             FightGroup fightGroup=new FightGroup();
             GroupBuy groupBuy = groupBuyService.find(order.getGroupbuyId());
             //判断有没有拼团id 并且判断是不是单购
-            if(order.getFightgroupId()==0&&order.getIsSinglepurchase()){
+      /*   if(order.getFightgroupId()==0&&order.getIsSinglepurchase()){
                 //单购
                 fightGroup.setTitle(groupBuy.getTitle());
                 fightGroup.setPrice(groupBuy.getPrice());
@@ -253,7 +257,7 @@ public class OrderService extends BaseService<Order> {
                 fightGroup = fightGroupService.save(fightGroup);
                 order.setFightgroupId(fightGroup.getId());
 
-            }else if (order.getFightgroupId()==0&&!order.getIsSinglepurchase()){
+            }else*/ if (order.getFightgroupId()==0&&!order.getIsSinglepurchase()){
                 //自己租的团
 
                 //  fightGroup.
@@ -293,10 +297,31 @@ public class OrderService extends BaseService<Order> {
             }else{
 
                 fightGroup = fightGroupService.find(order.getFightgroupId());
+
                 fightGroup.setCount(fightGroup.getCount()+1);
+
+
+
                 if(fightGroup.getCount()>=fightGroup.getGroupnum()){
                     fightGroup.setStatus(1);
                 }
+
+                BigDecimal ddd = order.getPrice().multiply(BigDecimal.valueOf(Double.valueOf(groupBuy.getExplain()))).divide(BigDecimal.valueOf(100));
+                DepositLog depositLog1 = new DepositLog();
+                depositLog1.setBalance(member1.getBalance());
+                depositLog1.setCredit(ddd);
+                depositLog1.setDebit(BigDecimal.ZERO);
+                depositLog1.setStatus(2);
+                depositLog1.setMemo("团购上级返现");
+                depositLog1.setType(DepositLog.Type.tuangou.ordinal());
+                depositLog1.setOrderId(order.getId());
+                depositLog1.setMemberId(member1.getId());
+                member1.setTuangouUnarrived(ddd.add(member1.getCommission()));
+                depositLogService.save(depositLog1);
+                memberService.update(member1);
+
+
+
                 fightGroupService.update(fightGroup);
                 //跟人家拼团
 
@@ -311,10 +336,7 @@ public class OrderService extends BaseService<Order> {
 
 
         BigDecimal amount = order.getAmount().subtract(order.getAmountPaid()).setScale(2, BigDecimal.ROUND_HALF_UP);
-        Long memberId = order.getMemberId();
-        Member member = memberService.find(memberId);
-        Long dds = ShareCodeUtils.codeToId(member.getOnShareCode());
-        Member member1 = memberService.find(dds);
+
 
         order.setStatus(Order.Status.pendingShipment.ordinal());
         order.setExpire(null);

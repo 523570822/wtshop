@@ -187,7 +187,7 @@ public class MemberAPIController extends BaseAPIController {
 	/*	Map<String, Object> item = new HashMap<String, Object>();*/
 		if(StringUtils.isNotEmpty(member.getOnShareCode())){
 
-			Member member1 =memberService.find(	ShareCodeUtils.codeToId(member.getOnShareCode()));
+			Member member1 =memberService.find(ShareCodeUtils.codeToId(member.getOnShareCode()));
 
 			member.setAttributeValue0(member1.getWeChatQcode());
 			member.setAttributeValue1(member1.getWeChatNumber());

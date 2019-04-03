@@ -537,4 +537,20 @@ public abstract class BaseMember<M extends BaseMember<M>> extends Model<M> imple
 		return get("number");
 	}
 
+	public void setTuangouUnarrived(java.math.BigDecimal tuangouUnarrived) {
+		set("tuangou_unarrived", tuangouUnarrived);
+	}
+
+	public java.math.BigDecimal getTuangouUnarrived() {
+		return get("tuangou_unarrived");
+	}
+
+	public void setBalancePay(java.math.BigDecimal balancePay) {
+		set("balance_pay", balancePay);
+	}
+
+	public java.math.BigDecimal getBalancePay() {
+		return get("balance_pay");
+	}
+
 }
