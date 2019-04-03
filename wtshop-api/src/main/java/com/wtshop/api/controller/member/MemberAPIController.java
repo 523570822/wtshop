@@ -27,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -541,6 +542,16 @@ public class MemberAPIController extends BaseAPIController {
         }
     }
 
+	/**
+	 * 身份证审核
+	 */
+	public void shareGeneral(){
+		Member member = memberService.getCurrent();
+		JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
+		Map<String,Object>  map=  new HashMap<>();
+
+		//renderJson(ApiResult.success(url));
+	}
 	/**
 	 * 设置
 	 */
