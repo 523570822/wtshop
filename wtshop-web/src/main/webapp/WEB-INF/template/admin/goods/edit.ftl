@@ -871,7 +871,14 @@
                 <input type="text" name="goods.name" class="text" value="${goods.name}" maxlength="200"/>
             </td>
         </tr>
-
+        <tr>
+            <th>
+                出版社:
+            </th>
+            <td>
+                <input type="text" name="goods.caption" class="text" value="${goods.caption}" maxlength="20" />
+            </td>
+        </tr>
 
         <tr>
             <th>

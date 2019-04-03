@@ -240,6 +240,9 @@ $().ready(function() {
 					<a href="javascript:;" class="sort" name="name">标题</a>
 				</th>
 				<th>
+					<a href="javascript:;" class="sort" name="name">出版社</a>
+				</th>
+				<th>
 					<a href="javascript:;" class="sort" name="product_category_id">分类</a>
 				</th>
 			[#--	<th>
@@ -270,9 +273,13 @@ $().ready(function() {
 							${abbreviate(goods.name, 30, "...")}
 						</span>
 					</td>
+                    <td>
+						${goods.caption}
+                    </td>
 					<td>
 						${goods.productCategory.name}
 					</td>
+
 					<td>
 						<span class="${goods.isMarketable?string("true", "false")}Icon">&nbsp;</span>
 					</td>

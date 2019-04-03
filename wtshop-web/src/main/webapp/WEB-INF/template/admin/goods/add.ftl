@@ -825,18 +825,18 @@ $().ready(function() {
 					<span class="requiredField">*</span>标题:
 				</th>
 				<td>
-					<input type="text" name="goods.name" class="text" maxlength="200" />
+					<input type="text" name="goods.name" class="text" maxlength="10" />
 				</td>
 			</tr>
-			[#--<tr>
+			<tr>
 				<th>
-					${message("Goods.caption")}:
+					出版社:
 				</th>
 				<td>
-					<input type="text" name="goods.caption" class="text" maxlength="200" />
+					<input type="text" name="goods.caption" class="text" maxlength="20" />
 				</td>
 			</tr>
-            <tr>
+         [#--   <tr>
                 <th>
 				${message("Goods.keyword")}:
                 </th>
