@@ -49,20 +49,20 @@ public abstract class BaseGroupRemind<M extends BaseGroupRemind<M>> extends Mode
 		return get("member_id");
 	}
 
-	public void setRemindDate(java.util.Date remindDate) {
-		set("remind_date", remindDate);
+	public void setGroupId(Long groupId) {
+		set("group_id", groupId);
 	}
 
-	public java.util.Date getRemindDate() {
-		return get("remind_date");
+	public Long getGroupId() {
+		return get("group_id");
 	}
 
-	public void setType(Boolean type) {
-		set("type", type);
+	public void setStatus(Integer status) {
+		set("status", status);
 	}
 
-	public Boolean getType() {
-		return get("type");
+	public Integer getStatus() {
+		return get("status");
 	}
 
 }

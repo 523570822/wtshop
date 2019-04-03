@@ -1,28 +1,26 @@
 package com.wtshop.dao;
 
 
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Pageable;
-import com.wtshop.model.FuDai;
 import com.wtshop.model.GroupBuy;
+import com.wtshop.model.GroupRemind;
 
 import java.util.List;
 
 /**
  * Created by sq on 2017/7/11.
  */
-public class GroupBuyDao extends BaseDao<GroupBuy>{
+public class GroupRemindDao extends BaseDao<GroupRemind>{
 
-    public GroupBuyDao() {
-        super( GroupBuy.class);
+    public GroupRemindDao() {
+        super( GroupRemind.class);
     }
 
     /**
      * 获取当前正在使用的福袋
      */
-    public Page<GroupBuy> findPages(Pageable pageable ,boolean status){
+/*    public Page<GroupBuy> findPages(Pageable pageable ,boolean status){
 
         String select = " SELECT f.*,g.name,g.image,g.market_price,case when  gr.`status` is null then 0 else gr.`status` end  rem_status ";
         String  sqlExceptSelect="";
@@ -35,13 +33,13 @@ public class GroupBuyDao extends BaseDao<GroupBuy>{
 
 
            return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
-    }   /**
+    }*/
+    /**
      * 获取当前正在使用的福袋
      */
-    public List<GroupBuy> findListRe(){
-
-        String sql = " SELECT  f.*,g.name,g.image,g.market_price FROM group_buy f LEFT JOIN goods g on f.product_id=g.id   where 1 = 1 AND status = 0 order by f.sales desc  limit 10";
-
+    public List<GroupRemind> findListRe(Double hour){
+        hour=hour*60;
+        String sql = "select  gr.*  from group_remind gr LEFT JOIN group_buy g on g.id =gr.group_id where gr.`status`=2 and (now()-date_sub(g.begin_date, interval "+hour+" minute))>0";
         return modelManager.find(sql);
     }
 

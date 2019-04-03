@@ -1,6 +1,7 @@
 package com.wtshop.service;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Enhancer;
 import com.jfinal.plugin.activerecord.Page;
@@ -131,7 +132,45 @@ public class InformationService extends BaseService<Information> {
             }
         }
     }
+    /**
+     * 团购提醒推送
+     *
+     * @param
+     */
 
+    public void groupRmindMessage(GroupRemind groupRemind) {
+        final Logger logger = Logger.getLogger("paySuccessMessage");
+        //添加消息记录表
+        Information information = new Information();
+        information.setContent("团购提醒推送");
+        information.setIsDelete(false);
+        information.setStatus(false);
+        information.setMemberId(groupRemind.getMemberId());
+        information.setTitle("团购提醒推送");
+        information.setAction(Information.Action.inLink.ordinal());
+        information.setLink(groupRemind.getGroupId()+"");
+        information.setType(Information.Type.order.ordinal());
+        informationDao.save(information);
+
+        Cache actCache = Redis.use();
+        Boolean isMyMessage = actCache.get("ORDERMMESSAGR_SWITCH:" + groupRemind.getMemberId());
+        String sound = "default";
+        Object o = actCache.get("SOUND:" + groupRemind.getMemberId());
+        if (o != null) {
+            sound = o.toString();
+        }
+
+
+        if (isMyMessage != null && isMyMessage) {
+            String key = "MEMBER:" + groupRemind.getMemberId().toString();
+            String appid = RedisUtil.getString(key);
+            if (appid != null) {
+                logger.info("开始调用极光推送方法——————————————————————; appid=" + appid);
+                JPush.sendPushById(appid, "团购消息", "您的", "订单( )已完成付款", sound, null);
+                logger.info("成功调用极光推送方法——————————————————————");
+            }
+        }
+    }
     /**
      * 待付款消息
      *

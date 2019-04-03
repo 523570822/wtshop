@@ -1387,6 +1387,19 @@ $().ready(function() {
                 </td>
             </tr>
             <tr>
+			<tr>
+                <th>
+				分享赠送喵币：
+                </th>
+                <td>
+					[#if redisSetting.registerSending??]
+                        <input id="shareSending" type="text" name="setting.hour" class="text" value="${redisSetting.hour}" title=" 团购开始前多久提醒（h） " maxlength="200" />
+					[#else ]
+						<input id="shareSending" type="text" name="setting.hour" class="text" value="${setting.hour}" title=" 团购开始前多久提醒（h）"  maxlength="200" />
+					[/#if]
+                </td>
+            </tr>
+            <tr>
                 <th>
                     ${message("setting.buyGoods.set")}:
                 </th>

@@ -2,6 +2,7 @@ package com.wtshop.controller.admin;
 
 import com.alibaba.fastjson.JSONArray;
 import com.jfinal.ext.route.ControllerBind;
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
 import com.wtshop.Message;
 import com.wtshop.Pageable;
@@ -28,14 +29,20 @@ public class GroupBuyController extends BaseController {
     private GroupBuyService fuDaiService = enhance(GroupBuyService.class);
     public void list() {
 
+        Map<String, Object> map = new HashedMap();
+        Pageable pageable = new Pageable(1, 10);
 
 
-        Pageable pageable = getBean(Pageable.class);
+        Page<GroupBuy> list = fuDaiService.findPages(pageable,false);
+        // map.put("list", list);
+        renderJson(ApiResult.success(list));
+
+      /*  Pageable pageable = getBean(Pageable.class);
         pageable.setOrderProperty("orders");
         pageable.setOrderDirection("desc");
         setAttr("pageable", pageable);
         setAttr("page", fuDaiService.findPage(pageable));
-        render("/admin/groupBuy/list.ftl");
+        render("/admin/groupBuy/list.ftl");*/
     }
 
     //去添加页面

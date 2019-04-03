@@ -145,7 +145,6 @@ public class SettingController extends BaseController {
 		setting.setIsSendMiaoBi(getParaToBoolean("isSendMiaoBi",false));
 		setting.setIsUseMiaoBi(getParaToBoolean("isUseMiaoBi",false));
 		setting.setIsMyMessage(getParaToBoolean("isMyMessage",true));
-
 		setting.setIsStaffMessage(getParaToBoolean("isStaffMessage",true));
 		setting.setIsRegisterSending(getParaToBoolean("isRegisterSending",true));
 		JSONObject redisSetting = new JSONObject();
@@ -174,7 +173,7 @@ public class SettingController extends BaseController {
 		redisSetting.put("vipSending",setting.getVipSending());
 		redisSetting.put("shareSending",setting.getShareSending());
 		redisSetting.put("housekeeperSending",setting.getHousekeeperSending());
-
+		redisSetting.put("hour",setting.getHour());
 		RedisUtil.setString("redisSetting",redisSetting.toJSONString());
 		RedisUtil.setString("freeMoney",setting.getFreeMoney()+"");
 

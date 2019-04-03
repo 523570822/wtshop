@@ -40,6 +40,7 @@ public class GroupBuyAPIController extends BaseAPIController {
     private ConsultationService consultationService = enhance(ConsultationService.class);
     private GroupBuyService fuDaiService = enhance(GroupBuyService.class);
     private GoodsService goodsService = enhance(GoodsService.class);
+    private GroupRemindService groupRemindService=enhance(GroupRemindService.class);
     private AreaService areaService = enhance(AreaService.class);
     private ReceiverService receiverService = enhance(ReceiverService.class);
     private AreaDescribeService areaDescribeService = enhance(AreaDescribeService.class);
@@ -338,6 +339,22 @@ if(fightGroupL==0){
         Long orderId = getParaToLong("orderId");
         List<Goods> goodsByItemId = goodsService.findGoodsByItemId(orderId);
         renderJson(ApiResult.success(goodsByItemId));
+    }
+    /**
+     *团购提箱
+     */
+    public void remind() {
+        Member member = memberService.getCurrent();
+        Long groupId = getParaToLong("groupId");
+        Integer status = getParaToInt("status");
+        GroupRemind groupRemind=new GroupRemind();
+        groupRemind.setMemberId(member.getId());
+        groupRemind.setGroupId(groupId);
+        groupRemind.setStatus(status);
+        groupRemindService.save(groupRemind);
+      //  groupRemind.set
+       // groupBuyService.update()
+        renderJson(ApiResult.success());
     }
 
 

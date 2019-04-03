@@ -1,5 +1,6 @@
 package com.wtshop.cron;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Enhancer;
 import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
@@ -9,48 +10,11 @@ import com.sun.tools.corba.se.idl.constExpr.Or;
 import com.wtshop.CommonAttributes;
 import com.wtshop.Setting;
 import com.wtshop.constants.Code;
-import com.wtshop.dao.CartItemDao;
-import com.wtshop.dao.DepositLogDao;
-import com.wtshop.dao.MrmfShopDao;
-import com.wtshop.dao.OrderDao;
-import com.wtshop.dao.OrderItemDao;
-import com.wtshop.dao.OrderLogDao;
-import com.wtshop.dao.PaymentDao;
-import com.wtshop.dao.PaymentLogDao;
-import com.wtshop.dao.PromotionDao;
-import com.wtshop.dao.ReturnsDao;
-import com.wtshop.dao.ReturnsItemDao;
-import com.wtshop.dao.ReturnsItemProgressDao;
-import com.wtshop.dao.ShippingDao;
-import com.wtshop.dao.ShippingItemDao;
-import com.wtshop.dao.SnDao;
-import com.wtshop.dao.StaffMemberDao;
-import com.wtshop.model.CommissionHistory;
-import com.wtshop.model.Goods;
-import com.wtshop.model.Member;
-import com.wtshop.model.MrmfShop;
-import com.wtshop.model.Order;
-import com.wtshop.model.Product;
-import com.wtshop.model.StaffMember;
-import com.wtshop.service.AccountService;
-import com.wtshop.service.CencelService;
-import com.wtshop.service.CommissionService;
-import com.wtshop.service.CouponCodeService;
-import com.wtshop.service.DepositLogService;
-import com.wtshop.service.ExchangeLogService;
-import com.wtshop.service.FuDaiProductService;
-import com.wtshop.service.FuDaiService;
-import com.wtshop.service.GoodsService;
-import com.wtshop.service.InformationService;
-import com.wtshop.service.MailService;
-import com.wtshop.service.MemberService;
-import com.wtshop.service.MiaobiLogService;
-import com.wtshop.service.PaymentMethodService;
-import com.wtshop.service.PaymentService;
-import com.wtshop.service.ProductService;
-import com.wtshop.service.ShippingMethodService;
-import com.wtshop.service.SmsService;
+import com.wtshop.dao.*;
+import com.wtshop.model.*;
+import com.wtshop.service.*;
 import com.wtshop.util.DateUtils;
+import com.wtshop.util.RedisUtil;
 import com.wtshop.util.SystemUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -67,7 +31,7 @@ import java.util.List;
  */
 public class StaffCronManager implements ITask{
     Logger logger = Logger.getLogger(StaffCronManager.class);
-
+    private InformationService informationService = Enhancer.enhance(InformationService.class);
     private OrderDao orderDao = Enhancer.enhance(OrderDao.class);
     private MemberService memberService = Enhancer.enhance(MemberService.class);
     private GoodsService goodsService = Enhancer.enhance(GoodsService.class);
@@ -75,6 +39,7 @@ public class StaffCronManager implements ITask{
     private StaffMemberDao staffMemberDao = Enhancer.enhance(StaffMemberDao.class);
     private CommissionService commissionService = Enhancer.enhance(CommissionService.class);
     private MrmfShopDao mrmfShopDao = Enhancer.enhance(MrmfShopDao.class);
+    private GroupRemindDao groupRemindDao = Enhancer.enhance(GroupRemindDao.class);
 
     public void stop() {
 
@@ -87,6 +52,33 @@ public class StaffCronManager implements ITask{
             logger.info("当前服务配置为关闭分佣");
             return;
         }
+
+        /**
+         * 用户推动团购定时
+         */
+        JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
+        Double hour = redisSetting.getDouble("")==null?0.00:redisSetting.getDouble("hour");
+
+        List<GroupRemind> groupReminlist = groupRemindDao.findListRe(hour);
+
+        for (GroupRemind groupRemind:groupReminlist) {
+                             groupRemind.setStatus(1);
+
+            logger.info("开始极光推送服务————————————————————————");
+            try {
+                informationService.groupRmindMessage(groupRemind);
+                groupRemindDao.update(groupRemind);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            logger.info("结束极光推送服务————————————————————————");
+            
+        }
+
+
+
+
+
         //获取15天之前 需要分佣的订单
         Date date = DateUtils.getDateBefore(new Date(), Code.staff_day);
         List<Order> orders = orderDao.findStaffOrder(DateUtils.getDayStartTime(date), DateUtils.getDayEndTime(date));

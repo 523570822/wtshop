@@ -519,9 +519,19 @@ public class Setting implements Serializable {
 	 * 购买福袋赠送喵币数量
 	 */
 	private Double housekeeperSending;
+	/**
+	 * 提醒小时数量
+	 */
+	private Double hour;
 
 
+	public Double getHour() {
+		return hour;
+	}
 
+	public void setHour(Double hour) {
+		this.hour = hour;
+	}
 
 	/** Cookie路径 */
 	private String cookiePath;
