@@ -217,6 +217,15 @@ public class OrderService extends BaseService<Order> {
         Member member = memberService.find(memberId);
         Long dds = ShareCodeUtils.codeToId(member.getOnShareCode());
         Member member1 = memberService.find(dds);
+        BigDecimal amount = order.getAmount().subtract(order.getAmountPaid()).setScale(2, BigDecimal.ROUND_HALF_UP);
+
+
+        order.setStatus(Order.Status.pendingShipment.ordinal());
+        order.setExpire(null);
+        order.setLockExpire(null);
+        order.setLockKey(null);
+        orderDao.update(order);
+
         if (order.getStatus() == Order.Status.pendingShipment.ordinal()) {
             return ApiResult.fail("订单已完成支付,无需再次支付");
         }
@@ -305,8 +314,7 @@ public class OrderService extends BaseService<Order> {
                 if(fightGroup.getCount()>=fightGroup.getGroupnum()){
                     fightGroup.setStatus(1);
                 }
-
-                BigDecimal ddd = order.getPrice().multiply(BigDecimal.valueOf(Double.valueOf(groupBuy.getExplain()))).divide(BigDecimal.valueOf(100));
+                BigDecimal ddd = order.getPrice().multiply(BigDecimal.valueOf(Double.valueOf(groupBuy.getExplain()==null?"0":groupBuy.getExplain()))).divide(BigDecimal.valueOf(100));
                 DepositLog depositLog1 = new DepositLog();
                 depositLog1.setBalance(member1.getBalance());
                 depositLog1.setCredit(ddd);
@@ -335,13 +343,6 @@ public class OrderService extends BaseService<Order> {
         }
 
 
-        BigDecimal amount = order.getAmount().subtract(order.getAmountPaid()).setScale(2, BigDecimal.ROUND_HALF_UP);
-
-
-        order.setStatus(Order.Status.pendingShipment.ordinal());
-        order.setExpire(null);
-        order.setLockExpire(null);
-        order.setLockKey(null);
 
 
 
@@ -648,7 +649,7 @@ public class OrderService extends BaseService<Order> {
             //调用推送
         }
 
-
+        orderDao.update(order);
 
 
 
@@ -659,7 +660,7 @@ public class OrderService extends BaseService<Order> {
             ex.printStackTrace();
         }
         logger.info("结束极光推送服务————————————————————————");
-        orderDao.update(order);
+
         returnStatus = ApiResult.success();
         return returnStatus;
     }
