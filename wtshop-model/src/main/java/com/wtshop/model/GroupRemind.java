@@ -8,4 +8,5 @@ import com.wtshop.model.base.BaseGroupRemind;
 @SuppressWarnings("serial")
 public class GroupRemind extends BaseGroupRemind<GroupRemind> {
 	public static final GroupRemind dao = new GroupRemind().dao();
+
 }

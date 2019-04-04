@@ -298,8 +298,8 @@ public class OrderDao extends BaseDao<Order> {
 	 */
 	public Page<Order> findTuanGouPages(String status, Member member, Pageable pageable ) {
 		String select = " select o.type, o.id ,o.status ,o.quantity quantity,o.amount price,o.groupbuy_id,o.fightgroup_id ," +
-				"o.sn , o.create_date ,o.freight, o.actOrderId fudaiId";
-		String sqlExceptSelect = "FROM `order` o WHERE 1 = 1 AND o.is_delete = 0 And o.type=7" ;
+				"o.sn , o.create_date ,o.freight, o.actOrderId fudaiId  ,gb.group_rate rate, CASE WHEN  o.fightgroup_id =0  or o.member_id = f.member_id THEN 1 ELSE 0 END istuanzhang";
+		String sqlExceptSelect = "FROM `order` o LEFT JOIN fight_group f on o.fightgroup_id=f.id   LEFT JOIN group_buy gb on gb.id=o.groupbuy_id WHERE 1 = 1 AND o.is_delete = 0 And o.type=7 " ;
 
 		if(status != null){
 
@@ -309,11 +309,11 @@ public class OrderDao extends BaseDao<Order> {
 				sqlExceptSelect += " AND o.status in ('6','7','8','11') ";
 			}
 			if(status.equals("1")){
-				sqlExceptSelect = "FROM `order` o LEFT JOIN fight_group f on o.fightgroup_id=f.id  WHERE 1 = 1 AND o.is_delete = 0 And o.type=7   and f.count>=f.groupnum" ;
+				sqlExceptSelect = "FROM `order` o LEFT JOIN fight_group f on o.fightgroup_id=f.id  LEFT JOIN group_buy gb on gb.id=o.groupbuy_id  WHERE 1 = 1 AND o.is_delete = 0 And o.type=7   and (f.count<f.groupnum or f.count is null)" ;
 				sqlExceptSelect += " AND o.status in ('2','3','4','5','9','10') ";
 			}
 			if(status.equals("2")){
-				sqlExceptSelect = "FROM `order` o LEFT JOIN fight_group f on o.fightgroup_id=f.id  WHERE 1 = 1 AND o.is_delete = 0 And o.type=7  and f.count<f.groupnum" ;
+				sqlExceptSelect = "FROM `order` o LEFT JOIN fight_group f on o.fightgroup_id=f.id  LEFT JOIN group_buy gb on gb.id=o.groupbuy_id  WHERE 1 = 1 AND o.is_delete = 0 And o.type=7  and (f.count<f.groupnum or f.count is null)" ;
 				sqlExceptSelect += " AND o.status in('0','1','2') ";
 			}
 

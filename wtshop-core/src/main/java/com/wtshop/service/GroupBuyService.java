@@ -78,14 +78,20 @@ public class GroupBuyService extends BaseService<GroupBuy> {
     /**
      * 获取当前正在使用的福袋
      */
-    public Page<GroupBuy> findPages(Pageable pageable,boolean status) {
-        return fuDaiDao.findPages(pageable,status );
+    public Page<GroupBuy> findPages(Pageable pageable,boolean status,long id) {
+        return fuDaiDao.findPages(pageable,status,id);
     }
     public List<GroupBuy> findListRe() {
         return fuDaiDao.findListRe();
     }
 
+    /**
+     * 获取当前正在使用的福袋
+     */
+    public Page<GroupBuy> findPages(Pageable pageable,boolean status) {
 
+        return fuDaiDao.findPages(pageable,status);
+    }
     //福袋抽取副产品
     public List<Map<String, Object>> luckDraw(Order order) {
         long fudaiId = Long.parseLong(order.getActOrderId());

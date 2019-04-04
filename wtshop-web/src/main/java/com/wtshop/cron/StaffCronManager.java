@@ -64,19 +64,31 @@ public class StaffCronManager implements ITask{
         for (GroupRemind groupRemind:groupReminlist) {
                              groupRemind.setStatus(1);
 
-            logger.info("开始极光推送服务————————————————————————");
             try {
-                informationService.groupRmindMessage(groupRemind);
+
                 groupRemindDao.update(groupRemind);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            logger.info("结束极光推送服务————————————————————————");
+
             
         }
+        logger.info("开始极光推送服务————————————————————————");
+        List<GroupRemind> groupReminlist1= groupRemindDao.findListNum(hour);;
+        for (GroupRemind groupRemind:groupReminlist1) {
+
+            int dss=groupRemind.get("number");
+            try {
+
+                informationService.groupRmindMessage(groupRemind,dss);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
 
 
+        }
 
+        logger.info("结束极光推送服务————————————————————————");
 
 
         //获取15天之前 需要分佣的订单

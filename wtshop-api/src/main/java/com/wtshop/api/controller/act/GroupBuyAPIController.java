@@ -18,6 +18,7 @@ import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.*;
 import com.wtshop.service.*;
 import com.wtshop.util.ApiResult;
+import com.wtshop.util.Assert;
 import com.wtshop.util.RedisUtil;
 import com.wtshop.util.SystemUtils;
 import org.apache.commons.collections.map.HashedMap;
@@ -61,13 +62,13 @@ public class GroupBuyAPIController extends BaseAPIController {
     public void list() {
         Integer pageNumber = getParaToInt("pageNumbers");
         boolean status = getParaToBoolean("status");
-
+        Member m=memberService.getCurrent();
 
         Map<String, Object> map = new HashedMap();
         Pageable pageable = new Pageable(pageNumber, PAGE_SIZE);
 
 
-        Page<GroupBuy> list = fuDaiService.findPages(pageable,status);
+        Page<GroupBuy> list = fuDaiService.findPages(pageable,status,m.getId());
         // map.put("list", list);
         renderJson(ApiResult.success(list));
     }
@@ -347,11 +348,21 @@ if(fightGroupL==0){
         Member member = memberService.getCurrent();
         Long groupId = getParaToLong("groupId");
         Integer status = getParaToInt("status");
-        GroupRemind groupRemind=new GroupRemind();
-        groupRemind.setMemberId(member.getId());
-        groupRemind.setGroupId(groupId);
-        groupRemind.setStatus(status);
-        groupRemindService.save(groupRemind);
+        Assert.notNull(groupId);
+        Assert.notNull(status);
+        List<GroupRemind> fgrs = groupRemindService.findBymemGroup(member.getId(), groupId);
+        if(fgrs.size()==0){
+            GroupRemind groupRemind=new GroupRemind();
+            groupRemind.setMemberId(member.getId());
+            groupRemind.setGroupId(groupId);
+            groupRemind.setStatus(status);
+            groupRemindService.save(groupRemind);
+        }else{
+            GroupRemind grs = fgrs.get(0);
+            grs.setStatus(status);
+            groupRemindService.update(grs);
+        }
+
       //  groupRemind.set
        // groupBuyService.update()
         renderJson(ApiResult.success());

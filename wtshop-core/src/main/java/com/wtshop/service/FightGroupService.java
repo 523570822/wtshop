@@ -87,12 +87,6 @@ public class FightGroupService extends BaseService<FightGroup> {
         return fuDaiProductDao.findByFudaiId(id);
     }
 
-    /**
-     * 获取当前正在使用的福袋
-     */
-    public Page<GroupBuy> findPages(Pageable pageable,boolean status) {
-        return fuDaiDao.findPages(pageable,status);
-    }
 
 
     //福袋抽取副产品

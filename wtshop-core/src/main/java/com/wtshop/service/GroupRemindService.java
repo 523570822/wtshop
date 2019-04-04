@@ -52,6 +52,7 @@ public class GroupRemindService extends BaseService<GroupRemind> {
 
     private CacheManager cacheManager = CacheKit.getCacheManager();
     private GoodsDao goodsDao = Enhancer.enhance(GoodsDao.class);
+    private GroupRemindDao groupRemindDao = Enhancer.enhance(GroupRemindDao.class);
     private ProductDao productDao = Enhancer.enhance(ProductDao.class);
     private SnDao snDao = Enhancer.enhance(SnDao.class);
     private ProductCategoryDao productCategoryDao = Enhancer.enhance(ProductCategoryDao.class);
@@ -61,12 +62,6 @@ public class GroupRemindService extends BaseService<GroupRemind> {
     private AttributeDao attributeDao = Enhancer.enhance(AttributeDao.class);
     private StockLogDao stockLogDao = Enhancer.enhance(StockLogDao.class);
     private ProductImageService productImageService = Enhancer.enhance(ProductImageService.class);
-    private MemberService memberService = Enhancer.enhance(MemberService.class);
-    private VipGoodsHistoryService vipGoodsHistoryService = Enhancer.enhance(VipGoodsHistoryService.class);
-    private ReceiverService receiverService = Enhancer.enhance(ReceiverService.class);
-    private OrderDao orderDao = Enhancer.enhance(OrderDao.class);
-    private OrderItemDao orderItemDao = Enhancer.enhance(OrderItemDao.class);
-    private OrderLogDao orderLogDao = Enhancer.enhance(OrderLogDao.class);
     private ProductService productService = Enhancer.enhance(ProductService.class);
 
 
@@ -111,7 +106,10 @@ public class GroupRemindService extends BaseService<GroupRemind> {
 
         return goodsDao.findCartItemList(id);
     }
+    public List<GroupRemind> findBymemGroup(Long memid,Long groupid) {
 
+        return groupRemindDao.findBymemGroup(memid,groupid);
+    }
 
     /**
      * 获取凑单商品

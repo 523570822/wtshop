@@ -138,7 +138,7 @@ public class InformationService extends BaseService<Information> {
      * @param
      */
 
-    public void groupRmindMessage(GroupRemind groupRemind) {
+    public void groupRmindMessage(GroupRemind groupRemind,int num) {
         final Logger logger = Logger.getLogger("paySuccessMessage");
         //添加消息记录表
         Information information = new Information();
@@ -166,7 +166,7 @@ public class InformationService extends BaseService<Information> {
             String appid = RedisUtil.getString(key);
             if (appid != null) {
                 logger.info("开始调用极光推送方法——————————————————————; appid=" + appid);
-                JPush.sendPushById(appid, "团购消息", "您的", "订单( )已完成付款", sound, null);
+                JPush.sendPushById(appid, "团购消息", "您有", ""+num+"个团购提醒,活动即将开始，快去看看吧！", sound, null);
                 logger.info("成功调用极光推送方法——————————————————————");
             }
         }
