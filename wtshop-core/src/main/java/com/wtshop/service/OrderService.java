@@ -210,30 +210,29 @@ public class OrderService extends BaseService<Order> {
     public ApiResult paySuccess(String sn, String money, String weiXinNo, String aliNo) {
 
         final Logger logger = Logger.getLogger("paySuccess");
-        logger.info("===============>回调开始 <=============== \n " );
-
         ApiResult returnStatus = ApiResult.fail();
         Setting setting = SystemUtils.getSetting();
         JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
         Order order = orderDao.findBySn(sn);
         Long memberId = order.getMemberId();
-        logger.info("===============>测试 <=============== \n " );
+
         Member member = memberService.find(memberId);
         Long dds = ShareCodeUtils.codeToId(member.getOnShareCode());
         Member member1 = memberService.find(dds);
         BigDecimal amount = order.getAmount().subtract(order.getAmountPaid()).setScale(2, BigDecimal.ROUND_HALF_UP);
 
-        logger.info("===============>测试1 <=============== \n " );
-        order.setStatus(Order.Status.pendingShipment.ordinal());
+
+
         order.setExpire(null);
         order.setLockExpire(null);
         order.setLockKey(null);
         orderDao.update(order);
-        logger.info("===============>测试2 <=============== \n " );
         if (order.getStatus() == Order.Status.pendingShipment.ordinal()) {
+            logger.info("订单已完成支付,无需再次支付 " );
             return ApiResult.fail("订单已完成支付,无需再次支付");
         }
-        logger.info("===============>测试3 <=============== \n " );
+        order.setStatus(Order.Status.pendingShipment.ordinal());
+
         //  logger.info("测试团购getFightgroupId   :  " + order.getFightgroupId());
         //  logger.info("测试团购order.getIsSinglepurchase()   :  " +order.getIsSinglepurchase());
         //  logger.info("order.getType()  :  " +order.getType());
@@ -344,8 +343,7 @@ public class OrderService extends BaseService<Order> {
 //			reverseExService.paySuccess(order.getActOrderId());
         }
 
-        logger.info("===============>回调开始1 <=============== \n " );
-        System.out.println("===============>回调开始1 <=============== ");
+
         logger.info("测试支付宝应保存金额   :  " + amount);
         if (StringUtils.isNotBlank(weiXinNo)) {
             order.setWeixinPaid(amount);
@@ -446,8 +444,6 @@ public class OrderService extends BaseService<Order> {
 
             memberService.update(member);
         }
-        logger.info("===============>回调开始2 <=============== \n " );
-        System.out.println("===============>回调开始2 <=============== ");
         //赠送喵币逻辑
         boolean isSendMiaoBi = redisSetting.getBoolean("isSendMiaoBi") ? true : false;
         if (isSendMiaoBi && order.getType() == 0 && order.getCouponCode() == null && order.getMiaobiPaid().doubleValue() == 0) {
@@ -540,8 +536,6 @@ public class OrderService extends BaseService<Order> {
             }
         }
         double dd = order.getCommissionRate() * order.getPrice().doubleValue() / 100;
-        logger.info("===============>回调开始3 <=============== \n " );
-        System.out.println("===============>回调开始3 <=============== ");
         // 生成会员激活码，福袋
         //
         if (order.getType() == Order.Type.fudai.ordinal()) {
