@@ -211,28 +211,29 @@ public class OrderService extends BaseService<Order> {
 
         final Logger logger = Logger.getLogger("paySuccess");
         logger.info("===============>回调开始 <=============== \n " );
-        System.out.println("===============>回调开始 <=============== ");
+
         ApiResult returnStatus = ApiResult.fail();
         Setting setting = SystemUtils.getSetting();
         JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
         Order order = orderDao.findBySn(sn);
         Long memberId = order.getMemberId();
+        logger.info("===============>测试 <=============== \n " );
         Member member = memberService.find(memberId);
         Long dds = ShareCodeUtils.codeToId(member.getOnShareCode());
         Member member1 = memberService.find(dds);
         BigDecimal amount = order.getAmount().subtract(order.getAmountPaid()).setScale(2, BigDecimal.ROUND_HALF_UP);
 
-
+        logger.info("===============>测试1 <=============== \n " );
         order.setStatus(Order.Status.pendingShipment.ordinal());
         order.setExpire(null);
         order.setLockExpire(null);
         order.setLockKey(null);
         orderDao.update(order);
-
+        logger.info("===============>测试2 <=============== \n " );
         if (order.getStatus() == Order.Status.pendingShipment.ordinal()) {
             return ApiResult.fail("订单已完成支付,无需再次支付");
         }
-
+        logger.info("===============>测试3 <=============== \n " );
         //  logger.info("测试团购getFightgroupId   :  " + order.getFightgroupId());
         //  logger.info("测试团购order.getIsSinglepurchase()   :  " +order.getIsSinglepurchase());
         //  logger.info("order.getType()  :  " +order.getType());
@@ -343,8 +344,8 @@ public class OrderService extends BaseService<Order> {
 //			reverseExService.paySuccess(order.getActOrderId());
         }
 
-        logger.info("===============>回调开始 <=============== \n " );
-        System.out.println("===============>回调开始 <=============== ");
+        logger.info("===============>回调开始1 <=============== \n " );
+        System.out.println("===============>回调开始1 <=============== ");
         logger.info("测试支付宝应保存金额   :  " + amount);
         if (StringUtils.isNotBlank(weiXinNo)) {
             order.setWeixinPaid(amount);
