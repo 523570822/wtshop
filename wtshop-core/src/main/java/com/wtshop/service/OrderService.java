@@ -79,7 +79,7 @@ public class OrderService extends BaseService<Order> {
     private DepositLogService depositLogService = Enhancer.enhance(DepositLogService.class);
     private ExchangeLogService exchangeLogService = Enhancer.enhance(ExchangeLogService.class);
     private AccountService accountService = Enhancer.enhance(AccountService.class);
-    private  FightGroupService fightGroupService= Enhancer.enhance(FightGroupService.class);
+    private FightGroupService fightGroupService = Enhancer.enhance(FightGroupService.class);
     private GroupBuyService groupBuyService = Enhancer.enhance(GroupBuyService.class);
     com.jfinal.log.Logger logger = com.jfinal.log.Logger.getLogger(OrderService.class);
 
@@ -102,15 +102,17 @@ public class OrderService extends BaseService<Order> {
     public List<Order> findByfightgroupId(Long sn) {
         return orderDao.findByfightgroupId(sn);
     }
+
     /**
      * 根据编号查找订单
      *
      * @param sn 编号(忽略大小写)
      * @return 订单，若不存在则返回null
      */
-    public List<Order> findByfightgroupIdmemberId(Long sn,long memberId) {
-        return orderDao.findByfightgroupIdmemberId(sn,memberId);
+    public List<Order> findByfightgroupIdmemberId(Long sn, long memberId) {
+        return orderDao.findByfightgroupIdmemberId(sn, memberId);
     }
+
     /**
      * 获取订单商品市场价格
      */
@@ -236,7 +238,7 @@ public class OrderService extends BaseService<Order> {
         //  logger.info("Order.Type.group.ordinal()  :  " +Order.Type.group.ordinal());
         //团购
         if (order.getType() == Order.Type.group.ordinal()) {
-            FightGroup fightGroup=new FightGroup();
+            FightGroup fightGroup = new FightGroup();
             GroupBuy groupBuy = groupBuyService.find(order.getGroupbuyId());
             //判断有没有拼团id 并且判断是不是单购
       /*   if(order.getFightgroupId()==0&&order.getIsSinglepurchase()){
@@ -266,7 +268,8 @@ public class OrderService extends BaseService<Order> {
                 fightGroup = fightGroupService.save(fightGroup);
                 order.setFightgroupId(fightGroup.getId());
 
-            }else*/ if (order.getFightgroupId()==0&&!order.getIsSinglepurchase()){
+            }else*/
+            if (order.getFightgroupId() == 0 && !order.getIsSinglepurchase()) {
                 //自己租的团
 
                 //  fightGroup.
@@ -300,21 +303,20 @@ public class OrderService extends BaseService<Order> {
 
                 fightGroup.setTuangouId(order.getGroupbuyId());
 
-                 fightGroup = fightGroupService.save(fightGroup);
+                fightGroup = fightGroupService.save(fightGroup);
                 order.setFightgroupId(fightGroup.getId());
 
-            }else{
+            } else {
 
                 fightGroup = fightGroupService.find(order.getFightgroupId());
 
-                fightGroup.setCount(fightGroup.getCount()+1);
+                fightGroup.setCount(fightGroup.getCount() + 1);
 
 
-
-                if(fightGroup.getCount()>=fightGroup.getGroupnum()){
+                if (fightGroup.getCount() >= fightGroup.getGroupnum()) {
                     fightGroup.setStatus(1);
                 }
-                BigDecimal ddd = order.getPrice().multiply(BigDecimal.valueOf(Double.valueOf(groupBuy.getExplain()==null?"0":groupBuy.getExplain()))).divide(BigDecimal.valueOf(100));
+                BigDecimal ddd = order.getPrice().multiply(BigDecimal.valueOf(Double.valueOf(groupBuy.getExplain() == null ? "0" : groupBuy.getExplain()))).divide(BigDecimal.valueOf(100));
                 DepositLog depositLog1 = new DepositLog();
                 depositLog1.setBalance(member1.getBalance());
                 depositLog1.setCredit(ddd);
@@ -329,7 +331,6 @@ public class OrderService extends BaseService<Order> {
                 memberService.update(member1);
 
 
-
                 fightGroupService.update(fightGroup);
                 //跟人家拼团
 
@@ -338,12 +339,8 @@ public class OrderService extends BaseService<Order> {
             logger.info("开始调用团购————————————————————————");
 
 
-
 //			reverseExService.paySuccess(order.getActOrderId());
         }
-
-
-
 
 
         logger.info("测试支付宝应保存金额   :  " + amount);
@@ -361,7 +358,6 @@ public class OrderService extends BaseService<Order> {
             order.setAliPaid(BigDecimal.ZERO);
             order.setOrderNo(null);
         }
-
 
 
         //支付金额
@@ -498,20 +494,19 @@ public class OrderService extends BaseService<Order> {
             }
 
         }*/
-        if (Order.Type.general.ordinal()== order.getType()) {
+        if (Order.Type.general.ordinal() == order.getType()) {
             //商品返现
             List<Goods> goodList = goodsService.findGoodsByOrderItemId(order.getId());
             if (goodList != null && goodList.size() > 0) {
                 for (Goods goods : goodList) {
-                    if(goods.getSales()==null){
+                    if (goods.getSales() == null) {
                         goods.setSales(0L);
-                    }else{
-                        if(goods.get("quantity")==null||goods.get("quantity").equals("null")){
+                    } else {
+                        if (goods.get("quantity") == null || goods.get("quantity").equals("null")) {
 
-                        }else{
-                            goods.setSales(goods.getSales()+Long.valueOf(goods.get("quantity")+""));
+                        } else {
+                            goods.setSales(goods.getSales() + Long.valueOf(goods.get("quantity") + ""));
                         }
-
 
 
                     }
@@ -521,8 +516,6 @@ public class OrderService extends BaseService<Order> {
                     if (prom != null) {
                         member.setBalance(member.getBalance().add(prom.getMoney()).setScale(2, BigDecimal.ROUND_HALF_UP));
                         memberService.update(member);
-
-
 
 
                         //插入钱包变动记录
@@ -537,30 +530,30 @@ public class OrderService extends BaseService<Order> {
                         depositLogDao.save(depositLog);
 
 
-
                     }
 
                 }
             }
         }
-        double dd = order.getCommissionRate() * order.getPrice().doubleValue()/100;
+        double dd = order.getCommissionRate() * order.getPrice().doubleValue() / 100;
 
         // 生成会员激活码，福袋
+        //
         if (order.getType() == Order.Type.fudai.ordinal()) {
-
-      if(StringUtils.isNotEmpty(member.getShareCode())){
-
-      }else{
-            // 生成邀请码
-          String code = ShareCodeUtils.idToCode(member.getId());
-          member.setShareCode(code);
-      }
-
-            member.setLinkShareCode(member1.getLinkShareCode()+"_"+member.getOnShareCode());
-            if(member.getHousekeeperId()==0||member.getHousekeeperId()<=1){
-                member.setHousekeeperId(2L);
+            logger.info("福袋相关技术————————————————————————");
+            if (StringUtils.isEmpty(member.getShareCode()) || member.getShareCode() == null) {
+                logger.info("生成邀请码————————————————————————");
+                // 生成邀请码
+                String code = ShareCodeUtils.idToCode(member.getId());
+                member.setShareCode(code);
+            } else {
+                logger.info("存在邀请码没有生成邀请码————————————————————————");
             }
 
+            member.setLinkShareCode(member1.getLinkShareCode() + "_" + member.getOnShareCode());
+            if (member.getHousekeeperId() == 0 || member.getHousekeeperId() <= 1) {
+                member.setHousekeeperId(2L);
+            }
 
 
             order.setOnShareCode(member.getOnShareCode());
@@ -582,13 +575,13 @@ public class OrderService extends BaseService<Order> {
         }
 
 
-        if (Order.Type.general.ordinal()== order.getType()&&dd>0) {
+        if (Order.Type.general.ordinal() == order.getType() && dd > 0) {
 
 
             logger.info("开始计算佣金————————————————————————");
-            logger.info("佣金金额————————————————————————"+dd);
+            logger.info("佣金金额————————————————————————" + dd);
             BigDecimal b1 = new BigDecimal(dd);
-            if(member.getCommissionUnarrived()==null){
+            if (member.getCommissionUnarrived() == null) {
                 member.setCommissionUnarrived(BigDecimal.ZERO);
 
             }
@@ -630,9 +623,9 @@ public class OrderService extends BaseService<Order> {
             depositLog1.setOrderId(order.getId());
 
             depositLog1.setMemberId(dds);
-           if( member1.getCommissionUnarrived()==null){
-               member1.setCommissionUnarrived(BigDecimal.ZERO);
-           }
+            if (member1.getCommissionUnarrived() == null) {
+                member1.setCommissionUnarrived(BigDecimal.ZERO);
+            }
             member1.setCommissionUnarrived(b1.add(member1.getCommissionUnarrived()));
             memberService.update(member1);
             commissionDao.save(depositLog1);
@@ -650,7 +643,6 @@ public class OrderService extends BaseService<Order> {
         }
 
         orderDao.update(order);
-
 
 
         logger.info("开始极光推送服务————————————————————————");
@@ -695,7 +687,7 @@ public class OrderService extends BaseService<Order> {
      * 创建福袋订单
      */
     @Before(Tx.class)
-    public Order createFudai(Order.Type type, FuDai fuDai, Receiver receiver,Boolean isInvoice,Boolean isPersonal,String taxNumber,String companyName) {
+    public Order createFudai(Order.Type type, FuDai fuDai, Receiver receiver, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName) {
 
         List<ShippingMethod> shippingMethods = shippingMethodService.findMethodList();
         // 默认网上支付
@@ -741,7 +733,7 @@ public class OrderService extends BaseService<Order> {
         order.setIsUseCouponCode(false);
         order.setIsExchangePoint(false);
         order.setIsAllocatedStock(false);
-       // order.setInvoice(null);
+        // order.setInvoice(null);
         order.setShippingMethodId(shippingMethods.get(0).getId());
         order.setMemberId(member.getId());
         order.setCouponDiscount(BigDecimal.ZERO);
@@ -870,13 +862,16 @@ public class OrderService extends BaseService<Order> {
     public Page<Order> findPages(Order.Status status, Member member, Pageable pageable, Integer type) {
         return orderDao.findPages(status, member, pageable, type);
     }
-    public Page<Order> findTuanGouPages( String status, Member member, Pageable pageable) {
+
+    public Page<Order> findTuanGouPages(String status, Member member, Pageable pageable) {
         return orderDao.findTuanGouPages(status, member, pageable);
     }
-    public Page<Order> findYongJinPages( String status, Member member, Pageable pageable) {
+
+    public Page<Order> findYongJinPages(String status, Member member, Pageable pageable) {
         return orderDao.findYongJinPages(status, member, pageable);
     }
-    public Page<Order> findYongJinXiaPages( Integer memberId, Member member, Pageable pageable) {
+
+    public Page<Order> findYongJinXiaPages(Integer memberId, Member member, Pageable pageable) {
         return orderDao.findYongJinXiaPages(memberId, member, pageable);
     }
 
@@ -1289,7 +1284,7 @@ public class OrderService extends BaseService<Order> {
      * @return 订单
      */
 
-    public Order create(Order.Type type, Cart cart, Double manjianPrice, Receiver receiver, Double amountMoney, Double returnMoney, Double deliveryMoney, Double miaobiMoney, String memo, Double couponYunfei,Boolean isInvoice,Boolean isPersonal,String taxNumber,String companyName) {
+    public Order create(Order.Type type, Cart cart, Double manjianPrice, Receiver receiver, Double amountMoney, Double returnMoney, Double deliveryMoney, Double miaobiMoney, String memo, Double couponYunfei, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName) {
         Assert.notNull(type);
         Assert.notNull(cart);
         Assert.notNull(cart.getMember());
@@ -1354,7 +1349,7 @@ public class OrderService extends BaseService<Order> {
         order.setIsUseCouponCode(false);
         order.setIsExchangePoint(false);
         order.setIsAllocatedStock(false);
-       // order.setInvoice(null);
+        // order.setInvoice(null);
         order.setShippingMethodId(1L);
         order.setMemberId(member.getId());
         order.setPromotionNames(JSON.toJSONString(cart.getPromotionNames()));
@@ -1482,7 +1477,7 @@ public class OrderService extends BaseService<Order> {
      */
 
     public Order createBuyNow(Order.Type type, Member member, Goods goods, Double price, int quantity, Double manjianPrice, Receiver receiver, Double amountMoney, Double deliveryMoney, Double
-        miaobiMoney, String memo, Double couponYunfei,Boolean isInvoice,Boolean isPersonal,String taxNumber,String companyName,Boolean isSinglepurchase,long fightGroupId,long tuanGouId,Double rate) {
+            miaobiMoney, String memo, Double couponYunfei, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName, Boolean isSinglepurchase, long fightGroupId, long tuanGouId, Double rate) {
 
 
         JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
@@ -1501,7 +1496,7 @@ public class OrderService extends BaseService<Order> {
         order.setShareCode(member.getShareCode());
         order.setPrice(new BigDecimal(price));
         order.setFee(new BigDecimal(deliveryMoney));
-        order.setFreight(new BigDecimal(couponYunfei ));
+        order.setFreight(new BigDecimal(couponYunfei));
         order.setMiaobiPaid(new BigDecimal(miaobiMoney));
         order.setWeixinPaid(BigDecimal.ZERO);
         order.setAliPaid(BigDecimal.ZERO);
@@ -1533,7 +1528,7 @@ public class OrderService extends BaseService<Order> {
         order.setIsUseCouponCode(false);
         order.setIsExchangePoint(false);
         order.setIsAllocatedStock(false);
-      //  order.setInvoice(null);
+        //  order.setInvoice(null);
         order.setShippingMethodId(1L);
         order.setMemberId(member.getId());
         order.setPromotionNames(null);
@@ -1585,7 +1580,6 @@ public class OrderService extends BaseService<Order> {
         orderItemDao.save(orderItem);
 
 
-
         OrderLog orderLog = new OrderLog();
         orderLog.setType(OrderLog.Type.create.ordinal());
         orderLog.setOrderId(order.getId());
@@ -1608,8 +1602,6 @@ public class OrderService extends BaseService<Order> {
 
         return order;
     }
-
-
 
 
     //创建倒拍的普通订单
@@ -1890,7 +1882,7 @@ public class OrderService extends BaseService<Order> {
             }
 
             // 全部使用余额支付
-            if (order.getAmountPaid().doubleValue() > 0 && order.getAmountPaid().doubleValue() == order.getAmount().doubleValue() ) {
+            if (order.getAmountPaid().doubleValue() > 0 && order.getAmountPaid().doubleValue() == order.getAmount().doubleValue()) {
                 member.setBalance(member.getBalance().add(order.getAmountPaid()).setScale(2, ROUND_HALF_UP));
                 //  添加余额消费记录
                 DepositLog depositLog = new DepositLog();
@@ -1911,7 +1903,7 @@ public class OrderService extends BaseService<Order> {
                     orderNo = order.getOrderNo();
                     try {
                         //  总订单金额
-                        Integer totalPrice = Integer.parseInt( String.format("%.0f", order.getWeixinPaid().doubleValue() * 100));
+                        Integer totalPrice = Integer.parseInt(String.format("%.0f", order.getWeixinPaid().doubleValue() * 100));
                         //余额退款
                         Double balaceReturnPrice = order.getAmountPaid().setScale(2, ROUND_HALF_DOWN).doubleValue();
                         balace = new BigDecimal(balaceReturnPrice).setScale(2, ROUND_HALF_DOWN);
@@ -1921,14 +1913,14 @@ public class OrderService extends BaseService<Order> {
                         Map<String, String> map = accountService.BackToWeChat(orderNo, totalPrice, wechatReturnPriceIntValue, "任性猫退款");
                         if (map == null || !"SUCCESS".equals(map.get("result_code"))) {
 
-                          //  renderJson(ApiResult.fail("余额不足"));
+                            //  renderJson(ApiResult.fail("余额不足"));
 
-                            throw new AppRuntimeException(Code.FAIL,"微信退款失败");
+                            throw new AppRuntimeException(Code.FAIL, "微信退款失败");
                         }
                     } catch (Exception e) {
                         logger.error("微信退款失败: " + e.getCause());
                         logger.error("微信退款失败详情: " + orderNo);
-                        throw new AppRuntimeException(Code.FAIL,"微信退款失败");
+                        throw new AppRuntimeException(Code.FAIL, "微信退款失败");
                     }
 
                 }
@@ -1945,7 +1937,7 @@ public class OrderService extends BaseService<Order> {
                     } catch (Exception e) {
                         logger.error("支付宝退款失败: " + e.getCause());
                         logger.error("支付宝退款失败详情: " + orderNo);
-                        throw new AppRuntimeException(Code.FAIL,"支付宝退款失败");
+                        throw new AppRuntimeException(Code.FAIL, "支付宝退款失败");
                     }
                 }
                 if (balace != null)
@@ -1975,25 +1967,25 @@ public class OrderService extends BaseService<Order> {
                     } catch (Exception e) {
                         logger.error("支付宝退款失败: " + e.getCause());
                         logger.error("支付宝退款失败详情: " + orderNo);
-                        throw new AppRuntimeException(Code.FAIL,"支付宝退款失败");
+                        throw new AppRuntimeException(Code.FAIL, "支付宝退款失败");
                     }
                 }
                 //  微信退
                 if (order.getWeixinPaid().doubleValue() > 0) {
                     try {
                         //  总订单金额
-                        Integer totalPrice = Integer.parseInt( String.format("%.0f", order.getWeixinPaid().doubleValue() * 100));
+                        Integer totalPrice = Integer.parseInt(String.format("%.0f", order.getWeixinPaid().doubleValue() * 100));
                         //微信退款
                         Double wechatReturnPrice = order.getWeixinPaid().setScale(2, ROUND_HALF_DOWN).doubleValue();
                         Integer wechatReturnPriceIntValue = Integer.parseInt(String.format("%.0f", wechatReturnPrice * 100));
                         Map<String, String> map = accountService.BackToWeChat(orderNo, totalPrice, wechatReturnPriceIntValue, "任性猫退款");
                         if (map == null || !"SUCCESS".equals(map.get("result_code"))) {
-                            throw new AppRuntimeException(Code.FAIL,"微信退款失败");
+                            throw new AppRuntimeException(Code.FAIL, "微信退款失败");
                         }
                     } catch (Exception e) {
                         logger.error("微信退款失败: " + e.getCause());
-                        logger.error("微信退款失败详情: " + orderNo );
-                        throw new AppRuntimeException(Code.FAIL,"微信退款失败");
+                        logger.error("微信退款失败详情: " + orderNo);
+                        throw new AppRuntimeException(Code.FAIL, "微信退款失败");
                     }
                 }
             }
@@ -2538,14 +2530,14 @@ public class OrderService extends BaseService<Order> {
      * @return
      */
     @Before(Tx.class)
-    public Order createMiaoBi(Order.Type type, Receiver receiver, Member member, Double amountMoney, Double miaobiMoney, String memo, BigDecimal price, Integer goodsNum, Long goodsId, Integer weight,Boolean isInvoice,Boolean isPersonal,String taxNumber,String companyName) {
+    public Order createMiaoBi(Order.Type type, Receiver receiver, Member member, Double amountMoney, Double miaobiMoney, String memo, BigDecimal price, Integer goodsNum, Long goodsId, Integer weight, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName) {
         Assert.notNull(type);
         JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
         Setting setting = SystemUtils.getSetting();
         Double scale = redisSetting.getDouble("scale");
         Order order = new Order();
 
-       order.setIsInvoice(isInvoice);
+        order.setIsInvoice(isInvoice);
         order.setIsPersonal(isPersonal);
         order.setTaxNumber(taxNumber);
         order.setCompanyName(companyName);
