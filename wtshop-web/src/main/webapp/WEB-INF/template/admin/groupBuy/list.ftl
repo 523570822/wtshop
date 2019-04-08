@@ -178,23 +178,26 @@
                 </td>
                 <td>
                     [#if groupBuy.status]
-                        <span class="green">[已启用]</span>
+
+                       <span class="green">[已上架]</span>
                     [#else]
-                        <span class="red">[已禁用]</span>
+                         <span class="red">[已下架]</span>
                     [/#if]
 
                     [#if groupBuy.isMarketable]
-                        <span class="green">[已上架]</span>
+
                     [#else]
-                        <span class="red">[已下架]</span>
+
                     [/#if]
 
-
+[#--
                     [#if groupBuy.isTop]
                         <span class="green">[已置顶]</span>
                         [#else]
                         <span class="red">[未置顶]</span>
-                        [/#if]     [#if groupBuy.is_singlepurchase]
+                        [/#if]--]
+
+                    [#if groupBuy.is_singlepurchase]
                         <span class="green">[可以单独购买]</span>
                         [#else]
                         <span class="red">[不可以单独购买]</span>

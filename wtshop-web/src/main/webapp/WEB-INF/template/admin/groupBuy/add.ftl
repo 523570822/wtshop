@@ -98,11 +98,11 @@
             <input type="button" value="${message("admin.goods.productImage")}" />
         </li>--]
         </ul>
-    <input value="0" name="groupBuy.status" type="hidden"/>
+   [#-- <input value="0" name="groupBuy.status" type="hidden"/>--]
     <table class="input tabContent">
         <tr>
             <th>
-                <span class="requiredField">*</span>${message("Ad.title")}:123123
+                <span class="requiredField">*</span>${message("Ad.title")}:
             </th>
             <td>
                 <input type="text" name="groupBuy.title" class="text" maxlength="200"  />
@@ -140,7 +140,7 @@
             </th>
             <td>
                 <input type="hidden" name="productId" id="product_id" class="text" maxlength="200" />
-                <input type="text" class="text" maxlength="200" id="product_name" name="product_name" title=${message("groupBuy.phone.title")}  />
+                <input disabled type="text" class="text" maxlength="200" id="product_name" name="product_name" title=${message("groupBuy.phone.title")}  />
                 <input type="button" value="选择产品" class="button" id="addProduct"/>
             </td>
         </tr>
@@ -218,16 +218,8 @@
             </th>
             <td>
                 <label>
-                    <input type="checkbox" id="status" name="status"  />是否上架
+                    <input type="checkbox"  name="status" checked="checked" value="true"   />是否上架
                     <input type="hidden" name="_status" value="false" />
-                </label>
-                <label>
-                    <input type="checkbox" name="isList" value="true" checked="checked" />${message("Goods.isList")}
-                    <input type="hidden" name="_isList" value="false" />
-                </label>
-                <label>
-                    <input type="checkbox" name="isTop" value="true" />${message("Goods.isTop")}
-                    <input type="hidden" name="_isTop" value="false" />
                 </label>
                 <label>
                     <input type="checkbox" name="isSinglepurchase" value="true" checked="checked" />${message("groupBuy.isSinglePurchase")}

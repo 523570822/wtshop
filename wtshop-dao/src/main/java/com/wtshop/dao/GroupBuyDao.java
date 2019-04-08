@@ -27,10 +27,10 @@ public class GroupBuyDao extends BaseDao<GroupBuy>{
         String select = " SELECT f.*,g.name,g.image,g.market_price,case when  gr.`status` is null then 0 else gr.`status` end  rem_status ";
         String  sqlExceptSelect="";
         if(status){
-              sqlExceptSelect="FROM group_buy f LEFT JOIN goods g ON f.product_id = g.id LEFT JOIN (select  * from group_remind ss where ss.member_id="+id+") gr on f.id=gr.group_id WHERE 1 = 1 AND unix_timestamp(now()) < unix_timestamp(f.end_date) AND unix_timestamp(now()) > unix_timestamp(f.begin_date) AND f.STATUS = 0 ORDER BY price DESC";
+              sqlExceptSelect="FROM group_buy f LEFT JOIN goods g ON f.product_id = g.id LEFT JOIN (select  * from group_remind ss where ss.member_id="+id+") gr on f.id=gr.group_id WHERE 1 = 1 AND unix_timestamp(now()) < unix_timestamp(f.end_date) AND unix_timestamp(now()) > unix_timestamp(f.begin_date) AND f.STATUS = 1 ORDER BY price DESC";
 
         }else{
-              sqlExceptSelect="FROM group_buy f LEFT JOIN goods g ON f.product_id = g.id LEFT JOIN (select  * from group_remind ss where ss.member_id="+id+") gr on f.id=gr.group_id WHERE 1 = 1 AND unix_timestamp(now())<unix_timestamp( f.begin_date) AND f.STATUS = 0 ORDER BY price DESC";
+              sqlExceptSelect="FROM group_buy f LEFT JOIN goods g ON f.product_id = g.id LEFT JOIN (select  * from group_remind ss where ss.member_id="+id+") gr on f.id=gr.group_id WHERE 1 = 1 AND unix_timestamp(now())<unix_timestamp( f.begin_date) AND f.STATUS = 1 ORDER BY price DESC";
         }
 
 

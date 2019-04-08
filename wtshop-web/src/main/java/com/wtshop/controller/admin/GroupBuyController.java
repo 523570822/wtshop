@@ -59,6 +59,7 @@ public class GroupBuyController extends BaseController {
 
         Long productId = getParaToLong("productId");
         groupBuy.setProductId(productId);
+
         groupBuy.setStatus(getParaToBoolean("status", false));
         groupBuy.setIsList(getParaToBoolean("isList", false));
         groupBuy.setIsTop(getParaToBoolean("isTop", false));
@@ -156,7 +157,7 @@ public class GroupBuyController extends BaseController {
         GroupBuy fuDai = fuDaiService.find(fudaiId);
         fuDai.setStatus(GroupBuy.State_UnActive);
         fuDaiService.update(fuDai);
-        redirect("list.jhtml");
+        redirect("/admin/groupBuy/list.jhtml");
     }
 
 
@@ -166,15 +167,9 @@ public class GroupBuyController extends BaseController {
     public void publish() {
         Long fudaiId = getParaToLong("id");
         GroupBuy fuDai = fuDaiService.find(fudaiId);
-        List<FudaiProduct> list = fuDaiService.findSubListByFudaiId(fuDai.getId());
-        if (CollectionUtils.isEmpty(list) || list.size() <= fuDai.getNum()) {
-            addFlashMessage(Message.errMsg("福袋副产品数量需要大于福袋要抽取的副产品数量"));
-            redirect("list.jhtml");
-            return;
-        }
         fuDai.setStatus(GroupBuy.State_Active);
         fuDaiService.update(fuDai);
-        redirect("list.jhtml");
+        redirect("/admin/groupBuy/list.jhtml");
     }
 
 
