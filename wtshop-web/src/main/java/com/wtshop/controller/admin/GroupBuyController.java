@@ -29,20 +29,20 @@ public class GroupBuyController extends BaseController {
     private GroupBuyService fuDaiService = enhance(GroupBuyService.class);
     public void list() {
 
-        Map<String, Object> map = new HashedMap();
+    /*    Map<String, Object> map = new HashedMap();
         Pageable pageable = new Pageable(1, 10);
 
 
         Page<GroupBuy> list = fuDaiService.findPages(pageable,false);
         // map.put("list", list);
-        renderJson(ApiResult.success(list));
+        renderJson(ApiResult.success(list));*/
 
-      /*  Pageable pageable = getBean(Pageable.class);
+      Pageable pageable = getBean(Pageable.class);
         pageable.setOrderProperty("orders");
         pageable.setOrderDirection("desc");
         setAttr("pageable", pageable);
         setAttr("page", fuDaiService.findPage(pageable));
-        render("/admin/groupBuy/list.ftl");*/
+        render("/admin/groupBuy/list.ftl");
     }
 
     //去添加页面
