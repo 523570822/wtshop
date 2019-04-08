@@ -210,10 +210,11 @@ public class OrderService extends BaseService<Order> {
     public ApiResult paySuccess(String sn, String money, String weiXinNo, String aliNo) {
 
         final Logger logger = Logger.getLogger("paySuccess");
+        logger.info("===============>回调开始 <=============== \n " );
+        System.out.println("===============>回调开始 <=============== ");
         ApiResult returnStatus = ApiResult.fail();
         Setting setting = SystemUtils.getSetting();
         JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
-
         Order order = orderDao.findBySn(sn);
         Long memberId = order.getMemberId();
         Member member = memberService.find(memberId);
@@ -342,7 +343,8 @@ public class OrderService extends BaseService<Order> {
 //			reverseExService.paySuccess(order.getActOrderId());
         }
 
-
+        logger.info("===============>回调开始 <=============== \n " );
+        System.out.println("===============>回调开始 <=============== ");
         logger.info("测试支付宝应保存金额   :  " + amount);
         if (StringUtils.isNotBlank(weiXinNo)) {
             order.setWeixinPaid(amount);
@@ -443,7 +445,8 @@ public class OrderService extends BaseService<Order> {
 
             memberService.update(member);
         }
-
+        logger.info("===============>回调开始2 <=============== \n " );
+        System.out.println("===============>回调开始2 <=============== ");
         //赠送喵币逻辑
         boolean isSendMiaoBi = redisSetting.getBoolean("isSendMiaoBi") ? true : false;
         if (isSendMiaoBi && order.getType() == 0 && order.getCouponCode() == null && order.getMiaobiPaid().doubleValue() == 0) {
@@ -536,7 +539,8 @@ public class OrderService extends BaseService<Order> {
             }
         }
         double dd = order.getCommissionRate() * order.getPrice().doubleValue() / 100;
-
+        logger.info("===============>回调开始3 <=============== \n " );
+        System.out.println("===============>回调开始3 <=============== ");
         // 生成会员激活码，福袋
         //
         if (order.getType() == Order.Type.fudai.ordinal()) {
