@@ -23,7 +23,7 @@
 </head>
 <body>
 <div class="breadcrumb">
-    <a href="${base}/admin/common/index.jhtml">${message("admin.breadcrumb.home")}</a> &raquo; ${message("groupBuy.manager")}
+    <a href="${base}/admin/common/index.jhtml">${message("admin.breadcrumb.home")}</a> &raquo;喵币赠送管理
     <span>(${message("admin.page.total", page.totalRow)})</span>
 </div>
 <form id="listForm" action="list.jhtml" method="post">
@@ -78,42 +78,16 @@
             <th>
                 <span>${message("Promotion.title")}</span>
             </th>
-            <th>
-                <span>产品名称</span>
+
+           <th>
+                <span>喵币数量</span>
             </th>
-            <th>
-                <span>${message("groupBuy.price")}</span>
-            </th>
-            <th>
-                <span>${message("groupBuy.uniprice")}</span>
-            </th>
-            <th>
-                <span>${message("groupBuy.count")}</span>
-            </th>
-            <th>
-                <span>${message("groupBuy.num")}</span>
-            </th>
-            <th>
-                <span> ${message("groupBuy.sales")}</span>
-            </th>
-            <th>
-                <span>${message("groupBuy.teamnum")}</span>
-            </th>
-            <th>
-                <span>${message("groupBuy.dispatchprice")}</span>
-            </th>
-            <th>
-                <span>${message("groupBuy.groupnum")}</span>
-            </th>
+
             <th>
                 <span> 开始时间</span>
             </th>
             <th>
                 <span>结束时间</span>
-            </th>
-
-            <th>
-                <a href="javascript:;" class="sort" name="orders">${message("shop.common.order")}</a>
             </th>
             <th>
                 <span>${message("app_manage.list.time")}</span>
@@ -133,42 +107,18 @@
                 <td>
                     <span title="${groupBuy.title}">${abbreviate(groupBuy.title, 50, "...")}</span>
                 </td>
-                <td>
-                ${groupBuy.product.name}
+
+              <td>
+                ${groupBuy.number}
                 </td>
-                <td>
-                ${groupBuy.price}
-                </td>
-                <td>
-                ${groupBuy.uniprice}
-                </td>
-                <td>
-                    ${groupBuy.count}
-                </td>
-                <td>
-                ${groupBuy.num}
-                </td>
-                <td>
-                ${groupBuy.sales}
-                </td>
-                <td>
-                    ${groupBuy.teamnum}
-                </td>
-                <td>
-                    ${groupBuy.dispatchprice}
-                </td>
-                <td>
-                    ${groupBuy.groupnum}
-                </td>
+
                 <td>
                     ${groupBuy.begin_date}
                 </td>
                 <td>
                     ${groupBuy.end_date}
                 </td>
-                <td>
-                ${groupBuy.orders}
-                </td>
+
                 <td>
                     [#if groupBuy.create_date??]
                         <span title="${groupBuy.create_date?string("yyyy-MM-dd HH:mm:ss")}">${groupBuy.create_date}</span>
@@ -184,24 +134,11 @@
                          <span class="red">[已下架]</span>
                     [/#if]
 
-                    [#if groupBuy.isMarketable]
 
-                    [#else]
 
-                    [/#if]
 
-[#--
-                    [#if groupBuy.isTop]
-                        <span class="green">[已置顶]</span>
-                        [#else]
-                        <span class="red">[未置顶]</span>
-                        [/#if]--]
 
-                    [#if groupBuy.is_singlepurchase]
-                        <span class="green">[可以单独购买]</span>
-                        [#else]
-                        <span class="red">[不可以单独购买]</span>
-                        [/#if]
+
                 </td>
                 <td>
                     [#if groupBuy.status]

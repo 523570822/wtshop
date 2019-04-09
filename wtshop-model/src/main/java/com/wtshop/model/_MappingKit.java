@@ -19,6 +19,7 @@ public class _MappingKit {
 
 	public static void mapping(ActiveRecordPlugin arp) {
 		arp.addMapping("miaobi_lssue", "id", MiaobiLssue.class);
+		arp.addMapping("miaobi_lssuelog", "id", MiaobiLssuelog.class);
 		arp.addMapping("account", "id", Account.class);
 		arp.addMapping("group_remind", "id", GroupRemind.class);
 		arp.addMapping("act_introduce", "id", ActIntroduce.class);

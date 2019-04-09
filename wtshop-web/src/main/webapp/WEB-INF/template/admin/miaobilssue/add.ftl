@@ -91,123 +91,49 @@
         <li>
             <input type="button" value="${message("admin.coupon.base")}"class="current" />
         </li>
-     [#--   <li>
-            <input type="button" value="${message("groupBuy.rule")}" />
-        </li>
-        <li>
-            <input type="button" value="${message("admin.goods.productImage")}" />
-        </li>--]
-        </ul>
-   [#-- <input value="0" name="groupBuy.status" type="hidden"/>--]
+    [#--   <li>
+           <input type="button" value="${message("groupBuy.rule")}" />
+       </li>
+       <li>
+           <input type="button" value="${message("admin.goods.productImage")}" />
+       </li>--]
+    </ul>
+[#-- <input value="0" name="groupBuy.status" type="hidden"/>--]
     <table class="input tabContent">
         <tr>
             <th>
                 <span class="requiredField">*</span>${message("Ad.title")}:
             </th>
             <td>
-                <input type="text" name="groupBuy.title" class="text" maxlength="200"  />
-            </td>
-        </tr>
-
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("groupBuy.price")}:
-            </th>
-            <td>
-                <input type="text" name="groupBuy.price" class="text" maxlength="200" title= ${message("groupBuy.sale.title")} />
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>佣金比例（%）
-            </th>
-            <td>
-                <input type="text" id="groupRate" name="product.group_rate" class="text" maxlength="16" title="团长优惠比例（如10%填写10）" />
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("groupBuy.uniprice")}:
-            </th>
-            <td>
-                <input type="text" name="groupBuy.uniprice" class="text" maxlength="200" title= ${message("groupBuy.uniprice.Explanation")} />
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("groupBuy.primary.goods")}:
-            </th>
-            </th>
-            <td>
-                <input type="hidden" name="productId" id="product_id" class="text" maxlength="200" />
-                <input disabled type="text" class="text" maxlength="200" id="product_name" name="product_name" title=${message("groupBuy.phone.title")}  />
-                <input type="button" value="选择产品" class="button" id="addProduct"/>
-            </td>
-        </tr>
-      <tr>
-            <th>
-                <span class="requiredField">*</span>${message("groupBuy.count")}:
-            </th>
-            <td>
-                <input type="text" name="groupBuy.count" class="text" maxlength="200" title=${message("groupBuy.success.title")} />
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("groupBuy.num")}:
-            </th>
-            <td>
-                <input type="text" name="groupBuy.num" class="text" maxlength="200" title=${message("groupBuy.num.title")} />
+                <input type="text" name="miaobiLssue.title" class="text" maxlength="200"  />
             </td>
         </tr>
 
 
+
+
+
         <tr>
             <th>
-                <span class="requiredField">*</span>${message("groupBuy.sales")}:
+                <span class="requiredField">*</span>喵币数量:
             </th>
             <td>
-                <input type="text" name="groupBuy.num" class="text" maxlength="200"  />
+                <input type="text" name="miaobiLssue.number" class="text" maxlength="200" title="喵币数量" />
             </td>
         </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("groupBuy.teamnum")}:
-            </th>
-            <td>
-                <input type="text" name="groupBuy.teamnum" class="text" maxlength="200" />
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("groupBuy.dispatchprice")}:
-            </th>
-            <td>
-                <input type="text" name="groupBuy.dispatchprice" class="text" maxlength="200" />
-            </td>
-        </tr>
-       <tr>
-            <th>
-                <span class="requiredField">*</span>${message("groupBuy.groupnum")}:
-            </th>
-            <td>
-                <input type="text" name="groupBuy.groupnum" class="text" maxlength="200"  />
-            </td>
-        </tr>
-        <tr>
-            <th>
-                ${message("Promotion.beginDate")}:
-            </th>
-            <td>
-                <input type="text" id="beginDate" name="groupBuy.begin_date" class="text Wdate" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss', maxDate: '#F{$dp.$D(\'endDate\')}'});" />
-            </td>
+        <th>
+            ${message("Promotion.beginDate")}:
+        </th>
+        <td>
+            <input type="text" id="beginDate" name="miaobiLssue.begin_date" class="text Wdate" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss', maxDate: '#F{$dp.$D(\'endDate\')}'});" />
+        </td>
         </tr>
         <tr>
             <th>
                 ${message("Promotion.endDate")}:
             </th>
             <td>
-                <input type="text" id="endDate" name="groupBuy.end_date" class="text Wdate" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss', minDate: '#F{$dp.$D(\'beginDate\')}'});" />
+                <input type="text" id="endDate" name="miaobiLssue.end_date" class="text Wdate" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss', minDate: '#F{$dp.$D(\'beginDate\')}'});" />
             </td>
         </tr>
 
@@ -221,10 +147,6 @@
                     <input type="checkbox"  name="status" checked="checked" value="true"   />是否上架
                     <input type="hidden" name="_status" value="false" />
                 </label>
-                <label>
-                    <input type="checkbox" name="isSinglepurchase" value="true" checked="checked" />${message("groupBuy.isSinglePurchase")}
-                    <input type="hidden" name="_isSinglepurchase" value="false" />
-                </label>
             </td>
         </tr>
 
@@ -233,23 +155,15 @@
                 <span class="requiredField"></span>${message("groupBuy.message")}:
             </th>
             <td>
-                <textarea rows="" cols="" name="groupBuy.explain" style="width: 300px;height:200px " maxlength="400" title= ${message("groupBuy.message.title")}></textarea>
+                <textarea rows="" cols="" name="miaobiLssue.explain" style="width: 300px;height:200px " maxlength="400" title= ${message("groupBuy.message.title")}></textarea>
             </td>
         </tr>
         <tr>
-            <th>
-            ${message("admin.common.order")}:
-            </th>
             <td>
-                <input type="text" name="groupBuy.orders" class="text" maxlength="9" />
+                <input type="submit" class="button" value="${message("admin.common.submit")}" />
+                <input type="button" class="button" value="${message("admin.common.back")}" onclick="history.back(); return false;" />
             </td>
         </tr>
-<tr>
-    <td>
-        <input type="submit" class="button" value="${message("admin.common.submit")}" />
-        <input type="button" class="button" value="${message("admin.common.back")}" onclick="history.back(); return false;" />
-    </td>
-</tr>
 
     </table>
     <table class="input tabContent">
@@ -264,16 +178,16 @@
         </tr>
         <tr>
             <th>
-            ${message("ProductImage.file")}
+                ${message("ProductImage.file")}
             </th>
             <th>
-            ${message("ProductImage.title")}
+                ${message("ProductImage.title")}
             </th>
             <th>
-            ${message("admin.common.order")}
+                ${message("admin.common.order")}
             </th>
             <th>
-            ${message("admin.common.action")}
+                ${message("admin.common.action")}
             </th>
         </tr>
 
