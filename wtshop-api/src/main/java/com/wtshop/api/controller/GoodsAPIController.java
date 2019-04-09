@@ -106,8 +106,9 @@ public class GoodsAPIController extends BaseAPIController {
 		Member m=memberService.getCurrent();
 		List<Goods> page = goodsService.recommendList( m.getId());
 		List<Goods> page1=goodsService.remainingRecommendList( m.getId());
+		List<Goods> page2=goodsService.remainingRecommendList();
 		page.addAll(page1);
-
+		page.addAll(page2);
 		renderJson(ApiResult.success(page));
 	}
 
@@ -120,6 +121,8 @@ public class GoodsAPIController extends BaseAPIController {
 		Long id = getParaToLong("goodIds");
 		String type = getPara("type"); //是否喵币商品
 		Goods goods = goodsService.find(id);
+		goods.setHits(goods.getHits()+1);
+		goodsService.update(goods);
 		Member m=memberService.getCurrent();
 		MemberInterestCategory ddd = memberInterestService.findRecord(m.getId(), goods.getProductCategoryId());
 		if(ddd==null){

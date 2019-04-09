@@ -150,6 +150,9 @@ public class GoodsService extends BaseService<Goods> {
     public List<Goods> remainingRecommendList(long id) {
         return goodsDao.remainingRecommendList(id);
     }
+    public List<Goods> remainingRecommendList() {
+        return goodsDao.remainingRecommendList();
+    }
     /**
      * 销量由高到低
      */

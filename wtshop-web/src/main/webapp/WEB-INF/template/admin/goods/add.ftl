@@ -825,8 +825,8 @@ $().ready(function() {
 					<span class="requiredField">*</span>标题:
 				</th>
 				<td>
-					<input type="text" name="goods.name" class="text" maxlength="10" />
-				</td>
+					<input type="text" name="goods.name" class="text" maxlength="20" />
+				</td>2
 			</tr>
 			<tr>
 				<th>

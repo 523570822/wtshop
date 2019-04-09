@@ -148,7 +148,13 @@ public class GoodsDao extends BaseDao<Goods> {
 		return modelManager.find(sql);
 	}
 
-
+	/**
+	 * 新品推荐
+	 */
+	public List<Goods> remainingRecommendList(){
+		String sql = "SELECT g.id, g. NAME, g.image, i.`name` attribute_value1, g.caption, g.create_date, g.hits FROM goods g LEFT JOIN interest_category i ON g.product_category_id = i.id WHERE g.is_delete <> 1 ORDER BY hits DESC LIMIT 3";
+		return modelManager.find(sql);
+	}
 
 
 	/**

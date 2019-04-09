@@ -868,7 +868,7 @@
                 <span class="requiredField">*</span>标题
             </th>
             <td>
-                <input type="text" name="goods.name" class="text" value="${goods.name}" maxlength="200"/>
+                <input type="text" name="goods.name" class="text" value="${goods.name}" maxlength="20"/>
             </td>
         </tr>
         <tr>
