@@ -479,6 +479,9 @@
 
 						[#list ["admin:groupBuy"] as permission]
 							[@shiro.hasPermission name = permission]
+
+
+
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <a href="#groupBuy" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
@@ -501,7 +504,29 @@
 							[/@shiro.hasPermission]
 						[/#list]
 
+							[#list ["admin:miaobilssue"] as permission]
+								[@shiro.hasPermission name = permission]
+														<div class="panel panel-default">
+															<div class="panel-heading">
+																<a href="#miaobilssue" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
+																	<i class="glyphicon glyphicon-gift"></i> ${message("admin.role.miaobilssue")}
+																</a>
+															</div>
+															<div class="accordion-body collapse" id="miaobilssue">
+																<div class="panel-body">
+																	<ul class="nav nav-pills nav-stacked">
+																		[@shiro.hasPermission name="admin:miaobilssue"]
+																			<li><a href="../miaobilssue/list.jhtml" target="iframe">喵币发放详情</a></li>
+																		[#--	<li><a href="../miaobilssue/list.jhtml" target="iframe"></a></li>--]
+																		[/@shiro.hasPermission]
+																	</ul>
+																</div>
+															</div>
 
+														</div>
+									[#break /]
+								[/@shiro.hasPermission]
+							[/#list]
 					
 					[#list ["admin:myWallet" ,"admin:myWalletInfo"] as permission]
 						[@shiro.hasPermission name = permission]
