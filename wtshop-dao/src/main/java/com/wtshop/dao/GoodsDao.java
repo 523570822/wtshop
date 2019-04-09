@@ -144,7 +144,7 @@ public class GoodsDao extends BaseDao<Goods> {
 	 * 新品推荐
 	 */
 	public List<Goods> remainingRecommendList(Long id){
-		String sql = "SELECT g.id,g.name,g.image,i.`name` attribute_value1 ,g.caption,g.create_date FROM goods g LEFT JOIN interest_category i ON g.product_category_id = i.id LEFT JOIN member_interest_category m ON i.id = m.interest_category WHERE (m.members <> "+id+" OR m.members IS NOT NULL) and g.is_delete<>1 ORDER BY RAND() LIMIT 3";
+		String sql = "SELECT g.id,g.name,g.image,i.`name` attribute_value1 ,g.caption,g.hits,g.create_date FROM goods g LEFT JOIN interest_category i ON g.product_category_id = i.id LEFT JOIN member_interest_category m ON i.id = m.interest_category WHERE (m.members <> "+id+" OR m.members IS NOT NULL) and g.is_delete<>1 ORDER BY RAND() LIMIT 3";
 		return modelManager.find(sql);
 	}
 
@@ -274,7 +274,7 @@ public class GoodsDao extends BaseDao<Goods> {
 	 */
 	public Page<Goods> search(Boolean is_vip, List<Long> productCategoryList, Long[] brandId, List<Long> areaList, Long[] functionId, String keyword, BigDecimal startPrice, BigDecimal endPrice, Pageable pageable, Boolean modify_date, Boolean sell, Boolean review, Boolean priceUp ,Boolean priceDown){
 		Logger logger = LoggerFactory.getLogger("dddddd");
-		String sqlExceptSelect = " from (select g.sales,g.id,g.is_top, g.name,g.price,g.market_price,g.image,g.caption,g.product_category_id,g.is_delete,g.is_marketable,g.commission_rate,g.create_date FROM goods g left join goods_effct e on g.id = e.goods " +
+		String sqlExceptSelect = " from (select g.sales,g.hits,g.id,g.is_top, g.name,g.price,g.market_price,g.image,g.caption,g.product_category_id,g.is_delete,g.is_marketable,g.commission_rate,g.create_date FROM goods g left join goods_effct e on g.id = e.goods " +
 				"LEFT JOIN (SELECT count(*) count,goods_id from review group by goods_id ) m ON g.id = m.goods_id " +
 				"LEFT JOIN (SELECT count(p.goods_id)count,p.goods_id,o.`status`,p.stock from order_item i LEFT JOIN `order` o ON i.order_id = o.id " +
 				"LEFT JOIN product p ON p.id =i.product_id GROUP BY p.goods_id ";
