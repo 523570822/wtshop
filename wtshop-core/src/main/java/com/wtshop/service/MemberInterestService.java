@@ -5,6 +5,8 @@ import com.wtshop.dao.MemberInterestDao;
 import com.wtshop.model.InterestCategory;
 import com.wtshop.model.MemberInterestCategory;
 
+import java.util.List;
+
 import static com.jfinal.aop.Enhancer.enhance;
 
 /**
@@ -24,7 +26,12 @@ public class MemberInterestService extends BaseService<MemberInterestCategory>{
     public MemberInterestCategory findRecord(Long memberId, Long interestId){
         return memberInterestDao.findRecord(memberId, interestId);
     }
-
+    /**
+     * 查询当前是否有记录
+     */
+    public List<MemberInterestCategory> findRecord(Long memberId){
+        return memberInterestDao.findRecord(memberId);
+    }
     /**
      * 删除会员记录
      */

@@ -104,11 +104,24 @@ public class GoodsAPIController extends BaseAPIController {
 	 */
 	public void recommendList() {
 		Member m=memberService.getCurrent();
-		List<Goods> page = goodsService.recommendList( m.getId());
-		List<Goods> page1=goodsService.remainingRecommendList( m.getId());
-		List<Goods> page2=goodsService.remainingRecommendList();
-		page.addAll(page1);
-		page.addAll(page2);
+		List<Goods> page;
+
+		List<MemberInterestCategory> memberInterest = memberInterestService.findRecord(m.getId());
+		if(memberInterest.size()>0){
+
+		 page=goodsService.remainingRecommendList(20);
+		}else {
+		 page = goodsService.recommendList( m.getId());
+			List<Goods> page1=goodsService.remainingRecommendList( m.getId());
+			List<Goods> page2=goodsService.remainingRecommendList(3);
+			page.addAll(page1);
+			page.addAll(page2);
+		}
+
+
+
+
+
 		renderJson(ApiResult.success(page));
 	}
 

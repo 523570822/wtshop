@@ -4,6 +4,8 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.model.MemberInterestCategory;
 
+import java.util.List;
+
 /**
  * Created by sq on 2017/8/21.
  */
@@ -28,6 +30,20 @@ public class MemberInterestDao extends BaseDao<MemberInterestCategory>{
             sql += " AND interest_category = " + interestId;
         }
         return modelManager.findFirst(sql);
+
+    }  /**
+     * 查询当前id是否有记录
+     */
+
+    public List<MemberInterestCategory> findRecord(Long memberId){
+
+        String sql = " select * from member_interest_category where 1 = 1  ";
+
+        if(memberId != null){
+            sql += " AND members = " + memberId;
+        }
+
+        return modelManager.find(sql);
 
     }
 
