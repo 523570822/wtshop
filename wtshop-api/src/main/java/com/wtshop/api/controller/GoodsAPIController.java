@@ -107,7 +107,7 @@ public class GoodsAPIController extends BaseAPIController {
 		List<Goods> page;
 
 		List<MemberInterestCategory> memberInterest = memberInterestService.findRecord(m.getId());
-		if(memberInterest.size()>0){
+		if(memberInterest.size()==0){
 
 		 page=goodsService.remainingRecommendList(20);
 		}else {
