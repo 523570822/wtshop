@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +55,7 @@ public class GoodsAPIController extends BaseAPIController {
 	private AreaService areaService = enhance(AreaService.class);
 	private ReceiverService receiverService = enhance(ReceiverService.class);
 	private AreaDescribeService areaDescribeService = enhance(AreaDescribeService.class);
+	private MiaobiLogService miaobiLogService = enhance(MiaobiLogService.class);
 	private MiaoBiGoodsService miaoBiGoodsService = enhance(MiaoBiGoodsService.class);
 	
 	/**
@@ -463,9 +465,40 @@ public void onShareCode(){
 		renderJson(ApiResult.fail("邀请码不存在!"));
 		return;
 	}
+
+
+
+
+
+
+
+
+
+
+	JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
+	Map<String,Object>  map=  new HashMap<>();
+	double sendMiaoBi=0;
+	sendMiaoBi = redisSetting.getDouble("registerSending") ;//邀请码赠送喵币
+
 	String str = new String(onShareCode);
 	m.setOnShareCode(str.toUpperCase());
+	MiaobiLog miaobiLog = new MiaobiLog();
+	miaobiLog.setMemberId(m.getId());
+	miaobiLog.setCredit(BigDecimal.valueOf(sendMiaoBi));
+	miaobiLog.setDebit(BigDecimal.ZERO);
+	miaobiLog.setType(0);
+	miaobiLog.setMemo("绑定邀请码赠送");
+	miaobiLog.setBalance(m.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
+	//更新用户喵币
+	m.setPoint(m.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
+	miaobiLogService.save(miaobiLog);
 	memberService.update(m);
-	renderJson(ApiResult.success("绑定邀请码成功"));
+	//更新用户喵币
+	m.setPoint(m.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
+	map.put("sendMiaobi",sendMiaoBi);
+	map.put("title","恭喜成为VIP");
+	map.put("type",1);
+	map.put("miaobilId",0);
+	renderJson(ApiResult.success(map,"绑定邀请码成功"));
 }
 }

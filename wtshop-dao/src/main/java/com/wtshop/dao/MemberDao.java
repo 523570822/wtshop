@@ -465,4 +465,8 @@ public class MemberDao extends BaseDao<Member> {
 		return orderSql;
 	}
 
+    public void updateJieritixing() {
+		String sql = "UPDATE member SET jieritixing_num=0" ;
+		Db.update(sql);
+    }
 }

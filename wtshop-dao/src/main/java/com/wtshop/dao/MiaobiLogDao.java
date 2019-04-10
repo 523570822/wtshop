@@ -32,7 +32,16 @@ public class MiaobiLogDao extends BaseDao<MiaobiLog>{
         String sql = " select * from miaobi_log where  member_id = " + memberId;
         return modelManager.findFirst(sql);
     }
-
+    /**
+     * 根据会员id 获取首次赠送记录
+     */
+    public List<MiaobiLog> findLogByMemberId(Long memberId,int type){
+        if (memberId == null) {
+            return null;
+        }
+        String sql = " select * from miaobi_log m where  type="+type+" and  member_id = " + memberId +" and to_days(m.create_date) = to_days(now())";
+        return modelManager.find(sql);
+    }
 
     /**
      * 喵币分页

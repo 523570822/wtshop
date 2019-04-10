@@ -7,6 +7,7 @@ import com.wtshop.model.FudaiProduct;
 import com.wtshop.model.GroupBuy;
 import com.wtshop.model.MiaobiLssue;
 import com.wtshop.service.GroupBuyService;
+import com.wtshop.service.MemberService;
 import com.wtshop.service.MiaoBiLssueService;
 import com.wtshop.util.ApiResult;
 
@@ -20,6 +21,7 @@ import java.util.Map;
 @ControllerBind(controllerKey = "/admin/miaobilssue")
 public class MiaoBiLssueController extends BaseController {
     private MiaoBiLssueService miaoBiLssueService = enhance(MiaoBiLssueService.class);
+    private MemberService memberService = enhance(MemberService.class);
     public void list() {
 
     /*    Map<String, Object> map = new HashedMap();
@@ -57,6 +59,8 @@ public class MiaoBiLssueController extends BaseController {
 
 
         miaoBiLssueService.save(groupBuy);
+
+        memberService.updateJieritixing();
         FudaiProduct fudaiProduct = new FudaiProduct(productId, groupBuy.getId(), 1);
         redirect("/admin/miaobilssue/list.jhtml");
     }

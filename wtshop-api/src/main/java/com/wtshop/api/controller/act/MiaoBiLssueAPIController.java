@@ -1,5 +1,6 @@
 package com.wtshop.api.controller.act;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.i18n.I18n;
@@ -115,6 +116,7 @@ public void receive() throws ParseException {
     miaobiLogService.save(miaobiLog);
     //更新用户喵币
     m.setPoint(m.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
+    m.setJieritixingNum(true);
     memberService.update(m);
     Long time = 0L;
     time = Calendar.getInstance().getTimeInMillis();
@@ -131,8 +133,91 @@ if(fightGroupL==0){
     renderJson(ApiResult.success(map));
 
 }
+/**
+ * 组团详情
+ */
+public void share() throws ParseException {
+    Member m=memberService.getCurrent();
+   int  type=4;
+   List<MiaobiLog> sss = miaobiLogService.findLogByMemberId(m.getId(), type);
+    if(sss.size()>0){
+        renderJson(ApiResult.fail("已经领取过"));
+        return;
+    }
+    JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
+    double sendMiaoBi=0;
+    sendMiaoBi = redisSetting.getDouble("housekeeperSending") ;//邀请码赠送喵币
+    MiaobiLog miaobiLog = new MiaobiLog();
+    miaobiLog.setMemberId(m.getId());
+    miaobiLog.setCredit(BigDecimal.valueOf(sendMiaoBi));
+    miaobiLog.setDebit(BigDecimal.ZERO);
+    miaobiLog.setType(type);
+    miaobiLog.setMemo("分享成功赠送");
+    miaobiLog.setBalance(m.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
+    miaobiLogService.save(miaobiLog);
+    //更新用户喵币
+    m.setPoint(m.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
+
+
+    memberService.update(m);
+    Long time = 0L;
+    time = Calendar.getInstance().getTimeInMillis();
+ //   FightGroup fightGroup = fightGroupService.find(fightGroupL);
+/*    fightGroup.setJiShi(fightGroup.getEndDate().getTime()- time);
+    fightGroup.setSales(ss.getSales());
+if(fightGroupL==0){
+
+}else{
+
+}*/
+    Map<String, Object> map = new HashedMap();
+    map.put("sendMiaobi",sendMiaoBi);
+    map.put("title","分享成功");
+    map.put("type",1);
+    map.put("miaobilId",0);
+    renderJson(ApiResult.success(map));
+
+}
+
+/**
+ * jie
+ */
+public void judgingFestival() throws ParseException {
+    Member m=memberService.getCurrent();
+    Pageable pageable = new Pageable(1, PAGE_SIZE);
+    if(!m.getJieritixingNum()){
+        Map<String, Object> map = new HashedMap();
+        Page<MiaobiLssue> miao = miaoBiLssueService.findPages(pageable, 2, m.getId());
+        if( miao.getList().size()>0){
+            miao.getList().get(0).getId();
+            map.put("sendMiaobi", miao.getList().get(0).getNumber());
+            map.put("title", miao.getList().get(0).getTitle());
+            map.put("type",2);
+            map.put("miaobilId", miao.getList().get(0).getId());
+            renderJson(ApiResult.success(map));
+      //      m.setJieritixingNum(true);
+       //     memberService.update(m);
+            return;
+        }
+    }
+        renderJson(ApiResult.fail("已提醒过"));
+        return;
+}
 
 
 
+    /**
+     * 组团详情
+     */
+    public void close() throws ParseException {
+        Member m=memberService.getCurrent();
+                m.setJieritixingNum(true);
+        memberService.update(m);
+                renderJson(ApiResult.success());
+                return;
+
+
+
+    }
 
 }

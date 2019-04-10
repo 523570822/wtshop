@@ -1,5 +1,6 @@
 package com.wtshop.api.controller.act;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.i18n.I18n;
@@ -13,9 +14,11 @@ import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.*;
 import com.wtshop.service.*;
 import com.wtshop.util.ApiResult;
+import com.wtshop.util.RedisUtil;
 import com.wtshop.util.StringUtils;
 import org.apache.commons.collections.map.HashedMap;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +35,7 @@ public class FuDaiAPIController extends BaseAPIController {
     private FuDaiProductService fuDaiProductService = enhance(FuDaiProductService.class);
     private OrderService orderService = enhance(OrderService.class);
     private MemberService memberService = enhance(MemberService.class);
+    private MiaobiLogService miaobiLogService = enhance(MiaobiLogService.class);
     private ReceiverService receiverService = enhance(ReceiverService.class);
     private ProductService productService = enhance(ProductService.class);
     private ActIntroduceService actIntroduceService = enhance(ActIntroduceService.class);
@@ -166,11 +170,34 @@ public class FuDaiAPIController extends BaseAPIController {
     public void goodsByOrderId() {
 
         Map<String, Object> item = new HashMap<String, Object>();
-        Member member = memberService.getCurrent();
+        Member m = memberService.getCurrent();
         Long orderId = getParaToLong("orderId");
         List<Goods> goodsByItemId = goodsService.findGoodsByItemId(orderId);
-        item.put("shareCode",member.getShareCode());
+        item.put("shareCode",m.getShareCode());
         item.put("goodsByItemId",goodsByItemId);
+        JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
+        Map<String,Object>  map=  new HashMap<>();
+        double sendMiaoBi=0;
+        sendMiaoBi = redisSetting.getDouble("housekeeperSending") ;//邀请码赠送喵币
+
+        MiaobiLog miaobiLog = new MiaobiLog();
+        miaobiLog.setMemberId(m.getId());
+        miaobiLog.setCredit(BigDecimal.valueOf(sendMiaoBi));
+        miaobiLog.setDebit(BigDecimal.ZERO);
+        miaobiLog.setType(0);
+        miaobiLog.setMemo("购买福袋赠送");
+        miaobiLog.setBalance(m.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
+        //更新用户喵币
+        m.setPoint(m.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
+        miaobiLogService.save(miaobiLog);
+        memberService.update(m);
+
+
+        item.put("sendMiaobi",sendMiaoBi);
+        item.put("title","恭喜成为掌柜");
+        item.put("type",1);
+        item.put("miaobilId",redisSetting.getDouble("housekeeperSending"));//福袋赠送喵币
+
         renderJson(ApiResult.success(item));
     }
 

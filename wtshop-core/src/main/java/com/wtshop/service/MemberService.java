@@ -608,4 +608,7 @@ public Page<TeamManagement> getTeamManagementListFind(String onShareCode,Pageabl
 		return pMember;
 	}
 
+    public void updateJieritixing() {
+		memberDao.updateJieritixing();
+    }
 }

@@ -9,6 +9,7 @@ import com.wtshop.model.MiaobiLog;
 import com.wtshop.model.PointLog;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by sq on 2017/9/7.
@@ -43,6 +44,9 @@ public class MiaobiLogService extends BaseService<MiaobiLog>{
      */
     public MiaobiLog findLogByMemberId(Long memberId){
         return  miaobiLogDao.findLogByMemberId(memberId);
+    }
+    public List<MiaobiLog> findLogByMemberId(Long memberId, int type){
+        return  miaobiLogDao.findLogByMemberId(memberId,type);
     }
 
 

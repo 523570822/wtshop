@@ -86,7 +86,7 @@
             } else if (host == 'goods') {
                 host = 'ShopCartGoodDetail'
                 params = '?goodId=' + GetQueryString('params') + '&type=null';
-            } else if (host == 'primary') {
+            } else if (host == 'primary') {     //团购
                 host = 'primary'
                 params = '?goodId=' + GetQueryString('params') + '&tuanGouId='+GetQueryString('tuanGouId') +'&qishu='+GetQueryString('qishu') +'&type=null';
             }

@@ -17,9 +17,11 @@ import com.wtshop.constants.Code;
 import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.Account;
 import com.wtshop.model.Member;
+import com.wtshop.model.MiaobiLog;
 import com.wtshop.model.Sms;
 import com.wtshop.service.AccountService;
 import com.wtshop.service.MemberService;
+import com.wtshop.service.MiaobiLogService;
 import com.wtshop.service.SmsService;
 import com.wtshop.util.ApiResult;
 import com.wtshop.util.RedisUtil;
@@ -27,6 +29,7 @@ import com.wtshop.util.SMSUtils;
 import com.wtshop.util.SystemUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +41,7 @@ public class AccountAPIController extends BaseAPIController {
 	private MemberService memberService = enhance(MemberService.class);
 	private SmsService smsService = enhance(SmsService.class);
 	private AccountService accountService = enhance(AccountService.class);
+	private MiaobiLogService miaobiLogService = enhance(MiaobiLogService.class);
 	
 	
 	/**
@@ -193,15 +197,30 @@ public class AccountAPIController extends BaseAPIController {
 
 		JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
 		Map<String,Object>  map=  new HashMap<>();
-		double dds=0;
-		if(StringUtils.isNotEmpty(onShareCode)&&(me==null||me.size()==0)){
-			 dds = redisSetting.getDouble("registerSending") ;//邀请码赠送喵币
+		double sendMiaoBi=0;
+		if(StringUtils.isNotEmpty(onShareCode)||(me==null||me.size()==0)){
+			sendMiaoBi = redisSetting.getDouble("registerSending") ;//邀请码赠送喵币
 		}else {
-		dds = redisSetting.getDouble("registerSending") + redisSetting.getDouble("vipSending");//邀请码赠送喵币
+			sendMiaoBi = redisSetting.getDouble("registerSending") + redisSetting.getDouble("vipSending");//邀请码赠送喵币
 		}
-		map.put("sendMiaobi",dds);
+
+
+		MiaobiLog miaobiLog = new MiaobiLog();
+		miaobiLog.setMemberId(member.getId());
+		miaobiLog.setCredit(BigDecimal.valueOf(sendMiaoBi));
+		miaobiLog.setDebit(BigDecimal.ZERO);
+		miaobiLog.setType(0);
+		miaobiLog.setMemo("注册成功赠送");
+		miaobiLog.setBalance(member.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
+		//更新用户喵币
+		member.setPoint(member.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
+		miaobiLogService.save(miaobiLog);
+		memberService.update(member);
+
+		map.put("sendMiaobi",sendMiaoBi);
 		map.put("title","注册成功");
 		map.put("type",1);
+		map.put("miaobilId",0);
 
 		renderJson(ApiResult.success(map));
 	}

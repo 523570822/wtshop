@@ -553,4 +553,12 @@ public abstract class BaseMember<M extends BaseMember<M>> extends Model<M> imple
 		return get("balance_pay");
 	}
 
+	public void setJieritixingNum(Boolean jieritixingNum) {
+		set("jieritixing_num", jieritixingNum);
+	}
+
+	public Boolean getJieritixingNum() {
+		return get("jieritixing_num");
+	}
+
 }
