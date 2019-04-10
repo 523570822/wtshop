@@ -1,5 +1,6 @@
 package com.wtshop.api.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
 import com.jfinal.ext.kit.AliPayApi;
 import com.jfinal.ext.route.ControllerBind;
@@ -21,6 +22,7 @@ import com.wtshop.service.AccountService;
 import com.wtshop.service.MemberService;
 import com.wtshop.service.SmsService;
 import com.wtshop.util.ApiResult;
+import com.wtshop.util.RedisUtil;
 import com.wtshop.util.SMSUtils;
 import com.wtshop.util.SystemUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -188,7 +190,20 @@ public class AccountAPIController extends BaseAPIController {
 		LoginResponse response = new LoginResponse();
 		response.setToken(TokenManager.getMe().generateToken(member));
 		setSessionAttr(Member.PRINCIPAL_ATTRIBUTE_NAME, TokenManager.getMe().validate(response.getToken()));
-		renderJson(ApiResult.success());
+
+		JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
+		Map<String,Object>  map=  new HashMap<>();
+		double dds=0;
+		if(StringUtils.isNotEmpty(onShareCode)&&(me==null||me.size()==0)){
+			 dds = redisSetting.getDouble("registerSending") ;//邀请码赠送喵币
+		}else {
+		dds = redisSetting.getDouble("registerSending") + redisSetting.getDouble("vipSending");//邀请码赠送喵币
+		}
+		map.put("sendMiaobi",dds);
+		map.put("title","注册成功");
+		map.put("type",1);
+
+		renderJson(ApiResult.success(map));
 	}
 
 
