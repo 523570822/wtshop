@@ -25,12 +25,12 @@ public class MiaoBiLssueDao extends BaseDao<MiaobiLssue>{
         String select = " select * ";
         String  sqlExceptSelect="";
         if(status==2){
-              sqlExceptSelect=" from miaobi_lssue ml where IFNULL((select mg.miaobil_id from miaobi_lssuelog mg where  mg.member_id='"+id+"'),0)     not in (ml.id) and unix_timestamp(now()) < unix_timestamp(f.end_date) AND unix_timestamp(now()) > unix_timestamp(f.begin_date)";
-
+              sqlExceptSelect=" FROM miaobi_lssue ml WHERE (ml.id) NOT IN ( SELECT mg.miaobil_id FROM miaobi_lssuelog mg WHERE mg.member_id = "+id+" ) AND unix_timestamp(now()) < unix_timestamp(ml.end_date) AND unix_timestamp(now()) > unix_timestamp(ml.begin_date)";
         }else  if(status==1){
-              sqlExceptSelect="select mg.* from miaobi_lssuelog mg where  mg.member_id='"+id+"'";
+             select ="select mg.*";
+                    sqlExceptSelect="from miaobi_lssuelog mg where  mg.member_id='"+id+"'";
         }else {
-            sqlExceptSelect=" from miaobi_lssue ml where IFNULL((select mg.miaobil_id from miaobi_lssuelog mg where  mg.member_id='"+id+"'),0)     not in (ml.id)";
+            sqlExceptSelect="FROM miaobi_lssue ml WHERE (ml.id) NOT IN ( SELECT mg.miaobil_id FROM miaobi_lssuelog mg WHERE mg.member_id = '"+id+"' ) AND unix_timestamp(now()) < unix_timestamp(ml.begin_date)";
         }
 
 

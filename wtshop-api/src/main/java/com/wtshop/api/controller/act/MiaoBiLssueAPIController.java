@@ -22,6 +22,7 @@ import com.wtshop.util.SystemUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,21 +38,11 @@ import java.util.Map;
 public class MiaoBiLssueAPIController extends BaseAPIController {
     /** 每页记录数 */
     private static final int PAGE_SIZE = 10;
-    private FootPrintService footPrintService= enhance(FootPrintService.class);
-    private ConsultationService consultationService = enhance(ConsultationService.class);
+
     private MiaoBiLssueService miaoBiLssueService = enhance(MiaoBiLssueService.class);
-    private GoodsService goodsService = enhance(GoodsService.class);
-    private GroupRemindService groupRemindService=enhance(GroupRemindService.class);
-    private AreaService areaService = enhance(AreaService.class);
-    private ReceiverService receiverService = enhance(ReceiverService.class);
-    private AreaDescribeService areaDescribeService = enhance(AreaDescribeService.class);
-    private ReviewService reviewService = enhance(ReviewService.class);
-    private OrderService orderService = enhance(OrderService.class);
+    private  MiaoBiLssueLogService miaoBiLssueLogService = enhance(MiaoBiLssueLogService.class);
+    private MiaobiLogService miaobiLogService = enhance(MiaobiLogService.class);
     private MemberService memberService = enhance(MemberService.class);
-    private  FightGroupService fightGroupService= enhance(FightGroupService.class);
-    private ProductService productService = enhance(ProductService.class);
-    private ActIntroduceService actIntroduceService = enhance(ActIntroduceService.class);
-    private CertificatesService certificatesService= enhance(CertificatesService.class);
 
     private Res resZh = I18n.use();
 
@@ -89,28 +80,54 @@ public class MiaoBiLssueAPIController extends BaseAPIController {
 /**
  * 组团详情
  */
-public void groupDetails() throws ParseException {
-    Long fightGroupL = getParaToLong("fightGroup");
-    Long tuanGouId = getParaToLong("tuanGouId");
-    List<Order> order = orderService.findByfightgroupId(fightGroupL);
+public void receive() throws ParseException {
+    Long lssueId = getParaToLong("lssueId");
+    Member m=memberService.getCurrent();
+    List<MiaobiLssuelog> miaobiLog11 = miaoBiLssueLogService.findbylssueidMem(lssueId, m.getId());
 
-    MiaobiLssue ss = miaoBiLssueService.find(tuanGouId);
 
+    if(miaobiLog11.size()>0){
+        renderJson(ApiResult.fail("已经领取过"));
+        return;
+    }
+
+    MiaobiLssue ss = miaoBiLssueService.find(lssueId);
+    MiaobiLssuelog  miaobiLssueLog=new MiaobiLssuelog();
+    miaobiLssueLog.setBeginDate(ss.getBeginDate());
+    miaobiLssueLog.setCount(ss.getCount());
+    miaobiLssueLog.setEndDate(ss.getEndDate());
+    miaobiLssueLog.setMemberId(m.getId());
+    miaobiLssueLog.setExplain(ss.getExplain());
+    miaobiLssueLog.setGroupnum(ss.getGroupnum());
+    miaobiLssueLog.setMiaobilId(ss.getId());
+    miaobiLssueLog.setTitle(ss.getTitle());
+    miaobiLssueLog.setStatus(ss.getStatus());
+    miaobiLssueLog.setNumber(ss.getNumber());
+    miaoBiLssueLogService.save(miaobiLssueLog);
+    int sendMiaoBi = ss.getNumber();
+    MiaobiLog miaobiLog = new MiaobiLog();
+    miaobiLog.setMemberId(m.getId());
+    miaobiLog.setCredit(BigDecimal.valueOf(sendMiaoBi));
+    miaobiLog.setDebit(BigDecimal.ZERO);
+    miaobiLog.setType(0);
+    miaobiLog.setMemo("活动赠送");
+    miaobiLog.setBalance(m.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
+    miaobiLogService.save(miaobiLog);
+    //更新用户喵币
+    m.setPoint(m.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
+    memberService.update(m);
     Long time = 0L;
     time = Calendar.getInstance().getTimeInMillis();
-    FightGroup fightGroup = fightGroupService.find(fightGroupL);
-    fightGroup.setJiShi(fightGroup.getEndDate().getTime()- time);
+ //   FightGroup fightGroup = fightGroupService.find(fightGroupL);
+/*    fightGroup.setJiShi(fightGroup.getEndDate().getTime()- time);
     fightGroup.setSales(ss.getSales());
 if(fightGroupL==0){
 
 }else{
 
-}
-
+}*/
     Map<String, Object> map = new HashedMap();
-    map.put("goods", fightGroup.getProduct().getGoods());
-    map.put("fightGroup",fightGroup);
-    map.put("order",order);
+    map.put("sendMiaoBi",sendMiaoBi);
     renderJson(ApiResult.success(map));
 
 }

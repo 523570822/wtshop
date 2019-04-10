@@ -129,4 +129,12 @@ public abstract class BaseMiaobiLssuelog<M extends BaseMiaobiLssuelog<M>> extend
 		return get("member_id");
 	}
 
+	public void setMiaobilId(Long miaobilId) {
+		set("miaobil_id", miaobilId);
+	}
+
+	public Long getMiaobilId() {
+		return get("miaobil_id");
+	}
+
 }

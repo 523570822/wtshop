@@ -188,4 +188,9 @@ public class MiaoBiLssueLogService extends BaseService<MiaobiLssuelog> {
     public List<FudaiProduct> findSubListByFudaiId(Long fuDaiId){
         return fuDaiProductDao.findByFudaiId(fuDaiId);
     }
+
+    public List<MiaobiLssuelog> findbylssueidMem(Long lssueId, Long id) {
+
+        return fuDaiDao.findbylssueidMem(lssueId,id);
+    }
 }

@@ -62,4 +62,10 @@ public class MiaoBiLssueLogDao extends BaseDao<MiaobiLssuelog>{
     }
 
 
+    public List<MiaobiLssuelog> findbylssueidMem(Long lssueId, Long id) {
+
+        String sql = " select * from miaobi_lssuelog m where  m.member_id="+id+" and m.miaobil_id="+lssueId+"";
+
+        return modelManager.find(sql);
+    }
 }
