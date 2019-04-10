@@ -20,15 +20,17 @@ public class MiaoBiLssueDao extends BaseDao<MiaobiLssue>{
     /**
      * 获取当前正在使用的福袋
      */
-    public Page<MiaobiLssue> findPages(Pageable pageable ,boolean status,long id ){
+    public Page<MiaobiLssue> findPages(Pageable pageable ,int status,long id ){
 
-        String select = " SELECT f.*,g.name,g.image,g.market_price,case when  gr.`status` is null then 0 else gr.`status` end  rem_status ";
+        String select = " select * ";
         String  sqlExceptSelect="";
-        if(status){
-              sqlExceptSelect="FROM group_buy f LEFT JOIN goods g ON f.product_id = g.id LEFT JOIN (select  * from group_remind ss where ss.member_id="+id+") gr on f.id=gr.group_id WHERE 1 = 1 AND unix_timestamp(now()) < unix_timestamp(f.end_date) AND unix_timestamp(now()) > unix_timestamp(f.begin_date) AND f.STATUS = 1 ORDER BY price DESC";
+        if(status==2){
+              sqlExceptSelect=" from miaobi_lssue ml where IFNULL((select mg.miaobil_id from miaobi_lssuelog mg where  mg.member_id='"+id+"'),0)     not in (ml.id) and unix_timestamp(now()) < unix_timestamp(f.end_date) AND unix_timestamp(now()) > unix_timestamp(f.begin_date)";
 
-        }else{
-              sqlExceptSelect="FROM group_buy f LEFT JOIN goods g ON f.product_id = g.id LEFT JOIN (select  * from group_remind ss where ss.member_id="+id+") gr on f.id=gr.group_id WHERE 1 = 1 AND unix_timestamp(now())<unix_timestamp( f.begin_date) AND f.STATUS = 1 ORDER BY price DESC";
+        }else  if(status==1){
+              sqlExceptSelect="select mg.* from miaobi_lssuelog mg where  mg.member_id='"+id+"'";
+        }else {
+            sqlExceptSelect=" from miaobi_lssue ml where IFNULL((select mg.miaobil_id from miaobi_lssuelog mg where  mg.member_id='"+id+"'),0)     not in (ml.id)";
         }
 
 

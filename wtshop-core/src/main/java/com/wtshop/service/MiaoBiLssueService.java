@@ -78,7 +78,7 @@ public class MiaoBiLssueService extends BaseService<MiaobiLssue> {
     /**
      * 获取当前正在使用的福袋
      */
-    public Page<MiaobiLssue> findPages(Pageable pageable,boolean status,long id) {
+    public Page<MiaobiLssue> findPages(Pageable pageable,int status,long id) {
         return fuDaiDao.findPages(pageable,status,id);
     }
     public List<MiaobiLssue> findListRe() {

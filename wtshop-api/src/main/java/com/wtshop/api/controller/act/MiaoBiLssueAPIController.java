@@ -61,14 +61,14 @@ public class MiaoBiLssueAPIController extends BaseAPIController {
      */
     public void list() {
         Integer pageNumber = getParaToInt("pageNumbers");
-        boolean status = getParaToBoolean("status");
+        int status = getParaToInt("status");
         Member m=memberService.getCurrent();
 
         Map<String, Object> map = new HashedMap();
         Pageable pageable = new Pageable(pageNumber, PAGE_SIZE);
 
 
-        Page<MiaobiLssue> list = miaoBiLssueService.findPages(pageable,status);
+        Page<MiaobiLssue> list = miaoBiLssueService.findPages(pageable,status,m.getId());
         // map.put("list", list);
         renderJson(ApiResult.success(list));
     }
