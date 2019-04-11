@@ -205,7 +205,7 @@ public class ProductDao extends BaseDao<Product> {
     public List<Product> findBySpvalue(List<String> category,long goodId) {
 		String sql = "select * from product p where 1=1 and p.goods_id="+goodId+" ";
 		for (String categoryid:category) {
-			sql=sql+ "and p.specification_values like '%\"id\":"+categoryid+",%'";
+			sql=sql+ "and p.specification_values like '%\"value\":"+categoryid+"}%'";
 		}
 
 

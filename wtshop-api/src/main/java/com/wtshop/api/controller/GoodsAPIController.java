@@ -532,9 +532,9 @@ public void onShareCode(){
 	 * 获取规格
 	 */
 	public void productList() {
-		String  categoryId = getPara("spvalue");
+		String  categoryValue = getPara("spvalue");
 		Long  goodId = getParaToLong("goodId");
-		List<Product> productList=productService.findBySpvalue(categoryId,goodId);
+		List<Product> productList=productService.findBySpvalue(categoryValue,goodId);
 		renderJson(ApiResult.success(productList));
 
 	}
