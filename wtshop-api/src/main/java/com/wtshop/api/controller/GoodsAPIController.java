@@ -22,15 +22,13 @@ import com.wtshop.service.*;
 import com.wtshop.util.ApiResult;
 import com.wtshop.util.RedisUtil;
 import com.wtshop.util.SystemUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -57,6 +55,7 @@ public class GoodsAPIController extends BaseAPIController {
 	private AreaDescribeService areaDescribeService = enhance(AreaDescribeService.class);
 	private MiaobiLogService miaobiLogService = enhance(MiaobiLogService.class);
 	private MiaoBiGoodsService miaoBiGoodsService = enhance(MiaoBiGoodsService.class);
+	private SpecificationService specificationService = enhance(SpecificationService.class);
 	
 	/**
 	 * 列表
@@ -501,4 +500,44 @@ public void onShareCode(){
 	map.put("miaobilId",0);
 	renderJson(ApiResult.success(map,"绑定邀请码成功"));
 }
+	/**
+	 * 获取规格
+	 */
+	public void specifs() {
+	//	Map<String,Object>  map=  new HashMap<>();
+		Long categoryId = getParaToLong("categoryId");
+		//map.put("Specification", specificationService.findByCategoryId(categoryId));
+
+		Long productCategoryId = getParaToLong("categoryId");
+		List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+		ProductCategory productCategory = productCategoryService.find(productCategoryId);
+		if (productCategory == null || CollectionUtils.isEmpty(productCategory.getSpecifications())) {
+			renderJson(data);
+			return;
+		}
+		for (Specification specification : productCategory.getSpecifications()) {
+			Map<String, Object> item = new HashMap<String, Object>();
+			item.put("name", specification.getName());
+			item.put("options", specification.getOptionsConverter());
+			data.add(item);
+		}
+
+
+		renderJson(ApiResult.success(data));
+
+	}
+
+
+	/**
+	 * 获取规格
+	 */
+	public void productList() {
+		String  categoryId = getPara("spvalue");
+		Long  goodId = getParaToLong("goodId");
+		List<Product> productList=productService.findBySpvalue(categoryId,goodId);
+		renderJson(ApiResult.success(productList));
+
+	}
+
+
 }

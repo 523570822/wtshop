@@ -12,7 +12,9 @@ import com.wtshop.model.StockLog;
 import com.wtshop.util.Assert;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.nlpcn.commons.lang.util.StringUtil;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -224,4 +226,9 @@ public class ProductService extends BaseService<Product> {
 		return productDao.findFuDaiGoodsByPage(page);
 	}
 
+    public  List<Product> findBySpvalue(String categoryId,long goodid) {
+		//List<String> category = StringUtil.matcherAll(",", categoryId);
+		List<String> category = Arrays.asList(categoryId.split(","));
+		return productDao.findBySpvalue(category,goodid);
+    }
 }

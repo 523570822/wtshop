@@ -1,5 +1,8 @@
 package com.wtshop.util;
 
+import org.nlpcn.commons.lang.util.StringUtil;
+
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -108,9 +111,11 @@ public class ShareCodeUtils {
     }
 
     public static void main(String[] args) {
-        String code = idToCode(68L);
-        System.out.println(code);
-        System.out.println(codeToId("V9A8VI"));
+    //    String code = idToCode(68L);
+   //     System.out.println(code);
+     //   System.out.println(codeToId("V9A8VI"));
+        List<String> category = StringUtil.matcherAll(",", "dfsfa,1232131,sada");
+        System.out.println(category);
     }
 
 }

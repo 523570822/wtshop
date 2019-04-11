@@ -15,10 +15,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by mrFeng on 2019/2/18
@@ -27,22 +24,21 @@ import java.util.Map;
 @ControllerBind(controllerKey = "/admin/groupBuy")
 public class GroupBuyController extends BaseController {
     private GroupBuyService fuDaiService = enhance(GroupBuyService.class);
+    private SpecificationService specificationService = enhance(SpecificationService.class);
+    private ProductService productService = enhance(ProductService.class);
     public void list() {
+        String  categoryId = "2,3";
+        Long  goodId = 494L;
+        List<Product> productList=productService.findBySpvalue(categoryId,goodId);
+        renderJson(ApiResult.success(productList));
 
-    /*    Map<String, Object> map = new HashedMap();
-        Pageable pageable = new Pageable(1, 10);
 
-
-        Page<GroupBuy> list = fuDaiService.findPages(pageable,false);
-        // map.put("list", list);
-        renderJson(ApiResult.success(list));*/
-
-      Pageable pageable = getBean(Pageable.class);
+   /*   Pageable pageable = getBean(Pageable.class);
         pageable.setOrderProperty("orders");
         pageable.setOrderDirection("desc");
         setAttr("pageable", pageable);
         setAttr("page", fuDaiService.findPage(pageable));
-        render("/admin/groupBuy/list.ftl");
+        render("/admin/groupBuy/list.ftl");*/
     }
 
     //去添加页面
