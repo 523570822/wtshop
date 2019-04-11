@@ -310,7 +310,7 @@ public class GoodsDao extends BaseDao<Goods> {
 			sqlExceptSelect += " AND m.product_category_id IN " + SqlUtils.getSQLIn(productCategoryList);
 		}
 		if( !priceUp && !priceDown){
-			sqlExceptSelect += " order by is_top desc ";
+			sqlExceptSelect += "GROUP BY m.id order by is_top desc ";
 		}
 
 		logger.info(sqlExceptSelect);

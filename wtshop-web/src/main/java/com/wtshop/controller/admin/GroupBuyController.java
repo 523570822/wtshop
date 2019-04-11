@@ -33,7 +33,7 @@ public class GroupBuyController extends BaseController {
         renderJson(ApiResult.success(productList));
 
 
-   /*   Pageable pageable = getBean(Pageable.class);
+  /* Pageable pageable = getBean(Pageable.class);
         pageable.setOrderProperty("orders");
         pageable.setOrderDirection("desc");
         setAttr("pageable", pageable);
