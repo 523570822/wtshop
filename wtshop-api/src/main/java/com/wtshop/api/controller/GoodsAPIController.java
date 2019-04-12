@@ -512,7 +512,7 @@ public void onShareCode(){
 		List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
 		Goods goods = goodsService.find(productCategoryId);
 		if (goods == null || CollectionUtils.isEmpty(goods.getSpecificationItemsConverter())) {
-			ApiResult.success("无数据");
+			renderJson(ApiResult.success("无数据"));
 		return;
 	}
 		renderJson(ApiResult.success(goods.getSpecificationItemsConverter()));
