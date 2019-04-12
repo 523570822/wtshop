@@ -26,11 +26,16 @@ public class GroupBuyController extends BaseController {
     private GroupBuyService fuDaiService = enhance(GroupBuyService.class);
     private SpecificationService specificationService = enhance(SpecificationService.class);
     private ProductService productService = enhance(ProductService.class);
+    private GoodsService goodsService = enhance(GoodsService.class);
     public void list() {
-        String  categoryId = "2,3";
-        Long  goodId = 494L;
-        List<Product> productList=productService.findBySpvalue(categoryId,goodId);
-        renderJson(ApiResult.success(productList));
+        Long productCategoryId =494l;
+        List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+        Goods goods = goodsService.find(productCategoryId);
+        if (goods == null || CollectionUtils.isEmpty(goods.getSpecificationItemsConverter())) {
+            renderJson(data);
+            return;
+        }
+        renderJson(ApiResult.success(goods.getSpecificationItemsConverter()));
 
 
   /* Pageable pageable = getBean(Pageable.class);

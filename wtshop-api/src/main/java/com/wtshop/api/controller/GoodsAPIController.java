@@ -505,27 +505,23 @@ public void onShareCode(){
 	 */
 	public void specifs() {
 	//	Map<String,Object>  map=  new HashMap<>();
-		Long categoryId = getParaToLong("categoryId");
+
 		//map.put("Specification", specificationService.findByCategoryId(categoryId));
 
-		Long productCategoryId = getParaToLong("categoryId");
+		Long productCategoryId = getParaToLong("goodId");
 		List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
-		ProductCategory productCategory = productCategoryService.find(productCategoryId);
-		if (productCategory == null || CollectionUtils.isEmpty(productCategory.getSpecifications())) {
-			renderJson(data);
-			return;
-		}
-		for (Specification specification : productCategory.getSpecifications()) {
-			Map<String, Object> item = new HashMap<String, Object>();
-			item.put("name", specification.getName());
-			item.put("options", specification.getOptionsConverter());
-			data.add(item);
-		}
-
-
-		renderJson(ApiResult.success(data));
-
+		Goods goods = goodsService.find(productCategoryId);
+		if (goods == null || CollectionUtils.isEmpty(goods.getSpecificationItemsConverter())) {
+		renderJson(data);
+		return;
 	}
+		renderJson(ApiResult.success(goods.getSpecificationItemsConverter()));
+}
+
+
+
+
+
 
 
 	/**
