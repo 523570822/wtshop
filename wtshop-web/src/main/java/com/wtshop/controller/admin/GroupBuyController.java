@@ -28,22 +28,22 @@ public class GroupBuyController extends BaseController {
     private ProductService productService = enhance(ProductService.class);
     private GoodsService goodsService = enhance(GoodsService.class);
     public void list() {
-        Long productCategoryId =494l;
+     /*   Long productCategoryId =494l;
         List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
         Goods goods = goodsService.find(productCategoryId);
         if (goods == null || CollectionUtils.isEmpty(goods.getSpecificationItemsConverter())) {
             renderJson(data);
             return;
         }
-        renderJson(ApiResult.success(goods.getSpecificationItemsConverter()));
+        renderJson(ApiResult.success(goods.getSpecificationItemsConverter()));*/
 
 
-  /* Pageable pageable = getBean(Pageable.class);
+  Pageable pageable = getBean(Pageable.class);
         pageable.setOrderProperty("orders");
         pageable.setOrderDirection("desc");
         setAttr("pageable", pageable);
         setAttr("page", fuDaiService.findPage(pageable));
-        render("/admin/groupBuy/list.ftl");*/
+        render("/admin/groupBuy/list.ftl");
     }
 
     //去添加页面

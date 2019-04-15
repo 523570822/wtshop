@@ -508,9 +508,9 @@ public void onShareCode(){
 
 		//map.put("Specification", specificationService.findByCategoryId(categoryId));
 
-		Long productCategoryId = getParaToLong("goodId");
+		Long goodId = getParaToLong("goodId");
 		List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
-		Goods goods = goodsService.find(productCategoryId);
+		Goods goods = goodsService.find(goodId);
 		if (goods == null || CollectionUtils.isEmpty(goods.getSpecificationItemsConverter())) {
 			renderJson(ApiResult.success("无数据"));
 		return;

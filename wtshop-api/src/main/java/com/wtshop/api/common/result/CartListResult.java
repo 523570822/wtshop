@@ -7,6 +7,7 @@ import com.wtshop.model.Product;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by sq on 2017/5/17.
@@ -17,7 +18,7 @@ public class CartListResult implements Serializable{
 
     private List<CartGoodsResult> CartGoodsResult;
 
-    private List<Goods> cartList;
+    private List<Map> cartList;
 
 
     private Double subtract;
@@ -25,18 +26,18 @@ public class CartListResult implements Serializable{
     private Double promSubtract;
 
 
-    public CartListResult(List<com.wtshop.api.common.result.CartGoodsResult> cartGoodsResult, List<Goods> cartList, Double subtract, Double promSubtract) {
+    public CartListResult(List<com.wtshop.api.common.result.CartGoodsResult> cartGoodsResult, List<Map> cartList, Double subtract, Double promSubtract) {
         CartGoodsResult = cartGoodsResult;
         this.cartList = cartList;
         this.subtract = subtract;
         this.promSubtract = promSubtract;
     }
 
-    public List<Goods> getCartList() {
+    public List<Map> getCartList() {
         return cartList;
     }
 
-    public void setCartList(List<Goods> cartList) {
+    public void setCartList(List<Map> cartList) {
         this.cartList = cartList;
     }
 

@@ -18,7 +18,9 @@ import com.wtshop.service.*;
 import com.wtshop.util.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @ControllerBind(controllerKey = "/api/cart")
 @Before({WapInterceptor.class, ErrorInterceptor.class} )
@@ -48,7 +50,7 @@ public class CartAPIController extends BaseAPIController {
 
 		Member member = memberService.getCurrent();
 
-		if(StringUtils.isEmpty(member.getShareCode())){
+		if(StringUtils.isEmpty(member.getOnShareCode())){
 			renderJson(ApiResult.fail(7,"请填写邀请码"));
 			return;
 		}
@@ -235,6 +237,7 @@ public class CartAPIController extends BaseAPIController {
 					List<Area> areas = areaService.findParents(areaService.find(areaId), true, null);
 					String name = areas.get(0).getName();
 					goods.setCaption(name);
+
 					GoodsPromotion goodsPromotion = goodsPromotionService.findByGoodsId(goods.getId());
 					if(goodsPromotion != null){
 						promGoodsList.add(goods);
@@ -316,10 +319,16 @@ public class CartAPIController extends BaseAPIController {
 		List<CartGoodsResult> messageList = new ArrayList<>();
 
 		List<Goods> cartList = new ArrayList<>();
+		List<Map> cartListMap = new ArrayList<>();
+
 		if(cart != null){
 			cartList = goodsService.findCartItemList(cart.getId());
 			if(cartList != null && cartList.size() > 0){
 				for(Goods goods : cartList){
+					Product product = productService.find(goods.get("product_id"));
+					List<String> specifications = product.getSpecifications();
+					Map<String,Object> sb= new HashMap<>();
+
 					List<Area> areas = areaService.findParents(areaService.find(goods.getAreaId()), true, null);
 					goods.setCaption(areas.get(0).getName());
 
@@ -329,7 +338,9 @@ public class CartAPIController extends BaseAPIController {
 					}else {
 						goods.setAttributeValue0("0");
 					}
-
+					sb.put("goods",goods);
+					sb.put("specifications",specifications);
+					cartListMap.add(sb);
 				}
 			}
 		}
@@ -361,7 +372,7 @@ public class CartAPIController extends BaseAPIController {
 		if(messageList.size() == 0 ){
 			messageList = null;
 		}
-		CartListResult cartListResult = new CartListResult(messageList, cartList, subtract, promSubtract);
+		CartListResult cartListResult = new CartListResult(messageList, cartListMap, subtract, promSubtract);
 		renderJson(ApiResult.success(cartListResult));
 
 

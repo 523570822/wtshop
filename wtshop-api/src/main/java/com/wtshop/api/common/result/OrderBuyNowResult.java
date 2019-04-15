@@ -1,9 +1,6 @@
 package com.wtshop.api.common.result;
 
-import com.wtshop.model.Coupon;
-import com.wtshop.model.Goods;
-import com.wtshop.model.Member;
-import com.wtshop.model.Receiver;
+import com.wtshop.model.*;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.models.auth.In;
 
@@ -51,7 +48,19 @@ public class OrderBuyNowResult implements Serializable{
 
     private Double payPrice;
 
-    public OrderBuyNowResult(String taxUrl, Double delivery, Member member, Receiver receiver, Goods goods, Integer quantity, String receiveTime, Boolean is_freeMoney, Boolean is_useMiaobi, String miaoBiDesc, List<PriceResult> priceList, String realPrice, String couponPrice, Double[] param, Boolean is_promotion, Double payPrice) {
+
+
+    private List<String> specifications;
+
+    public List<String> getSpecifications() {
+        return specifications;
+    }
+
+    public void setSpecifications(List<String> specifications) {
+        this.specifications = specifications;
+    }
+
+    public OrderBuyNowResult(String taxUrl, Double delivery, Member member, Receiver receiver, Goods goods, Integer quantity, String receiveTime, Boolean is_freeMoney, Boolean is_useMiaobi, String miaoBiDesc, List<PriceResult> priceList, String realPrice, String couponPrice, Double[] param, Boolean is_promotion, Double payPrice,List<String> specifications) {
         this.taxUrl = taxUrl;
         this.delivery = delivery;
         this.member = member;
@@ -68,6 +77,7 @@ public class OrderBuyNowResult implements Serializable{
         this.param = param;
         this.is_promotion = is_promotion;
         this.payPrice = payPrice;
+        this.specifications = specifications;
     }
 
     public Integer getQuantity() {

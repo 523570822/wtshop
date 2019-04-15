@@ -1,5 +1,6 @@
 package com.wtshop.api.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Enhancer;
@@ -13,6 +14,7 @@ import com.jfinal.plugin.redis.Redis;
 import com.wtshop.Pageable;
 import com.wtshop.api.common.result.*;
 import com.wtshop.api.interceptor.ErrorInterceptor;
+import com.wtshop.entity.SpecificationValue;
 import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.*;
 import com.wtshop.service.*;
@@ -22,6 +24,7 @@ import com.wtshop.util.MathUtil;
 import com.wtshop.util.RedisUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.nlpcn.commons.lang.util.StringUtil;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -87,7 +90,7 @@ public class OrderAPIController extends BaseAPIController {
 		Boolean isUseMiao = getParaToBoolean("isUseMiao",false);
 
 		//获取商品价格
-		Double price = MathUtil.multiply(goods.getPrice(), quantity);
+		Double price = MathUtil.multiply(product.getPrice(), quantity);
 
 
 		//判断商品是否是促销商品
@@ -197,7 +200,7 @@ public class OrderAPIController extends BaseAPIController {
 		}
 
 		//优惠前总金额
-		Double marketPrice = MathUtil.multiply(goods.getMarketPrice(), quantity);
+		Double marketPrice = MathUtil.multiply(product.getMarketPrice(), quantity);
 		PriceResult totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(price.toString()));
 		PriceResult oldTotalPrice = new PriceResult("商品优惠前总金额","¥ "+ MathUtil.getInt(marketPrice.toString()));
 		PriceResult deliveryPrice = new PriceResult("运费","¥ "+ MathUtil.getInt(delivery.getPrice().toString()));
@@ -234,8 +237,12 @@ public class OrderAPIController extends BaseAPIController {
 		String params = deliver.toString() + "," + miaobi.toString() + "," +amountpaid.toString() + "," +couponYunfei.toString() + "," +manJianPrices.toString() ;
 
 			realPrice =  MathUtil.getInt(amountpaid.toString());
+		goods.setPrice(product.getPrice());
+
+
+		List<String> specifications = product.getSpecifications();
 		OrderBuyNowResult orderBuyNowResult = new OrderBuyNowResult(taxUrl, yunfei, member, defaultReceiver, goods, Integer.valueOf(quantity+""), receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, priceList,
-			realPrice, favoritePrice, param, is_promotion, amountpaid);
+			realPrice, favoritePrice, param, is_promotion, amountpaid,specifications);
 		RedisUtil.setString("ORDERPARAM:"+member.getId(), params);
 
 		renderJson(ApiResult.success(orderBuyNowResult));
@@ -650,6 +657,28 @@ if(!isSinglepurchase){
 			if(!productList.contains(product.getId())){
 				productList.add(product.getId());
 			}
+			goods.setAttributeValue10(product.getSpecificationValues());
+
+			String sss = goods.getAttributeValue10();
+
+			if (StringUtil.isNotBlank(sss)) {
+				JSONArray specificationValueArrays = JSONArray.parseArray(sss);
+				String dsb="";
+				for(int i = 0; i < specificationValueArrays.size(); i++) {
+					SpecificationValue fffff = JSONObject.parseObject(specificationValueArrays.getString(i), SpecificationValue.class);
+					if(i ==0){
+						dsb=dsb+fffff.getValue();
+					}else{
+						dsb=dsb+","+fffff.getValue();
+					}
+
+				}
+				goods.setAttributeValue11(dsb);
+
+			}
+
+
+
 			goodsList.add(goods);
 		}
 

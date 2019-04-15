@@ -1,5 +1,7 @@
 package com.wtshop.api.controller.member;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.i18n.I18n;
@@ -10,11 +12,9 @@ import com.wtshop.Pageable;
 import com.wtshop.Setting;
 import com.wtshop.api.common.result.PriceResult;
 import com.wtshop.api.common.result.member.OrderFindResult;
-import com.wtshop.api.interceptor.TokenInterceptor;
+import com.wtshop.entity.SpecificationValue;
 import com.wtshop.util.ApiResult;
 import com.wtshop.api.common.result.OrderGoods;
-import com.wtshop.api.common.result.TrackResult;
-import com.wtshop.api.common.result.member.OrderTrackResult;
 import com.wtshop.api.controller.BaseAPIController;
 import com.wtshop.api.interceptor.ErrorInterceptor;
 import com.wtshop.interceptor.WapInterceptor;
@@ -22,6 +22,7 @@ import com.wtshop.model.*;
 import com.wtshop.service.*;
 import com.wtshop.util.MathUtil;
 import com.wtshop.util.SystemUtils;
+import org.nlpcn.commons.lang.util.StringUtil;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -69,13 +70,36 @@ public class OrderAPIController extends BaseAPIController {
 
 		List<Order> orderList = page.getList();
 		List<OrderGoods> orderGoodss = new ArrayList<>();
+		List<OrderGoods> orderGoodssList = new ArrayList<>();
+		List<Map> cartListMap = new ArrayList<>();
 		for(Order order : orderList){
+
 			//todo 退款订单显示问题 暂时这样修改
 			if(order.getStatus() == 11){
 				order.setStatus(110);
 			}
 
 			List<Goods> goodsList = goodsService.findGoodsByItemId(order.getId());
+			for(Goods goods:goodsList){
+				String sss = goods.getAttributeValue10();
+
+				if (StringUtil.isNotBlank(sss)) {
+					JSONArray specificationValueArrays = JSONArray.parseArray(sss);
+					String dsb="";
+					for(int i = 0; i < specificationValueArrays.size(); i++) {
+						SpecificationValue fffff = JSONObject.parseObject(specificationValueArrays.getString(i), SpecificationValue.class);
+						if(i ==0){
+							dsb=dsb+fffff.getValue();
+						}else{
+							dsb=dsb+","+fffff.getValue();
+						}
+
+					}
+					goods.setAttributeValue11(dsb);
+
+				}
+
+			};
 			if (order.getType()==Order.Type.daopai.ordinal()){
 					//获取倒拍单价
 
@@ -264,6 +288,21 @@ public class OrderAPIController extends BaseAPIController {
 		}
 
 		List<OrderItem> orderItemList = orderItemService.findOrderItemList(order.getId());
+
+		for (OrderItem orderItem:orderItemList){
+			String dsb="";
+			List<String> ddd = orderItem.getSpecificationConverter();
+			for(int i = 0; i < ddd.size(); i++) {
+			String	ddd1=ddd.get(i);
+				if(i ==0){
+					dsb=dsb+ddd1;
+				}else{
+					dsb=dsb+","+ddd1;
+				}
+
+			}
+			orderItem.setSpecifications(dsb);
+		}
 		Long time = 0L;
 		Long expire = 0L;
 		if(order.getStatus() == 0){
