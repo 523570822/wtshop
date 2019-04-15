@@ -187,7 +187,7 @@
                 <span class="requiredField">*</span>${message("groupBuy.primary.goods")}:
             </th>
             <td>
-                <input type="hidden" name="productId" id="product_id" class="text" maxlength="200" value="${groupBuy.groupBuyProduct.product_id}"/>
+                <input type="hidden" name="productId" id="product_id" class="text" maxlength="200" value="${groupBuy.product_id}"/>
                 <input disabled type="text" class="text" maxlength="200" name="product_name" id="product_name" title=${message("groupBuy.phone.title")}   value="${groupBuy.product.goods.name}" />
                 <input type="button" value="选择产品" class="button" id="addProduct"/>
 

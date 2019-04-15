@@ -59,6 +59,17 @@ public class GroupBuyController extends BaseController {
         Map<String, String[]> sssss = getParaMap();
 
         Long productId = getParaToLong("productId");
+
+        if(productId==null){
+
+            addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error, "产品不能为空!"));
+
+
+
+            render("/admin/groupBuy/add.ftl");
+            return;
+
+        }
         groupBuy.setProductId(productId);
 
         groupBuy.setStatus(getParaToBoolean("status", false));
@@ -93,6 +104,13 @@ public class GroupBuyController extends BaseController {
         fuDai.setIsTop(getParaToBoolean("isTop", false));
         fuDai.setIsSinglepurchase(getParaToBoolean("isSinglepurchase", false));
         Long productId = getParaToLong("productId");
+
+        if(productId==null){
+
+                addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error, "产品不能为空!"));
+                return;
+
+        }
         fuDai.setProductId(productId);
         fuDaiService.update(fuDai);
 
