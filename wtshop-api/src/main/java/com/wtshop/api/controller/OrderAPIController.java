@@ -324,14 +324,14 @@ public class OrderAPIController extends BaseAPIController {
 		Long fightGroupId = getParaToLong("fightGroupId");
 
         Long tuanGouId = getParaToLong("tuanGouId");
-
+		GroupBuy groupBuy = groupBuyService.find(tuanGouId);
 
 
 			if(fightGroupId!=0&&!isSinglepurchase){
 				List<Order> order = orderService.findByfightgroupIdmemberId(fightGroupId, member.getId());
 
-				if(order.size()>0){
-					renderJson(ApiResult.fail("你个傻逼"));
+				if(groupBuy.getNum()!=0&&order.size()>=groupBuy.getNum()){
+					renderJson(ApiResult.fail("此活动每人只限购买"+groupBuy.getNum()+"次"));
 					return;
 				}
 			}
@@ -339,7 +339,7 @@ public class OrderAPIController extends BaseAPIController {
 
 
 
-		GroupBuy groupBuy = groupBuyService.find(tuanGouId);
+
 		Product product = groupBuy.getProduct();
 
         PriceResult totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(groupBuy.getUniprice().toString()));
