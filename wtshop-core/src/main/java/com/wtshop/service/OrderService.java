@@ -284,7 +284,7 @@ public class OrderService extends BaseService<Order> {
                 fightGroup.setExplain(groupBuy.getExplain());
                 fightGroup.setProductId(groupBuy.getProductId());
                 //已经参团人数
-                fightGroup.setCount(2);
+                fightGroup.setCount(1);
                 fightGroup.setDispatchprice(groupBuy.getDispatchprice());
                 fightGroup.setGroupnum(groupBuy.getGroupnum());
 
