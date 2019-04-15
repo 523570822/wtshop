@@ -258,7 +258,7 @@
                 ${message("Promotion.endDate")}:
             </th>
             <td>
-                <input type="text" id="endDate" name="groupBuy.end_date" value="${groupBuy.begin_date}" class="text Wdate" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss', minDate: '#F{$dp.$D(\'beginDate\')}'});" />
+                <input type="text" id="endDate" name="groupBuy.end_date" value="${groupBuy.end_date}" class="text Wdate" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss', minDate: '#F{$dp.$D(\'beginDate\')}'});" />
             </td>
         </tr>
 
