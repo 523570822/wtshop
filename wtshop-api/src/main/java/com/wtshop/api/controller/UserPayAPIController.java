@@ -71,8 +71,9 @@ public class UserPayAPIController extends BaseAPIController {
             Map<String, String> map = userPayService.aliPayOrder(order, true);
             renderJson(ApiResult.success(map));
         } else {
-            if(!(BigDecimal.ZERO.compareTo(order.getAmount())==0)){
+            if(!(BigDecimal.ZERO.compareTo(order.getAmountPaid())==0)){
                 renderJson(ApiResult.fail("订单异常"));
+                return;
             }
             ApiResult result = orderService.paySuccess(order.getSn(), money, null, null);
             if (result.resultSuccess()) {

@@ -54,7 +54,7 @@ public class StaffCronManager implements ITask{
         }
 
         /**
-         * 用户推动团购定时
+         * 用户推送团购定时
          */
         JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
         Double hour = redisSetting.getDouble("")==null?0.00:redisSetting.getDouble("hour");
@@ -63,15 +63,12 @@ public class StaffCronManager implements ITask{
 
         for (GroupRemind groupRemind:groupReminlist) {
                              groupRemind.setStatus(1);
-
             try {
 
                 groupRemindDao.update(groupRemind);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-
-            
         }
         logger.info("开始极光推送服务————————————————————————");
         List<GroupRemind> groupReminlist1= groupRemindDao.findListNum(hour);;
@@ -89,6 +86,14 @@ public class StaffCronManager implements ITask{
         }
 
         logger.info("结束极光推送服务————————————————————————");
+
+        /**
+         * 购买普通商品分佣
+         */
+
+
+
+
 
 
         //获取15天之前 需要分佣的订单
