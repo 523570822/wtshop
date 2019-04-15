@@ -556,17 +556,28 @@ public class OrderService extends BaseService<Order> {
 
 
             order.setOnShareCode(member.getOnShareCode());
+            List<Member> mmss = memberService.findMemberByOnShare(member1.getShareCode());
+            if(member1.getHousekeeperId()==null||member1.getHousekeeperId()==1l){
+                if(mmss.size()>=15){
+                    member1.setHousekeeperId(2l);
+                }
+                member1.setCommission(BigDecimal.valueOf(150L).add(member1.getCommission()));
+                member1.setCommission(BigDecimal.valueOf(150L).add(member1.getCommission()));
+
+            }else{
+                member1.setCommission(BigDecimal.valueOf(100L).add(member1.getCommission()));
+                member1.setCommission(BigDecimal.valueOf(100L).add(member1.getCommission()));
+            }
+
 
             CommissionLog depositLog1 = new CommissionLog();
             depositLog1.setBalance(member1.getBalance());
-            depositLog1.setCredit(BigDecimal.valueOf(100L));
             depositLog1.setDebit(BigDecimal.ZERO);
             depositLog1.setStatus(1);
             depositLog1.setMemo("福袋上级返现");
             depositLog1.setType(CommissionLog.Type.fudan.ordinal());
             depositLog1.setOrderId(order.getId());
             depositLog1.setMemberId(member1.getId());
-            member1.setCommission(BigDecimal.valueOf(100L).add(member1.getCommission()));
             memberService.update(member1);
             memberService.update(member);
             commissionDao.save(depositLog1);

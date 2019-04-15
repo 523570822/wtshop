@@ -57,14 +57,19 @@
             // 表单验证
             $inputForm.validate({
                 rules: {
+                    "product_name":"required",
                     "groupBuy.title":"required",
                     "groupBuy.price":"required",
                     "groupBuy.begin_date":"required",
                     "groupBuy.end_date":"required",
                     "groupBuy.uniprice":"required",
                     "groupBuy.num": "required",
-                    "product_name":"required",
-                    "product.groupRate": {
+                    "groupBuy.sales": "required",
+                    "groupBuy.count": "required",
+                    "groupBuy.teamnum": "required",
+                    "groupBuy.dispatchprice": "required",
+                    "groupBuy.groupnum": "required",
+                    "product.group_rate": {
                         required: true,
                         min: 0,
                         decimal: {

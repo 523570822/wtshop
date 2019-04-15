@@ -55,26 +55,27 @@
             // 表单验证
             $inputForm.validate({
                 rules: {
+                    "product_name":"required",
                     "groupBuy.title":"required",
                     "groupBuy.price":"required",
                     "groupBuy.begin_date":"required",
                     "groupBuy.end_date":"required",
                     "groupBuy.uniprice":"required",
                     "groupBuy.num": "required",
-                    "product_name":"required" ,
-                    "freeUse.product_id":"required",
-                    "freeUse.end_date":"required",
-                    "ad.title": "required",
-
-                    adPositionId: "required",
-                    "ad.path": {
+                    "groupBuy.sales": "required",
+                    "groupBuy.count": "required",
+                    "groupBuy.teamnum": "required",
+                    "groupBuy.dispatchprice": "required",
+                    "groupBuy.groupnum": "required",
+                    "product.group_rate": {
                         required: true,
-                        pattern: /^(http:\/\/|https:\/\/|\/).*$/i
+                        min: 0,
+                        decimal: {
+                            integer: 12,
+                            fraction: ${setting.priceScale}
+                        }
                     },
-                    "ad.url": {
-                        pattern: /^(http:\/\/|https:\/\/|ftp:\/\/|mailto:|\/|#).*$/i
-                    },
-                    "ad.orders": "digits"
+
                 }
             });
             var $introduction = $("#introduction");
@@ -165,10 +166,10 @@
 
         <tr>
             <th>
-                <span class="requiredField">*</span>团购比例（%）
+                <span class="requiredField">*</span>团购比例1122（%）
             </th>
             <td>
-                <input type="text" id="groupRate" name="groupBuy.group_rate" class="text"
+                <input type="text"  name="groupBuy.group_rate" class="text"
                        value="${groupBuy.groupRate}" maxlength="16"
                        title="团购比例（如10%填写10）" />
             </td>
@@ -270,7 +271,7 @@
                 <label>
                     <input type="checkbox" name="status" value="true"
                        [#if groupBuy.status]  checked="checked"[/#if] />
-                   ${message("CartItem.status")}
+                    是否上架
                     <input type="hidden" name="_status" value="false"/>
                 </label>
 

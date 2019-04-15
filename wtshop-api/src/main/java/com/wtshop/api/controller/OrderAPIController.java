@@ -390,7 +390,7 @@ public class OrderAPIController extends BaseAPIController {
 
 		//商品运费
 		List<ShippingMethod> shippingMethods = shippingMethodService.findMethodList();
-		double value =groupBuy.getDispatchprice();
+		double value =groupBuy.getDispatchprice()==null?0:groupBuy.getDispatchprice();
 		Delivery delivery = new Delivery(shippingMethods.get(0).getId(), shippingMethods.get(0).getName(), value);
 
 
@@ -400,7 +400,7 @@ public class OrderAPIController extends BaseAPIController {
 
 
 		//是否包邮
-		Boolean is_freeMoney = groupBuy.getDispatchprice()==0 ? true : false;
+		Boolean is_freeMoney = (groupBuy.getDispatchprice()==null||groupBuy.getDispatchprice()==0) ? true : false;
 
 		Double deliver = 0d;
 		deliver = delivery.getPrice();
