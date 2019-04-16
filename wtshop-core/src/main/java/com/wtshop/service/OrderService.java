@@ -220,9 +220,6 @@ public class OrderService extends BaseService<Order> {
         Long dds = ShareCodeUtils.codeToId(member.getOnShareCode());
         Member member1 = memberService.find(dds);
         BigDecimal amount = order.getAmount().subtract(order.getAmountPaid()).setScale(2, BigDecimal.ROUND_HALF_UP);
-
-
-
         order.setExpire(null);
         order.setLockExpire(null);
         order.setLockKey(null);
