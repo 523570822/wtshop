@@ -90,7 +90,7 @@ public class StaffCronManager implements ITask{
         }*/
         logger.info("结束极光推送服务————————————————————————");
 
-
+        return;
 /*
 
         //获取15天之前 需要分佣的订单
