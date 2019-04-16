@@ -134,4 +134,8 @@ public class CommissionLogDao extends BaseDao<CommissionLog> {
 		return orderSql;
 	}
 
+    public List<CommissionLog> findByStatus() {
+		String sql = "select * from commission_log where status = 2  and DATEDIFF(now(),create_date)>7" ;
+		return modelManager.find(sql);
+    }
 }

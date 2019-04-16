@@ -38,6 +38,7 @@ public class StaffCronManager implements ITask{
     private ProductService productService = Enhancer.enhance(ProductService.class);
     private StaffMemberDao staffMemberDao = Enhancer.enhance(StaffMemberDao.class);
     private CommissionService commissionService = Enhancer.enhance(CommissionService.class);
+    private CommissionLogService commissionLogService = Enhancer.enhance(CommissionLogService.class);
     private MrmfShopDao mrmfShopDao = Enhancer.enhance(MrmfShopDao.class);
     private GroupRemindDao groupRemindDao = Enhancer.enhance(GroupRemindDao.class);
 
@@ -90,7 +91,17 @@ public class StaffCronManager implements ITask{
         /**
          * 购买普通商品分佣
          */
+        List<CommissionLog> commlogList=commissionLogService.findByStatus();
+        for (CommissionLog commlog:commlogList){
+            Member staff = memberService.find(commlog.getMemberId());
 
+            staff.setCommission(staff.getCommission().add(commlog.getCredit()));
+            staff.setCommissionUnarrived(staff.getCommissionUnarrived().subtract(commlog.getCredit()));
+            commlog.setStatus(1);
+            commissionLogService.update(commlog);
+            memberService.update(staff);
+
+        }
 
 
 

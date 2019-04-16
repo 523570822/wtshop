@@ -14,6 +14,7 @@ import com.wtshop.model.*;
 import com.wtshop.util.ApiResult;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -212,4 +213,7 @@ public class CommissionLogService extends BaseService<CommissionLog> {
 
 	}
 
+    public List<CommissionLog> findByStatus() {
+		return depositLogDao.findByStatus();
+    }
 }
