@@ -56,10 +56,9 @@ public class GroupBuyDao extends BaseDao<GroupBuy>{
     }    /**
      * 获取当前正在使用的福袋
      */
-    public List<GroupBuy> findListRe(){
+    public List<GroupBuy> findListRe(long id){
 
-        String sql = " SELECT  f.*,g.name,g.image,g.market_price FROM group_buy f LEFT JOIN goods g on f.product_id=g.id   where 1 = 1 AND status = 0 order by f.sales desc  limit 10";
-
+        String sql = "SELECT f.*,g.name,g.image,g.market_price,case when  gr.`status` is null then 0 else gr.`status` end  rem_status FROM group_buy f LEFT JOIN goods g ON f.product_id = g.id LEFT JOIN (select  * from group_remind ss where ss.member_id="+id+") gr on f.id=gr.group_id WHERE 1 = 1 AND unix_timestamp(now()) < unix_timestamp(f.end_date) AND unix_timestamp(now()) > unix_timestamp(f.begin_date) AND f.STATUS = 1 ORDER BY price DESC";
         return modelManager.find(sql);
     }
 

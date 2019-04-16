@@ -78,11 +78,11 @@ public class GroupBuyAPIController extends BaseAPIController {
      */
     public void listRe() {
 
-
+        Member m=memberService.getCurrent();
 
         Map<String, Object> map = new HashedMap();
 
-       List<GroupBuy> list = fuDaiService.findListRe();
+       List<GroupBuy> list = fuDaiService.findListRe(m.getId());
         // map.put("list", list);
         renderJson(ApiResult.success(list));
     }
@@ -90,27 +90,43 @@ public class GroupBuyAPIController extends BaseAPIController {
  * 组团详情
  */
 public void groupDetails() throws ParseException {
+
+    Member m=memberService.getCurrent();
+
     Long fightGroupL = getParaToLong("fightGroup");
     Long tuanGouId = getParaToLong("tuanGouId");
     List<Order> order = orderService.findByfightgroupId(fightGroupL);
+    List<Order> order111 = orderService.findByfightgroupIdmemberId(fightGroupL, m.getId());
+Boolean isfight=true;
+    if(order111.size()>0){
+         isfight=false;
+
+    }
+
 
     GroupBuy ss = fuDaiService.find(tuanGouId);
 
     Long time = 0L;
     time = Calendar.getInstance().getTimeInMillis();
     FightGroup fightGroup = fightGroupService.find(fightGroupL);
-    fightGroup.setJiShi(fightGroup.getEndDate().getTime()- time);
+    if(fightGroup.getGroupnum()<=fightGroup.getCount()){
+        fightGroup.setJiShi(0l);
+    }else{
+        fightGroup.setJiShi(fightGroup.getEndDate().getTime()- time);
+    }
+
     fightGroup.setSales(ss.getSales());
-if(fightGroupL==0){
+        if(fightGroupL==0){
 
-}else{
+        }else{
 
-}
+            }
 
     Map<String, Object> map = new HashedMap();
     map.put("goods", fightGroup.getProduct().getGoods());
     map.put("fightGroup",fightGroup);
     map.put("order",order);
+    map.put("isfight",isfight);
     renderJson(ApiResult.success(map));
 
 }

@@ -81,8 +81,8 @@ public class GroupBuyService extends BaseService<GroupBuy> {
     public Page<GroupBuy> findPages(Pageable pageable,boolean status,long id) {
         return fuDaiDao.findPages(pageable,status,id);
     }
-    public List<GroupBuy> findListRe() {
-        return fuDaiDao.findListRe();
+    public List<GroupBuy> findListRe(long id) {
+        return fuDaiDao.findListRe(id);
     }
 
     /**

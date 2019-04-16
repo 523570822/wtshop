@@ -329,7 +329,10 @@ public class OrderAPIController extends BaseAPIController {
 
 			if(fightGroupId!=0&&!isSinglepurchase){
 				List<Order> order = orderService.findByfightgroupIdmemberId(fightGroupId, member.getId());
-
+				if(order.size()>0){
+					renderJson(ApiResult.fail("已经参加过"));
+					return;
+				}
 				if(groupBuy.getNum()!=0&&order.size()>=groupBuy.getNum()){
 					renderJson(ApiResult.fail("此活动每人只限购买"+groupBuy.getNum()+"次"));
 					return;
