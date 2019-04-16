@@ -73,7 +73,7 @@ public class MemberDao extends BaseDao<Member> {
 	 * 查询所有总下线会员
 	 */
 	public List<Member> findMemberByLinkShare(String shareCode){
-		String sql = " select * from member where 1 = 1 AND is_delete = 0 and share_code is not null  And   link_share_code like %"+shareCode+"% ";
+		String sql = " select * from member where 1 = 1 AND is_delete = 0 and share_code is not null  And   link_share_code like '%"+shareCode+"%' ";
 		return modelManager.find(sql);
 	}
 
