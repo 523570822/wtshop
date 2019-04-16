@@ -243,9 +243,12 @@ public class MemberAPIController extends BaseAPIController {
 	public void teamManagementFind() throws UnsupportedEncodingException {
 		Member member = memberService.getCurrent();
 
-
+		String str11=getPara("str");
+		if(str11==null){
+			str11="";
+		}
 		//String str = getPara("str");
-		String str =  URLDecoder.decode(getPara("str"),"UTF-8");
+		String str =  URLDecoder.decode(str11,"UTF-8");
 		Integer pageNumber = getParaToInt("pageNumbers");
 
 		Pageable pageable = new Pageable(pageNumber, PAGE_SIZE);
