@@ -52,6 +52,9 @@
     <li>
         <input type="button" value="退换货项"/>
     </li>
+    <li>
+        <input type="button" value="图片"/>
+    </li>
     [#if returns.status == 2  ]
         <li>
             <input type="button" value="${message("admin.returns.base")}"/>
@@ -83,6 +86,9 @@
         </th>
         <th>
             ${message("ReturnsItem.cause")}
+        </th>
+        <th>
+           图片
         </th>
         <th>
             ${message("admin.common.createDate")}:
@@ -124,6 +130,8 @@
             </td>
             <td>
                 ${returnsItem.cause} ${returnsItem.desc}
+            </td>   <td>
+           ${returnsItem.imageConverter[0]}
             </td>
             <td>
                 ${returnsItem.createDate?string("yyyy-MM-dd HH:mm:ss")}
@@ -207,7 +215,19 @@
     <tr>
     </tr>
 </table>
+<table class="input tabContent">
 
+    [#list returns.returnsItems as returnsItem]
+     [#list  returnsItem.imageConverter as image]
+         <tr>
+             <td>
+                 <img src="http://oss-dev.rxmao.cn${image}"  width="1542" >
+             </td>
+         </tr>
+     [/#list]
+    [/#list]
+
+</table>
 <form id="returns" action="edit.jhtml" method="post">
     <table class="input tabContent">
         <tr>

@@ -561,13 +561,13 @@ public class OrderService extends BaseService<Order> {
                 if(mmss.size()>=15){
                     member1.setHousekeeperId(3l);
                 }
-if(member1.getHousekeeperId()==2){
-    depositLog1.setCredit(BigDecimal.valueOf(100l));
-    member1.setCommission(BigDecimal.valueOf(100L).add(member1.getCommission()));
-}else{
-    depositLog1.setCredit(BigDecimal.valueOf(150l));
-    member1.setCommission(BigDecimal.valueOf(150L).add(member1.getCommission()));
-}
+        if(member1.getHousekeeperId()==2){
+            depositLog1.setCredit(BigDecimal.valueOf(100l));
+         member1.setCommission(BigDecimal.valueOf(100L).add(member1.getCommission()));
+        }else{
+         depositLog1.setCredit(BigDecimal.valueOf(150l));
+            member1.setCommission(BigDecimal.valueOf(150L).add(member1.getCommission()));
+        }
 
 
 

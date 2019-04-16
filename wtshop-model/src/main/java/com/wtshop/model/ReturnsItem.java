@@ -3,8 +3,12 @@ package com.wtshop.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.wtshop.entity.SpecificationItem;
 import com.wtshop.model.base.BaseReturnsItem;
 import com.wtshop.util.ObjectUtils;
+import org.apache.commons.collections.CollectionUtils;
 
 /**
  * Model - 退货项
@@ -71,7 +75,41 @@ public class ReturnsItem extends BaseReturnsItem<ReturnsItem> {
 	public Status getStatusName() {
 		return getStatus() != null ? Status.values()[getStatus()] : null;
 	}
-	
+
+	private List<String> imageConverter = new ArrayList<String>();
+
+	/**
+	 * 获取规格项
+	 *
+	 * @return 规格项
+	 */
+	public List<String>  getImageConverter() {
+		if (CollectionUtils.isEmpty(imageConverter)) {
+			JSONArray imageJson = JSONArray.parseArray(getImages());
+			if (CollectionUtils.isNotEmpty(imageJson)) {
+				for (int i = 0; i < imageJson.size(); i++) {
+
+					String[] sb = imageJson.getString(i).split(",");
+					for (String sb1:sb
+						 ) {
+						imageConverter.add(sb1);
+					}
+
+				}
+
+			}
+		}
+		return imageConverter;
+	}
+	/**
+	 * 设置规格项
+	 *
+	 * @param imageConverter 规格项
+	 */
+	public void setImageConverter(List<String> imageConverter) {
+		this.imageConverter = imageConverter;
+	}
+
 	/**
 	 * 获取退货单
 	 * 
