@@ -244,7 +244,7 @@ public class MemberAPIController extends BaseAPIController {
 		Member member = memberService.getCurrent();
 
 		String str11=getPara("str");
-		if(str11==null){
+		if(str11==null||str11.equals("null")){
 			str11="";
 		}
 		//String str = getPara("str");
