@@ -555,7 +555,7 @@ public class OrderService extends BaseService<Order> {
             order.setOnShareCode(member.getOnShareCode());
             List<Member> mmss = memberService.findMemberByOnShare(member1.getShareCode());
             CommissionLog depositLog1 = new CommissionLog();
-                if(mmss.size()>=15){
+                if(mmss.size()>=3){
                     member1.setHousekeeperId(3l);
                 }
         if(member1.getHousekeeperId()==2){

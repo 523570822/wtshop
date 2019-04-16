@@ -1389,7 +1389,7 @@ $().ready(function() {
             <tr>
 			<tr>
                 <th>
-				分享赠送喵币：
+                    团购开始前多久提醒：
                 </th>
                 <td>
 					[#if redisSetting.registerSending??]
