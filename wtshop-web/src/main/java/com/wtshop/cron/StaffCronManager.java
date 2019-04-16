@@ -86,7 +86,7 @@ public class StaffCronManager implements ITask{
 
         }
 
-        logger.info("结束极光推送服务————————————————————————");
+
 
         /**
          * 购买普通商品分佣
@@ -102,7 +102,7 @@ public class StaffCronManager implements ITask{
             memberService.update(staff);
 
         }
-
+        logger.info("结束极光推送服务————————————————————————");
 
 
 /*
