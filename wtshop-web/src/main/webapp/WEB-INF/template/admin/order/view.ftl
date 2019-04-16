@@ -1007,21 +1007,21 @@ $().ready(function() {
 		<li>
 			<input type="button" value="${message("admin.order.productInfo")}" />
 		</li>
-		[#--<li>--]
-			[#--<input type="button" value="${message("admin.order.paymentInfo")}" />--]
-		[#--</li>--]
-		[#--<li>--]
-			[#--<input type="button" value="${message("admin.order.refundsInfo")}" />--]
-		[#--</li>--]
-		[#--<li>--]
-			[#--<input type="button" value="${message("admin.order.shippingInfo")}" />--]
-		[#--</li>--]
-		[#--<li>--]
-			[#--<input type="button" value="${message("admin.order.returnsInfo")}" />--]
-		[#--</li>--]
-		[#--<li>--]
-			[#--<input type="button" value="${message("admin.order.orderLog")}" />--]
-		[#--</li>--]
+		<li>
+			<input type="button" value="${message("admin.order.paymentInfo")}" />
+		</li>
+		<li>
+			<input type="button" value="${message("admin.order.refundsInfo")}" />
+		</li>
+		<li>
+			<input type="button" value="${message("admin.order.shippingInfo")}" />
+		</li>
+		<li>
+			<input type="button" value="${message("admin.order.returnsInfo")}" />
+		</li>
+		<li>
+			<input type="button" value="${message("admin.order.orderLog")}" />
+		</li>
 	</ul>
 	<table class="input tabContent">
 		<tr>
@@ -1312,6 +1312,9 @@ $().ready(function() {
 			<th>
 				${message("OrderItem.price")}
 			</th>
+            <th>
+			规格
+            </th>
 			<th>
 				${message("OrderItem.quantity")}
 			</th>
@@ -1342,6 +1345,9 @@ $().ready(function() {
 				</td>
 				<td>
 				${currency(orderItem.price, true)}
+				</td>
+				<td>
+				${orderItem.specifications}
 				</td>
 				<td>
 					${orderItem.quantity}

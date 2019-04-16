@@ -550,32 +550,38 @@ public class OrderService extends BaseService<Order> {
             }
 
             member.setLinkShareCode(member1.getLinkShareCode() + "_" + member.getOnShareCode());
-            if (member.getHousekeeperId() == 0 || member.getHousekeeperId() <= 1) {
+            if (member.getHousekeeperId() == null || member.getHousekeeperId() <= 1) {
                 member.setHousekeeperId(2L);
             }
 
 
             order.setOnShareCode(member.getOnShareCode());
             List<Member> mmss = memberService.findMemberByOnShare(member1.getShareCode());
-            if(member1.getHousekeeperId()==null||member1.getHousekeeperId()==1l){
-                if(mmss.size()>=15){
-                    member1.setHousekeeperId(2l);
-                }
-                member1.setCommission(BigDecimal.valueOf(150L).add(member1.getCommission()));
-                member1.setCommission(BigDecimal.valueOf(150L).add(member1.getCommission()));
-
-            }else{
-                member1.setCommission(BigDecimal.valueOf(100L).add(member1.getCommission()));
-                member1.setCommission(BigDecimal.valueOf(100L).add(member1.getCommission()));
-            }
-
-
             CommissionLog depositLog1 = new CommissionLog();
+                if(mmss.size()>=15){
+                    member1.setHousekeeperId(3l);
+                }
+if(member1.getHousekeeperId()==2){
+    depositLog1.setCredit(BigDecimal.valueOf(100l));
+    member1.setCommission(BigDecimal.valueOf(100L).add(member1.getCommission()));
+}else{
+    depositLog1.setCredit(BigDecimal.valueOf(150l));
+    member1.setCommission(BigDecimal.valueOf(150L).add(member1.getCommission()));
+}
+
+
+
+
+
+
+
+
             depositLog1.setBalance(member1.getBalance());
             depositLog1.setDebit(BigDecimal.ZERO);
             depositLog1.setStatus(1);
             depositLog1.setMemo("福袋上级返现");
             depositLog1.setType(CommissionLog.Type.fudan.ordinal());
+
             depositLog1.setOrderId(order.getId());
             depositLog1.setMemberId(member1.getId());
             memberService.update(member1);
