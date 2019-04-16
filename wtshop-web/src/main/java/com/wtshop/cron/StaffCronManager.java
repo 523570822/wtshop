@@ -49,10 +49,10 @@ public class StaffCronManager implements ITask{
     public void run() {
         logger.info("开始执行定时任务!!!!!!!!");
         Prop prop = PropKit.use(CommonAttributes.wtshop_PROPERTIES_PATH);
-        if (!prop.getBoolean("commission.enable")){
+      /*  if (!prop.getBoolean("commission.enable")){
             logger.info("当前服务配置为关闭分佣");
             return;
-        }
+        }*/
 
         /**
          * 用户推送团购定时
@@ -105,7 +105,7 @@ public class StaffCronManager implements ITask{
 
 
 
-
+/*
 
         //获取15天之前 需要分佣的订单
         Date date = DateUtils.getDateBefore(new Date(), Code.staff_day);
@@ -192,7 +192,7 @@ public class StaffCronManager implements ITask{
 
            }
 
-       }
+       }*/
 
     }
 }
