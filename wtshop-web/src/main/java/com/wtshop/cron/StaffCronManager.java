@@ -32,20 +32,11 @@ import java.util.List;
 public class StaffCronManager implements ITask{
     Logger logger = Logger.getLogger(StaffCronManager.class);
     private InformationService informationService = Enhancer.enhance(InformationService.class);
-    private OrderDao orderDao = Enhancer.enhance(OrderDao.class);
     private MemberService memberService = Enhancer.enhance(MemberService.class);
-    private GoodsService goodsService = Enhancer.enhance(GoodsService.class);
-    private ProductService productService = Enhancer.enhance(ProductService.class);
-    private StaffMemberDao staffMemberDao = Enhancer.enhance(StaffMemberDao.class);
-    private CommissionService commissionService = Enhancer.enhance(CommissionService.class);
     private CommissionLogService commissionLogService = Enhancer.enhance(CommissionLogService.class);
-    private MrmfShopDao mrmfShopDao = Enhancer.enhance(MrmfShopDao.class);
     private GroupRemindDao groupRemindDao = Enhancer.enhance(GroupRemindDao.class);
-
     public void stop() {
-
     }
-
     public void run() {
         logger.info("开始执行定时任务!!!!!!!!");
         Prop prop = PropKit.use(CommonAttributes.wtshop_PROPERTIES_PATH);
@@ -74,16 +65,12 @@ public class StaffCronManager implements ITask{
         logger.info("开始极光推送服务————————————————————————");
         List<GroupRemind> groupReminlist1= groupRemindDao.findListNum(hour);;
         for (GroupRemind groupRemind:groupReminlist1) {
-
             int dss=groupRemind.get("number");
             try {
-
                 informationService.groupRmindMessage(groupRemind,dss);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-
-
         }
 
 
@@ -92,16 +79,15 @@ public class StaffCronManager implements ITask{
          * 购买普通商品分佣
          */
         List<CommissionLog> commlogList=commissionLogService.findByStatus();
-        for (CommissionLog commlog:commlogList){
+     /*   for (CommissionLog commlog:commlogList){
             Member staff = memberService.find(commlog.getMemberId());
-
             staff.setCommission(staff.getCommission().add(commlog.getCredit()));
             staff.setCommissionUnarrived(staff.getCommissionUnarrived().subtract(commlog.getCredit()));
             commlog.setStatus(1);
             commissionLogService.update(commlog);
             memberService.update(staff);
 
-        }
+        }*/
         logger.info("结束极光推送服务————————————————————————");
 
 
