@@ -53,7 +53,7 @@ public class MemberService extends BaseService<Member> {
 		return memberDao.findMemberByOnShare(shareCode);
 	}
 	public List<Member> findMemberByLinkShare(String shareCode){
-		return memberDao.findMemberByOnShare(shareCode);
+		return memberDao.findMemberByLinkShare(shareCode);
 	}
 
 	public List<Member> findMemberList(Long[] memberList){
