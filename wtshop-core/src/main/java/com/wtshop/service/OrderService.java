@@ -2657,4 +2657,13 @@ public class OrderService extends BaseService<Order> {
 
         return order;
     }
+
+    /**
+     * 获取自己购买福袋
+     * @param id
+     * @return
+     */
+    public List<Order> findByMemberId(Long id) {
+      return  orderDao.findByMemberId(id);
+    }
 }

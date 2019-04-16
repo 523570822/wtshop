@@ -79,7 +79,7 @@ public class StaffCronManager implements ITask{
          * 购买普通商品分佣
          */
         List<CommissionLog> commlogList=commissionLogService.findByStatus();
-     /*   for (CommissionLog commlog:commlogList){
+       for (CommissionLog commlog:commlogList){
             Member staff = memberService.find(commlog.getMemberId());
             staff.setCommission(staff.getCommission().add(commlog.getCredit()));
             staff.setCommissionUnarrived(staff.getCommissionUnarrived().subtract(commlog.getCredit()));
@@ -87,7 +87,7 @@ public class StaffCronManager implements ITask{
             commissionLogService.update(commlog);
             memberService.update(staff);
 
-        }*/
+        }
         logger.info("结束极光推送服务————————————————————————");
 
         return;

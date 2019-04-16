@@ -706,4 +706,10 @@ public class OrderDao extends BaseDao<Order> {
 		return page;
 	}
 
+    public List<Order> findByMemberId(Long id) {
+		String sqlExceptSelect="select * FROM `order` o where o.type=2 and o.member_id='"+id+"' AND o.status in ('2','3','4','5','9','10')";
+
+
+		return modelManager.find(sqlExceptSelect);
+    }
 }

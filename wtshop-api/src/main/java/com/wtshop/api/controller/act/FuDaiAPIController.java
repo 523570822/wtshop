@@ -191,10 +191,20 @@ public class FuDaiAPIController extends BaseAPIController {
         m.setPoint(m.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
         miaobiLogService.save(miaobiLog);
         memberService.update(m);
-
-
         item.put("sendMiaobi",sendMiaoBi);
-        item.put("title","恭喜成为掌柜");
+
+            List<Order> orderList=orderService.findByMemberId(m.getId());
+            if(orderList.size()>1){
+                item.put("title","恭喜获得喵币");
+            }else {
+                item.put("title","恭喜成为掌柜");
+            }
+
+
+
+
+
+
         item.put("type",1);
         item.put("miaobilId",redisSetting.getDouble("housekeeperSending"));//福袋赠送喵币
 
