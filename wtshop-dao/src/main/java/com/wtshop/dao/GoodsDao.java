@@ -910,17 +910,6 @@ public class GoodsDao extends BaseDao<Goods> {
 				sqlExceptSelect += "AND " + propertyName + " = '" + entry.getValue()+"'";
 			}
 		}
-		if (startPrice != null && endPrice != null && startPrice.compareTo(endPrice) > 0) {
-			BigDecimal temp = startPrice;
-			startPrice = endPrice;
-			endPrice = temp;
-		}
-		if (startPrice != null && startPrice.compareTo(BigDecimal.ZERO) >= 0) {
-			sqlExceptSelect += " AND g.price >= " + startPrice;
-		}
-		if (endPrice != null && endPrice.compareTo(BigDecimal.ZERO) >= 0) {
-			sqlExceptSelect += " AND g.price <= " + endPrice;
-		}
 		if (isMarketable != null) {
 			sqlExceptSelect += " AND g.is_marketable = " + isMarketable;
 		}
@@ -929,25 +918,6 @@ public class GoodsDao extends BaseDao<Goods> {
 		}
 		if (isTop != null) {
 			sqlExceptSelect += " AND g.is_top = " + isTop;
-		}
-		if (isOutOfStock != null) {
-			String subquery = "";
-			if (isOutOfStock) {
-				subquery += "SELECT 1 FROM product p1 WHERE p1.`goods_id` = g.id AND p1.`stock` <= p1.`allocated_stock`";
-			} else {
-				subquery += "SELECT 1 FROM product p1 WHERE p1.`goods_id` = g.id AND p1.`stock` > p1.`allocated_stock`";
-			}
-			sqlExceptSelect += " AND EXISTS (" + subquery + ") ";
-		}
-		if (isStockAlert != null) {
-			String subquery = "";
-			Setting setting = SystemUtils.getSetting();
-			if (isStockAlert) {
-				subquery += "SELECT 1 FROM product p1 WHERE p1.`goods_id` = g.id AND p1.`stock` <= p1.`allocated_stock` + " + setting.getStockAlertCount();
-			} else {
-				subquery += "SELECT 1 FROM product p1 WHERE p1.`goods_id` = g.id AND p1.`stock` > p1.`allocated_stock` + " + setting.getStockAlertCount();
-			}
-			sqlExceptSelect += " AND EXISTS (" + subquery + ") ";
 		}
 		if (hasPromotion != null) {
 			sqlExceptSelect += "AND EXISTS (SELECT 1 from goods_promotion gp WHERE gp.`goods` = g.`id` AND gp.promotions = " + promotion.getId() + ") ";
