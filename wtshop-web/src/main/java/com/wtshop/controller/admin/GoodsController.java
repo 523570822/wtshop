@@ -130,13 +130,15 @@ public class GoodsController extends BaseController {
      * 添加
      */
     public void add() {
-        setAttr("area", areaService.findAll());
+        List<Area> ww = areaService.findAll();
+        setAttr("area",ww);
         setAttr("types", Goods.Type.values());
         setAttr("productCategoryTree", productCategoryService.findTree());
         setAttr("brands", brandService.findAll());
         setAttr("effects", effectService.findAll());
         setAttr("promotions", promotionService.findAll());
-        setAttr("tags", tagService.findList(Tag.Type.goods));
+        List<Tag> sss = tagService.findList(Tag.Type.goods);
+        setAttr("tags",sss);
         setAttr("specifications", specificationService.findAll());
         render("/admin/goods/add.ftl");
     }
@@ -281,6 +283,7 @@ public class GoodsController extends BaseController {
     public void save() {
         List<UploadFile> uploadFiles = getFiles();
         Goods goods = getModel(Goods.class);
+        Object areaId1 = getPara("areaId");
         String typeName = getPara("type");
         goods.setType(StrKit.notBlank(typeName) ? Goods.Type.valueOf(typeName).ordinal() : null);
         goods.setIsMarketable(getParaToBoolean("isMarketable", false));
@@ -370,11 +373,7 @@ public class GoodsController extends BaseController {
         goods.setEffects(new ArrayList<Effect>(effectService.findList(effectIds)));
 
         //goods.removeAttributeValue();
-        for (Attribute attribute : goods.getProductCategory().getAttributes()) {
-            String value = getPara("attribute_" + attribute.getId());
-            String attributeValue = attributeService.toAttributeValue(attribute, value);
-            goods.setAttributeValue(attribute, attributeValue);
-        }
+
 
         if (StringUtils.isNotEmpty(goods.getSn()) && goodsService.snExists(goods.getSn())) {
             addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error, "商品编号不能为空或已存在!"));
@@ -403,7 +402,7 @@ public class GoodsController extends BaseController {
         }
 
         addFlashMessage(SUCCESS_MESSAGE);
-        redirect("list.jhtml");
+        redirect("/admin/goods/list.jhtml");
     }
 
 
@@ -449,8 +448,6 @@ public class GoodsController extends BaseController {
         goods.setIsDelete(false);
         goods.setAreaId(areaId);
         goods.setOperateIp(request.getRemoteAddr());
-        Goods pGoods = goodsService.find(goods.getId());
-        goods.setType(pGoods.getType());
 
 
         // 图片
@@ -526,11 +523,6 @@ public class GoodsController extends BaseController {
         goods.setEffects(new ArrayList<Effect>(effectService.findList(effectIds)));
 
 
-        for (Attribute attribute : goods.getProductCategory().getAttributes()) {
-            String value = getRequest().getParameter("attribute_" + attribute.getId());
-            String attributeValue = attributeService.toAttributeValue(attribute, value);
-            goods.setAttributeValue(attribute, attributeValue);
-        }
 
         Admin admin = adminService.getCurrent();
         if (goods.hasSpecification()) {

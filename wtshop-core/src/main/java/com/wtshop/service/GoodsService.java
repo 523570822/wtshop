@@ -850,22 +850,13 @@ public class GoodsService extends BaseService<Goods> {
                 product.setRewardPoint(0L);
                 goods.setPromotions(null);
                 break;
-            case gift:
-                product.setPrice(BigDecimal.ZERO);
-                product.setRewardPoint(0L);
-                product.setExchangePoint(0L);
-                goods.setPromotions(null);
-                break;
-            case auction:
-                product.setRewardPoint(0L);
-                product.setExchangePoint(0L);
-                break;
+
         }
         if (product.getMarketPrice() == null) {
-            product.setMarketPrice(calculateDefaultMarketPrice(product.getPrice()));
+            product.setMarketPrice(BigDecimal.ZERO);
         }
         if (product.getRewardPoint() == null) {
-            product.setRewardPoint(calculateDefaultRewardPoint(product.getPrice()));
+            product.setRewardPoint(0L);
         }
         product.setAllocatedStock(0);
         product.setIsDefault(true);
@@ -895,10 +886,13 @@ public class GoodsService extends BaseService<Goods> {
         goods.setMonthSalesDate(new Date());
         goods.setGenerateMethod(Goods.GenerateMethod.eager.ordinal());
         goods.setSpecificationItems(null);
+        goods.setProductCategoryId(243l);
         goods.setReviews(null);
         goods.setConsultations(null);
         goods.setFavoriteMembers(null);
+        goods.setCheck(8);
         goods.setProducts(null);
+        goods.setPrice(BigDecimal.ZERO);
         setValue(goods);
         goodsDao.save(goods);
 
@@ -990,16 +984,7 @@ public class GoodsService extends BaseService<Goods> {
                     product.setRewardPoint(0L);
                     goods.setPromotions(null);
                     break;
-                case gift:
-                    product.setPrice(BigDecimal.ZERO);
-                    product.setRewardPoint(0L);
-                    product.setExchangePoint(0L);
-                    goods.setPromotions(null);
-                    break;
-                case auction:
-                    product.setRewardPoint(0L);
-                    product.setExchangePoint(0L);
-                    break;
+
             }
             if (product.getMarketPrice() == null) {
                 product.setMarketPrice(calculateDefaultMarketPrice(product.getPrice()));
@@ -1102,26 +1087,7 @@ public class GoodsService extends BaseService<Goods> {
         Assert.state(!product.hasSpecification());
 
         Goods pGoods = goodsDao.find(goods.getId());
-        switch (pGoods.getTypeName()) {
-            case general:
-                product.setExchangePoint(0L);
-                break;
-            case exchange:
-                product.setPrice(BigDecimal.ZERO);
-                product.setRewardPoint(0L);
-                goods.setPromotions(null);
-                break;
-            case gift:
-                product.setPrice(BigDecimal.ZERO);
-                product.setRewardPoint(0L);
-                product.setExchangePoint(0L);
-                goods.setPromotions(null);
-                break;
-            case auction:
-                product.setRewardPoint(0L);
-                product.setExchangePoint(0L);
-                break;
-        }
+
         if (product.getMarketPrice() == null) {
             product.setMarketPrice(calculateDefaultMarketPrice(product.getPrice()));
         }
@@ -1168,7 +1134,9 @@ public class GoodsService extends BaseService<Goods> {
         copyProperties(goods, pGoods, "sn", "check", "type", "score", "totalScore", "scoreCount", "hits", "weekHits", "monthHits", "sales", "weekSales", "monthSales", "weekHitsDate", "monthHitsDate", "weekSalesDate", "monthSalesDate", "generateMethod", "reviews", "consultations", "favoriteMembers",
                 "products", "createDate", "verifyState");
         pGoods.setGenerateMethod(Goods.GenerateMethod.eager.ordinal());
-        goodsDao.update(pGoods);
+        goods.setPrice(BigDecimal.ZERO);
+        goods.setProductCategoryId(243l);
+        goodsDao.update(goods);
 
         List<Promotion> promotions = goods.getPromotions();
         if (CollectionUtils.isNotEmpty(promotions)) {
@@ -1264,16 +1232,7 @@ public class GoodsService extends BaseService<Goods> {
                     product.setRewardPoint(0L);
                     goods.setPromotions(null);
                     break;
-                case gift:
-                    product.setPrice(BigDecimal.ZERO);
-                    product.setRewardPoint(0L);
-                    product.setExchangePoint(0L);
-                    goods.setPromotions(null);
-                    break;
-                case auction:
-                    product.setRewardPoint(0L);
-                    product.setExchangePoint(0L);
-                    break;
+
             }
             if (product.getMarketPrice() == null) {
                 product.setMarketPrice(calculateDefaultMarketPrice(product.getPrice()));
@@ -1488,6 +1447,7 @@ public class GoodsService extends BaseService<Goods> {
      * @return 默认市场价
      */
     private BigDecimal calculateDefaultMarketPrice(BigDecimal price) {
+        price=BigDecimal.ZERO;
         Assert.notNull(price);
 
         Setting setting = SystemUtils.getSetting();
@@ -1502,6 +1462,7 @@ public class GoodsService extends BaseService<Goods> {
      * @return 默认赠送积分
      */
     private long calculateDefaultRewardPoint(BigDecimal price) {
+        price=BigDecimal.ZERO;
         Assert.notNull(price);
 
         Setting setting = SystemUtils.getSetting();
@@ -1603,16 +1564,6 @@ public class GoodsService extends BaseService<Goods> {
                 product.setPrice(BigDecimal.ZERO);
                 product.setRewardPoint(0L);
                 goods.setPromotions(null);
-                break;
-            case gift:
-                product.setPrice(BigDecimal.ZERO);
-                product.setRewardPoint(0L);
-                product.setExchangePoint(0L);
-                goods.setPromotions(null);
-                break;
-            case auction:
-                product.setRewardPoint(0L);
-                product.setExchangePoint(0L);
                 break;
         }
         if (product.getMarketPrice() == null) {

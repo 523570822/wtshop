@@ -279,32 +279,23 @@ $().ready(function() {
 					<input type="checkbox" id="selectAll" />
 				</th>
 				<th>
-					<a href="javascript:;" class="sort" name="sn">${message("Goods.sn")}</a>
-				</th>
-				<th>
 					<a href="javascript:;" class="sort" name="name">${message("Goods.name")}</a>
 				</th>
 				<th>
-					<a href="javascript:;" class="sort" name="product_category_id">${message("Goods.productCategory")}</a>
+					<a href="javascript:;" class="sort" name="product_category_id">分类</a>
 				</th>
-				<th>
-					<a href="javascript:;" class="sort" name="price">${message("Goods.price")}</a>
-				</th>
-				<th>
-					<a href="javascript:;" class="sort" name="commission_rate">佣金比例</a>
-				</th>
-				<th>
-					<a href="javascript:;" class="sort" name="is_marketable">${message("Goods.isMarketable")}</a>
-				</th>
+
+
+
 				<th>
 					<a href="javascript:;" class="sort" name="create_date">${message("admin.common.createDate")}</a>
 				</th>
                 <th>
                     <span>${message("admin.seo.IP")}</span>
                 </th>
-                <th>
+                [#--<th>
 					<span>${message("admin.status.operator")}</span>
-                </th>
+                </th>--]
 				<th>
 					<span>${message("admin.common.action")}</span>
 				</th>
@@ -315,40 +306,29 @@ $().ready(function() {
 						<input type="checkbox" name="ids" value="${goods.id}" />
 					</td>
 					<td>
-						<span[#if goods.isOutOfStock] class="red"[#elseif goods.isStockAlert] class="blue"[/#if]>
-							${goods.sn}
-						</span>
-					</td>
-					<td>
 						<span title="${goods.name}">
 							${abbreviate(goods.name, 30, "...")}
 						</span>
-						[#if goods.typeName == "auction"]
-							<span class="red">*倒拍商品</span>
-						[/#if]
+
 						[#list goods.validPromotions as promotion]
 							<span class="promotion" title="${promotion.title}">${promotion.name}</span>
 						[/#list]
 					</td>
 					<td>
-						${goods.productCategory.name}
-					</td>
-					<td>
-						${currency(goods.price, true)}
-					</td>
-                    <td>
-						${goods.commissionRate}%
-                    </td>
-					<td>
-						<span class="${goods.isMarketable?string("true", "false")}Icon">&nbsp;</span>
-					</td>
+
+					[#if goods.attribute_value0==1]
+						考点模式
+						[#else]
+						考券模式
+					[/#if]
+				</td>
                     <td>
                         <span title="${goods.createDate?string("yyyy-MM-dd HH:mm:ss")}">${goods.createDate}</span>
                     </td>
 					<td>
 						${goods.operate_ip}
 					</td>
-					<td>
+					[#--<td>
 						[#if goods.check == State_Draft]
                             <span class="red">草稿</span>
 						[#elseif goods.check == State_Review_ProductSpecialist]
@@ -360,54 +340,22 @@ $().ready(function() {
 						[#elseif goods.check == State_Review_FinanceDirector]
                             <span class="black">待财务主管审核</span>
 						[#elseif goods.check == State_Publish]
-                            <span class="green">已上架</span>
+                            <span class="green">已上线</span>
 						[#else]
                             <span class="silver">未知状态</span>
 						[/#if]
-					</td>
+					</td>--]
 					<td>
+                        <a href="edit.jhtml?id=${goods.id}">[修改]</a>
 
-						[#if goods.check > State_Review_FinanceDirector ]
-                            <a href="edit.jhtml?id=${goods.id}">[申请修改]</a>
-                            <a onclick="getId(this);return false;"">[${message("admin.common.ids")}]</a>
-						&nbsp;|&nbsp;
-						[/#if]
-
-						[#--产品--]
-						[@shiro.hasAnyRoles name="R_ProductSpecialist"]
-							[#if goods.check == State_Draft || goods.check == State_Review_ProductSpecialist]
-                                <a href="edit.jhtml?id=${goods.id}${urlParam}">[${message("admin.common.edit")}]</a>
-                                <a href="javascript:void(0);" class="review" data-state="${State_Review_ProductManager}" data-id="${goods.id}">[提交产品主管审核]</a>
-							[/#if]
-							[#if goods.check == State_Review_ProductSpecialist]
-                                <a href="javascript:void(0);" class="comment" data-id="${goods.id}">[查看打回意见]</a>
-							[/#if]
-						[/@shiro.hasAnyRoles]
-					[#--产品主管--]
-						[@shiro.hasAnyRoles name="R_ProductManager"]
-							[#if goods.check == State_Review_ProductManager]
-                                <a href="edit.jhtml?id=${goods.id}${urlParam}">[${message("admin.common.edit")}]</a>
-                                <a href="javascript:void(0);" class="review" data-state="${State_Review_Financial}" data-id="${goods.id}">[提交财务审核]</a>
-                                <a href="javascript:void(0);" class="reject" data-state="${State_Review_ProductSpecialist}" data-id="${goods.id}">[打回]</a>
-							[/#if]
-						[/@shiro.hasAnyRoles]
-					[#--财务--]
-						[@shiro.hasAnyRoles name="R_Finance"]
-							[#if goods.check == State_Review_Financial]
-                                <a href="edit.jhtml?id=${goods.id}${urlParam}">[${message("admin.common.edit")}]</a>
-                                <a href="javascript:void(0);" class="review" data-state="${State_Review_FinanceDirector}" data-id="${goods.id}">[提交财务主管审核]</a>
-                                <a href="javascript:void(0);" class="reject" data-state="${State_Review_ProductSpecialist}" data-id="${goods.id}">[打回]</a>
-							[/#if]
-						[/@shiro.hasAnyRoles]
 					[#--财务主管--]
 						[@shiro.hasAnyRoles name="R_FinanceDirector"]
 							[#if goods.check == State_Review_FinanceDirector]
                                 <a href="edit.jhtml?id=${goods.id}${urlParam}">[${message("admin.common.edit")}]</a>
-                                <a href="javascript:void(0);" class="reject" data-state="${State_Review_ProductSpecialist}" data-id="${goods.id}">[打回]</a>
-                                <a href="javascript:void(0);" class="online" data-id="${goods.id}">[商品上架]</a>
+                              [#--  <a href="javascript:void(0);" class="online" data-id="${goods.id}">[商品上架]</a>--]
 							[/#if]
 							[#if goods.check > State_Review_FinanceDirector ]
-                                <a href="javascript:void(0);" class="offline" data-id="${goods.id}">[商品下架]</a>
+                            [#--    <a href="javascript:void(0);" class="offline" data-id="${goods.id}">[商品下架]</a>--]
 							[/#if]
 						[/@shiro.hasAnyRoles]
 

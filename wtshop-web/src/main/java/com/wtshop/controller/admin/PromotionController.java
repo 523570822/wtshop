@@ -65,7 +65,7 @@ public class PromotionController extends BaseController {
 			return;
 		}
 		Set<Product> excludes = new HashSet<Product>(productService.findList(excludeIds));
-		List<Product> products = productService.search(Goods.Type.gift, keyword, excludes, count);
+		List<Product> products = productService.search(Goods.Type.general, keyword, excludes, count);
 		for (Product product : products) {
 			Map<String, Object> item = new HashMap<String, Object>();
 			item.put("id", product.getId());
@@ -107,7 +107,7 @@ public class PromotionController extends BaseController {
 			CollectionUtils.filter(gifts, new Predicate() {
 				public boolean evaluate(Object object) {
 					Product gift = (Product) object;
-					return gift != null && Goods.Type.gift.equals(gift.getType());
+					return gift != null && Goods.Type.exchange.equals(gift.getType());
 				}
 			});
 			promotion.setGifts(new ArrayList<Product>(gifts));
@@ -173,7 +173,7 @@ public class PromotionController extends BaseController {
 			CollectionUtils.filter(gifts, new Predicate() {
 				public boolean evaluate(Object object) {
 					Product gift = (Product) object;
-					return gift != null && Goods.Type.gift.equals(gift.getType());
+					return gift != null && Goods.Type.general.equals(gift.getType());
 				}
 			});
 			promotion.setGifts(new ArrayList<Product>(gifts));

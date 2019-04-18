@@ -695,16 +695,6 @@ public class GroupRemindService extends BaseService<GroupRemind> {
                 product.setRewardPoint(0L);
                 goods.setPromotions(null);
                 break;
-            case gift:
-                product.setPrice(BigDecimal.ZERO);
-                product.setRewardPoint(0L);
-                product.setExchangePoint(0L);
-                goods.setPromotions(null);
-                break;
-            case auction:
-                product.setRewardPoint(0L);
-                product.setExchangePoint(0L);
-                break;
         }
         if (product.getMarketPrice() == null) {
             product.setMarketPrice(calculateDefaultMarketPrice(product.getPrice()));
@@ -835,16 +825,7 @@ public class GroupRemindService extends BaseService<GroupRemind> {
                     product.setRewardPoint(0L);
                     goods.setPromotions(null);
                     break;
-                case gift:
-                    product.setPrice(BigDecimal.ZERO);
-                    product.setRewardPoint(0L);
-                    product.setExchangePoint(0L);
-                    goods.setPromotions(null);
-                    break;
-                case auction:
-                    product.setRewardPoint(0L);
-                    product.setExchangePoint(0L);
-                    break;
+
             }
             if (product.getMarketPrice() == null) {
                 product.setMarketPrice(calculateDefaultMarketPrice(product.getPrice()));
@@ -1114,16 +1095,7 @@ public class GroupRemindService extends BaseService<GroupRemind> {
                 product.setRewardPoint(0L);
                 goods.setPromotions(null);
                 break;
-            case gift:
-                product.setPrice(BigDecimal.ZERO);
-                product.setRewardPoint(0L);
-                product.setExchangePoint(0L);
-                goods.setPromotions(null);
-                break;
-            case auction:
-                product.setRewardPoint(0L);
-                product.setExchangePoint(0L);
-                break;
+
         }
         if (product.getMarketPrice() == null) {
             product.setMarketPrice(calculateDefaultMarketPrice(product.getPrice()));

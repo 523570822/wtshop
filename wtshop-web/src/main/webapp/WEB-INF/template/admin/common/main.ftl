@@ -128,15 +128,15 @@
 		                                <i class="glyphicon glyphicon-folder-close"></i> ${message("admin.main.productGroup")}
 		                            </a>
 		                        </div>
-		                        <div class="accordion-body collapse in" id="productGroup">
+		                       <div class="accordion-body collapse in" id="productGroup">
 		                            <div class="panel-body">
 		                                <ul class="nav nav-pills nav-stacked">
 		                                    [@shiro.hasPermission name="admin:goods"]
 												<li><a href="../goods/list.jhtml" target="iframe">${message("admin.main.goods")}</a></li>
 											[/@shiro.hasPermission]
-											[@shiro.hasPermission name="admin:goodsReview"]
+											[#--[@shiro.hasPermission name="admin:goodsReview"]
                                                 <li><a href="../goodsReview/list.jhtml" target="iframe">${message("admin.goodsVerify")}</a></li>
-											[/@shiro.hasPermission]
+											[/@shiro.hasPermission]--]
 										</ul>
 		                            </div>
 		                        </div>

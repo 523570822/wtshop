@@ -80,15 +80,7 @@ public class Goods extends BaseGoods<Goods> {
         /**
          * 兑换商品
          */
-        exchange,
-        /**
-         * 赠品
-         */
-        gift,
-        /**
-         * 倒拍商品
-         */
-        auction
+        exchange
     }
 
     /**
