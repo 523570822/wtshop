@@ -15,7 +15,7 @@ sleep 10
 echo "拷贝到Tomcat下"
 # 简化后 拷贝编译后的代码到指定tomcat服务器中sudo systemctl restart tomcat  启动Tomcat;
 rsync -rtlvz --exclude 'wtshop.properties'  /root/learngit/wtshop/wtshop-web/target/wtshop-web/*    /var/lib/tomcat/webapps/teacher
-rsync -rtlvz /root/teacher/wtshop.properties /var/lib/tomcat/webapps/news/WEB-INF/classes
+rsync -rtlvz /root/teacher/wtshop.properties /var/lib/tomcat/webapps/teacher/WEB-INF/classes
 
 echo "开启tomcat"
 service tomcat start

@@ -6,9 +6,7 @@
 1.安装jdk（https://blog.csdn.net/github_38336924/article/details/82221258）配置yum安装的环境变量 https://www.cnblogs.com/benjamin77/p/8460030.html
 1.查看安装列表yum search java | grep -i --color jdk
 2.#或者如下命令，安装jdk1.8.0的所有文件 yum install -y java-1.8.0-openjdk* .
-
 安装tomcat（http://www.cnblogs.com/liaolongjun/p/5638740.html）
-
 安装git
 1.git --version
 2.yum install -y git
