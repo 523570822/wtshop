@@ -278,9 +278,6 @@ public class GoodsDao extends BaseDao<Goods> {
 				"LEFT JOIN (SELECT count(*) count,goods_id from review group by goods_id ) m ON g.id = m.goods_id " +
 				"LEFT JOIN (SELECT count(p.goods_id)count,p.goods_id,o.`status`,p.stock from order_item i LEFT JOIN `order` o ON i.order_id = o.id " +
 				"LEFT JOIN product p ON p.id =i.product_id GROUP BY p.goods_id ";
-		if(sell){
-			sqlExceptSelect += " AND o.`status` in (5,9,10) ";
-		}
 		sqlExceptSelect += " ) n ON n.goods_id =g.id LEFT JOIN product j ON j.goods_id = g.id WHERE 1 = 1 and g.is_delete = 0 ";
 		String select = " select m.*,p.stock ";
 
@@ -289,12 +286,6 @@ public class GoodsDao extends BaseDao<Goods> {
 		}
 		if(keyword != null){
 			sqlExceptSelect += " AND (g.name like '%"+ keyword +"%' OR g.caption like '%"+ keyword +"%'  OR g.keyword like '%"+ keyword +"%' )";
-		}
-		if(startPrice != null){
-			sqlExceptSelect +=" AND g.price >= " + startPrice ;
-		}
-		if(endPrice != null){
-			sqlExceptSelect +=" AND g.price <= " +endPrice ;
 		}
 		if(brandId != null){
 			sqlExceptSelect += " AND g.brand_id in " + SqlUtils.getSQLIn(Arrays.asList(brandId));

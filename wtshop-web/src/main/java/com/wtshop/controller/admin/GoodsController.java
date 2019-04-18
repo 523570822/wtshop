@@ -373,6 +373,7 @@ public class GoodsController extends BaseController {
         HttpServletRequest request = getRequest();
         Product product = getModel(Product.class);
         Long productCategoryId = getParaToLong("productCategoryId");
+
         Long brandId = getParaToLong("brandId");
         Long[] promotionIds = getParaValuesToLong("promotionIds");
         Long[] tagIds = getParaValuesToLong("tagIds");
@@ -455,7 +456,7 @@ public class GoodsController extends BaseController {
             specificationItemService.filter(goods.getSpecificationItemsConverter());
         }
 
-        ProductCategory productCategory = productCategoryService.find(productCategoryId);
+        InterestCategory productCategory = interestCategoryService.find(productCategoryId);
         if (productCategory != null) {
             goods.setProductCategoryId(productCategory.getId());
         }

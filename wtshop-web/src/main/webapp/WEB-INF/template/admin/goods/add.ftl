@@ -783,12 +783,11 @@ $().ready(function() {
 		<table class="input tabContent">
 			<tr>
 				<th>
-					${message("Goods.productCategory")}:123123
-				</th>
+					${message("Goods.productCategory")}:
+                </th>
 				<td>
 					<select id="productCategoryId" name="productCategoryId">
 						[#list productCategoryTree as productCategory]
-
 
                                 <option value="${productCategory.id}"  style="color: #333;">
                                     &nbsp;&nbsp; &nbsp;&nbsp;

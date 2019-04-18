@@ -281,7 +281,7 @@ $().ready(function() {
 					</td>
 
 					<td>
-						<span class="${goods.isMarketable?string("true", "false")}Icon">&nbsp;</span>
+						<span class="${goods.isDelete?string("false", "true")}Icon">&nbsp;</span>
 					</td>
                     <td>
                         <span title="${goods.createDate?string("yyyy-MM-dd HH:mm:ss")}">${goods.createDate}</span>
