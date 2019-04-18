@@ -192,12 +192,13 @@ public class JFWebConfig extends JFinalConfig {
     }
 
     private void setupQueueRedis(Plugins plugins) {
-        String cacheName = "queue";
+        String cacheName = "db1";
         String host = getProperty("redis.url");
         int port = getPropertyToInt("redis.port");
         int timeout = getPropertyToInt("redis.timeout");
         String password = getProperty("redis.password");
-        int database = getPropertyToInt("redis.database.queue", 4);
+      //  int database = getPropertyToInt("redis.database.queue", 4);
+        int database =2;
         RedisPlugin queueRedis = new RedisPlugin(cacheName, host, port, timeout, password, database);
         plugins.add(queueRedis);
     }

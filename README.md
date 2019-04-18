@@ -16,7 +16,8 @@ sudo sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
 sudo yum install -y maven
 mvn -version
 
-
+3.安装redis
+https://www.cnblogs.com/fanlinglong/p/6635828.html
 
 mvn idea:idea
 

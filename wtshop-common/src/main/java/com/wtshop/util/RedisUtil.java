@@ -44,7 +44,8 @@ public class RedisUtil {
     //在borrow一个jedis实例时，是否提前进行validate操作；如果为true，则得到的jedis实例均是可用的；
     private static boolean TEST_ON_BORROW = true;
 
-    private static JedisPool jedisPool = null;
+    private static  JedisPool jedisPool;
+    private   JedisPool jedisPool1;
 
     /**
      * redis过期时间,以秒为单位
@@ -68,6 +69,7 @@ public class RedisUtil {
             config.setTestOnReturn(true);
             config.setNumTestsPerEvictionRun(-1);
             jedisPool = new JedisPool(config, ADDR_ARRAY, PORT, TIMEOUT, AUTH);
+            JedisPool jedisPool1 = jedisPool;
             threadLocalJedis.set(getJedis());
         } catch (Exception e) {
             e.printStackTrace();
@@ -133,7 +135,6 @@ public class RedisUtil {
 
                 }
             } catch (Exception e) {
-
                // System.out.println(Thread.currentThread().getName()+":第"+i+"次获取失败!!!");
                 success = false;
                 e.printStackTrace();
