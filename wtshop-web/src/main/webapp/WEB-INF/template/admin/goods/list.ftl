@@ -245,9 +245,9 @@ $().ready(function() {
 				<th>
 					<a href="javascript:;" class="sort" name="product_category_id">分类</a>
 				</th>
-			[#--	<th>
+				<th>
 					<a href="javascript:;" class="sort" name="is_marketable">是否显示</a>
-				</th>--]
+				</th>
 				<th>
 					<a href="javascript:;" class="sort" name="create_date">${message("admin.common.createDate")}</a>
 				</th>
