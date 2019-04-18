@@ -1,4 +1,24 @@
+
+
+
+
 #wtshop
+1.安装jdk（https://blog.csdn.net/github_38336924/article/details/82221258）配置yum安装的环境变量 https://www.cnblogs.com/benjamin77/p/8460030.html
+1.查看安装列表yum search java | grep -i --color jdk
+2.#或者如下命令，安装jdk1.8.0的所有文件 yum install -y java-1.8.0-openjdk* .
+
+安装tomcat（http://www.cnblogs.com/liaolongjun/p/5638740.html）
+
+安装git
+1.git --version
+2.yum install -y git
+安装maven
+sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+sudo sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
+sudo yum install -y maven
+mvn -version
+
+
 
 mvn idea:idea
 
@@ -24,13 +44,13 @@ git branch -a// 列出所有远程分支
   git remote -v   //查看远程主机名称及连接 origin
   //要关联一个远程库，使用命令git remote add gitHub https://github.com/523570822/wtshop.git； git remote add origin http://192.168.1.222:3000/root/wtshop.git
 
-git checkout  -b rxmshop  origin/master //远程分支   //切换到指定分支  rxm_login(自己起的名字)
+git checkout  -b rxmteacher  remotes/origin/teacher_rx  //远程分支   //切换到指定分支  rxmteacher(自己起的名字)
 
 
  在root目录执行
  cd wtshop   //进入项目目录
  
- git pull origin rxmshop  --force ;//强制更新本地仓库
+ git pull origin    --force ;//强制更新本地仓库
  
  
  mvn -X install -Dmaven.test.skip=true ; //通过maven自动编译代码
