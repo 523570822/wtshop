@@ -409,7 +409,7 @@ if(StringUtils.isNotEmpty(onShareCode)){
 
 	public Member findByUsernames(String phone ,String password) {
 		Member member = memberDao.findByUsername(phone);
-		if (member != null) {
+/*		if (member != null) {
 			//判断mongo是否存在 存在 更新mogo中密码  不存在插入数据
 			BasicDBObject basicDBObject = new BasicDBObject();
 			basicDBObject.put("phone",phone);
@@ -436,7 +436,7 @@ if(StringUtils.isNotEmpty(onShareCode)){
 			}
 			return member;
 
-		}
+		}*/
 		return member;
 
 	}
