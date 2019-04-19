@@ -58,7 +58,7 @@ public class GoodsAPIController extends BaseAPIController {
 	private MiaoBiGoodsService miaoBiGoodsService = enhance(MiaoBiGoodsService.class);
 	private SpecificationService specificationService = enhance(SpecificationService.class);
 	private SkinTypeService skinTypeService = enhance(SkinTypeService.class);
-
+	private FuDaiService fuDaiService = enhance(FuDaiService.class);
 	private GroupBuyService groupBuyService = enhance(GroupBuyService.class);
 	/**
 	 * 列表
@@ -87,6 +87,12 @@ public class GoodsAPIController extends BaseAPIController {
 		List<Tag> sss = tagService.findList(Tag.Type.goods);
 
 		renderJson(ApiResult.success(sss));
+	}
+
+	public void fudaiList() {
+		String price = getPara("price");
+		List<FuDai> list = fuDaiService.findLists(price);
+		renderJson(list);
 	}
 	//去添加页面
 	public void skin() {

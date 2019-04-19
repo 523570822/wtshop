@@ -51,6 +51,7 @@ public class FuDaiAPIController extends BaseAPIController {
         renderJson(list);
     }
 
+
     /**
      * 主福袋信息
      */

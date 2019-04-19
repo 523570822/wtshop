@@ -187,4 +187,9 @@ public class FuDaiService extends BaseService<FuDai> {
     public List<FudaiProduct> findSubListByFudaiId(Long fuDaiId){
         return fuDaiProductDao.findByFudaiId(fuDaiId);
     }
+    public List<FuDai> findLists(String price){
+        return fuDaiDao.findLists(price);
+    }
+
+
 }

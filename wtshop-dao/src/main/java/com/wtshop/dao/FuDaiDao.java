@@ -25,6 +25,14 @@ public class FuDaiDao extends BaseDao<FuDai>{
                 " where 1 = 1 AND status = 0 order by price desc";
         return modelManager.find(sql);
 
+    }   public List<FuDai> findLists(String price){
+        String sql = " SELECT f.* FROM fu_dai f   where 1 = 1";
+if(price==null){
+    sql=sql+" and price="+price;
+}
+        sql=sql+" AND status = 0 order by price desc";
+        return modelManager.find(sql);
+
     }
 
 
