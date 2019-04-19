@@ -459,8 +459,8 @@ $().ready(function() {
 				</th>
 				<td>
 					<select id="type" name="goods.type">
-						[#list types as type]
-							<option value="${type}">${message("Goods.Type." + type)}${type}</option>
+						[#list skinTypeList as skinType]
+							<option value="${skinType.id}">${skinType.name}</option>
 						[/#list]
 					</select>
 				</td>

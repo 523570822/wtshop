@@ -48,6 +48,7 @@ public class GoodsAPIController extends BaseAPIController {
 	private ReviewService reviewService = enhance(ReviewService.class);
 	private ProductService productService = enhance(ProductService.class);
 	private FootPrintService footPrintService= enhance(FootPrintService.class);
+	private TagService tagService = enhance(TagService.class);
 	private BrandService brandService = enhance(BrandService.class);
 	private EffectService effectService = enhance(EffectService.class);
 	private AreaService areaService = enhance(AreaService.class);
@@ -56,6 +57,8 @@ public class GoodsAPIController extends BaseAPIController {
 	private MiaobiLogService miaobiLogService = enhance(MiaobiLogService.class);
 	private MiaoBiGoodsService miaoBiGoodsService = enhance(MiaoBiGoodsService.class);
 	private SpecificationService specificationService = enhance(SpecificationService.class);
+	private SkinTypeService skinTypeService = enhance(SkinTypeService.class);
+
 	
 	/**
 	 * 列表
@@ -67,13 +70,6 @@ public class GoodsAPIController extends BaseAPIController {
 		Long type = getParaToLong("type");//0真题，1模拟题
 		Long areaId = getParaToLong("areaId");//地区
 		Long biaoqian = getParaToLong("biaoqian");//标签
-		Goods.Type type1;
-if(type==0){
-	 type1=Goods.Type.general;
-		}else{
- type1=Goods.Type.exchange;
-		}
-
 		Integer pageNumber = getParaToInt("pageNumbers", 1);
 		Integer pageSize = getParaToInt("pageSizes", 20);
 		Pageable pageable = new Pageable(pageNumber, pageSize);
@@ -85,7 +81,17 @@ if(type==0){
 		List<Area> ww = areaService.findAll();
 		renderJson(ApiResult.success(ww));
 	}
+	public void tags() {
 
+		List<Tag> sss = tagService.findList(Tag.Type.goods);
+
+		renderJson(ApiResult.success(sss));
+	}
+	//去添加页面
+	public void skin() {
+		List<SkinType> sss = skinTypeService.findAll();
+		renderJson(ApiResult.success(sss));
+	}
 	/**
 	 * 详情
 	 * {"msg":"","code":1,"data":{"review":{"totalRow":0,"pageNumber":1,"firstPage":true,"lastPage":true,"totalPage":0,"pageSize":20,"list":[]},"consultationPages":{"totalRow":0,"pageNumber":1,"firstPage":true,"lastPage":true,"totalPage":0,"pageSize":20,"list":[]},"goods":{"attribute_value0":null,"attribute_value1":null,"attribute_value10":null,"attribute_value11":null,"attribute_value12":null,"attribute_value13":null,"attribute_value14":null,"attribute_value15":null,"attribute_value16":null,"attribute_value17":null,"attribute_value18":null,"attribute_value19":null,"attribute_value2":null,"attribute_value3":null,"attribute_value4":null,"attribute_value5":null,"attribute_value6":null,"attribute_value7":null,"attribute_value8":null,"attribute_value9":null,"brand_id":50,"caption":"控油去油 长效保湿 调节水油平衡","create_date":"2017-05-22 14:19:21","generate_method":1,"hits":0,"id":64,"image":"/upload/image/201705/ba801bbb-37be-45e1-a576-e59df54753e5.jpg","introduction":"<p><img src=\"/upload/image/201705/e13f093e-0f6c-4771-88cb-be595666c409.png\"/></p>","is_delivery":true,"is_list":true,"is_marketable":true,"is_top":false,"keyword":null,"market_price":298.800000,"memo":null,"modify_date":"2017-05-22 17:50:27","month_hits":0,"month_hits_date":"2017-05-22 14:19:21","month_sales":0,"month_sales_date":"2017-05-22 14:19:21","name":"新品上市 欧莱雅男士洗面奶矿漠泥长效控油保湿洁面护肤品套装","parameter_values":"[{\"group\":\"产品参数\",\"entries\":[{\"name\":\"化妆品净含量\",\"value\":\"套装容量\"},{\"name\":\"产地\",\"value\":\"中国\"},{\"name\":\"功效\",\"value\":\"补水\"},{\"name\":\"规格类型\",\"value\":\"正常规格\"},{\"name\":\"化妆品保质期\",\"value\":\"3年\"},{\"name\":\"适合肤质\",\"value\":\"油性肤质\"}]}]","price":249.000000,"product_category_id":245,"product_images":"[{\"source\":\"/upload/image/201705/73e96e1e-2a89-46e9-a11b-5f942d0553ff-source.png\",\"large\":\"/upload/image/201705/73e96e1e-2a89-46e9-a11b-5f942d0553ff-large.jpg\",\"medium\":\"/upload/image/201705/73e96e1e-2a89-46e9-a11b-5f942d0553ff-medium.jpg\",\"thumbnail\":\"/upload/image/201705/73e96e1e-2a89-46e9-a11b-5f942d0553ff-thumbnail.jpg\"},{\"source\":\"/upload/image/201705/bb23ff84-b8f9-4258-a7f8-f481057991a3-source.jpg\",\"large\":\"/upload/image/201705/bb23ff84-b8f9-4258-a7f8-f481057991a3-large.jpg\",\"medium\":\"/upload/image/201705/bb23ff84-b8f9-4258-a7f8-f481057991a3-medium.jpg\",\"thumbnail\":\"/upload/image/201705/bb23ff84-b8f9-4258-a7f8-f481057991a3-thumbnail.jpg\"}]","sales":0,"score":0.0,"score_count":0,"seo_description":null,"seo_keywords":null,"seo_title":null,"sn":"201705221111","specification_items":null,"total_score":0,"type":0,"unit":"套","version":8,"week_hits":0,"week_hits_date":"2017-05-22 14:19:21","week_sales":0,"week_sales_date":"2017-05-22 14:19:21","weight":1000},"title":"新品上市 欧莱雅男士洗面奶矿漠泥长效控油保湿洁面护肤品套装","favorite":false}}

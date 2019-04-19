@@ -26,6 +26,7 @@ public class GroupBuyController extends BaseController {
     private GroupBuyService fuDaiService = enhance(GroupBuyService.class);
     private SpecificationService specificationService = enhance(SpecificationService.class);
     private ProductService productService = enhance(ProductService.class);
+    private SkinTypeService skinTypeService = enhance(SkinTypeService.class);
     private GoodsService goodsService = enhance(GoodsService.class);
     public void list() {
      /*   Long productCategoryId =494l;
@@ -48,7 +49,8 @@ public class GroupBuyController extends BaseController {
 
     //去添加页面
     public void add() {
-
+        List<SkinType> skinTypeList = skinTypeService.findAll();
+        setAttr("skinTypeList", skinTypeList);
         render("/admin/groupBuy/add.ftl");
     }
 
