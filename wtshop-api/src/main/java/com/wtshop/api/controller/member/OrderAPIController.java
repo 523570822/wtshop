@@ -402,7 +402,7 @@ private  FightGroupService fightGroupService=enhance(FightGroupService.class);
 		sb.put("orderItemList",orderItemList);
 		sb.put("fightGroup",fightGroup);
 
-		renderJson(ApiResult.success(order));
+		renderJson(ApiResult.success(sb));
 	}
 	/**
 	 * 取消
