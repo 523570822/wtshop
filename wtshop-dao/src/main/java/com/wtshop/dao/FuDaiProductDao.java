@@ -70,10 +70,6 @@ public class FuDaiProductDao extends BaseDao<FudaiProduct> {
         return modelManager.find(sql);
     }
 
-    public List<FudaiProduct> findLists(String price) {
-
-        return modelManager.find(sql);
-    }
 
 
     //检测库存
