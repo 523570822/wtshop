@@ -415,7 +415,7 @@
 					
 
 
-                   [#list ["admin:setting", "admin:targetPath", "admin:area", "admin:shippingMethod", "admin:deliveryCorp", "admin:message"] as permission]
+                 [#--  [#list ["admin:setting", "admin:targetPath", "admin:area", "admin:shippingMethod", "admin:deliveryCorp", "admin:message"] as permission]
 						[@shiro.hasPermission name = permission]
 							<div class="panel panel-default">
 		                        <div class="panel-heading">
@@ -427,20 +427,20 @@
 		                            <div class="panel-body">
 		                                <ul class="nav nav-pills nav-stacked">
 		                                    <!-- <li class="active"><a href="javascript:void(0)">Account Settings</a></li> -->
-		                                   [#-- [@shiro.hasPermission name="admin:setting"]
+		                                   --][#-- [@shiro.hasPermission name="admin:setting"]
 													<li><a href="../setting/edit.jhtml" target="iframe">${message("admin.main.setting")}</a></li>
 											[/@shiro.hasPermission]
 
 											[@shiro.hasPermission name="admin:targetPath"]
                                                 <li><a href="../targetPath/list.jhtml" target="iframe">${message("admin.main.targetPath")}</a></li>
 											[/@shiro.hasPermission]
---]
+--][#--
 											[@shiro.hasPermission name="admin:area"]
 													<li><a href="../area/list.jhtml?flag=0" target="iframe">${message("admin.main.area")}</a></li>
 											[/@shiro.hasPermission]
 
 
-											[#--[@shiro.hasPermission name="admin:shippingMethod"]
+											--][#--[@shiro.hasPermission name="admin:shippingMethod"]
 													<li><a href="../shipping_method/list.jhtml" target="iframe">${message("admin.main.shippingMethod")}</a></li>
 											[/@shiro.hasPermission]
 
@@ -456,7 +456,7 @@
 											[@shiro.hasPermission name="admin:log"]
 													<li><a href="../log/list.jhtml" target="iframe">${message("admin.main.log")}</a></li>
 											[/@shiro.hasPermission]
---]
+--][#--
 
 		                                </ul>
 		                            </div>
@@ -464,7 +464,7 @@
 		                    </div>
 							[#break /]
 						[/@shiro.hasPermission]
-					[/#list]
+					[/#list]--]
 					[#list ["admin:admin", "admin:permission", "admin:role"] as permission]
 						[@shiro.hasPermission name = permission]
                             <div class="panel panel-default">
@@ -480,13 +480,13 @@
                                                 <li><a href="../admin/list.jhtml" target="iframe">${message("admin.main.admin")}</a></li>
 											[/@shiro.hasPermission]
 
-											[@shiro.hasPermission name="admin:permission"]
+											[#--[@shiro.hasPermission name="admin:permission"]
                                                 <li><a href="../permission/list.jhtml" target="iframe">${message("admin.main.permission")}</a></li>
 											[/@shiro.hasPermission]
 
 											[@shiro.hasPermission name="admin:role"]
                                                 <li><a href="../role/list.jhtml" target="iframe">${message("admin.main.role")}</a></li>
-											[/@shiro.hasPermission]
+											[/@shiro.hasPermission]--]
                                         </ul>
                                     </div>
                                 </div>

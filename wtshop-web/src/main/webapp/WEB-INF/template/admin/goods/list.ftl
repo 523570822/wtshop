@@ -223,7 +223,7 @@ $().ready(function() {
 				<a href="javascript:;" id="refreshButton" class="iconButton">
 					<span class="refreshIcon">&nbsp;</span>${message("admin.common.refresh")}
 				</a>
-				<div id="filterMenu" class="dropdownMenu">
+				[#--<div id="filterMenu" class="dropdownMenu">
 					<a href="javascript:;" class="button">
 						${message("admin.goods.filter")}<span class="arrow">&nbsp;</span>
 					</a>
@@ -246,8 +246,8 @@ $().ready(function() {
                         <li name="isVip"[#if isVip?? && !isVip] class="checked"[/#if] val="false">非vip商品</li>
                         <li name="isVip"[#if isVip?? && isVip] class="checked"[/#if] val="true">vip商品</li>
 					</ul>
-				</div>
-				<a href="javascript:;" id="moreButton" class="button">${message("admin.goods.moreOption")}</a>
+				</div>--]
+			[#--	<a href="javascript:;" id="moreButton" class="button">${message("admin.goods.moreOption")}</a>--]
 				<div id="pageSizeMenu" class="dropdownMenu">
 					<a href="javascript:;" class="button">
 						${message("admin.page.pageSize")}<span class="arrow">&nbsp;</span>
@@ -260,7 +260,7 @@ $().ready(function() {
 					</ul>
 				</div>
 			</div>
-			<div id="searchPropertyMenu" class="dropdownMenu">
+			[#--<div id="searchPropertyMenu" class="dropdownMenu">
 				<div class="search">
 					<span class="arrow">&nbsp;</span>
 					<input type="text" id="searchValue" name="pageable.searchValue" value="${pageable.searchValue}" maxlength="200" />
@@ -271,7 +271,7 @@ $().ready(function() {
 					<li[#if pageable.searchProperty == "name"] class="current"[/#if] val="name">${message("Goods.name")}</li>
                     <li[#if pageable.searchProperty == "keyword"] class="current"[/#if] val="keyword">${message("admin.seo.keyword")}</li>
 				</ul>
-			</div>
+			</div>--]
 		</div>
 		<table id="listTable" class="list">
 			<tr>

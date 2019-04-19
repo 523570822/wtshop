@@ -125,7 +125,7 @@
             <input type="button" value="${message("admin.coupon.base")}"class="current" />
         </li>
         <li>
-            <input type="button" value="${message("Fudai.rule")}" />
+            <input type="button" value="内容" />
         </li>
       [#--  <li>
             <input type="button" value="${message("admin.goods.productImage")}" />
