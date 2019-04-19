@@ -39,7 +39,7 @@ public class OrderAPIController extends BaseAPIController {
 
 	/** 每页记录数 */
 	private static final int PAGE_SIZE = 10;
-
+private  FightGroupService fightGroupService=enhance(FightGroupService.class);
 	private MemberService memberService = enhance(MemberService.class);
 	private GoodsService goodsService = enhance(GoodsService.class);
 	private OrderItemService orderItemService = enhance(OrderItemService.class);
@@ -374,7 +374,36 @@ public class OrderAPIController extends BaseAPIController {
 		OrderFindResult orderFindResult = new OrderFindResult(taxUrl, returnUrl, time, expire, order, shipping, orderItemList, member, receiver, receiveTime, priceList, realMoney, couponMoney, returns);
 		renderJson(ApiResult.success(orderFindResult));
 	}
-	
+	public void viewSB() {
+
+		String sn = getPara("sns");
+		Order order = orderService.findBySn(sn);
+
+		List<OrderItem> orderItemList = orderItemService.findOrderItemList(order.getId());
+		FightGroup fightGroup = fightGroupService.find(order.getId());
+
+		for (OrderItem orderItem:orderItemList){
+			String dsb="";
+			List<String> ddd = orderItem.getSpecificationConverter();
+			for(int i = 0; i < ddd.size(); i++) {
+				String	ddd1=ddd.get(i);
+				if(i ==0){
+					dsb=dsb+ddd1;
+				}else{
+					dsb=dsb+","+ddd1;
+				}
+
+			}
+			orderItem.setSpecifications(dsb);
+		}
+		Map<String,Object> sb =new HashMap<>();
+
+		sb.put("order",order);
+		sb.put("orderItemList",orderItemList);
+		sb.put("fightGroup",fightGroup);
+
+		renderJson(ApiResult.success(order));
+	}
 	/**
 	 * 取消
 	 * {"msg":"请求成功","code":1,"data":null}
