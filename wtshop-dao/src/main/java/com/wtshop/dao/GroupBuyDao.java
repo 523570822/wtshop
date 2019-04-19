@@ -63,4 +63,11 @@ public class GroupBuyDao extends BaseDao<GroupBuy>{
     }
 
 
+    public List<GroupBuy> findListProdect(Long fenLei) {
+        String sql = "SELECT *  FROM group_buy f  WHERE 1 = 1";
+        if (fenLei != null){
+            sql += " AND f.product_id =" + fenLei ;
+        }
+        return modelManager.find(sql);
+    }
 }

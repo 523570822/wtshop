@@ -145,6 +145,7 @@ public abstract class BaseGoods<M extends BaseGoods<M>> extends Model<M> impleme
 		return get("attribute_value2");
 	}
 
+
 	public void setAttributeValue3(String attributeValue3) {
 		set("attribute_value3", attributeValue3);
 	}

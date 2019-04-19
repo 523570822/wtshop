@@ -128,15 +128,23 @@ $().ready(function() {
     console.info($attribute_value0.val());
 			switch ($attribute_value0.val()) {
 				case "2":
-                    console.info("2222");
                     $('.leixing').show();
                     $('.biaoqian').hide();
+                    $('.shitidaan').show();
+                    $('.shipin').hide();
 					break;
 				case "1":
-                    console.info("11111");
                     $('.leixing').hide();
                     $('.biaoqian').show();
+                    $('.shitidaan').show();
+                    $('.shipin').hide();
 					break;
+                case "3":
+                    $('.leixing').hide();
+                    $('.biaoqian').hide();
+                    $('.shitidaan').hide();
+                    $('.shipin').show();
+                    break;
 
 
 		}
@@ -434,10 +442,10 @@ $().ready(function() {
 			<li>
 				<input type="button" value="${message("admin.goods.base")}" />
 			</li>
-			<li>
+            <li class="shitidaan" >
 				<input type="button" value="试题" />
 			</li>
-            <li>
+            <li class="shitidaan">
                 <input type="button" value="答案" />
             </li>
 		</ul>
@@ -450,6 +458,7 @@ $().ready(function() {
                     <select id="attribute_value0" name="goods.attribute_value0">
                             <option value="1">考点模式</option>
                             <option value="2">套卷模式</option>
+                        <option value="3">课程模块</option>
                     </select>
                 </td>
             </tr>
@@ -458,13 +467,34 @@ $().ready(function() {
 					${message("Goods.type")}:
 				</th>
 				<td>
-					<select id="type" name="goods.type">
-						[#list skinTypeList as skinType]
-							<option value="${skinType.id}">${skinType.name}</option>
-						[/#list]
+					<select id="type" name="type">
+							[#list types as type]
+                                <option value="${type}">${message("Goods.Type." + type)}${type}</option>
+							[/#list]
 					</select>
 				</td>
 			</tr>
+            <tr  class="shipin">
+                <th>
+					${message("Goods.type")}:
+                </th>
+                <td>
+                  <select id="attribute_value3"   name="goods.attribute_value3">
+                    [#list skinTypeList as skinType]
+                        <option value="${skinType.id}">${skinType.name}</option>
+					[/#list]
+                    </select>
+                </td>
+            </tr>
+            <tr class="shipin">
+                <th>
+                    <span class="requiredField">*</span>视频地址:
+                </th>
+                <td>
+                    <input type="text" name="goods.attribute_value2" class="text" maxlength="200" />
+                </td>
+            </tr>
+
             <tr  class="biaoqian">
                 <th>
 					标签

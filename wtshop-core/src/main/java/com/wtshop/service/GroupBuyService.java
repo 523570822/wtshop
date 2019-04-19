@@ -189,4 +189,9 @@ public class GroupBuyService extends BaseService<GroupBuy> {
     public List<FudaiProduct> findSubListByFudaiId(Long fuDaiId){
         return fuDaiProductDao.findByFudaiId(fuDaiId);
     }
+
+    public List<GroupBuy> findListProdect(Long fenLei) {
+
+            return fuDaiDao.findListProdect(fenLei);
+    }
 }

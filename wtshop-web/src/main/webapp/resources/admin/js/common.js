@@ -402,8 +402,8 @@ function message(code) {
 		// 编辑器
 		editor: function(options) {
 			window.UEDITOR_CONFIG = {
-				UEDITOR_HOME_URL: '../../resources/admin/ueditor/',
-				serverUrl: '/admin/file/upload.jhtml?fullpath=1',
+                UEDITOR_HOME_URL: '../../resources/admin/ueditor/',
+                serverUrl: '../../admin/file/upload.jhtml?fullpath=1',
 				imageActionName: "uploadImage",
 				imageFieldName: "file",
 				imageMaxSize: 10485760,

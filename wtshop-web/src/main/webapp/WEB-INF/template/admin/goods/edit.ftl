@@ -35,7 +35,10 @@
         }
     </style>
     <script type="text/javascript">
+
+
         $().ready(function() {
+
 
             var $inputForm = $("#inputForm");
             var $isDefault = $("#isDefault");
@@ -127,22 +130,7 @@
             });
 
             // 修改视图
-            function changeView() {
 
-                console.info();
-                switch ($attribute_value0.val()) {
-                    case "2":
-                        $('leixing').show();
-                        break;
-                    case "1":
-                        $('leixing').hide();
-
-
-                        break;
-
-
-                }
-            }
 
             // 增加商品图片
             $addProductImage.click(function() {
@@ -417,6 +405,35 @@
             });
 
         });
+
+
+        function changeView1(aa) {
+
+            console.info("ssssss");
+
+            console.info(aa);
+            switch (aa) {
+                case "2":
+                    $('.leixing').show();
+                    $('.biaoqian').hide();
+                    $('.shitidaan').show();
+                    $('.shipin').hide();
+                    break;
+                case "1":
+                    $('.leixing').hide();
+                    $('.biaoqian').show();
+                    $('.shitidaan').show();
+                    $('.shipin').hide();
+                    break;
+                case "3":
+                    $('.leixing').hide();
+                    $('.biaoqian').hide();
+                    $('.shitidaan').hide();
+                    $('.shipin').show();
+                    break;
+
+            }
+        }
     </script>
 </head>
 <body>
@@ -429,10 +446,10 @@
         <li>
             <input type="button" value="${message("admin.goods.base")}" />
         </li>
-        <li>
+        <li class="shitidaan" >
             <input type="button" value="试题" />
         </li>
-        <li>
+        <li class="shitidaan">
             <input type="button" value="答案" />
         </li>
     </ul>
@@ -446,15 +463,22 @@
 	[#if goods.attribute_value0==1]
 			        <option selected = "selected" value="1">考点模式</option>
                     <option value="2">套卷模式</option>
-    [#else]
+        <option value="3">课程模块</option>
+    [#elseif goods.attribute_value0==2]
                     <option value="1">考点模式</option>
                     <option selected = "selected"  value="2">套卷模式</option>
-    [/#if]
+              <option value="3">课程模块</option>
+
+        [#elseif goods.attribute_value0==3]
+                    <option value="1">考点模式</option>
+                    <option selected = "selected"  value="2">套卷模式</option>
+              <option selected = "selected" value="3">课程模块</option>
+ [/#if]
 
                 </select>
             </td>
         </tr>
-        <tr  name="leixing">
+        <tr  class="leixing">
             <th>
                 ${message("Goods.type")}:
             </th>
@@ -483,6 +507,26 @@
                             >${tag.name}</option>
                         [/#list]
                 </select>
+            </td>
+        </tr>
+        <tr  class="shipin">
+            <th>
+                ${message("Goods.type")}:
+            </th>
+            <td>
+                <select id="type" name="goods.attribute_value3">
+                    [#list skinTypeList as skinType]
+                        <option value="${skinType.id}">${skinType.name}</option>
+                    [/#list]
+                </select>
+            </td>
+        </tr>
+        <tr class="shipin">
+            <th>
+                <span class="requiredField">*</span>视频地址:
+            </th>
+            <td>
+                <input type="text" name="goods.attribute_value2"  value="${goods.attribute_value2}" class="text" maxlength="200" />
             </td>
         </tr>
         <tr>
@@ -607,4 +651,11 @@
 </form>
 </body>
  </html>
+ <script>
+     $(function() {
+         changeView1("${goods.attribute_value0}");
+
+     })
+
+ </script>
  [/#escape]

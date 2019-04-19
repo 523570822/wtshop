@@ -150,7 +150,7 @@
 									<div class="panel panel-default">
 										<div class="panel-heading">
 											<a href="#marketing" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
-												<i class="glyphicon glyphicon-eye-open"></i> ${message("admin.marketing")}
+												<i class="glyphicon glyphicon-eye-open"></i> 辅助
 											</a>
 										</div>
 										<div class="accordion-body collapse" id="marketing">
@@ -197,14 +197,14 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <a href="#goodsAbout" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
-                                        <i class="glyphicon glyphicon-leaf"></i> ${message("admin.goodsAbout")}
+                                        <i class="glyphicon glyphicon-leaf"></i> 各种分类管理
                                     </a>
                                 </div>
                                 <div class="accordion-body collapse" id="goodsAbout">
                                     <div class="panel-body">
                                         <ul class="nav nav-pills nav-stacked">
 											[@shiro.hasPermission name="admin:skinType"]
-                                                <li><a href="../skinType/list.jhtml" target="iframe">${message("admin.role.skinType")}</a></li>
+                                                <li><a href="../skinType/list.jhtml" target="iframe">视频分类</a></li>
 											[/@shiro.hasPermission]
 											[@shiro.hasPermission name="admin:stock"]
                                                 <li><a href="../stock/log.jhtml" target="iframe">${message("admin.main.stock")}</a></li>
@@ -485,15 +485,14 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <a href="#groupBuy" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
-                                        <i class="glyphicon glyphicon-gift"></i> ${message("admin.role.groupBuy")}
+                                        <i class="glyphicon glyphicon-gift"></i> 视频管理
                                     </a>
                                 </div>
                                 <div class="accordion-body collapse" id="groupBuy">
                                     <div class="panel-body">
                                         <ul class="nav nav-pills nav-stacked">
 											[@shiro.hasPermission name="admin:groupBuy"]
-                                                <li><a href="../groupBuy/list.jhtml" target="iframe">${message("admin.role.groupBuy")}</a></li>
-                                                <li><a href="../fightGroup/list.jhtml" target="iframe">${message("admin.role.fightGroup")}</a></li>
+                                                <li><a href="../groupBuy/list.jhtml" target="iframe">视频管理</a></li>
 											[/@shiro.hasPermission]
                                         </ul>
                                     </div>

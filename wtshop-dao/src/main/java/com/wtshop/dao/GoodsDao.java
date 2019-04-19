@@ -1151,7 +1151,7 @@ public class GoodsDao extends BaseDao<Goods> {
 		return orderSql;
 	}
 
-	public Page<Goods> findPage(Long attribute_value0,Long type, Long areaId,Long biaoqian, Pageable pageable) {
+	public Page<Goods> findPage(String attribute_value0,String attribute_value3,String type, String areaId,String biaoqian, Pageable pageable) {
 		String sqlExceptSelect = "FROM  `goods` g where 1=1 ";
 		String select = " select *  ";
 		if(type != null){
@@ -1161,6 +1161,10 @@ public class GoodsDao extends BaseDao<Goods> {
 		}	if(attribute_value0 != null){
 
 				sqlExceptSelect += " AND g.attribute_value0 = " + attribute_value0 ;
+
+		}if(attribute_value3 != null){
+
+				sqlExceptSelect += " AND g.attribute_value3 = " + attribute_value3 ;
 
 		}if(biaoqian != null){
 

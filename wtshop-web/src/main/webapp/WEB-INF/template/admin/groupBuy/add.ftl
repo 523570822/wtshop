@@ -111,10 +111,11 @@
                 ${message("Goods.type")}:
             </th>
             <td>
-                <select id="type" name="goods.type">
-						[#list skinType as type]
-                            <option value="${type}">${message("Goods.Type." + type)}${type}</option>
-                        [/#list]
+                <select id="type" name="groupBuy.product_id">
+
+                    [#list skinTypeList as skinType]
+							<option value="${skinType.id}">${skinType.name}</option>
+                    [/#list]
                 </select>
             </td>
         </tr>

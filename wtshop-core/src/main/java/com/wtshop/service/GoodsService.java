@@ -672,9 +672,9 @@ public class GoodsService extends BaseService<Goods> {
     public Page<Goods> findPage(Goods.RankingType rankingType, Pageable pageable) {
         return goodsDao.findPage(rankingType, pageable);
     }
-    public Page<Goods> findPages(long attribute_value0,Long type, Long areaId,Long biaoqian, Pageable pageable) {
+    public Page<Goods> findPages(String attribute_value0,String attribute_value3,String type, String areaId,String biaoqian, Pageable pageable) {
        // return goodsDao.findPage(type,areaId, pageable);
-        return goodsDao.findPage(attribute_value0,type,areaId,biaoqian, pageable);
+        return goodsDao.findPage(attribute_value0,attribute_value3,type,areaId,biaoqian, pageable);
 
     }
 

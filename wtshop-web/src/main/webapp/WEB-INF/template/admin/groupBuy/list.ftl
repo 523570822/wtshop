@@ -79,40 +79,6 @@
                 <span>${message("Promotion.title")}</span>
             </th>
             <th>
-                <span>产品名称</span>
-            </th>
-            <th>
-                <span>${message("groupBuy.price")}</span>
-            </th>
-            <th>
-                <span>${message("groupBuy.uniprice")}</span>
-            </th>
-            <th>
-                <span>${message("groupBuy.count")}</span>
-            </th>
-            <th>
-                <span>${message("groupBuy.num")}</span>
-            </th>
-            <th>
-                <span> ${message("groupBuy.sales")}</span>
-            </th>
-            <th>
-                <span>${message("groupBuy.teamnum")}</span>
-            </th>
-            <th>
-                <span>${message("groupBuy.dispatchprice")}</span>
-            </th>
-            <th>
-                <span>${message("groupBuy.groupnum")}</span>
-            </th>
-            <th>
-                <span> 开始时间</span>
-            </th>
-            <th>
-                <span>结束时间</span>
-            </th>
-
-            <th>
                 <a href="javascript:;" class="sort" name="orders">${message("shop.common.order")}</a>
             </th>
             <th>
@@ -133,39 +99,7 @@
                 <td>
                     <span title="${groupBuy.title}">${abbreviate(groupBuy.title, 50, "...")}</span>
                 </td>
-                <td>
-                ${groupBuy.product.name}
-                </td>
-                <td>
-                ${groupBuy.price}
-                </td>
-                <td>
-                ${groupBuy.uniprice}
-                </td>
-                <td>
-                    ${groupBuy.count}
-                </td>
-                <td>
-                ${groupBuy.num}
-                </td>
-                <td>
-                ${groupBuy.sales}
-                </td>
-                <td>
-                    ${groupBuy.teamnum}
-                </td>
-                <td>
-                    ${groupBuy.dispatchprice}
-                </td>
-                <td>
-                    ${groupBuy.groupnum}
-                </td>
-                <td>
-                    ${groupBuy.begin_date}
-                </td>
-                <td>
-                    ${groupBuy.end_date}
-                </td>
+
                 <td>
                 ${groupBuy.orders}
                 </td>

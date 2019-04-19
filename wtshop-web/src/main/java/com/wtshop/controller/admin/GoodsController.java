@@ -50,7 +50,7 @@ public class GoodsController extends BaseController {
     private EffectService effectService = enhance(EffectService.class);
     private GoodEffectService goodEffectService = enhance(GoodEffectService.class);
     private GoodsReviewService goodsReviewService = enhance(GoodsReviewService.class);
-
+    private SkinTypeService skinTypeService = enhance(SkinTypeService.class);
     public final static String kGoodsComment = "Goods:Comment:";
 
     /**
@@ -131,6 +131,8 @@ public class GoodsController extends BaseController {
      */
     public void add() {
         List<Area> ww = areaService.findAll();
+        List<SkinType> skinTypeList = skinTypeService.findAll();
+        setAttr("skinTypeList", skinTypeList);
         setAttr("area",ww);
         setAttr("types", Goods.Type.values());
         setAttr("productCategoryTree", productCategoryService.findTree());
@@ -412,6 +414,8 @@ public class GoodsController extends BaseController {
     public void edit() {
         Long id = getParaToLong("id");
         setAttr("types", Goods.Type.values());
+        List<SkinType> skinTypeList = skinTypeService.findAll();
+        setAttr("skinTypeList", skinTypeList);
         setAttr("productCategoryTree", productCategoryService.findTree());
         setAttr("brands", brandService.findAll());
         setAttr("effects", effectService.findAll());

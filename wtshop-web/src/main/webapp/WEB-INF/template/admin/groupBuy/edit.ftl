@@ -155,161 +155,30 @@
                 <input type="text" name="groupBuy.title" class="text" maxlength="200" value="${groupBuy.title}" />
             </td>
         </tr>
-        <tr>
+        <tr  class="leixing">
             <th>
-                <span class="requiredField">*</span>${message("groupBuy.price")}:
+                ${message("Goods.type")}:
             </th>
             <td>
-                <input type="text" name="groupBuy.price" class="text" maxlength="200" value="${groupBuy.price}"  title= ${message("groupBuy.sale.title")}/>
-            </td>
-        </tr>
+                <select id="type" name="groupBuy.product_id" >
 
-        <tr>
-            <th>
-                <span class="requiredField">*</span>团购比例1122（%）
-            </th>
-            <td>
-                <input type="text"  name="groupBuy.group_rate" class="text"
-                       value="${groupBuy.groupRate}" maxlength="16"
-                       title="团购比例（如10%填写10）" />
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("groupBuy.uniprice")}:
-            </th>
-            <td>
-                <input type="text" name="groupBuy.uniprice" class="text" maxlength="200" value="${groupBuy.uniprice}"  title= ${message("groupBuy.uniprice.Explanation")} />
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("groupBuy.primary.goods")}:
-            </th>
-            <td>
-                <input type="hidden" name="productId" id="product_id" class="text" maxlength="200" value="${groupBuy.product_id}"/>
-                <input disabled type="text" class="text" maxlength="200" name="product_name" id="product_name" title=${message("groupBuy.phone.title")}   value="${groupBuy.product.goods.name}" />
-                <input type="button" value="选择产品" class="button" id="addProduct"/>
+                    [#list skinTypeList as skinType]
+                        <option disabled
 
-            </td>
-        </tr>
-
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("groupBuy.count")}:
-            </th>
-            <td>
-                <input type="text" name="groupBuy.count" class="text" maxlength="200" value="${groupBuy.count}" title=${message("groupBuy.success.title")}/>
+                                  [#if groupBuy.product_id==skinType.id]
+                               selected = "selected"[/#if]
+                                value="${skinType.id}">${skinType.name}</option>
+                    [/#list]
+                </select>
             </td>
         </tr>
         <tr>
-            <th>
-                <span class="requiredField">*</span>${message("groupBuy.num")}:
-            </th>
-            <td>
-                <input type="text" name="groupBuy.num" class="text" value="${groupBuy.num}" maxlength="200" title=${message("groupBuy.num.title")} />
-            </td>
-        </tr>
-
-
         <tr>
             <th>
-                <span class="requiredField">*</span>${message("groupBuy.sales")}:
+                <span class="requiredField">*</span>视频地址（完整地址）
             </th>
             <td>
-                <input type="text" name="groupBuy.sales" value="${groupBuy.sales}"  class="text" maxlength="200"  />
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("groupBuy.teamnum")}:
-            </th>
-            <td>
-                <input type="text" name="groupBuy.teamnum" value="${groupBuy.teamnum}"  class="text" maxlength="200" />
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("groupBuy.dispatchprice")}:
-            </th>
-            <td>
-                <input type="text" name="groupBuy.dispatchprice" value="${groupBuy.dispatchprice}"  class="text" maxlength="200" />
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("groupBuy.groupnum")}:
-            </th>
-            <td>
-                <input type="text" name="groupBuy.groupnum"  value="${groupBuy.groupnum}"   class="text" maxlength="200"  />
-            </td>
-        </tr>
-
-        <tr>
-            <th>
-                ${message("Promotion.beginDate")}:
-            </th>
-            <td>
-                <input type="text" id="beginDate" value="${groupBuy.begin_date}" name="groupBuy.begin_date" class="text Wdate" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss', maxDate: '#F{$dp.$D(\'endDate\')}'});" />
-            </td>
-        </tr>
-        <tr>
-            <th>
-                ${message("Promotion.endDate")}:
-            </th>
-            <td>
-                <input type="text" id="endDate" name="groupBuy.end_date" value="${groupBuy.end_date}" class="text Wdate" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss', minDate: '#F{$dp.$D(\'beginDate\')}'});" />
-            </td>
-        </tr>
-
-
-        <tr>
-            <th>
-                ${message("admin.common.setting")}:
-            </th>
-            <td>
-                <label>
-                    <input type="checkbox" name="status" value="true"
-                       [#if groupBuy.status]  checked="checked"[/#if] />
-                    是否上架
-                    <input type="hidden" name="_status" value="false"/>
-                </label>
-
-                <label>
-                    <input type="checkbox" name="isList" value="true"[#if groupBuy.isList]
-                           checked="checked"[/#if] />${message("Goods.isList")}
-                    <input type="hidden" name="_isList" value="false"/>
-                </label>
-                <label>
-                    <input type="checkbox" name="isTop" value="true"
-                        [#if groupBuy.isTop]  checked="checked"[/#if] />
-                    ${message("Goods.isTop")} ${groupBuy.isTop}
-                    <input type="hidden" name="_isTop" value="false"/>
-                </label>
-
-
-                <label>
-                    <input type="checkbox" name="isSinglepurchase" value="true"
-                         [#if groupBuy.isSinglepurchase]  checked="checked"[/#if] />
-                    ${message("groupBuy.isSinglePurchase")}
-                    <input type="hidden" name="isSinglePurchase" value="false" />
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField"></span>${message("groupBuy.message")}:
-            </th>
-            <td>
-                <textarea rows="" cols="" name="groupBuy.explain" style="width: 300px;height:200px " maxlength="400" title="${message("groupBuy.message.list")}" ></textarea>
-            </td>
-        </tr>
-        <tr>
-            <th>
-            ${message("admin.common.order")}:
-            </th>
-            <td>
-                <input type="text" name="groupBuy.orders" class="text" maxlength="9" value="${groupBuy.orders}" />
+                <input type="text" name="groupBuy.explain" class="text" maxlength="200"  value="${groupBuy.explain}"  />
             </td>
         </tr>
         <tr>

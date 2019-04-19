@@ -21,7 +21,7 @@
 
             $(document).on('change','#imgUPloads',function(){
                 $.ajaxFileUpload({
-                    url: '${base}/admin/file/upload.jhtml', //用于文件上传的服务器端请求地址
+                    url: '../../admin/file/upload.jhtml', //用于文件上传的服务器端请求地址
                     secureuri: false, //是否需要安全协议，一般设置为false
                     fileElementId: 'imgUPloads', //文件上传域的ID
                     //fileElementId: $('#upImge').get(0).files,

@@ -29,15 +29,6 @@ public class GroupBuyController extends BaseController {
     private SkinTypeService skinTypeService = enhance(SkinTypeService.class);
     private GoodsService goodsService = enhance(GoodsService.class);
     public void list() {
-     /*   Long productCategoryId =494l;
-        List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
-        Goods goods = goodsService.find(productCategoryId);
-        if (goods == null || CollectionUtils.isEmpty(goods.getSpecificationItemsConverter())) {
-            renderJson(data);
-            return;
-        }
-        renderJson(ApiResult.success(goods.getSpecificationItemsConverter()));*/
-
 
   Pageable pageable = getBean(Pageable.class);
         pageable.setOrderProperty("orders");
@@ -59,28 +50,12 @@ public class GroupBuyController extends BaseController {
         List<UploadFile> uploadFiles = getFiles();
         GroupBuy groupBuy = getModel( GroupBuy.class);
         Map<String, String[]> sssss = getParaMap();
-
-        Long productId = getParaToLong("productId");
-
-        if(productId==null){
-
-            addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error, "产品不能为空!"));
-
-
-
-            render("/admin/groupBuy/add.ftl");
-            return;
-
-        }
-        groupBuy.setProductId(productId);
-
-        groupBuy.setStatus(getParaToBoolean("status", false));
-        groupBuy.setIsList(getParaToBoolean("isList", false));
-        groupBuy.setIsTop(getParaToBoolean("isTop", false));
-        groupBuy.setIsSinglepurchase(getParaToBoolean("isSinglepurchase", false));
+        groupBuy.setStatus(getParaToBoolean("status", true));
+        groupBuy.setIsList(getParaToBoolean("isList", true));
+        groupBuy.setIsTop(getParaToBoolean("isTop", true));
+        groupBuy.setIsSinglepurchase(getParaToBoolean("isSinglepurchase", true));
 
         fuDaiService.save(groupBuy);
-        FudaiProduct fudaiProduct = new FudaiProduct(productId, groupBuy.getId(), 1);
         redirect("/admin/groupBuy/list.jhtml");
     }
 
@@ -89,7 +64,8 @@ public class GroupBuyController extends BaseController {
         Long fuDaiId = getParaToLong("id");
         GroupBuy group = fuDaiService.find(fuDaiId);
         setAttr("groupBuy", group);
-
+        List<SkinType> skinTypeList = skinTypeService.findAll();
+        setAttr("skinTypeList", skinTypeList);
         render("/admin/groupBuy/edit.ftl");
     }
 

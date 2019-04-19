@@ -1,6 +1,7 @@
 package com.wtshop.dao;
 
 import com.wtshop.model.FudaiProduct;
+import com.wtshop.model.GroupBuy;
 import org.jsoup.helper.StringUtil;
 
 import java.util.List;
@@ -68,6 +69,7 @@ public class FuDaiProductDao extends BaseDao<FudaiProduct> {
         }
         return modelManager.find(sql);
     }
+
 
 
     //检测库存
