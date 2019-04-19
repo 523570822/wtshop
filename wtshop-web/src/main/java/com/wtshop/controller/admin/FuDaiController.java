@@ -65,6 +65,7 @@ public class FuDaiController extends BaseController {
                 productImages.add(productImage);
             }
             fuDai.setProductImagesConverter(productImages);
+            fuDai.setStatus(0);
             productImageService.filter(fuDai.getProductImagesConverter());
         }
 
@@ -124,6 +125,7 @@ public class FuDaiController extends BaseController {
         if (StringUtils.isEmpty(fuDai.getImage()) && StringUtils.isNotEmpty(fuDai.getThumbnail())) {
             fuDai.setImage(fuDai.getThumbnail());
         }
+        fuDai.setStatus(0);
         fuDaiService.update(fuDai);
         fuDaiProductService.updateProduct(fuDai.getId(), productId);
         redirect("list.jhtml");

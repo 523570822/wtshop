@@ -78,20 +78,12 @@
                 <span>${message("Promotion.title")}</span>
             </th>
             <th>
-                <span>${message("Fudai.price")}</span>
-            </th>
-            <th>
-                <span>${message("Fudai.count")}</span>
-            </th>
-            <th>
-                <a href="javascript:;" class="sort" name="orders">${message("shop.common.order")}</a>
+                <span>类别</span>
             </th>
             <th>
                 <span>${message("app_manage.list.time")}</span>
             </th>
-            <th>
-                <span>${message("admin.common.type")}</span>
-            </th>
+
             <th>
                 <span>${message("admin.common.action")}</span>
             </th>
@@ -105,13 +97,15 @@
                     <span title="${fuDai.title}">${abbreviate(fuDai.title, 50, "...")}</span>
                 </td>
                 <td>
-                ${fuDai.price}
-                </td>
-                <td>
-                ${fuDai.num}
-                </td>
-                <td>
-                ${fuDai.orders}
+
+                    [#if fuDai.price==0]
+                        公式定理
+                    [#elseif fuDai.price==1]
+					解题技巧
+                    [#elseif fuDai.price==2]
+易错点
+                    [/#if]
+
                 </td>
                 <td>
                     [#if fuDai.create_date??]
@@ -120,25 +114,23 @@
                         -
                     [/#if]
                 </td>
-                <td>
+             [#--   <td>
                     [#if fuDai.status==0]
                         <span class="green">[已启用]</span>
                     [#else]
                         <span class="red">[已禁用]</span>
                     [/#if]
-                </td>
+                </td>--]
                 <td>
                     [#if fuDai.status==0]
                         <a href="toEdit.jhtml?id=${fuDai.id}">[${message("admin.common.edit")}]</a>
-                        <a href="addGoods.jhtml?id=${fuDai.id}">[${message("Fudai.goods.manager")}]</a>
-                        <a class="hidden" href="imgList.jhtml?id=${fuDai.id}">[${message("Fudai.image.manager")}]</a>
-                        <a href="disabled.jhtml?id=${fuDai.id}" class="status"
-                           data="${fuDai.id}">][${message("admin.member.disabled")}]</a>
+
+
                     [#else ]
                         <a href="toEdit.jhtml?id=${fuDai.id}">[${message("admin.common.edit")}]</a>
-                        <a href="addGoods.jhtml?id=${fuDai.id}">[${message("Fudai.goods.manager")}]</a>
+                      [#--  <a href="addGoods.jhtml?id=${fuDai.id}">[${message("Fudai.goods.manager")}]</a>
                         <a href="publish.jhtml?id=${fuDai.id}" class="status"
-                           data="${fuDai.id}">[${message("LoginPlugin.isEnabled")}]</a>
+                           data="${fuDai.id}">[${message("LoginPlugin.isEnabled")}]</a>--]
                     [/#if]
                 </td>
             </tr>

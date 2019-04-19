@@ -459,7 +459,7 @@
                 模块分类
             </th>
             <td>
-                <select id="attribute_value0" name="attribute_value0">
+                <select id="attribute_value0" name="goods.attribute_value0">
 	[#if goods.attribute_value0==1]
 			        <option selected = "selected" value="1">考点模式</option>
                     <option value="2">套卷模式</option>
@@ -471,8 +471,12 @@
 
         [#elseif goods.attribute_value0==3]
                     <option value="1">考点模式</option>
-                    <option selected = "selected"  value="2">套卷模式</option>
+                    <option   value="2">套卷模式</option>
               <option selected = "selected" value="3">课程模块</option>
+    [#else ]
+ <option value="1"  selected = "selected">考点模式</option>
+                    <option   value="2">套卷模式</option>
+              <option  value="3">课程模块</option>
  [/#if]
 
                 </select>

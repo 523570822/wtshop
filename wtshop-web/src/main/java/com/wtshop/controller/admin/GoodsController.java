@@ -547,7 +547,7 @@ public class GoodsController extends BaseController {
 
 
         addFlashMessage(SUCCESS_MESSAGE);
-        redirect("list.jhtml");
+        redirect("/admin/goods/list.jhtml");
     }
 
 

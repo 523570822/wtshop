@@ -161,7 +161,7 @@
                                                         <li><a href="../userFollow/list.jhtml" target="iframe">${message("admin.role.follow")}</a></li>
 													[/@shiro.hasPermission]
 
-													[@shiro.hasPermission name="admin:cartMember"]
+													[#--[@shiro.hasPermission name="admin:cartMember"]
                                                         <li><a href="../cartMember/list.jhtml" target="iframe">${message("admin.role.cartMember")}</a></li>
 													[/@shiro.hasPermission]
 
@@ -175,15 +175,15 @@
 
 													[@shiro.hasPermission name="admin:point"]
                                                         <li><a href="../point/log.jhtml" target="iframe">${message("admin.main.point")}</a></li>
-													[/@shiro.hasPermission]
+													[/@shiro.hasPermission]--]
 
 													[@shiro.hasPermission name="admin:footprint"]
                                                         <li><a href="../footprint/list.jhtml" target="iframe">${message("admin.footprint")}</a></li>
 													[/@shiro.hasPermission]
 
-													[@shiro.hasPermission name="admin:interestCategory"]
+													[#--[@shiro.hasPermission name="admin:interestCategory"]
                                                         <li><a href="../interestCategory/list.jhtml" target="iframe">${message("admin.role.interestCategory")}</a></li>
-													[/@shiro.hasPermission]
+													[/@shiro.hasPermission]--]
                                                 </ul>
 											</div>
 										</div>
@@ -206,15 +206,15 @@
 											[@shiro.hasPermission name="admin:skinType"]
                                                 <li><a href="../skinType/list.jhtml" target="iframe">视频分类</a></li>
 											[/@shiro.hasPermission]
-											[@shiro.hasPermission name="admin:stock"]
+											[#--[@shiro.hasPermission name="admin:stock"]
                                                 <li><a href="../stock/log.jhtml" target="iframe">${message("admin.main.stock")}</a></li>
-											[/@shiro.hasPermission]
+											[/@shiro.hasPermission]--]
 
-											[@shiro.hasPermission name="admin:productCategory"]
+											[#--[@shiro.hasPermission name="admin:productCategory"]
                                                 <li><a href="../product_category/list.jhtml" target="iframe">${message("admin.main.productCategory")}</a></li>
-											[/@shiro.hasPermission]
+											[/@shiro.hasPermission]--]
 
-											[@shiro.hasPermission name="admin:parameter"]
+											[#--[@shiro.hasPermission name="admin:parameter"]
                                                 <li><a href="../parameter/list.jhtml" target="iframe">${message("admin.main.parameter")}</a></li>
 											[/@shiro.hasPermission]
 
@@ -229,15 +229,15 @@
 											[@shiro.hasPermission name="admin:brand"]
                                                 <li><a href="../brand/list.jhtml" target="iframe">${message("admin.main.brand")}</a></li>
 											[/@shiro.hasPermission]
-
+--]
 											[@shiro.hasPermission name="admin:tag"]
                                                 <li><a href="../tag/list.jhtml" target="iframe">${message("admin.main.tag")}</a></li>
 											[/@shiro.hasPermission]
 
 
-											[@shiro.hasPermission name="admin:effect"]
+										[#--	[@shiro.hasPermission name="admin:effect"]
                                                 <li><a href="../effect/list.jhtml" target="iframe">${message("admin.role.effect")}</a></li>
-											[/@shiro.hasPermission]
+											[/@shiro.hasPermission]--]
                                         </ul>
                                     </div>
                                 </div>
@@ -245,52 +245,7 @@
 							[#break /]
 						[/@shiro.hasPermission]
 					[/#list]
-                    [#list ["admin:order", "admin:print", "admin:payment", "admin:refunds", "admin:shipping", "admin:returns", "admin:vipOrder" ] as permission]
-						[@shiro.hasPermission name = permission]
-							<div class="panel panel-default">
-		                        <div class="panel-heading">
-		                            <a href="#orderGroup" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
-		                                <i class="glyphicon glyphicon-th"></i> ${message("admin.main.orderGroup")}
-		                            </a>
-		                        </div>
-		                        <div class="accordion-body collapse" id="orderGroup">
-		                            <div class="panel-body">
-		                                <ul class="nav nav-pills nav-stacked">
-		                                    [@shiro.hasPermission name="admin:order"]
-												<li><a href="../order/list.jhtml" target="iframe">${message("admin.main.order")}</a></li>
-											[/@shiro.hasPermission]
 
-											[@shiro.hasPermission name="admin:goodsSend"]
-                                                <li><a href="../goodsSend/list.jhtml" target="iframe">${message("admin.role.goodsSend")}</a></li>
-											[/@shiro.hasPermission]
-
-											[@shiro.hasPermission name="admin:print"]
-                                           		<li><a href="../print/list.jhtml" target="iframe">${message("admin.role.print")}</a></li>
-											[/@shiro.hasPermission]
-
-											[@shiro.hasPermission name="admin:payment"]
-                                                <li><a href="../payment/list.jhtml" target="iframe">${message("admin.main.payment")}</a></li>
-											[/@shiro.hasPermission]
-
-											[@shiro.hasPermission name="admin:refunds"]
-												<li><a href="../refunds/list.jhtml" target="iframe">${message("admin.main.refunds")}</a></li>
-											[/@shiro.hasPermission]
-
-											[@shiro.hasPermission name="admin:shipping"]
-												<li><a href="../shipping/list.jhtml" target="iframe">${message("admin.main.shipping")}</a></li>
-											[/@shiro.hasPermission]
-
-											[@shiro.hasPermission name="admin:returns"]
-												<li><a href="../returns/list.jhtml" target="iframe">${message("admin.main.returns")}</a></li>
-											[/@shiro.hasPermission]
-
-		                                </ul>
-		                            </div>
-		                        </div>
-		                    </div>
-							[#break /]
-						[/@shiro.hasPermission]
-					[/#list]
                     [#list ["admin:member", "admin:certificates_shenhe", "admin:review" ,"admin:consultation", "admin:messageConfig", "admin:feedback"] as permission]
 						[@shiro.hasPermission name = permission]
 							<div class="panel panel-default">
@@ -305,7 +260,7 @@
 		                                    [@shiro.hasPermission name="admin:member"]
 												<li><a href="../member/list.jhtml" target="iframe">${message("admin.main.member")}</a></li>
 											[/@shiro.hasPermission]
-											[@shiro.hasPermission name="admin:certificates_shenhe"]
+											[#--[@shiro.hasPermission name="admin:certificates_shenhe"]
                                                 <li><a href="../certificates_shenhe/list.jhtml" target="iframe">${message("certificates.shenhe")}</a></li>
 											[/@shiro.hasPermission]
 
@@ -315,7 +270,7 @@
 
 											[@shiro.hasPermission name="admin:consultation"]
 												<li><a href="../consultation/list.jhtml" target="iframe">${message("admin.main.consultation")}</a></li>
-											[/@shiro.hasPermission]
+											[/@shiro.hasPermission]--]
 
 											[@shiro.hasPermission name="admin:messageConfig"]
 												<li><a href="../message_config/list.jhtml" target="iframe">${message("admin.main.messageConfig")}</a></li>
@@ -333,7 +288,7 @@
 							[#break /]
 						[/@shiro.hasPermission]
 					[/#list]
-                    [#list ["admin:adPosition", "admin:ad", "admin:newGoods", "admin:like","admin:character" ] as permission]
+                   [#-- [#list ["admin:adPosition", "admin:ad", "admin:newGoods", "admin:like","admin:character" ] as permission]
 						[@shiro.hasPermission name = permission]
 							<div class="panel panel-default">
 		                        <div class="panel-heading">
@@ -373,8 +328,8 @@
 		                    </div>
 							[#break /]
 						[/@shiro.hasPermission]
-					[/#list]
-                    [#list ["admin:miaobiGoods", "admin:promotion" ] as permission]
+					[/#list]--]
+                    [#--[#list ["admin:miaobiGoods", "admin:promotion" ] as permission]
 						[@shiro.hasPermission name = permission]
 							<div class="panel panel-default">
 		                        <div class="panel-heading">
@@ -428,20 +383,20 @@
                             </div>
 							[#break /]
 						[/@shiro.hasPermission]
-					[/#list]
+					[/#list]--]
 					[#list ["admin:fuDai"] as permission]
 						[@shiro.hasPermission name = permission]
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <a href="#fuDaiGroup" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
-                                        <i class="glyphicon glyphicon-gift"></i> ${message("admin.main.fuDai")}
+                                        <i class="glyphicon glyphicon-gift"></i> 发现模块
                                     </a>
                                 </div>
                                 <div class="accordion-body collapse" id="fuDaiGroup">
                                     <div class="panel-body">
                                         <ul class="nav nav-pills nav-stacked">
 											[@shiro.hasPermission name="admin:fuDai"]
-                                                <li><a href="../fuDai/list.jhtml" target="iframe">${message("admin.main.fuDai")}</a></li>
+                                                <li><a href="../fuDai/list.jhtml" target="iframe">发现模块</a></li>
 											[/@shiro.hasPermission]
                                         </ul>
                                     </div>
@@ -451,161 +406,15 @@
 						[/@shiro.hasPermission]
 					[/#list]
 
-	[#list ["admin:housekeeper"] as permission]
-		[@shiro.hasPermission name = permission]
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <a href="#housekeeper" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
-                                        <i class="glyphicon glyphicon-gift"></i> ${message("admin.role.housekeeper")}
-                                    </a>
-                                </div>
-                                <div class="accordion-body collapse" id="housekeeper">
-                                    <div class="panel-body">
-                                        <ul class="nav nav-pills nav-stacked">
-											[@shiro.hasPermission name="admin:housekeeper"]
-                                                <li><a href="../housekeeper/list.jhtml" target="iframe">${message("admin.role.housekeeper")}</a></li>
-                                                <li><a href="../houserkeeper_grade/list.jhtml" target="iframe">${message("admin.role.grade")}</a></li>
-
-											[/@shiro.hasPermission]
-                                        </ul>
-                                    </div>
-                                </div>
-
-                            </div>
-			[#break /]
-		[/@shiro.hasPermission]
-	[/#list]
-
-
-						[#list ["admin:groupBuy"] as permission]
-							[@shiro.hasPermission name = permission]
 
 
 
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <a href="#groupBuy" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
-                                        <i class="glyphicon glyphicon-gift"></i> 视频管理
-                                    </a>
-                                </div>
-                                <div class="accordion-body collapse" id="groupBuy">
-                                    <div class="panel-body">
-                                        <ul class="nav nav-pills nav-stacked">
-											[@shiro.hasPermission name="admin:groupBuy"]
-                                                <li><a href="../groupBuy/list.jhtml" target="iframe">视频管理</a></li>
-											[/@shiro.hasPermission]
-                                        </ul>
-                                    </div>
-                                </div>
 
-                            </div>
-								[#break /]
-							[/@shiro.hasPermission]
-						[/#list]
 
-							[#list ["admin:miaobilssue"] as permission]
-								[@shiro.hasPermission name = permission]
-														<div class="panel panel-default">
-															<div class="panel-heading">
-																<a href="#miaobilssue" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
-																	<i class="glyphicon glyphicon-gift"></i> ${message("admin.role.miaobilssue")}
-																</a>
-															</div>
-															<div class="accordion-body collapse" id="miaobilssue">
-																<div class="panel-body">
-																	<ul class="nav nav-pills nav-stacked">
-																		[@shiro.hasPermission name="admin:miaobilssue"]
-																			<li><a href="../miaobilssue/list.jhtml" target="iframe">喵币发放详情</a></li>
-																		[#--	<li><a href="../miaobilssue/list.jhtml" target="iframe"></a></li>--]
-																		[/@shiro.hasPermission]
-																	</ul>
-																</div>
-															</div>
 
-														</div>
-									[#break /]
-								[/@shiro.hasPermission]
-							[/#list]
 					
-					[#list ["admin:myWallet" ,"admin:myWalletInfo"] as permission]
-						[@shiro.hasPermission name = permission]
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <a href="#walletGroup" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
-                                        <i class="glyphicon glyphicon-time"></i> ${message("admin.main.walletManage")}
-                                    </a>
-                                </div>
-                                <div class="accordion-body collapse" id="walletGroup">
-                                    <div class="panel-body">
-                                        <ul class="nav nav-pills nav-stacked">
-											[@shiro.hasPermission name="admin:myWallet"]
-                                                <li><a href="../myWallet/list.jhtml" target="iframe">${message("admin.role.myWallet")}</a></li>
-											[/@shiro.hasPermission]
-
-											[@shiro.hasPermission name="admin:myWalletInfo"]
-                                                <li><a href="../myWallet/log.jhtml" target="iframe">${message("admin.role.myWalletInfo")}</a></li>
-											[/@shiro.hasPermission]
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-							[#break /]
-						[/@shiro.hasPermission]
-					[/#list]
-                    [#list [ "admin:vip_goods", "admin:orderStatistic", "admin:memberRanking", "admin:goodsRanking" ,"admin:caiwu"] as permission]
-						[@shiro.hasPermission name = permission]
-							 <div class="panel panel-default">
-		                        <div class="panel-heading">
-		                            <a href="#statisticGroup" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
-		                                <i class="glyphicon glyphicon-signal"></i> ${message("admin.main.statisticGroup")}
-		                            </a>
-		                        </div>
-		                        <div class="accordion-body collapse" id="statisticGroup">
-		                            <div class="panel-body">
-		                                <ul class="nav nav-pills nav-stacked">
-		                                    [#--[@shiro.hasPermission name="admin:statistics"]--]
-												[#--<li><a href="../statistics/view.jhtml" target="iframe">${message("admin.main.statistics")}</a></li>--]
-											[#--[/@shiro.hasPermission]--]
-
-											[#--[@shiro.hasPermission name="admin:statistics"]--]
-												[#--<li><a href="../statistics/setting.jhtml" target="iframe">${message("admin.main.statisticsSetting")}</a></li>--]
-											[#--[/@shiro.hasPermission]--]
-
-											[@shiro.hasPermission name="admin:vip_goods"]
-                                                <li><a href="../vipGoods/list.jhtml" target="iframe">${message("admin.role.vipGoods")}</a></li>
-											[/@shiro.hasPermission]
-
-											[@shiro.hasPermission name="admin:memberStatistic"]
-												<li><a href="../member_statistic/list.jhtml?type=0" target="iframe">${message("admin.main.memberStatistic")}</a></li>
-											[/@shiro.hasPermission]
-
-											[@shiro.hasPermission name="admin:orderStatistic"]
-												<li><a href="../order_statistic/list.jhtml?type=1" target="iframe">${message("admin.main.orderStatistic")}</a></li>
-											[/@shiro.hasPermission]
-
-											[@shiro.hasPermission name="admin:memberRanking"]
-												<li><a href="../member_ranking/list.jhtml" target="iframe">${message("admin.main.memberRanking")}</a></li>
-											[/@shiro.hasPermission]
-
-											[@shiro.hasPermission name="admin:goodsRanking"]
-                                                <li><a href="../goods_ranking/list.jhtml" target="iframe">${message("admin.main.goodsRanking")}</a></li>
-											[/@shiro.hasPermission]
 
 
-											[@shiro.hasPermission name="admin:caiwu"]
-                                                <li><a href="../caiwu/list.jhtml" target="iframe">${message("admin.role.caiwu")}</a></li>
-											[/@shiro.hasPermission]
-											[@shiro.hasPermission name="admin:proxy"]
-                                                <li><a href="../proxy/list.jhtml" target="iframe">${message("admin.role.proxy")}</a></li>
-											[/@shiro.hasPermission]
-
-		                                </ul>
-		                            </div>
-		                        </div>
-		                    </div>
-							[#break /]
-						[/@shiro.hasPermission]
-					[/#list]
                    [#list ["admin:setting", "admin:targetPath", "admin:area", "admin:shippingMethod", "admin:deliveryCorp", "admin:message"] as permission]
 						[@shiro.hasPermission name = permission]
 							<div class="panel panel-default">
@@ -618,20 +427,20 @@
 		                            <div class="panel-body">
 		                                <ul class="nav nav-pills nav-stacked">
 		                                    <!-- <li class="active"><a href="javascript:void(0)">Account Settings</a></li> -->
-		                                    [@shiro.hasPermission name="admin:setting"]
+		                                   [#-- [@shiro.hasPermission name="admin:setting"]
 													<li><a href="../setting/edit.jhtml" target="iframe">${message("admin.main.setting")}</a></li>
 											[/@shiro.hasPermission]
 
 											[@shiro.hasPermission name="admin:targetPath"]
                                                 <li><a href="../targetPath/list.jhtml" target="iframe">${message("admin.main.targetPath")}</a></li>
 											[/@shiro.hasPermission]
-
+--]
 											[@shiro.hasPermission name="admin:area"]
 													<li><a href="../area/list.jhtml?flag=0" target="iframe">${message("admin.main.area")}</a></li>
 											[/@shiro.hasPermission]
 
 
-											[@shiro.hasPermission name="admin:shippingMethod"]
+											[#--[@shiro.hasPermission name="admin:shippingMethod"]
 													<li><a href="../shipping_method/list.jhtml" target="iframe">${message("admin.main.shippingMethod")}</a></li>
 											[/@shiro.hasPermission]
 
@@ -647,7 +456,7 @@
 											[@shiro.hasPermission name="admin:log"]
 													<li><a href="../log/list.jhtml" target="iframe">${message("admin.main.log")}</a></li>
 											[/@shiro.hasPermission]
-
+--]
 
 		                                </ul>
 		                            </div>
@@ -685,7 +494,7 @@
 							[#break /]
 						[/@shiro.hasPermission]
 					[/#list]
-					[#list ["admin:appManage"] as permission]
+					[#--[#list ["admin:appManage"] as permission]
 						[@shiro.hasPermission name = permission]
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -705,10 +514,10 @@
                             </div>
 							[#break /]
 						[/@shiro.hasPermission]
-					[/#list]
+					[/#list]--]
 
 
-			[#list ["admin:partner"] as permission]
+		[#--	[#list ["admin:partner"] as permission]
 		[@shiro.hasPermission name = permission]
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -728,13 +537,13 @@
                             </div>
 			[#break /]
 		[/@shiro.hasPermission]
-	[/#list]
+	[/#list]--]
 
 
 
 
 
-					[#list ["admin:deliveryCenter", "admin:deliveryTemplate", "admin:deposit", "admin:memberRank", "admin:memberAttribute", "admin:paymentMethod", "admin:paymentPlugin",
+				[#--	[#list ["admin:deliveryCenter", "admin:deliveryTemplate", "admin:deposit", "admin:memberRank", "admin:memberAttribute", "admin:paymentMethod", "admin:paymentPlugin",
 					"admin:storagePlugin", "admin:loginPlugin", "admin:coupon", "admin:template", "admin:static", "admin:cache", "admin:index", "admin:organization", "admin:theme" ,
 					"admin:organ", "admin:seo", "admin:flashsale", "admin:freeApply", "admin:sitemap", "admin:goodsTheme", "admin:ticketShare", "admin:navigation", "admin:article", "admin:articleCategory", "admin:friendLink", "admin:productNotify" ,"admin:log"  ] as permission]
 						[@shiro.hasPermission name = permission]
@@ -861,7 +670,7 @@
                             </div>
 							[#break /]
 						[/@shiro.hasPermission]
-					[/#list]
+					[/#list]--]
                 </div>
                 <div class="push"></div>
             </div>

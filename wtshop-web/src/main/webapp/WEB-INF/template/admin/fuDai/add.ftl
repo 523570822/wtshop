@@ -127,12 +127,24 @@
         <li>
             <input type="button" value="${message("Fudai.rule")}" />
         </li>
-        <li>
+      [#--  <li>
             <input type="button" value="${message("admin.goods.productImage")}" />
-        </li>
+        </li>--]
         </ul>
     <input value="0" name="fuDai.status" type="hidden"/>
     <table class="input tabContent">
+        <tr>
+            <th>
+              模块分类
+            </th>
+            <td>
+                <select id="price" name="fuDai.price">
+                    <option value="0">公式定理</option>
+                    <option value="1">解题技巧</option>
+                    <option value="2">易错点</option>
+                </select>
+            </td>
+        </tr>
         <tr>
             <th>
                 <span class="requiredField">*</span>${message("Ad.title")}:
@@ -143,46 +155,7 @@
         </tr>
         <tr>
             <th>
-                <span class="requiredField">*</span>${message("Fudai.price")}:
-            </th>
-            <td>
-                <input type="text" name="fuDai.price" class="text" maxlength="200" title= ${message("fudai.sale.title")} />
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("Fudai.primary.goods")}:
-            </th>
-            </th>
-            <td>
-                <input type="hidden" name="productId" id="product_id" class="text" maxlength="200" />
-                <input type="text" class="text" maxlength="200" id="product_name" name="product_name" title=${message("fudai.phone.title")}  />
-                <input type="button" value="选择产品" class="button" id="addProduct"/>
-            </td>
-        </tr>
-        <tr>
-            <th><span class="requiredField">*</span>${message("Fudai.other.image")} </th>
-            <td>
-   <span class="fieldSet">
-      <input type="text" name="fuDai.questionImage" class="text" value="${fuDaiQuestionImage}" maxlength="200" />
-      <a  id="filePicker"  href="javascript:;" title="手机端用于展示副产品的图片" class="button filePicker">${message("admin.upload.filePicker")} </a>
-      <a href="${fileServer}${fuDaiQuestionImage}" target="_blank">${message("admin.common.view")}</a>
-   </span>
-            </td>
-
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("Fudai.other.count")}:
-            </th>
-            <td>
-                <input type="text" name="fuDai.num" class="text" maxlength="200" title=${message("fudai.success.title")} />
-            </td>
-        </tr>
-
-        <tr>
-            <th>
-                <span class="requiredField"></span>${message("Fudai.message")}:
+                <span class="requiredField"></span>说明：
             </th>
             <td>
                 <textarea rows="" cols="" name="fuDai.explain" style="width: 300px;height:200px " maxlength="400" title= ${message("fudai.message.title")}></textarea>

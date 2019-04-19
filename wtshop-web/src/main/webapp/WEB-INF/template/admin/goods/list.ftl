@@ -281,12 +281,9 @@ $().ready(function() {
 				<th>
 					<a href="javascript:;" class="sort" name="name">${message("Goods.name")}</a>
 				</th>
-				<th>
-					<a href="javascript:;" class="sort" name="product_category_id">分类</a>
-				</th>
-
-
-
+                <th>
+                    <a href="javascript:;" class="sort" name="product_category_id">模块分类</a>
+                </th>
 				<th>
 					<a href="javascript:;" class="sort" name="create_date">${message("admin.common.createDate")}</a>
 				</th>
@@ -315,11 +312,12 @@ $().ready(function() {
 						[/#list]
 					</td>
 					<td>
-
 					[#if goods.attribute_value0==1]
 						考点模式
-						[#else]
-						考券模式
+						[#elseif goods.attribute_value0==2]
+						套卷模式
+					[#elseif goods.attribute_value0==3]
+						课程模块
 					[/#if]
 				</td>
                     <td>

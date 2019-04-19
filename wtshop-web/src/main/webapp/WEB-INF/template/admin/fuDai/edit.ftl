@@ -133,12 +133,12 @@
         <li>
             <input type="button" value="${message("Fudai.rule")}"  />
         </li>
-        <li>
+      [#--  <li>
             <input type="button" value="${message("admin.goods.productImage")}" />
-        </li>
+        </li>--]
     </ul>
     <table class="input tabContent">
-        <tr>
+       <tr>
             <th>
                 <span class="requiredField">*</span>${message("Ad.title")}:
             </th>
@@ -148,47 +148,27 @@
         </tr>
         <tr>
             <th>
-                <span class="requiredField">*</span>${message("Fudai.price")}:
+                <span class="requiredField">*</span>${message("Ad.title")}:
             </th>
             <td>
-                <input type="text" name="fuDai.price" class="text" maxlength="200" value="${fuDai.price}"  title= ${message("fudai.sale.title")}/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("Fudai.primary.goods")}:
-            </th>
-            <td>
-                <input type="hidden" name="productId" id="product_id" class="text" maxlength="200" value="${fuDai.fudaiProduct.product_id}"/>
-                <input type="text" class="text" maxlength="200" id="product_name" title=${message("fudai.phone.title")}   value="${fuDai.fudaiProduct.product.goods.name}" />
-                <input type="button" value="${message("fudai.select")}" class="button" id="addProduct"/>
-            </td>
-        </tr>
-        <tr>
-            <th><span class="requiredField">*</span>${message("fudai.goods")}</th>
-            <td>
-   <span class="fieldSet">
-      <input type="text" name="fuDai.questionImage" class="text" value="${fuDai.questionImage}" maxlength="200" />
-      <a  id="filePicker"  href="javascript:;"  title=${message("fudai.phone")} class="button filePicker">${message("admin.upload.filePicker")}</a>
-      <a href="${fileServer}${fuDai.questionImage}" target="_blank">${message("admin.common.view")}</a>
-   </span>
-            </td>
+        <select id="price" name="fuDai.price">
 
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("Fudai.other.count")}:
-            </th>
-            <td>
-                <input type="text" name="fuDai.num" class="text" maxlength="200" value="${fuDai.num}" title=${message("fudai.success.title")}/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField"></span>${message("Fudai.message")}:
-            </th>
-            <td>
-                <textarea rows="" cols="" name="fuDai.explain" style="width: 300px;height:200px " maxlength="400" title="${message("Fudai.message.list")}" >${fuDai.explain}</textarea>
+            [#if fuDai.price==0]
+			     <option  selected = "selected" value="0">公式定理</option>
+                    <option  value="1">解题技巧</option>
+                    <option value="2">易错点</option>
+            [#elseif fuDai.price==1]
+                   <option value="0">公式定理</option>
+                    <option  selected = "selected" value="1">解题技巧</option>
+                    <option  value="2">易错点</option>
+            [#elseif fuDai.price==2]
+                 <option value="0">公式定理</option>
+                    <option value="1">解题技巧</option>
+                    <option selected = "selected" value="2">易错点</option>
+
+            [/#if]
+
+        </select>
             </td>
         </tr>
         <tr>
