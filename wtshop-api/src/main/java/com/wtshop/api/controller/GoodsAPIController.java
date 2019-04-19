@@ -63,6 +63,7 @@ public class GoodsAPIController extends BaseAPIController {
 	 */
 	public void list() {
 		Long type = getParaToLong("type");
+		Long areaId = getParaToLong("areaId");
 		Goods.Type type1;
 if(type==0){
 	 type1=Goods.Type.general;

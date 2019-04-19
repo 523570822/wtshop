@@ -26,6 +26,7 @@ import com.jfinal.template.Engine;
 import com.wtshop.FreeMarkerExceptionHandler;
 import com.wtshop.activiti.ActivitiPlugin;
 import com.wtshop.constants.Code;
+import com.wtshop.controller.admin.DoTimeController;
 import com.wtshop.model._MappingKit;
 import com.wtshop.security.MyJdbcAuthzService;
 import com.wtshop.shiro.core.ShiroInterceptor;
@@ -125,6 +126,12 @@ public class JFWebConfig extends JFinalConfig {
 //		plugins.add(cp);
 
         plugins.add(new Cron4jPlugin(PropKit.use("wtshop.properties")));
+
+
+        		Cron4jPlugin cp = new Cron4jPlugin();
+     //   cp.addTask("* * * * *",new DoTimeController());
+
+		        plugins.add(cp);
 
 
         //配置druid连接池
