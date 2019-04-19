@@ -17,7 +17,7 @@ public class FightGroupDao extends BaseDao<FightGroup> {
      * 根据商品id   product_id 获取参团信息
      */
     public List<FightGroup> findByProductId(Long productId){
-        String sql = "select f.*,m.`nickname`,m.avatar from fight_group f LEFT JOIN member m  on f.member_id=m.id where  f.groupnum>f.count  and f.product_id="+productId+ "order by f.groupnum-f.count ";
+        String sql = "select f.*,m.`nickname`,m.avatar from fight_group f LEFT JOIN member m  on f.member_id=m.id where  f.groupnum>f.count  and f.product_id="+productId;
         return modelManager.find(sql);
     }
 
