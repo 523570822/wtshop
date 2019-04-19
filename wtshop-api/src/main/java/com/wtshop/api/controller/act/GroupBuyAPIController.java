@@ -139,9 +139,6 @@ Boolean isfight=true;
         Long fuDaiId = getParaToLong("tuanGouId");
         GroupBuy fuDai = fuDaiService.find(fuDaiId);
       /*  List<FightGroup> fightgroupList=new  ArrayList<FightGroup>();*/
-
-
-        //可拼团认
         List<FightGroup> fightgroupList=fightGroupService.findByProductId(fuDai.getProductId());
 
         Product p = fuDai.getProduct();

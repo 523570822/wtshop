@@ -672,7 +672,11 @@ public class GoodsService extends BaseService<Goods> {
     public Page<Goods> findPage(Goods.RankingType rankingType, Pageable pageable) {
         return goodsDao.findPage(rankingType, pageable);
     }
+    public Page<Goods> findPages(Long type, Long areaId,Long biaoqian, Pageable pageable) {
+       // return goodsDao.findPage(type,areaId, pageable);
+        return goodsDao.findPage(type,areaId,biaoqian, pageable);
 
+    }
 
     /**
      * 查找货品分页
@@ -684,6 +688,7 @@ public class GoodsService extends BaseService<Goods> {
     public Page<Goods> findPage(Pageable pageable, List<Long> goodsList) {
         return goodsDao.findPage(pageable, goodsList);
     }
+
 
     /**
      * 查找收藏货品分页

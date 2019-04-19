@@ -1151,4 +1151,22 @@ public class GoodsDao extends BaseDao<Goods> {
 		return orderSql;
 	}
 
+	public Page<Goods> findPage(Long type, Long areaId,Long biaoqian, Pageable pageable) {
+		String sqlExceptSelect = "FROM  `goods` g where 1=1 ";
+		String select = " select *  ";
+		if(type != null){
+
+				sqlExceptSelect += " AND g.type = " + type ;
+
+		}	if(biaoqian != null){
+
+				sqlExceptSelect += " AND g.attribute_value0 = " + biaoqian ;
+
+		}
+		if(areaId != null){
+			sqlExceptSelect += " AND g.area_id = "+areaId ;
+		}
+		sqlExceptSelect += " order by g.create_date desc";
+		return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
+	}
 }

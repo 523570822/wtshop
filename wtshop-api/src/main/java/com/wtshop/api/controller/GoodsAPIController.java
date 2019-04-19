@@ -64,6 +64,7 @@ public class GoodsAPIController extends BaseAPIController {
 	public void list() {
 		Long type = getParaToLong("type");
 		Long areaId = getParaToLong("areaId");
+		Long biaoqian = getParaToLong("biaoqian");
 		Goods.Type type1;
 if(type==0){
 	 type1=Goods.Type.general;
@@ -74,8 +75,7 @@ if(type==0){
 		Integer pageNumber = getParaToInt("pageNumbers", 1);
 		Integer pageSize = getParaToInt("pageSizes", 20);
 		Pageable pageable = new Pageable(pageNumber, pageSize);
-	    Page<Goods> page = goodsService.findPages(false ,false, type1, null, null, null, null, null, null, null, true, true, null, null, null, null, null, pageable);
-		renderJson(ApiResult.success(page));
+	    Page<Goods> page = goodsService.findPages(type,areaId,biaoqian,pageable);
 	}
 
 	/**
