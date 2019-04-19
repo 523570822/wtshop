@@ -76,6 +76,7 @@ if(type==0){
 		Integer pageSize = getParaToInt("pageSizes", 20);
 		Pageable pageable = new Pageable(pageNumber, pageSize);
 	    Page<Goods> page = goodsService.findPages(type,areaId,biaoqian,pageable);
+		renderJson(ApiResult.success(page));
 	}
 
 	/**
