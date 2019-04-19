@@ -380,7 +380,7 @@ private  FightGroupService fightGroupService=enhance(FightGroupService.class);
 		Order order = orderService.findBySn(sn);
 
 		List<OrderItem> orderItemList = orderItemService.findOrderItemList(order.getId());
-		FightGroup fightGroup = fightGroupService.find(order.getId());
+		FightGroup fightGroup = fightGroupService.find(order.getFightgroupId());
 
 		for (OrderItem orderItem:orderItemList){
 			String dsb="";
