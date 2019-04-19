@@ -24,6 +24,7 @@ import com.wtshop.util.MathUtil;
 import com.wtshop.util.SystemUtils;
 import org.nlpcn.commons.lang.util.StringUtil;
 
+import javax.management.ObjectName;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -43,6 +44,7 @@ public class OrderAPIController extends BaseAPIController {
 	private MemberService memberService = enhance(MemberService.class);
 	private GoodsService goodsService = enhance(GoodsService.class);
 	private OrderItemService orderItemService = enhance(OrderItemService.class);
+	private  FightGroupService fightGroupService=enhance(FightGroupService.class);
 	private ShippingService shippingService = enhance(ShippingService.class);
 	private OrderService orderService = enhance(OrderService.class);
 	private AreaDescribeService areaDescribeService = enhance(AreaDescribeService.class);
@@ -374,7 +376,11 @@ public class OrderAPIController extends BaseAPIController {
 		OrderFindResult orderFindResult = new OrderFindResult(taxUrl, returnUrl, time, expire, order, shipping, orderItemList, member, receiver, receiveTime, priceList, realMoney, couponMoney, returns);
 		renderJson(ApiResult.success(orderFindResult));
 	}
-	
+	/**
+	 * 查看
+	 * {"msg":"","code":1,"data":{"key":false,"order":{"address":"中南海1号","amount":70.000000,"amount_paid":0.000000,"area_id":null,"area_name":"北京市昌平区","complete_date":null,"consignee":"史强","coupon_code_id":null,"coupon_discount":0.000000,"create_date":"2017-05-24 14:42:25","exchange_point":0,"expire":"2017-05-25 14:42:25","fee":0.000000,"freight":0.000000,"id":82,"invoice_content":null,"invoice_title":null,"is_allocated_stock":false,"is_exchange_point":false,"is_use_coupon_code":false,"lock_expire":"2017-05-24 14:43:25","lock_key":"b16f3025929c413e27fb4fd39a4f46ee","member_id":18,"memo":"","modify_date":"2017-05-24 14:42:25","offset_amount":0.000000,"payment_method_id":1,"payment_method_name":"网上支付","payment_method_type":0,"phone":"13581856711","price":70.000000,"promotion_discount":0.000000,"promotion_names":"[]","quantity":1,"refund_amount":0.000000,"returned_quantity":0,"reward_point":10,"shipped_quantity":0,"shipping_method_id":1,"shipping_method_name":"普通快递","sn":"20170524404","status":0,"tax":0.000000,"type":0,"version":0,"weight":1000,"zip_code":"100000"}}}
+	 */
+
 	/**
 	 * 取消
 	 * {"msg":"请求成功","code":1,"data":null}
