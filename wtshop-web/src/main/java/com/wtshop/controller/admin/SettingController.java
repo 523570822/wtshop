@@ -147,6 +147,8 @@ public class SettingController extends BaseController {
 		setting.setIsMyMessage(getParaToBoolean("isMyMessage",true));
 		setting.setIsStaffMessage(getParaToBoolean("isStaffMessage",true));
 		setting.setIsRegisterSending(getParaToBoolean("isRegisterSending",true));
+		//Object fff = getPara("hour");
+		//setting.setHour(Double.parseDouble(getPara("hour","0")));
 		JSONObject redisSetting = new JSONObject();
 		redisSetting.put("isFreeMoney",setting.getIsFreeMoney());
 		redisSetting.put("freeMoney",setting.getFreeMoney());

@@ -579,6 +579,7 @@ if(!isSinglepurchase){
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("order",order.getId()+"");
+		map.put("sn",order.getSn()+"");
 		map.put("rate",rate);
 		map.put("amountMoney",amountMoney);
 		renderJson(ApiResult.success(map));

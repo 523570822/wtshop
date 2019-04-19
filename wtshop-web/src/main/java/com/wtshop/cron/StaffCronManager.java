@@ -45,35 +45,12 @@ public class StaffCronManager implements ITask{
             return;
         }
 
-        /**
-         * 用户推送团购定时
-         */
-        JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
-        Double hour = redisSetting.getDouble("")==null?0.00:redisSetting.getDouble("hour");
 
-        List<GroupRemind> groupReminlist = groupRemindDao.findListRe(hour);
 
-        for (GroupRemind groupRemind:groupReminlist) {
-                             groupRemind.setStatus(1);
-            try {
 
-                groupRemindDao.update(groupRemind);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
+
+
         logger.info("开始极光推送服务————————————————————————");
-        List<GroupRemind> groupReminlist1= groupRemindDao.findListNum(hour);;
-        for (GroupRemind groupRemind:groupReminlist1) {
-            int dss=groupRemind.get("number");
-            try {
-                informationService.groupRmindMessage(groupRemind,dss);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-
-
 
         /**
          * 购买普通商品分佣

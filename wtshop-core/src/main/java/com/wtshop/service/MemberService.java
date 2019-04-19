@@ -38,7 +38,6 @@ public class MemberService extends BaseService<Member> {
 	public MemberService() {
 		super(Member.class);
 	}
-	
 	private MemberDao memberDao = Enhancer.enhance(MemberDao.class);
 	private TeamManagementDao teamManagementDao = Enhancer.enhance(TeamManagementDao.class);
 	private MemberRankDao memberRankDao = Enhancer.enhance(MemberRankDao.class);
@@ -46,9 +45,6 @@ public class MemberService extends BaseService<Member> {
 	private SmsService smsService = Enhancer.enhance(SmsService.class);
 	private MrmfShopDao mrmfShopDao = Enhancer.enhance(MrmfShopDao.class);
 	private StaffMemberDao staffMemberDao = Enhancer.enhance(StaffMemberDao.class);
-
-
-
 	public List<Member> findMemberByOnShare(String shareCode){
 		return memberDao.findMemberByOnShare(shareCode);
 	}
@@ -601,7 +597,6 @@ public Page<TeamManagement> getTeamManagementListFind(String onShareCode,Pageabl
 
 	public Member save(Member member) {
 		Assert.notNull(member);
-
 		Member pMember = super.save(member);
 		mailService.sendRegisterMemberMail(pMember);
 		smsService.sendRegisterMemberSms(pMember);
