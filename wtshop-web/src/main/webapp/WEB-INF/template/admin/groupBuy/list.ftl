@@ -84,9 +84,9 @@
             <th>
                 <span>${message("groupBuy.price")}</span>
             </th>
-            <th>
+          [#--  <th>
                 <span>${message("groupBuy.uniprice")}</span>
-            </th>
+            </th>--]
             <th>
                 <span>${message("groupBuy.count")}</span>
             </th>
@@ -139,9 +139,9 @@
                 <td>
                 ${groupBuy.price}
                 </td>
-                <td>
+               [#-- <td>
                 ${groupBuy.uniprice}
-                </td>
+                </td>--]
                 <td>
                     ${groupBuy.count}
                 </td>

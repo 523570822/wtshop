@@ -403,7 +403,7 @@ public class GoodsController extends BaseController {
         }
 
         addFlashMessage(SUCCESS_MESSAGE);
-        redirect("list.jhtml");
+        redirect("/admin/goods/list.jhtml");
     }
 
 
@@ -536,14 +536,14 @@ public class GoodsController extends BaseController {
         if (goods.hasSpecification()) {
             if (CollectionUtils.isEmpty(products)) {
                 addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error, "商品规格不能为空!"));
-                redirect("list.jhtml");
+                redirect("/admin/goods/list.jhtml");
                 return;
             }
             goodsService.update(goods, products, admin, promotionIds, tagIds, effectIds);
         } else {
             if (product == null) {
                 addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error, "产品不能为空!"));
-                redirect("list.jhtml");
+                redirect("/admin/goods/list.jhtml");
                 return;
             }
             goodsService.update(goods, product, admin, promotionIds, tagIds, effectIds);
@@ -551,7 +551,7 @@ public class GoodsController extends BaseController {
 
 
         addFlashMessage(SUCCESS_MESSAGE);
-        redirect("list.jhtml");
+        redirect("/admin/goods/list.jhtml");
     }
 
 

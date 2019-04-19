@@ -15,6 +15,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -56,6 +57,7 @@ public class GroupBuyController extends BaseController {
     public void save() {
         List<UploadFile> uploadFiles = getFiles();
         GroupBuy groupBuy = getModel( GroupBuy.class);
+        groupBuy.setUniprice(0d);
         Map<String, String[]> sssss = getParaMap();
 
         Long productId = getParaToLong("productId");
@@ -98,7 +100,7 @@ public class GroupBuyController extends BaseController {
         Map<String, String[]> sssss = getParaMap();
         Map<String, String[]> dddd = getRequest().getParameterMap();
         GroupBuy fuDai = getModel( GroupBuy.class);
-
+        fuDai.setUniprice(0d);
         fuDai.setStatus(getParaToBoolean("status", false));
         fuDai.setIsList(getParaToBoolean("isList", false));
         fuDai.setIsTop(getParaToBoolean("isTop", false));

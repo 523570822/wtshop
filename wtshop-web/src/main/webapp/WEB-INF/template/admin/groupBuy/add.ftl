@@ -130,14 +130,14 @@
                 <input type="text" id="groupRate" name="product.group_rate" class="text" maxlength="16" title="团长优惠比例（如10%填写10）" />
             </td>
         </tr>
-        <tr>
+       [#-- <tr>
             <th>
                 <span class="requiredField">*</span>${message("groupBuy.uniprice")}:
             </th>
             <td>
                 <input type="text" name="groupBuy.uniprice" class="text" maxlength="200" title= ${message("groupBuy.uniprice.Explanation")} />
             </td>
-        </tr>
+        </tr>--]
         <tr>
             <th>
                 <span class="requiredField">*</span>${message("groupBuy.primary.goods")}:

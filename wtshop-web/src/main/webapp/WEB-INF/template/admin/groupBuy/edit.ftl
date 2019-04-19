@@ -166,7 +166,7 @@
 
         <tr>
             <th>
-                <span class="requiredField">*</span>团购比例1122（%）
+                <span class="requiredField">*</span>团购比例（%）
             </th>
             <td>
                 <input type="text"  name="groupBuy.group_rate" class="text"
@@ -174,14 +174,14 @@
                        title="团购比例（如10%填写10）" />
             </td>
         </tr>
-        <tr>
+       [#-- <tr>
             <th>
                 <span class="requiredField">*</span>${message("groupBuy.uniprice")}:
             </th>
             <td>
                 <input type="text" name="groupBuy.uniprice" class="text" maxlength="200" value="${groupBuy.uniprice}"  title= ${message("groupBuy.uniprice.Explanation")} />
             </td>
-        </tr>
+        </tr>--]
         <tr>
             <th>
                 <span class="requiredField">*</span>${message("groupBuy.primary.goods")}:
