@@ -89,6 +89,9 @@
             } else if (host == 'primary') {     //团购
                 host = 'primary'
                 params = '?goodId=' + GetQueryString('params') + '&tuanGouId='+GetQueryString('tuanGouId') +'&qishu='+GetQueryString('qishu') +'&type=null';
+            }else if (host == 'GroupPropleList') {     //团购详情
+                host = 'GroupPropleList'
+                params = '?tuanGouID=' + GetQueryString('tuanGouID') + '&fightGroupId='+GetQueryString('fightGroupId') +'';
             }
             if (host != null) {
                 url = url + host + params
