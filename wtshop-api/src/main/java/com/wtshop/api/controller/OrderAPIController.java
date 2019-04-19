@@ -141,7 +141,7 @@ public class OrderAPIController extends BaseAPIController {
 		if(is_freeMoney){
 			 //运费
 			couponYunfei = delivery.getPrice();
-			newDeliveryPrice = new PriceResult("运费优惠金额",MathUtil.getInt(delivery.getPrice().toString()));
+			newDeliveryPrice = new PriceResult("运费优惠金额","-¥"+MathUtil.getInt(delivery.getPrice().toString()));
 		}
 		//包税 地址
 		String taxUrl = "http://shop.rxmao.cn/rxm/goods/tax.html";
@@ -185,7 +185,7 @@ public class OrderAPIController extends BaseAPIController {
 			miaobi = miaoBiPrice;
 		}else {
 			miaobiPrice = new PriceResult("喵币","-¥ "+0);
-			favoritePrice =  MathUtil.getInt(newDeliveryPrice.getPrice());
+			favoritePrice =  MathUtil.getInt(MathUtil.getInt(delivery.getPrice().toString()));
 			miaobi = 0d;
 		}
 		PriceResult manjianPrice = null;
