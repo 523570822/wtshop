@@ -198,6 +198,13 @@ public class AccountAPIController extends BaseAPIController {
 		JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
 		Map<String,Object>  map=  new HashMap<>();
 		double sendMiaoBi=0;
+		if(StringUtils.isNotEmpty(onShareCode)||(me==null||me.size()==0)){
+			sendMiaoBi = redisSetting.getDouble("registerSending") ;//邀请码赠送喵币
+		}else {
+			sendMiaoBi = redisSetting.getDouble("registerSending") + redisSetting.getDouble("vipSending");//邀请码赠送喵币
+		}
+
+
 		MiaobiLog miaobiLog = new MiaobiLog();
 		miaobiLog.setMemberId(member.getId());
 		miaobiLog.setCredit(BigDecimal.valueOf(sendMiaoBi));
