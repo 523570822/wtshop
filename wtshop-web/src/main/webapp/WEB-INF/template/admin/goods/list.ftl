@@ -35,7 +35,6 @@
     }
 
 $().ready(function() {
-
 	var $listForm = $("#listForm");
 	var $filterMenu = $("#filterMenu");
 	var $filterMenuItem = $("#filterMenu li");
@@ -260,18 +259,17 @@ $().ready(function() {
 					</ul>
 				</div>
 			</div>
-			[#--<div id="searchPropertyMenu" class="dropdownMenu">
+
+			<div  id="searchPropertyMenu" class="dropdownMenu">
 				<div class="search">
 					<span class="arrow">&nbsp;</span>
 					<input type="text" id="searchValue" name="pageable.searchValue" value="${pageable.searchValue}" maxlength="200" />
 					<button type="submit">&nbsp;</button>
 				</div>
 				<ul>
-					<li[#if pageable.searchProperty == "sn"] class="current"[/#if] val="sn">${message("Goods.sn")}</li>
 					<li[#if pageable.searchProperty == "name"] class="current"[/#if] val="name">${message("Goods.name")}</li>
-                    <li[#if pageable.searchProperty == "keyword"] class="current"[/#if] val="keyword">${message("admin.seo.keyword")}</li>
 				</ul>
-			</div>--]
+			</div>
 		</div>
 		<table id="listTable" class="list">
 			<tr>

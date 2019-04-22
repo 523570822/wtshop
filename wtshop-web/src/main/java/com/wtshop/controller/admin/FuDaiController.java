@@ -88,7 +88,7 @@ public class FuDaiController extends BaseController {
         fuDaiService.save(fuDai);
         FudaiProduct fudaiProduct = new FudaiProduct(productId, fuDai.getId(), 1);
         fuDaiProductService.save(fudaiProduct);
-        redirect("list.jhtml");
+        redirect("/admin/fuDai/list.jhtml");
     }
 
     //去修改页面
