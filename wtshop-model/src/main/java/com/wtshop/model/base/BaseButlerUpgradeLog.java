@@ -73,4 +73,108 @@ public abstract class BaseButlerUpgradeLog<M extends BaseButlerUpgradeLog<M>> ex
 		return get("up_date");
 	}
 
+	public void setName(String name) {
+		set("name", name);
+	}
+
+	public String getName() {
+		return get("name");
+	}
+
+	public void setIdcard(String idcard) {
+		set("idcard", idcard);
+	}
+
+	public String getIdcard() {
+		return get("idcard");
+	}
+
+	public void setImagez(String imagez) {
+		set("imagez", imagez);
+	}
+
+	public String getImagez() {
+		return get("imagez");
+	}
+
+	public void setImagef(String imagef) {
+		set("imagef", imagef);
+	}
+
+	public String getImagef() {
+		return get("imagef");
+	}
+
+	public void setSex(Boolean sex) {
+		set("sex", sex);
+	}
+
+	public Boolean getSex() {
+		return get("sex");
+	}
+
+	public void setAddress(String address) {
+		set("address", address);
+	}
+
+	public String getAddress() {
+		return get("address");
+	}
+
+	public void setBankName(String bankName) {
+		set("bank_name", bankName);
+	}
+
+	public String getBankName() {
+		return get("bank_name");
+	}
+
+	public void setBankCard(String bankCard) {
+		set("bank_card", bankCard);
+	}
+
+	public String getBankCard() {
+		return get("bank_card");
+	}
+
+	public void setBandz(String bandz) {
+		set("bandz", bandz);
+	}
+
+	public String getBandz() {
+		return get("bandz");
+	}
+
+	public void setBandf(String bandf) {
+		set("bandf", bandf);
+	}
+
+	public String getBandf() {
+		return get("bandf");
+	}
+
+	public void setBank(String bank) {
+		set("bank", bank);
+	}
+
+	public String getBank() {
+		return get("bank");
+	}
+
+	public void setBirthday(java.util.Date birthday) {
+		set("birthday", birthday);
+	}
+
+	public java.util.Date getBirthday() {
+		return get("birthday");
+	}
+
+	public void setPhone(String phone) {
+		set("phone", phone);
+	}
+
+	public String getPhone() {
+		return get("phone");
+	}
+
 }

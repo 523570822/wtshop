@@ -44,6 +44,7 @@ public class MyHomeController extends BaseAPIController {
     private AreaDescribeService areaDescribeService = enhance(AreaDescribeService.class);
     private AreaService areaService = enhance(AreaService.class);
     private ProductService productService = enhance(ProductService.class);
+    private ButlerUpgradeLogService  butlerUpgradeLogService=enhance(ButlerUpgradeLogService.class);
     public static final int pageSizes = 10;
 
 
@@ -322,4 +323,94 @@ public class MyHomeController extends BaseAPIController {
         Member member = memberService.getCurrent();
         renderJson(myHomeService.removeOrgan(member, organId));
     }
+
+    /**
+     * 获取是否需要提醒弹出升级协议
+     */
+public void findButler(){
+    Member member = memberService.getCurrent();
+    List<Member> mmss = memberService.findMemberByOnShare(member.getShareCode());
+
+    Map<String,Object> map=new HashMap<>();
+
+   // map.put("status",1);
+    if(mmss.size()>=15){
+        List<ButlerUpgradeLog> butlerUpgradeLog=   butlerUpgradeLogService.findByMemberId(member.getId());
+         if(butlerUpgradeLog.size()==0){
+             map.put("status",2);
+             renderJson(new ApiResult(1,"",map));
+             return;
+         }else if(butlerUpgradeLog.get(0).getStatus()==2){
+             map.put("status",2);
+             renderJson(new ApiResult(1,"",map));
+             return;
+         }else {
+             map.put("status",2); ////
+             renderJson(new ApiResult(1,"",map));
+             return;
+         }
+    }else{
+        map.put("status",2);/////
+        renderJson(new ApiResult(1,"",map));
+        return;
+    }
+
+
+}
+    /**
+     * 获取是否需要提醒弹出升级协议
+     */
+    public void cancelButler(){
+        Member member = memberService.getCurrent();
+        Map<String,Object> map=new HashMap<>();
+            List<ButlerUpgradeLog> butlerUpgradeLogList=   butlerUpgradeLogService.findByMemberId(member.getId());
+            if(butlerUpgradeLogList.size()==0){
+                ButlerUpgradeLog butlerUpgradeLog=new ButlerUpgradeLog();
+                butlerUpgradeLog.setMemberId(member.getId());
+                butlerUpgradeLog.setStatus(0);
+                butlerUpgradeLogService.save(butlerUpgradeLog);
+            }else {
+                ButlerUpgradeLog butlerUpgradeLog= butlerUpgradeLogList.get(0);
+                butlerUpgradeLog.setStatus(0);
+                butlerUpgradeLogService.update(butlerUpgradeLog);
+
+            }
+        renderJson(new ApiResult(1,"取消成功"));
+        return;
+    }
+
+    /**
+     * 获取是否需要提醒弹出升级协议
+     */
+    public void agreeButler(){
+        Member member = memberService.getCurrent();
+        List<Member> mmss = memberService.findMemberByOnShare(member.getShareCode());
+        ButlerUpgradeLog butlerUpgradeLog = getModel(ButlerUpgradeLog.class);
+        Map<String,Object> map=new HashMap<>();
+        if(mmss.size()<15){
+            renderJson( ApiResult.fail("升级失败升级人数不够"));
+        }else{
+            List<ButlerUpgradeLog> butlerUpgradeLogList=   butlerUpgradeLogService.findByMemberId(member.getId());
+
+            if(butlerUpgradeLogList.size()==0){
+
+                butlerUpgradeLog.setMemberId(member.getId());
+                butlerUpgradeLog.setStatus(0);
+                butlerUpgradeLogService.save(butlerUpgradeLog);
+            }else {
+                butlerUpgradeLog.setMemberId(member.getId());
+                butlerUpgradeLog.setStatus(0);
+                butlerUpgradeLogService.update(butlerUpgradeLog);
+
+            }
+        }
+
+
+
+
+        renderJson(new ApiResult(1,"恭喜升级管家成功"));
+        return;
+    }
+
+
 }
