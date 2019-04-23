@@ -348,12 +348,12 @@ public void findButler(){
              renderJson(new ApiResult(1,"",map));
              return;
          }else {
-             map.put("status",2); ////
+             map.put("status",1); ////
              renderJson(new ApiResult(1,"",map));
              return;
          }
     }else{
-        map.put("status",2);/////
+        map.put("status",1);/////
         renderJson(new ApiResult(1,"",map));
         return;
     }
