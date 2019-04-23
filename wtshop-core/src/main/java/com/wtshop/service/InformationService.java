@@ -138,7 +138,7 @@ public class InformationService extends BaseService<Information> {
      * @param
      */
 
-    public void groupRmindMessage(GroupRemind groupRemind,int num) {
+    public void groupRmindMessage(GroupRemind groupRemind,long num) {
         final Logger logger = Logger.getLogger("paySuccessMessage");
         //添加消息记录表
         Information information = new Information();
@@ -153,7 +153,6 @@ public class InformationService extends BaseService<Information> {
         informationDao.save(information);
 
         Cache actCache = Redis.use();
-        Boolean isMyMessage = actCache.get("ORDERMMESSAGR_SWITCH:" + groupRemind.getMemberId());
         String sound = "default";
         Object o = actCache.get("SOUND:" + groupRemind.getMemberId());
         if (o != null) {
@@ -161,7 +160,7 @@ public class InformationService extends BaseService<Information> {
         }
 
 
-        if (isMyMessage != null && isMyMessage) {
+
             String key = "MEMBER:" + groupRemind.getMemberId().toString();
             String appid = RedisUtil.getString(key);
             if (appid != null) {
@@ -169,7 +168,7 @@ public class InformationService extends BaseService<Information> {
                 JPush.sendPushById(appid, "团购消息", "您有", ""+num+"个团购提醒,活动即将开始，快去看看吧！", sound, null);
                 logger.info("成功调用极光推送方法——————————————————————");
             }
-        }
+
     }
     /**
      * 待付款消息

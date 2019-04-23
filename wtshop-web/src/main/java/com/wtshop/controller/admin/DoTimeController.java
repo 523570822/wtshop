@@ -32,7 +32,7 @@ public class DoTimeController implements Runnable {
          */
         JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
         Double hour = redisSetting.getDouble("hour")==null?0.00:redisSetting.getDouble("hour");
-
+        List<GroupRemind> groupReminlist1= groupRemindDao.findListNum(hour);
         List<GroupRemind> groupReminlist = groupRemindDao.findListRe(hour);
 
         for (GroupRemind groupRemind:groupReminlist) {
@@ -45,10 +45,10 @@ public class DoTimeController implements Runnable {
             }
         }
 
-        List<GroupRemind> groupReminlist1= groupRemindDao.findListNum(hour);
+
         logger.info("开始开团前"+hour+"小时极光团购推送服务 ——————————推动了"+groupReminlist1.size()+"个——————————————");
         for (GroupRemind groupRemind:groupReminlist1) {
-            int dss=groupRemind.get("number");
+            long dss=groupRemind.get("number");
             try {
                 informationService.groupRmindMessage(groupRemind,dss);
             } catch (Exception ex) {
