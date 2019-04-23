@@ -389,7 +389,7 @@ public void findButler(){
         Member member = memberService.getCurrent();
         List<Member> mmss = memberService.findMemberByOnShare(member.getShareCode());
         ButlerUpgradeLog butlerUpgradeLog = getModel(ButlerUpgradeLog.class);
-       String name= URLDecoder.decode(butlerUpgradeLog.getName(),"UTF-8");
+        String name= URLDecoder.decode(butlerUpgradeLog.getName(),"UTF-8");
         String address= URLDecoder.decode(butlerUpgradeLog.getAddress(),"UTF-8");
         String bank_name = URLDecoder.decode(butlerUpgradeLog.getBankName(),"UTF-8");
         String bank = URLDecoder.decode(butlerUpgradeLog.getBank(),"UTF-8");

@@ -334,7 +334,7 @@ public class OrderAPIController extends BaseAPIController {
 		}
 if(com.wtshop.util.StringUtils.isEmpty(member.getShareCode())){
 		List<Order> order = orderService.findBytuanGouIdmemberId(tuanGouId, member.getId());
-		if(!isSinglepurchase){
+		if(!isSinglepurchase&&order.size()>0){
 			//	List<Order> order = orderService.findByfightgroupIdmemberId(tuanGouId, member.getId());
 			FightGroup fightGroup = fightGroupService.find(order.get(0).getFightgroupId());
 			if(order.size()>=2){

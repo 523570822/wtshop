@@ -22,6 +22,7 @@ public class RedisManager {
 	private String		password	= null;
 
 	private JedisPool	jedisPool	= null;
+	private int	database	=0;
 
 	public RedisManager() {
 		Prop prop = PropKit.use(CommonAttributes.wtshop_PROPERTIES_PATH);
@@ -29,11 +30,12 @@ public class RedisManager {
 		password = prop.get("redis.password");
 		port = prop.getInt("redis.port");
 		timeout = prop.getInt("redis.timeout");
+		database=prop.getInt("redis.database");
 		if (StrKit.isBlank(url)) {
 			url = StringUtils.defaultIfBlank(url, "127.0.0.1");
 		}
 		if (StringUtils.isNotBlank(password)) {
-			jedisPool = new JedisPool(new JedisPoolConfig(), url, port, timeout, password);
+			jedisPool = new JedisPool(new JedisPoolConfig(), url, port, timeout, password,database);
 		} else if (timeout != 0) {
 			jedisPool = new JedisPool(new JedisPoolConfig(), url, port, timeout);
 		} else {
