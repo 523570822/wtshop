@@ -520,7 +520,13 @@
             <td>
                 <select id="type" name="goods.attribute_value3">
                     [#list skinTypeList as skinType]
-                        <option value="${skinType.id}">${skinType.name}</option>
+
+                        <option value="${skinType.id}"
+
+                            [#if skinType.id=goods.attribute_value3]
+                               selected = "selected"[/#if]
+
+                        >${skinType.name}</option>
                     [/#list]
                 </select>
             </td>

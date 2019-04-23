@@ -430,6 +430,31 @@ $().ready(function() {
 	});
 
 });
+
+function changeView1(aa) {
+
+    switch (aa) {
+        case "2":
+            $('.leixing').show();
+            $('.biaoqian').hide();
+            $('.shitidaan').show();
+            $('.shipin').hide();
+            break;
+        case "1":
+            $('.leixing').hide();
+            $('.biaoqian').show();
+            $('.shitidaan').show();
+            $('.shipin').hide();
+            break;
+        case "3":
+            $('.leixing').hide();
+            $('.biaoqian').hide();
+            $('.shitidaan').hide();
+            $('.shipin').show();
+            break;
+
+    }
+}
 </script>
 </head>
 <body>
@@ -625,4 +650,11 @@ $().ready(function() {
 	</form>
 </body>
 </html>
+ <script>
+     $(function() {
+         changeView1("1");
+
+     })
+
+ </script>
 [/#escape]

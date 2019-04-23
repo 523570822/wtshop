@@ -110,7 +110,7 @@
                         -
                     [/#if]
                 </td>
-                <td class="imgbox">
+                [#--<td class="imgbox">
                     [#list feedback.imagesConverter as images]
                         [#if images??]
                             <img src="${fileServer}${images}"/>
@@ -119,7 +119,7 @@
                         [/#if]
 
                     [/#list]
-                </td>
+                </td>--]
                 <td>
                     <span ><a href="javascript:;" value="${feedback.content}">[${message("admin.common.view")}]</a></span>
                 </td>
