@@ -59,9 +59,9 @@
                 <li[#if pageable.searchProperty == "phone"] class="current"[/#if] val="phone">${message("Member.phone")}</li>
             </ul>
         </div>
-            <a href="goodsDimension.jhtml" class="iconButton">
+        [#--    <a href="goodsDimension.jhtml" class="iconButton">
                 <span class="moveIcon">&nbsp;</span>${message("admin.main.xpwdlb")}
-            </a>
+            </a>--]
     </div>
     <table id="listTable" class="list">
         <tr>
@@ -78,10 +78,10 @@
                 <a href="javascript:;" class="sort" name="phone">${message("Member.phone")}</a>
             </th>
             <th>
-                <a href="javascript:;" class="sort" name="favoriteNum">${message("member.goods.number")}</a>
+                <a href="javascript:;" class="sort" name="favoriteNum">关注试卷数量</a>
             </th>
             <th>
-                <a href="javascript:;" class="sort" name="nickname">${message("admin.goods.view")}</a>
+                <a href="javascript:;" class="sort" name="nickname">查看详情</a>
             </th>
             [#--<th>--]
                 [#--<a href="javascript:;" class="sort" name="create_date">${message("admin.common.createDate")}</a>--]

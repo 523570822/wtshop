@@ -128,7 +128,7 @@ public class FuDaiController extends BaseController {
         fuDai.setStatus(0);
         fuDaiService.update(fuDai);
         fuDaiProductService.updateProduct(fuDai.getId(), productId);
-        redirect("list.jhtml");
+        redirect("/admin/fuDai/list.jhtml");
     }
 
     //删除福袋
@@ -198,7 +198,7 @@ public class FuDaiController extends BaseController {
         FuDai fuDai = fuDaiService.find(fudaiId);
         fuDai.setStatus(FuDai.State_UnActive);
         fuDaiService.update(fuDai);
-        redirect("list.jhtml");
+        redirect("/admin/fuDai/list.jhtml");
     }
 
 
@@ -211,12 +211,12 @@ public class FuDaiController extends BaseController {
         List<FudaiProduct> list = fuDaiService.findSubListByFudaiId(fuDai.getId());
         if (CollectionUtils.isEmpty(list) || list.size() <= fuDai.getNum()) {
             addFlashMessage(Message.errMsg("福袋副产品数量需要大于福袋要抽取的副产品数量"));
-            redirect("list.jhtml");
+            redirect("/admin/fuDai/list.jhtml");
             return;
         }
         fuDai.setStatus(FuDai.State_Active);
         fuDaiService.update(fuDai);
-        redirect("list.jhtml");
+        redirect("/admin/fuDai/list.jhtml");
     }
 
 

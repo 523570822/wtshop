@@ -70,11 +70,11 @@
 						<div class="container-fluid" id="header">
 							<a class="brand pull-left" href="${base}/admin/common/main.jhtml">${message("admin.main.title")}</a>
 							<ul class="nav navbar-nav user_menu pull-right">
-								<li class="hidden-phone hidden-tablet">
+								[#--<li class="hidden-phone hidden-tablet">
 									<div class="nb_boxes clearfix">
 										<a href="${base}/admin/messageAll/tomain.jhtml" target="iframe" class="label bs_ttip"><i class="splashy-mail_light"></i></a>
 									</div>
-								</li>
+								</li>--]
 								[#--<li class="divider-vertical hidden-sm hidden-xs"></li>--]
 								[#--<li class="dropdown">--]
 									[#--<a href="#" class="dropdown-toggle nav_condensed" data-toggle="dropdown"><i class="flag-cn"></i> <b class="caret"></b></a>--]
@@ -272,9 +272,9 @@
 												<li><a href="../consultation/list.jhtml" target="iframe">${message("admin.main.consultation")}</a></li>
 											[/@shiro.hasPermission]--]
 
-											[@shiro.hasPermission name="admin:messageConfig"]
+										[#--	[@shiro.hasPermission name="admin:messageConfig"]
 												<li><a href="../message_config/list.jhtml" target="iframe">${message("admin.main.messageConfig")}</a></li>
-											[/@shiro.hasPermission]
+											[/@shiro.hasPermission]--]
 
 
 											[@shiro.hasPermission name="admin:feedback"]

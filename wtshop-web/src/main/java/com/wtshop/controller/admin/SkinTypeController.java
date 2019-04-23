@@ -37,7 +37,7 @@ public class SkinTypeController extends BaseController{
         SkinType model = getModel(SkinType.class);
         skinTypeService.save(model);
         addFlashMessage(SUCCESS_MESSAGE);
-        redirect("list.jhtml");
+        redirect("/admin/skinType/list.jhtml");
     }
 
     /**
@@ -56,7 +56,7 @@ public class SkinTypeController extends BaseController{
         SkinType model = getModel(SkinType.class);
         skinTypeService.update(model);
         addFlashMessage(SUCCESS_MESSAGE);
-        redirect("list.jhtml");
+        redirect("/admin/skinType/list.jhtml");
     }
 
     /**

@@ -79,9 +79,9 @@ $().ready(function() {
                 搜索
             </a>
 
-            <a href="goodList.jhtml" class="iconButton">
+         [#--   <a href="goodList.jhtml" class="iconButton">
                 <span class="moveDirIcon">&nbsp;</span>${message("Footprint.good.list")}
-            </a>
+            </a>--]
 
 		</div>
 		<table id="listTable" class="list">
@@ -96,7 +96,7 @@ $().ready(function() {
                     <a href="javascript:;" class=""  name="">${message("admin.member.phone")}</a>
                 </th>
                 <th>
-                    <a href="javascript:;" class="sort" name="">${message("Footprint.count")}</a>
+                    <a href="javascript:;" class="sort" name="">足迹试卷数量</a>
                 </th>
                 <th>
                     <a href="javascript:;" class="sort" name="">${message("DepositLog.do")}</a>

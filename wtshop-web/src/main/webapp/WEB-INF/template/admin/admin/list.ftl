@@ -132,9 +132,9 @@ $().ready(function() {
 					<td>
 						<span title="${admin.createDate?string("yyyy-MM-dd HH:mm:ss")}">${admin.createDate}</span>
 					</td>
-					<td>
+					[#--<td>
 						<a href="edit.jhtml?id=${admin.id}">[${message("admin.common.edit")}]</a>
-					</td>
+					</td>--]
 				</tr>
 			[/#list]
 		</table>

@@ -82,7 +82,7 @@ public class AdminController extends BaseController {
 		admin.setLockKey(DigestUtils.md5Hex(UUID.randomUUID() + RandomStringUtils.randomAlphabetic(30)));
 		adminService.save(admin);
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("list.jhtml");
+		redirect("/admin/admin/list.jhtml");
 	}
 
 	/**
@@ -136,7 +136,7 @@ public class AdminController extends BaseController {
 		admin.setEmail(StringUtils.lowerCase(admin.getEmail()));
 		adminService.update(admin);
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("list.jhtml");
+		redirect("/admin/admin/list.jhtml");
 	}
 
 	/**

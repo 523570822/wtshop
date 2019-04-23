@@ -77,9 +77,9 @@
             <th>
                 <span>${message("admin.member.status")}</span>
             </th>
-            <th>
+          [#--  <th>
                 <span>${message("admin.common.action")}</span>
-            </th>
+            </th>--]
         </tr>
 			[#list page.list as member]
 				<tr>
@@ -107,10 +107,10 @@
 							<span class="green">${message("admin.member.normal")}</span>
                         [/#if]
                     </td>
-                    <td>
+                 [#--   <td>
                         <a href="view.jhtml?id=${member.id}">[${message("admin.common.view")}]</a>
                         <a href="edit.jhtml?id=${member.id}">[${message("admin.common.edit")}]</a>
-                    </td>
+                    </td>--]
                 </tr>
             [/#list]
     </table>

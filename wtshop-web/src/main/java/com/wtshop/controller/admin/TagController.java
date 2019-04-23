@@ -38,7 +38,7 @@ public class TagController extends BaseController {
 		tag.setGoods(null);
 		tagService.save(tag);
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("list.jhtml");
+		redirect("/admin/tag/list.jhtml");
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class TagController extends BaseController {
 		tag.remove("type");
 		tagService.update(tag);
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("list.jhtml");
+		redirect("/admin/tag/list.jhtml");
 	}
 
 	/**
