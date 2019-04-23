@@ -332,19 +332,49 @@ public class OrderAPIController extends BaseAPIController {
 			renderJson(ApiResult.fail(7,"请填写邀请码"));
 			return;
 		}
+if(com.wtshop.util.StringUtils.isEmpty(member.getShareCode())){
+		List<Order> order = orderService.findBytuanGouIdmemberId(tuanGouId, member.getId());
+		if(!isSinglepurchase){
+			//	List<Order> order = orderService.findByfightgroupIdmemberId(tuanGouId, member.getId());
+			FightGroup fightGroup = fightGroupService.find(order.get(0).getFightgroupId());
+			if(order.size()>=2){
+				if(fightGroupId==0){
+					if(fightGroup.getMemberId().longValue()==member.getId().longValue()){
+						renderJson(ApiResult.fail("非掌柜只能有一次发团的机会 请看团购玩法"));
+						return;
+					}
+				}else {
+					if(!fightGroup.getMemberId().equals(member.getId())){
+						renderJson(ApiResult.fail("非掌柜只能有一次参团的机会 请看团购玩法"));
+						return;
+					}
+				}
+				return;
+			}else if(order.size()==1){
+
+				if(fightGroupId==0){
+					if(fightGroup.getMemberId().longValue()==member.getId().longValue()){
+						renderJson(ApiResult.fail("非掌柜只能有一次发团的机会 请看团购玩法"));
+						return;
+					}
+				}else {
+					if(!fightGroup.getMemberId().equals(member.getId())){
+						renderJson(ApiResult.fail("非掌柜只能有一次参团的机会 请看团购玩法"));
+						return;
+					}
+				}
 
 
-			if(fightGroupId!=0&&!isSinglepurchase){
-				List<Order> order = orderService.findByfightgroupIdmemberId(fightGroupId, member.getId());
-				if(order.size()>0){
-					renderJson(ApiResult.fail("已经参加过"));
-					return;
-				}
-				if(groupBuy.getNum()!=0&&order.size()>=groupBuy.getNum()){
-					renderJson(ApiResult.fail("此活动每人只限购买"+groupBuy.getNum()+"次"));
-					return;
-				}
+
 			}
+			if(groupBuy.getNum()!=0&&order.size()>=groupBuy.getNum()){
+				renderJson(ApiResult.fail("此活动每人只限购买"+groupBuy.getNum()+"次"));
+				return;
+			}
+		}
+	}
+
+
 
 
 
