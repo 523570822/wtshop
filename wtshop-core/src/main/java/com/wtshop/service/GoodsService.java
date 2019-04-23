@@ -1339,6 +1339,7 @@ public class GoodsService extends BaseService<Goods> {
         copyProperties(goods, pGoods, "sn", "type", "score", "totalScore", "scoreCount", "hits", "weekHits", "monthHits", "sales", "weekSales", "monthSales", "weekHitsDate", "monthHitsDate", "weekSalesDate", "monthSalesDate", "generateMethod", "reviews", "consultations", "favoriteMembers",
                 "products", "createDate", "verifyState");
         pGoods.setGenerateMethod(Goods.GenerateMethod.eager.ordinal());
+        pGoods.setCheck(0);
         goodsDao.update(pGoods);
 
         List<Promotion> promotions = goods.getPromotions();
