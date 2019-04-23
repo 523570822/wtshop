@@ -71,7 +71,7 @@ public class JFWebConfig extends JFinalConfig {
 
         Code.isDevMode = getPropertyToBoolean("devMode", false);
         constants.setDevMode(getPropertyToBoolean("devMode", false));
-        //constants.setEncoding("UTF-8");
+        constants.setEncoding("UTF-8");
         constants.setI18nDefaultBaseName("i18n");
         constants.setViewType(ViewType.FREE_MARKER);
         constants.setViewExtension(".ftl");
@@ -183,7 +183,7 @@ public class JFWebConfig extends JFinalConfig {
         RedisPlugin newsRedis = new RedisPlugin("act", getProperty("redis.url"), getPropertyToInt("redis.port"), getPropertyToInt("redis.timeout"), getProperty("redis.password"));
         JedisPoolConfig config = newsRedis.getJedisPoolConfig();
         config.setMaxTotal(2000);
-        config.setMaxIdle(500);
+        config.setMaxIdle(1500);
         config.setMaxWaitMillis(5000);
         plugins.add(newsRedis);
 

@@ -23,6 +23,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -382,14 +385,23 @@ public void findButler(){
     /**
      * 获取是否需要提醒弹出升级协议
      */
-    public void agreeButler(){
+    public void agreeButler() throws UnsupportedEncodingException {
         Member member = memberService.getCurrent();
         List<Member> mmss = memberService.findMemberByOnShare(member.getShareCode());
         ButlerUpgradeLog butlerUpgradeLog = getModel(ButlerUpgradeLog.class);
+       String name= URLDecoder.decode(butlerUpgradeLog.getName(),"UTF-8");
+        String address= URLDecoder.decode(butlerUpgradeLog.getAddress(),"UTF-8");
+        String bank_name = URLDecoder.decode(butlerUpgradeLog.getBankName(),"UTF-8");
+        String bank = URLDecoder.decode(butlerUpgradeLog.getBank(),"UTF-8");
+        butlerUpgradeLog.setName(name);
+        butlerUpgradeLog.setAddress(address);
+        butlerUpgradeLog.setBankName(bank_name);
+        butlerUpgradeLog.setBank(bank);
         Map<String,Object> map=new HashMap<>();
-        if(mmss.size()<15){
+        if(mmss.size()>15){
             renderJson( ApiResult.fail("升级失败升级人数不够"));
-        }else{
+            return;
+        }else if(member.getHousekeeperId()<=2){
             List<ButlerUpgradeLog> butlerUpgradeLogList=   butlerUpgradeLogService.findByMemberId(member.getId());
 
             if(butlerUpgradeLogList.size()==0){
@@ -398,16 +410,17 @@ public void findButler(){
                 butlerUpgradeLog.setStatus(0);
                 butlerUpgradeLogService.save(butlerUpgradeLog);
             }else {
+                butlerUpgradeLog.setId(butlerUpgradeLogList.get(0).getId());
                 butlerUpgradeLog.setMemberId(member.getId());
                 butlerUpgradeLog.setStatus(0);
                 butlerUpgradeLogService.update(butlerUpgradeLog);
-
             }
+            member.setHousekeeperId(3l);
+            memberService.update(member);
+        }else if(member.getHousekeeperId()>2){
+            renderJson( ApiResult.fail("已经升过级了"));
+            return;
         }
-
-
-
-
         renderJson(new ApiResult(1,"恭喜升级管家成功"));
         return;
     }
