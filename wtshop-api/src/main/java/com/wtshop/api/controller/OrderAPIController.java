@@ -351,7 +351,6 @@ if(com.wtshop.util.StringUtils.isEmpty(member.getShareCode())){
 				}
 				return;
 			}else if(order.size()==1){
-
 				if(fightGroupId==0){
 					if(fightGroup.getMemberId().longValue()==member.getId().longValue()){
 						renderJson(ApiResult.fail("非掌柜只能有一次发团的机会 请看团购玩法"));
