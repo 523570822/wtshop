@@ -458,6 +458,8 @@ public class GoodsAPIController extends BaseAPIController {
  */
 public void onShareCode(){
 	String onShareCode = getPara("onShareCode");
+	String str = new String(onShareCode);
+	onShareCode=str.toUpperCase();
 	Member m=memberService.getCurrent();
 	List<Member> me = memberService.findByShareCode(onShareCode);
 	if((StringUtils.isNotEmpty(onShareCode)&&(me==null||me.size()==0))&&(!"VA3TYG".equals(onShareCode))){
@@ -479,8 +481,8 @@ public void onShareCode(){
 	double sendMiaoBi=0;
 	sendMiaoBi = redisSetting.getDouble("registerSending") ;//邀请码赠送喵币
 
-	String str = new String(onShareCode);
-	m.setOnShareCode(str.toUpperCase());
+
+	m.setOnShareCode(onShareCode);
 	MiaobiLog miaobiLog = new MiaobiLog();
 	miaobiLog.setMemberId(m.getId());
 	miaobiLog.setCredit(BigDecimal.valueOf(sendMiaoBi));

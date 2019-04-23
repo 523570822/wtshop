@@ -327,6 +327,13 @@ public class OrderAPIController extends BaseAPIController {
 		GroupBuy groupBuy = groupBuyService.find(tuanGouId);
 
 
+
+		if(com.wtshop.util.StringUtils.isEmpty(member.getOnShareCode())){
+			renderJson(ApiResult.fail(7,"请填写邀请码"));
+			return;
+		}
+
+
 			if(fightGroupId!=0&&!isSinglepurchase){
 				List<Order> order = orderService.findByfightgroupIdmemberId(fightGroupId, member.getId());
 				if(order.size()>0){
