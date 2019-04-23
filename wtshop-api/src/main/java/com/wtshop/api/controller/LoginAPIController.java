@@ -1,5 +1,6 @@
 package com.wtshop.api.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
 import com.jfinal.ext.kit.ServletKit;
 import com.jfinal.ext.plugin.monogodb.MongoKit;
@@ -19,10 +20,8 @@ import com.wtshop.constants.Code;
 import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.Account;
 import com.wtshop.model.Member;
-import com.wtshop.service.AccountService;
-import com.wtshop.service.AppManageService;
-import com.wtshop.service.MemberService;
-import com.wtshop.service.SmsService;
+import com.wtshop.model.MiaobiLog;
+import com.wtshop.service.*;
 import com.wtshop.util.ApiResult;
 import com.wtshop.util.ObjectUtils;
 import com.wtshop.util.RedisUtil;
@@ -32,6 +31,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @ControllerBind(controllerKey = "/api/login")
@@ -42,7 +42,7 @@ public class LoginAPIController extends BaseAPIController {
     private AppManageService appManageService = enhance(AppManageService.class);
     private AccountService accountService = enhance(AccountService.class);
     private SmsService smsService = enhance(SmsService.class);
-
+    private MiaobiLogService miaobiLogService = enhance(MiaobiLogService.class);
     public void submit() {
         String username = getPara("username1");
         String password = getPara("password1");
@@ -328,7 +328,6 @@ public class LoginAPIController extends BaseAPIController {
         Long accountId = getParaToLong("accountId");
         String phone = getPara("phone");
         String passWord = getPara("passWord");
-
         String code = getPara("code");
         String passWordMD = DigestUtils.md5Hex(passWord);
         if (!smsService.smsExists(phone, code, Setting.SmsType.memberRegister)) {
@@ -353,7 +352,33 @@ public class LoginAPIController extends BaseAPIController {
                 actCache.set("STAFFMESSAGR_SWITCH:" + member.getId(),true);
                 actCache.set("SOUND:" + member.getId(),"default");
 
-                renderJson(ApiResult.success(token));
+
+
+                JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
+                Double sendMiaoBi = redisSetting.getDouble("registerSending");;
+                MiaobiLog miaobiLog = new MiaobiLog();
+                miaobiLog.setMemberId(member.getId());
+                miaobiLog.setCredit(BigDecimal.valueOf(sendMiaoBi));
+                miaobiLog.setDebit(BigDecimal.ZERO);
+                miaobiLog.setType(0);
+                miaobiLog.setMemo("注册成功赠送");
+                miaobiLog.setBalance(member.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
+                //更新用户喵币
+                member.setPoint(member.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
+                Map<String,Object>  map=  new HashMap<>();
+                miaobiLogService.save(miaobiLog);
+                memberService.update(member);
+                map.put("sendMiaobi",sendMiaoBi);
+                map.put("title","注册成功");
+                map.put("type",1);
+
+                map.put("miaobilId",0);
+                map.put("token",token);
+
+
+                renderJson(ApiResult.success(map));
+
+
                 return;
             }
         }
