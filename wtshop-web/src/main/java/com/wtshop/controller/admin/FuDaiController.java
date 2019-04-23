@@ -135,7 +135,7 @@ public class FuDaiController extends BaseController {
     public void delete() {
         Long[] ids = getParaValuesToLong("ids");
         fuDaiService.delete(ids);
-        redirect("list.jhtml");
+        redirect("/admin/fuDai/list.jhtml");
     }
 
     public void status() {
