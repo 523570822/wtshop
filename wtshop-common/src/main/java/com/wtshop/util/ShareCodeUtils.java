@@ -111,7 +111,7 @@ public class ShareCodeUtils {
     }
 
     public static void main(String[] args) {
-       String code = idToCode(68L);
+       String code = idToCode(1L);
        System.out.println(code);
         System.out.println(codeToId("ESA99Y"));
      // List<String> category = StringUtil.matcherAll(",", "dfsfa,1232131,sada");
