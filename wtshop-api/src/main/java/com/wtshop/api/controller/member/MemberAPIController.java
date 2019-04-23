@@ -131,7 +131,7 @@ public class MemberAPIController extends BaseAPIController {
 
 		if(StringUtils.isNotEmpty(member.getOnShareCode())){
 
-			Member member1 =memberService.find(ShareCodeUtils.codeToId(member.getOnShareCode()));
+			Member member1 =memberService.find(ShareCodeUtils.codeToId(member.getOnShareCode().toUpperCase()));
 			member.setAttributeValue0(member1.getWeChatQcode());
 			member.setAttributeValue1(member1.getWeChatNumber());
 		}

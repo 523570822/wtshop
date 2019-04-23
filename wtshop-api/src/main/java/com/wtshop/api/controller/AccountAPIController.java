@@ -125,6 +125,7 @@ public class AccountAPIController extends BaseAPIController {
         String password = getPara("password");
 		String pwdconfirm = getPara("pwdconfirm");
 		String onShareCode = getPara("onShareCode");
+		onShareCode=onShareCode.toUpperCase();
 		List<Member> me = memberService.findByShareCode(onShareCode);
 
 
