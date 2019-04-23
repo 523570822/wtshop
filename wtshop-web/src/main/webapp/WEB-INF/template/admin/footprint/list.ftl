@@ -98,9 +98,9 @@ $().ready(function() {
                 <th>
                     <a href="javascript:;" class="sort" name="">足迹试卷数量</a>
                 </th>
-                <th>
+              [#--  <th>
                     <a href="javascript:;" class="sort" name="">${message("DepositLog.do")}</a>
-                </th>
+                </th>--]
 
 			</tr>
 			[#list page.list as d]
@@ -117,9 +117,9 @@ $().ready(function() {
                     <td>
 					${d.goodsNum}
                     </td>
-					<td>
+				[#--	<td>
                             <a href="userdetails.jhtml?uid=${d.uid}">[${message("Footprint.message")}]</a>
-                    </td>
+                    </td>--]
 				</tr>
 			[/#list]
 		</table>

@@ -51,8 +51,8 @@
                 <button type="submit">&nbsp;</button>
             </div>
             <ul>
-                <li[#if pageable.searchProperty == "username"] class="current"[/#if] val="phone">${message("Member.username")}</li>
-                <li[#if pageable.searchProperty == "email"] class="current"[/#if] val="email">${message("Member.email")}</li>
+            [#--    <li[#if pageable.searchProperty == "username"] class="current"[/#if] val="phone">${message("Member.username")}</li>
+                <li[#if pageable.searchProperty == "email"] class="current"[/#if] val="email">${message("Member.email")}</li>--]
                 <li[#if pageable.searchProperty == "nickname"] class="current"[/#if] val="nickname">${message("Member.nickname")}</li>
             </ul>
         </div>

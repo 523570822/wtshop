@@ -88,7 +88,7 @@
 								<li class="dropdown">
 									<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="${base}/gebo3/img/user_avatar.png" alt="" class="user_avatar">[@shiro.principal name="username" /] <b class="caret"></b></a>
 									<ul class="dropdown-menu dropdown-menu-right">
-										<li><a href="../profile/edit.jhtml" target="iframe">${message("admin.main.profile")}</a></li>
+										[#--<li><a href="../profile/edit.jhtml" target="iframe">${message("admin.main.profile")}</a></li>--]
 										<li class="divider"></li>
 										<li><a href="${base}/signout">${message("admin.main.logout")}</a></li>
 									</ul>

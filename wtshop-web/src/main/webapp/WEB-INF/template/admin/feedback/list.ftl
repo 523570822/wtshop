@@ -87,9 +87,9 @@
             <th>
                 <a href="javascript:;" class="sort" name="createTime">${message("FeedBack.time")}</a>
             </th>
-            <th>
+         [#--   <th>
                 <a href="javascript:;" class="sort" name="image">${message("FeedBack.image")}</a>
-            </th>
+            </th>--]
             <th>
                 <a href="javascript:;" class="sort" name="content">${message("FeedBack.content")}</a>
             </th>

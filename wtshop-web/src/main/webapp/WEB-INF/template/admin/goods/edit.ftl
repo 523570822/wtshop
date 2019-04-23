@@ -559,6 +559,8 @@
                 <select id="areaId" name="areaId">
 						[#list area as area1]
                             <option value="${area1.id}"
+                            [#if area1.id==goods.areaId]
+                               selected = "selected"[/#if]
 
                             >${area1.full_name}</option>
                         [/#list]
