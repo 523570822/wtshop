@@ -54,6 +54,25 @@ public class FightGroupService extends BaseService<FightGroup> {
         }
     return    fightGroupList1;
     }
+    public  List<FightGroup> findByGroupBuyId (Long groupBuyId){
+        List<FightGroup> fightGroupList1=new ArrayList<FightGroup>();
+        List<FightGroup> fightGroupList = fuDaiProductDao.findByGroupBuyId(groupBuyId);
+        for (FightGroup fightGroup:fightGroupList) {
+            Long time = 0L;
+            time = Calendar.getInstance().getTimeInMillis();
+           // fightGroup.set("ji_shi",fightGroup.getEndDate().getTime()- time);
+
+            long sss = fightGroup.getEndDate().getTime() - time;
+            fightGroup.setJiShi(fightGroup.getEndDate().getTime()- time);
+
+            if(sss>0){
+                fightGroupList1.add(fightGroup);
+           }
+
+
+        }
+    return    fightGroupList1;
+    }
 
 
     public void saveOrUpdate(List<FightGroup> newList, Long fuDaiId) {

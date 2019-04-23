@@ -142,8 +142,8 @@ Boolean isfight=true;
 
 
         //可拼团认
-        List<FightGroup> fightgroupList=fightGroupService.findByProductId(fuDai.getProductId());
-
+      // List<FightGroup> fightgroupList=fightGroupService.findByProductId(fuDai.getProductId());
+        List<FightGroup> fightgroupList=fightGroupService.findByGroupBuyId(fuDai.getId());
         Product p = fuDai.getProduct();
         Goods goods = p.getGoods();
         Map<String, Object> map = new HashedMap();
