@@ -561,4 +561,12 @@ public abstract class BaseGoods<M extends BaseGoods<M>> extends Model<M> impleme
 		return get("commission_rate");
 	}
 
+	public void setAdminId(Long adminId) {
+		set("admin_id", adminId);
+	}
+
+	public Long getAdminId() {
+		return get("admin_id");
+	}
+
 }

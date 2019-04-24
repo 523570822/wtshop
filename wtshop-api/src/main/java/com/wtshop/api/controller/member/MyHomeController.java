@@ -332,9 +332,16 @@ public class MyHomeController extends BaseAPIController {
      */
 public void findButler(){
     Member member = memberService.getCurrent();
+    Map<String,Object> map=new HashMap<>();
+    if(member.getShareCode()==null){
+        map.put("status",1);/////
+        renderJson(new ApiResult(1,"",map));
+        return;
+    }
+
     List<Member> mmss = memberService.findMemberByOnShare(member.getShareCode());
 
-    Map<String,Object> map=new HashMap<>();
+
 
    // map.put("status",1);
     if(mmss.size()>=3){

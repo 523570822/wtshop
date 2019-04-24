@@ -30,6 +30,7 @@ public class AccountDao extends BaseDao<Account>{
             sql += " AND type = "+ type;
 
         }
+        sql += " ORDER BY create_date desc ";
         return modelManager.findFirst(sql);
 
     }

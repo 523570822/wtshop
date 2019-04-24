@@ -285,6 +285,7 @@ public class GoodsController extends BaseController {
         goods.setType(StrKit.notBlank(typeName) ? Goods.Type.valueOf(typeName).ordinal() : null);
         goods.setIsMarketable(getParaToBoolean("isMarketable", false));
         goods.setIsList(getParaToBoolean("isList", false));
+        goods.setAdminId(getParaToLong("adminId", 0l));
         goods.setIsTop(getParaToBoolean("isTop", false));
         goods.setIsDelivery(getParaToBoolean("isDelivery", false));
         goods.setIsVip(getParaToBoolean("isVip", false));
@@ -420,6 +421,7 @@ public class GoodsController extends BaseController {
         setAttr("tags", tagService.findList(Tag.Type.goods));
         setAttr("specifications", specificationService.findAll());
         setAttr("area", areaService.findAll());
+
         Goods goods = goodsService.find(id);
         setAttr("goods", goods);
         render("/admin/goods/edit.ftl");
@@ -446,6 +448,7 @@ public class GoodsController extends BaseController {
         goods.setIsTop(getParaToBoolean("isTop", false));
         goods.setIsDelivery(getParaToBoolean("isDelivery", false));
         goods.setIsVip(getParaToBoolean("isVip", false));
+        goods.setAdminId(getParaToLong("adminId", 0l));
         goods.setIsDelete(false);
         goods.setAreaId(areaId);
         goods.setOperateIp(request.getRemoteAddr());
