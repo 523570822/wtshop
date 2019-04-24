@@ -346,7 +346,17 @@ public class GoodsDao extends BaseDao<Goods> {
 		return modelManager.find(sql);
 
 	}
+	/**
+	 * 新增增加利率
+	 */
 
+	public List<Goods> findGoodsByItemIdL(Long id){
+
+		String sql = " select g.id goods_id,g.market_price,p.specification_values attribute_value10, g.name, g.caption ,g.image,g.commission_rate,g.is_vip ,i.id order_itemId, i.quantity ,i.price ,i.is_review from order_item i LEFT JOIN product p ON i.product_id=p.id LEFT JOIN goods g on p.goods_id = g.id WHERE i.order_id= " + id;
+
+		return modelManager.find(sql);
+
+	}
 	/**
 	 * 根据订单id查找商品
 	 */

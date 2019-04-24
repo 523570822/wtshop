@@ -143,7 +143,7 @@ public class MessageAPIController extends BaseAPIController {
 	public void addAppid(){
 		Member member = memberService.getCurrent();
 		String appid = getPara("appid");
-		if(member.getId()==null){
+		if( member==null||member.getId()==null){
 			renderJson(ApiResult.fail("没有登录"));
 			return;
 		}else{

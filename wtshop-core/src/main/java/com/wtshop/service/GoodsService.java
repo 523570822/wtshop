@@ -411,6 +411,13 @@ public class GoodsService extends BaseService<Goods> {
     /**
      * 根据订单id查找对应商品
      */
+    public List<Goods> findGoodsByItemIdL(Long id) {
+        return goodsDao.findGoodsByItemIdL(id);
+    }
+
+    /**
+     * 根据订单id查找对应商品
+     */
     public List<Goods> findGoodsByOrderItemId(Long id) {
         return goodsDao.findGoodsByOrderItemId(id);
     }

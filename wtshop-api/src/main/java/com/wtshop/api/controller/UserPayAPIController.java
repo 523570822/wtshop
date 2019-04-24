@@ -121,9 +121,11 @@ public class UserPayAPIController extends BaseAPIController {
                         }
                         if (result.resultSuccess()) {
                             getResponse().getWriter().write(XMLUtil.setXML("SUCCESS", ""));   //告诉微信服务器，我收到信息了，不要在调用回调action了
+                            renderText("支付成功");
                             return;
                         } else {
                             getResponse().getWriter().write(XMLUtil.setXML("FAIL", ""));
+                            renderText("支付失败");
                             return;
                         }
 
