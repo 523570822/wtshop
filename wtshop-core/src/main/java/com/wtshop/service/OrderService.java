@@ -583,6 +583,7 @@ public class OrderService extends BaseService<Order> {
                 member1.setCommission(BigDecimal.valueOf(100L).add(member1.getCommission()));
                 depositLog1.setBalance(member1.getBalance());
                 depositLog1.setDebit(BigDecimal.ZERO);
+                depositLog1.setCredit(BigDecimal.valueOf(100l));
                 depositLog1.setStatus(1);
                 depositLog1.setMemo("福袋上级返现(复购)");
                 depositLog1.setType(CommissionLog.Type.fudan.ordinal());
@@ -592,6 +593,7 @@ public class OrderService extends BaseService<Order> {
                     depositLog2.setBalance(member1.getBalance());
                     depositLog2.setDebit(BigDecimal.ZERO);
                     depositLog2.setStatus(1);
+                    depositLog2.setCredit(BigDecimal.valueOf(100l));
                     depositLog2.setMemo("福袋自购返现");
                     depositLog2.setType(CommissionLog.Type.fudan.ordinal());
                     depositLog2.setOrderId(order.getId());
