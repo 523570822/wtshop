@@ -414,12 +414,14 @@ public void findButler(){
             if(butlerUpgradeLogList.size()==0){
 
                 butlerUpgradeLog.setMemberId(member.getId());
-                butlerUpgradeLog.setStatus(0);
+                butlerUpgradeLog.setStatus(1);
+                butlerUpgradeLog.setUpDate(new Date());
                 butlerUpgradeLogService.save(butlerUpgradeLog);
             }else {
                 butlerUpgradeLog.setId(butlerUpgradeLogList.get(0).getId());
                 butlerUpgradeLog.setMemberId(member.getId());
-                butlerUpgradeLog.setStatus(0);
+                butlerUpgradeLog.setStatus(1);
+                butlerUpgradeLog.setUpDate(new Date());
                 butlerUpgradeLogService.update(butlerUpgradeLog);
             }
             member.setHousekeeperId(3l);
