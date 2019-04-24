@@ -598,16 +598,15 @@ public class OrderService extends BaseService<Order> {
                     depositLog2.setMemberId(member1.getId());
                     member.setCommission(BigDecimal.valueOf(100L).add(member1.getCommission()));
                 commissionDao.save(depositLog2);
-                }
-                memberService.update(member1);
-                memberService.update(member);
-                commissionDao.save(depositLog1);
+
 
                 logger.info("存在邀请码没有生成邀请码————————————————————————");
             }
 
 
-
+            memberService.update(member1);
+            memberService.update(member);
+            commissionDao.save(depositLog1);
 
 
             order.setOnShareCode(member.getOnShareCode());
@@ -615,6 +614,7 @@ public class OrderService extends BaseService<Order> {
 
             //调用推送
         }
+
 
 
         if (Order.Type.general.ordinal() == order.getType() && dd > 0) {
