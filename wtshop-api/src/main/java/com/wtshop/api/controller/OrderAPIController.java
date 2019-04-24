@@ -69,7 +69,7 @@ public class OrderAPIController extends BaseAPIController {
 
 		Member member = memberService.getCurrent();
 
-         if(StringUtils.isEmpty(member.getOnShareCode())){
+         if( member==null ||StringUtils.isEmpty(member.getOnShareCode())){
 			 renderJson(ApiResult.fail(7,"请填写邀请码"));
 			 return;
 		 }
@@ -334,9 +334,11 @@ public class OrderAPIController extends BaseAPIController {
 		}
 if(com.wtshop.util.StringUtils.isEmpty(member.getShareCode())){
 		List<Order> order = orderService.findBytuanGouIdmemberId(tuanGouId, member.getId());
-		if(!isSinglepurchase&&order.size()>0){
-			//	List<Order> order = orderService.findByfightgroupIdmemberId(tuanGouId, member.getId());
+
+		if(!isSinglepurchase&&(order.size()>0&&order.get(0).getFightgroupId()!=null)){
 			FightGroup fightGroup = fightGroupService.find(order.get(0).getFightgroupId());
+			//	List<Order> order = orderService.findByfightgroupIdmemberId(tuanGouId, member.getId());
+
 			if(order.size()>=2){
 				if(fightGroupId==0){
 					if(fightGroup.getMemberId().longValue()==member.getId().longValue()){
@@ -344,12 +346,12 @@ if(com.wtshop.util.StringUtils.isEmpty(member.getShareCode())){
 						return;
 					}
 				}else {
-					if(!fightGroup.getMemberId().equals(member.getId())){
+
 						renderJson(ApiResult.fail("非掌柜只能有一次参团的机会 请看团购玩法"));
 						return;
 					}
-				}
-				return;
+
+
 			}else if(order.size()==1){
 				if(fightGroupId==0){
 					if(fightGroup.getMemberId().longValue()==member.getId().longValue()){

@@ -149,7 +149,7 @@ public class OrderDao extends BaseDao<Order> {
 	public List<Order> findBytuanGouIdmemberId(Long groupbuyId,Long memberId) {
 
 	//	String sql = "SELECT * FROM `order` WHERE fightgroup_id ="+groupbuyId+" AND is_delete = 0 ";
-		String sql = "SELECT o.*,m.avatar FROM `order` o LEFT JOIN member m on o.member_id=m.id  WHERE groupbuy_id ="+groupbuyId+" and o.member_id="+memberId+"  AND o.is_delete = 0 and o.`status` <>7 and o.`status` <>6 and o.`status` <>0 and o.`status` <>8";
+		String sql = "SELECT o.*,m.avatar FROM `order` o LEFT JOIN member m on o.member_id=m.id  WHERE type =7 and o.member_id="+memberId+"  AND o.is_delete = 0 and o.`status` <>7 and o.`status` <>6 and o.`status` <>0 and o.`status` <>8";
 		try {
 			return modelManager.find(sql);
 		} catch (Exception e) {

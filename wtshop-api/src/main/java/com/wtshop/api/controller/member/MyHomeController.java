@@ -333,7 +333,7 @@ public class MyHomeController extends BaseAPIController {
 public void findButler(){
     Member member = memberService.getCurrent();
     Map<String,Object> map=new HashMap<>();
-    if(member.getShareCode()==null){
+    if(member==null||member.getShareCode()==null){
         map.put("status",1);/////
         renderJson(new ApiResult(1,"",map));
         return;
