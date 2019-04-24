@@ -323,7 +323,7 @@ public class OrderService extends BaseService<Order> {
                 if (fightGroup.getCount() >= fightGroup.getGroupnum()) {
                     fightGroup.setStatus(1);
                 }
-                BigDecimal ddd = order.getPrice().multiply(BigDecimal.valueOf(Double.valueOf(groupBuy.getExplain() == null ? "0" : groupBuy.getExplain()))).divide(BigDecimal.valueOf(100));
+                BigDecimal ddd = order.getPrice().multiply(BigDecimal.valueOf(groupBuy.getGroupRate() == null ? 0 : groupBuy.getGroupRate())).divide(BigDecimal.valueOf(100));
                 DepositLog depositLog1 = new DepositLog();
                 depositLog1.setBalance(member1.getBalance());
                 depositLog1.setCredit(ddd);
