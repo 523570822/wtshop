@@ -18,7 +18,7 @@
 
             [@flash_message /]
 
-            $("#listTable tr:gt(0) td:nth-child(5) span a ").click(function(){
+            $("#listTable tr:gt(0) td:nth-child(4) span a ").click(function(){
                 var $this = $(this);
                 var test = $this.attr("value");
                 layer.open({
