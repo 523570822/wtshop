@@ -545,61 +545,74 @@ public class OrderService extends BaseService<Order> {
         // 生成会员激活码，福袋
         //
         if (order.getType() == Order.Type.fudai.ordinal()) {
+            CommissionLog depositLog1 = new CommissionLog();
+            CommissionLog depositLog2 = new CommissionLog();
             logger.info("福袋相关技术————————————————————————");
             if (StringUtils.isEmpty(member.getShareCode()) || member.getShareCode() == null) {
                 logger.info("生成邀请码————————————————————————");
                 // 生成邀请码
                 String code = ShareCodeUtils.idToCode(member.getId());
                 member.setShareCode(code);
+                if (member.getHousekeeperId() == null || member.getHousekeeperId() <= 1) {
+                    member.setHousekeeperId(2L);
+                }
+                member.setLinkShareCode(member1.getLinkShareCode() + "_" + member.getOnShareCode());
+
+              /*  if(mmss.size()>=15){
+                    member1.setHousekeeperId(3l);
+                }*/
+                if(member1.getHousekeeperId()==2){
+                    depositLog1.setCredit(BigDecimal.valueOf(100l));
+                    member1.setCommission(BigDecimal.valueOf(100L).add(member1.getCommission()));
+                }else{
+                    depositLog1.setCredit(BigDecimal.valueOf(150l));
+                    member1.setCommission(BigDecimal.valueOf(150L).add(member1.getCommission()));
+                }
+                depositLog1.setBalance(member1.getBalance());
+                depositLog1.setDebit(BigDecimal.ZERO);
+                depositLog1.setStatus(1);
+                depositLog1.setMemo("福袋上级返现");
+                depositLog1.setType(CommissionLog.Type.fudan.ordinal());
+
+                depositLog1.setOrderId(order.getId());
+                depositLog1.setMemberId(member1.getId());
+
+
             } else {
-                if(member.getHousekeeperId()>=3){
-                    CommissionLog depositLog2 = new CommissionLog();
+                //判断身份是银牌级以上自己赠送100元
+                member1.setCommission(BigDecimal.valueOf(100L).add(member1.getCommission()));
+                depositLog1.setBalance(member1.getBalance());
+                depositLog1.setDebit(BigDecimal.ZERO);
+                depositLog1.setStatus(1);
+                depositLog1.setMemo("福袋上级返现(复购)");
+                depositLog1.setType(CommissionLog.Type.fudan.ordinal());
+                depositLog1.setOrderId(order.getId());
+                depositLog1.setMemberId(member1.getId());
+
                     depositLog2.setBalance(member1.getBalance());
                     depositLog2.setDebit(BigDecimal.ZERO);
                     depositLog2.setStatus(1);
                     depositLog2.setMemo("福袋自购返现");
                     depositLog2.setType(CommissionLog.Type.fudan.ordinal());
-
                     depositLog2.setOrderId(order.getId());
                     depositLog2.setMemberId(member1.getId());
                     member.setCommission(BigDecimal.valueOf(100L).add(member1.getCommission()));
-                    commissionDao.save(depositLog2);
+                commissionDao.save(depositLog2);
                 }
-
+                memberService.update(member1);
+                memberService.update(member);
+                commissionDao.save(depositLog1);
 
                 logger.info("存在邀请码没有生成邀请码————————————————————————");
             }
 
-            member.setLinkShareCode(member1.getLinkShareCode() + "_" + member.getOnShareCode());
-            if (member.getHousekeeperId() == null || member.getHousekeeperId() <= 1) {
-                member.setHousekeeperId(2L);
-            }
+
+
 
 
             order.setOnShareCode(member.getOnShareCode());
           /*  List<Member> mmss = memberService.findMemberByOnShare(member1.getShareCode());*/
-            CommissionLog depositLog1 = new CommissionLog();
-              /*  if(mmss.size()>=15){
-                    member1.setHousekeeperId(3l);
-                }*/
-        if(member1.getHousekeeperId()==2){
-            depositLog1.setCredit(BigDecimal.valueOf(100l));
-         member1.setCommission(BigDecimal.valueOf(100L).add(member1.getCommission()));
-        }else{
-         depositLog1.setCredit(BigDecimal.valueOf(150l));
-            member1.setCommission(BigDecimal.valueOf(150L).add(member1.getCommission()));
-        }
-            depositLog1.setBalance(member1.getBalance());
-            depositLog1.setDebit(BigDecimal.ZERO);
-            depositLog1.setStatus(1);
-            depositLog1.setMemo("福袋上级返现");
-            depositLog1.setType(CommissionLog.Type.fudan.ordinal());
 
-            depositLog1.setOrderId(order.getId());
-            depositLog1.setMemberId(member1.getId());
-            memberService.update(member1);
-            memberService.update(member);
-            commissionDao.save(depositLog1);
             //调用推送
         }
 
