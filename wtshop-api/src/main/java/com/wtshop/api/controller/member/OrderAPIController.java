@@ -176,7 +176,7 @@ private  FightGroupService fightGroupService=enhance(FightGroupService.class);
 				order.setStatus(110);
 			}
 
-			List<Goods> goodsList = goodsService.findGoodsByItemId(order.getId());
+			List<Goods> goodsList = goodsService.findGoodsByItemIdL(order.getId());
 			if (order.getType()==Order.Type.daopai.ordinal()){
 				//获取倒拍单价
 

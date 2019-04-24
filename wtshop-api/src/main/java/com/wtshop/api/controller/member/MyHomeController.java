@@ -430,7 +430,7 @@ public void findButler(){
             renderJson( ApiResult.fail("已经升过级了"));
             return;
         }
-        renderJson(new ApiResult(1,"恭喜升级管家成功"));
+        renderJson(new ApiResult(1,"恭喜您成为金牌掌柜"));
         return;
     }
 
