@@ -398,7 +398,7 @@ public class OrderDao extends BaseDao<Order> {
 	public Page<Order> findYongJinXiaPages(Integer memberId, Member member, Pageable pageable ) {
 		String select = " select o.type, o.id ,o.status ,o.quantity quantity,o.amount price,o.commission_rate,o.groupbuy_id,o.fightgroup_id ," +
 				"o.sn , o.create_date ,o.freight, o.actOrderId fudaiId";
-		String sqlExceptSelect = "FROM `order` o WHERE 1 = 1 AND o.is_delete = 0 And o.type=0 and o.on_share_code is not null " ;
+		String sqlExceptSelect = "FROM `order` o WHERE 1 = 1 AND o.is_delete = 0 And (o.type = 0 or o.type=7) and o.on_share_code is not null " ;
 
 
 

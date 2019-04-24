@@ -501,6 +501,7 @@ public class OrderService extends BaseService<Order> {
 
         }*/
         if (Order.Type.general.ordinal() == order.getType()) {
+            order.setOnShareCode(member.getOnShareCode());
             //商品返现
             List<Goods> goodList = goodsService.findGoodsByOrderItemId(order.getId());
             if (goodList != null && goodList.size() > 0) {
@@ -682,6 +683,7 @@ public class OrderService extends BaseService<Order> {
 
         //福袋
         if (order.getType() == Order.Type.fudai.ordinal()) {
+            order.setOnShareCode(member.getOnShareCode());
             List<Map<String, Object>> list = fuDaiService.luckDraw(order);
             //调用推送
         }
