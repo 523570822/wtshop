@@ -1044,7 +1044,7 @@
                 <input type="radio" id="adminId${i}" name="adminId" value="${i}"
                         [#if i == goods.adminId]
                                checked[/#if]>
-                <label for="adminId${i}">店铺${i}</label>
+                <label for="adminId${i} ">店铺${i}</label>
              [/#list]
 
 
