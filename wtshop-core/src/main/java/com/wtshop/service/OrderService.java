@@ -552,6 +552,21 @@ public class OrderService extends BaseService<Order> {
                 String code = ShareCodeUtils.idToCode(member.getId());
                 member.setShareCode(code);
             } else {
+                if(member.getHousekeeperId()>=3){
+                    CommissionLog depositLog2 = new CommissionLog();
+                    depositLog2.setBalance(member1.getBalance());
+                    depositLog2.setDebit(BigDecimal.ZERO);
+                    depositLog2.setStatus(1);
+                    depositLog2.setMemo("福袋自购返现");
+                    depositLog2.setType(CommissionLog.Type.fudan.ordinal());
+
+                    depositLog2.setOrderId(order.getId());
+                    depositLog2.setMemberId(member1.getId());
+                    member.setCommission(BigDecimal.valueOf(100L).add(member1.getCommission()));
+                    commissionDao.save(depositLog2);
+                }
+
+
                 logger.info("存在邀请码没有生成邀请码————————————————————————");
             }
 
@@ -574,14 +589,6 @@ public class OrderService extends BaseService<Order> {
          depositLog1.setCredit(BigDecimal.valueOf(150l));
             member1.setCommission(BigDecimal.valueOf(150L).add(member1.getCommission()));
         }
-
-
-
-
-
-
-
-
             depositLog1.setBalance(member1.getBalance());
             depositLog1.setDebit(BigDecimal.ZERO);
             depositLog1.setStatus(1);
