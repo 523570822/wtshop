@@ -590,15 +590,15 @@ public class OrderService extends BaseService<Order> {
                 depositLog1.setOrderId(order.getId());
                 depositLog1.setMemberId(member1.getId());
 
-                    depositLog2.setBalance(member1.getBalance());
+                    depositLog2.setBalance(member.getBalance());
                     depositLog2.setDebit(BigDecimal.ZERO);
                     depositLog2.setStatus(1);
                     depositLog2.setCredit(BigDecimal.valueOf(100l));
                     depositLog2.setMemo("福袋自购返现");
                     depositLog2.setType(CommissionLog.Type.fudan.ordinal());
                     depositLog2.setOrderId(order.getId());
-                    depositLog2.setMemberId(member1.getId());
-                    member.setCommission(BigDecimal.valueOf(100L).add(member1.getCommission()));
+                    depositLog2.setMemberId(member.getId());
+                    member.setCommission(BigDecimal.valueOf(100L).add(member.getCommission()));
                 commissionDao.save(depositLog2);
 
 
