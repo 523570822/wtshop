@@ -433,6 +433,4 @@ public void findButler(){
         renderJson(new ApiResult(1,"恭喜您成为金牌掌柜"));
         return;
     }
-
-
 }
