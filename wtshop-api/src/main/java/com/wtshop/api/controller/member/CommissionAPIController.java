@@ -189,6 +189,8 @@ public class CommissionAPIController extends BaseAPIController {
 			Double amount =  Double.parseDouble( price);
 			Integer money =Integer.parseInt( String.format("%.0f", amount * 100));
 			//判断输入金额 和 余额
+
+
 			BigDecimal scale = new BigDecimal(commission).subtract(new BigDecimal(price)).setScale(2, BigDecimal.ROUND_HALF_DOWN);
 			if(scale.doubleValue() >= 0.00){
 				if( 0 == type){

@@ -503,7 +503,8 @@
                     var responseText = (ret._raw || ret),
                         json = utils.str2json(responseText);
                     if (json.state == 'SUCCESS') {
-                        _this.fileList.push(json);
+                      //  _this.fileList.push(json);
+                        _this.fileList[$file.index()] = json;
                         $file.append('<span class="success"></span>');
                     } else {
                         $file.find('.error').text(json.state).show();
@@ -554,6 +555,9 @@
             for (i = 0; i < this.fileList.length; i++) {
                 data = this.fileList[i];
                 link = data.url;
+                if(data==undefined){
+                    continue;
+                }
                 list.push({
                     title: data.original || link.substr(link.lastIndexOf('/') + 1),
                     url: prefix + link

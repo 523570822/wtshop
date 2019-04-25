@@ -400,7 +400,7 @@ function message(code) {
 		// 编辑器
 		editor: function(options) {
 			window.UEDITOR_CONFIG = {
-				UEDITOR_HOME_URL: '/resources/admin/ueditor/',
+				UEDITOR_HOME_URL: '../../resources/admin/ueditor/',
 				serverUrl: '/admin/file/upload.jhtml',
 				imageActionName: "uploadImage",
 				imageFieldName: "file",

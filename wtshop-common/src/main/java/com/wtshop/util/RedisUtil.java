@@ -30,7 +30,7 @@ public class RedisUtil {
 
     //可用连接实例的最大数目，默认值为8；
     //如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)。
-    private static int MAX_ACTIVE = 2000;
+    private static int MAX_ACTIVE = 200000;
 
     //控制一个pool最多有多少个状态为idle(空闲的)的jedis实例，默认值也是8。
     private static int MAX_IDLE = 500;
@@ -49,6 +49,7 @@ public class RedisUtil {
     /**
      * redis过期时间,以秒为单位
      */
+    public final static int EXRP_FEN = 60;
     public final static int EXRP_HOUR = 60 * 60;          //一小时
     public final static int EXRP_DAY = 60 * 60 * 24;        //一天
     public final static int EXRP_MONTH = 60 * 60 * 24 * 30;   //一个月
@@ -62,6 +63,7 @@ public class RedisUtil {
             config.setMaxTotal(MAX_ACTIVE);
             config.setMaxIdle(MAX_IDLE);
             config.setMaxWaitMillis(MAX_WAIT);
+           // config.setTimeBetweenEvictionRunsMillis(EXRP_FEN);
             config.setTestOnBorrow(TEST_ON_BORROW);
             config.setTestOnCreate(true);
             config.setTestWhileIdle(true);

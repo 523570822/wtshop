@@ -197,7 +197,7 @@ public class FuDaiAPIController extends BaseAPIController {
             if(orderList.size()>1){
                 item.put("title","恭喜获得喵币");
             }else {
-                item.put("title","恭喜成为掌柜");
+                item.put("title","恭喜成为管家");
             }
 
 
