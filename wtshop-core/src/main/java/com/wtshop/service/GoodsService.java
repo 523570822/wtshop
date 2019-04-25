@@ -1092,7 +1092,7 @@ public class GoodsService extends BaseService<Goods> {
     }
 
     /**
-     * 更新
+     * 更新没有规格商品
      *
      * @param goods    货品
      * @param product  商品
@@ -1243,7 +1243,12 @@ public class GoodsService extends BaseService<Goods> {
 
             public boolean evaluate(Object object) {
                 Product product = (Product) object;
-                return product == null || !product.isNew() || !product.hasSpecification() || !set.add(product.getSpecificationValueIds()); //) || !specificationValueService.isValid(specificationItems, product.getSpecificationValues()
+                boolean bool1 = (product == null);
+                boolean bool2 = ( !product.isNew() );
+                boolean bool3 = ( !product.hasSpecification() );
+                boolean bool4 = (!product.hasSpecification());
+
+                return bool1|| bool3 ||bool4||bool2; //) || !specificationValueService.isValid(specificationItems, product.getSpecificationValues()
             }
         })) {
             throw new IllegalArgumentException();
@@ -1346,7 +1351,6 @@ public class GoodsService extends BaseService<Goods> {
         copyProperties(goods, pGoods, "sn", "type", "score", "totalScore", "scoreCount", "hits", "weekHits", "monthHits", "sales", "weekSales", "monthSales", "weekHitsDate", "monthHitsDate", "weekSalesDate", "monthSalesDate", "generateMethod", "reviews", "consultations", "favoriteMembers",
                 "products", "createDate", "verifyState");
         pGoods.setGenerateMethod(Goods.GenerateMethod.eager.ordinal());
-        pGoods.setCheck(0);
         goodsDao.update(pGoods);
 
         List<Promotion> promotions = goods.getPromotions();

@@ -3,6 +3,7 @@ package com.wtshop.controller.admin;
 import java.util.Arrays;
 import java.util.List;
 
+import com.wtshop.Message;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.functors.AndPredicate;
@@ -87,6 +88,11 @@ public class SpecificationController extends BaseController {
 		
 		specification.setOptions(JSONArray.toJSONString(options));
 		specification.remove("product_category_id");
+		List<Specification> specification1=specificationService.findByName(specification.getName());
+		if(specification1.size()>0){
+			addFlashMessage(Message.error("该规格名称已经存在"));
+			redirect("list.jhtml");
+		}
 		specificationService.update(specification);
 		addFlashMessage(SUCCESS_MESSAGE);
 		redirect("list.jhtml");

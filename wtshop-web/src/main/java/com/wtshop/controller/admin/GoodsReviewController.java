@@ -184,6 +184,7 @@ public class GoodsReviewController extends BaseController {
             return;
         }
         Goods goods = JSONObject.toJavaObject(JSONObject.parseObject(goodsReview.getSummary()), Goods.class);
+        boolean sb = goods.hasSpecification();
         setAttr("isReview", "1");
         setAttr("goodsReview", goodsReview);
         setAttr("types", Goods.Type.values());
@@ -216,8 +217,7 @@ public class GoodsReviewController extends BaseController {
             renderJson(ApiResult.fail("错误的审核记录状态"));
             return;
         }
-        goodsReview.setState(Goods.State_Publish);
-        goodsReview.update();
+
         Goods goods = JSONObject.toJavaObject(JSONObject.parseObject(goodsReview.getSummary()), Goods.class);
 
         Admin admin = adminService.getCurrent();
@@ -242,7 +242,31 @@ public class GoodsReviewController extends BaseController {
                 effectIdList.add(entity.getId());
             }
         }
-        goodsService.update(goods, goods.getDefaultProduct(), admin, promotionsIdList.toArray(new Long[]{}), tagsIdList.toArray(new Long[]{}), effectIdList.toArray(new Long[]{}));
+        boolean ssssss = goods.hasSpecification();
+        goodsReview.setState(Goods.State_Publish);
+
+        Product product = goods.getDefaultProduct();
+     //   ssssss123
+
+        List<Product> products = goods.getProducts();
+        if (goods.hasSpecification()) {
+            if (CollectionUtils.isEmpty(products)) {
+                addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error, "商品规格不能为空!"));
+                redirect("/admin/goods/list.jhtml");
+                return;
+            }
+            goodsService.update(goods,  products,  admin,promotionsIdList.toArray(new Long[]{}), tagsIdList.toArray(new Long[]{}), effectIdList.toArray(new Long[]{}));
+
+        } else {
+            if (product == null) {
+                addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error, "产品不能为空!"));
+                redirect("/admin/goods/list.jhtml");
+                return;
+            }
+            goodsService.update(goods,product, admin, promotionsIdList.toArray(new Long[]{}), tagsIdList.toArray(new Long[]{}), effectIdList.toArray(new Long[]{}));
+        }
+
+        goodsReview.update();
         renderJson(ApiResult.success());
     }
 

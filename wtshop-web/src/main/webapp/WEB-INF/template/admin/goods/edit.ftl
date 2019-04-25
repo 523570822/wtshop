@@ -75,16 +75,16 @@
             [#if goods.hasSpecification()]
                 [#list goods.products as product]
                     initProductValues["${product.specificationValueIds?join(",")}"] = {
-                        id: ${product.id},
+                        id: "${product.id}",
                         sn: "${product.sn}",
                         price: ${product.price},
                         cost: ${product.cost!"null"},
                         marketPrice: ${product.marketPrice},
-                        commissionRate: ${product.commissionRate},
+                        commissionRate: '${product.commissionRate}',
                         rewardPoint: ${product.rewardPoint},
-                        exchangePoint: ${product.exchangePoint},
+                        exchangePoint: '${product.exchangePoint}',
                         stock: ${product.stock},
-                        allocatedStock: ${product.allocatedStock},
+                        allocatedStock: '${product.allocatedStock}',
                         isDefault: ${product.isDefault?string("true", "false")},
                         isEnabled: true
                     };

@@ -340,7 +340,7 @@ $().ready(function() {
 						${goods.commissionRate}%
                     </td>
 					<td>
-						<span class="${goods.isMarketable?string("true", "false")}Icon">&nbsp;</span>
+				${goods.isMarketable?string("true", "false")}	<span class="${goods.isMarketable?string("true", "false")}Icon">&nbsp;</span>
 					</td>
                     <td>
                         <span title="${goods.createDate?string("yyyy-MM-dd HH:mm:ss")}">${goods.createDate}</span>

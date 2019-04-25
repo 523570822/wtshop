@@ -35,4 +35,13 @@ public class SpecificationDao extends OrderEntity<Specification> {
 
 	}
 
+    public List<Specification> findByName(String name) {
+		String sql = "select * from specification s where 1=1 ";
+		if(name != null){
+
+			sql += " AND s.name= "+ name;
+
+		}
+		return modelManager.find(sql);
+    }
 }

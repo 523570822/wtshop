@@ -583,6 +583,8 @@ public class GoodsController extends BaseController {
         goods.setOperateIp(request.getRemoteAddr());
         Goods pGoods = goodsService.find(goods.getId());
         goods.setType(pGoods.getType());
+        goods.setIsMarketable(pGoods.getIsMarketable());
+        goods.setCheck(8);
 
         //  缓存内容
         Admin admin = adminService.getCurrent();
@@ -649,13 +651,16 @@ public class GoodsController extends BaseController {
         if (0 < productsIndex) {
             for (int i = 0; i < productsIndex; i++) {
                 Product sProduct = getModel(Product.class, "productList[" + i + "]");
+                if(sProduct.getIsDefault()==null){
+                    sProduct.setIsDefault(false);
+                }
                 List<SpecificationValue> specificationValues = getBeans(SpecificationValue.class, "productLists[" + i + "].specificationValues");
                 sortList(specificationValues, "id", "ASC");
                 sProduct.setSpecificationValues(JSONArray.toJSONString(specificationValues));
                 products.add(sProduct);
             }
             productService.filter(products);
-            goods.put("products", goods.getProducts());
+            goods.put("products", products);
         }
 
         // 规格
@@ -769,6 +774,7 @@ public class GoodsController extends BaseController {
         ProductCategory productCategory = productCategoryService.find(productCategoryId);
         Brand brand = brandService.find(brandId);
         Promotion promotion = promotionService.find(promotionId);
+        Goods good=new Goods();
         Tag tag = tagService.find(tagId);
         setAttr("types", Goods.Type.values());
         setAttr("productCategoryTree", productCategoryService.findTree());

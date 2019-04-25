@@ -25,4 +25,8 @@ public class SpecificationService extends BaseService<Specification> {
 	return 	specificationDao.findByCategoryId(categoryId);
 
 	}
+
+    public List<Specification> findByName(String name) {
+		return 	specificationDao.findByName(name);
+    }
 }

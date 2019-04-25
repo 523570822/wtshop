@@ -694,12 +694,13 @@ public class Goods extends BaseGoods<Goods> {
      * @return 默认商品
      */
     public Product getDefaultProduct() {
-        return (Product) CollectionUtils.find(getProducts(), new Predicate() {
+        Product product   = (Product) CollectionUtils.find(getProducts(), new Predicate() {
             public boolean evaluate(Object object) {
                 Product product = (Product) object;
                 return product != null && product.getIsDefault();
             }
         });
+        return product;
     }
 
     /**

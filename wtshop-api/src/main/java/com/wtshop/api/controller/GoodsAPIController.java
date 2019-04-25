@@ -15,6 +15,7 @@ import com.wtshop.api.common.result.SearchResult;
 import com.wtshop.api.interceptor.ErrorInterceptor;
 import com.wtshop.api.interceptor.TokenInterceptor;
 import com.wtshop.entity.AreaResult;
+import com.wtshop.entity.SpecificationItem;
 import com.wtshop.exception.ResourceNotFoundException;
 import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.*;
@@ -517,7 +518,8 @@ public void onShareCode(){
 			renderJson(ApiResult.success("无数据"));
 		return;
 	}
-		renderJson(ApiResult.success(goods.getSpecificationItemsConverter()));
+		List<SpecificationItem> dddd = goods.getSpecificationItemsConverter();
+		renderJson(ApiResult.success(dddd));
 }
 
 
