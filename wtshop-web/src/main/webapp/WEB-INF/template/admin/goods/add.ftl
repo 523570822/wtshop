@@ -795,23 +795,23 @@ $().ready(function() {
 		<table class="input tabContent">
             <tr>
                 <th>
-					所属店铺
+                    所属店铺
                 </th>
                 <td>
-                    <input type="radio" id="adminId0" name="adminId" value="0" checked />  <label for="adminId0">总店</label>
-					<input type="radio" id="adminId1" name="adminId" value="1"  /> <label for="adminId0">店铺1</label>
-                    <input type="radio" id="adminId2" name="adminId" value="2"  /> <label for="adminId0">店铺2</label>
-					<input type="radio" id="adminId3" name="adminId" value="3"  /> <label for="adminId0">店铺3</label>
-                    <input type="radio" id="adminId4" name="adminId" value="4"  /><label for="adminId0">店铺4 </label>
-                    <input type="radio" id="adminId5" name="adminId" value="5"  /><label for="adminId0">店铺5 </label>
-                    <input type="radio" id="adminId6" name="adminId" value="6"  /> <label for="adminId0">店铺6</label>
-                    <input type="radio" id="adminId7" name="adminId" value="7"  /><label for="adminId0">店铺7 </label>
-                    <input type="radio" id="adminId8" name="adminId" value="8"  /> <label for="adminId0">店铺8</label>
-                    <input type="radio" id="adminId9" name="adminId" value="9"  /> <label for="adminId0">店铺9</label>
-                    <input type="radio" id="adminId10" name="adminId" value="10"  /> <label for="adminId0">店铺10</label>
-					<input type="radio" id="adminId11" name="adminId" value="11"  /> <label for="adminId0">店铺11</label>
+                    <input type="radio" id="adminId0" checked name="adminId" value="${i}">
+                    <label for="adminId0">总店</label>
+                [#list 1..50 as i]
+				[#if i%20==0]</br>[/#if]
+                    <input type="radio" id="adminId${i}" name="adminId" value="${i}">
+             		 <label for="adminId${i}">店铺${i}</label>
+				[/#list]
+
+
+
+
                 </td>
             </tr>
+            <tr>
 			<tr>
 				<th>
 					${message("Goods.productCategory")}:
