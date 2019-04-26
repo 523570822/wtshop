@@ -92,6 +92,7 @@ public class RedisUtil {
     public static void close(Jedis jedis) {
         if (threadLocalJedis.get() == null && jedis != null)
             jedis.close();
+
     }
 
 
@@ -142,9 +143,9 @@ public class RedisUtil {
                 success = false;
                 e.printStackTrace();
             }finally {
-                if(jedis != null ) {
+            /*    if(jedis != null ) {
                     close (jedis);
-                }
+                }*/
             }
             if (jedis!=null){
                 success=true;
