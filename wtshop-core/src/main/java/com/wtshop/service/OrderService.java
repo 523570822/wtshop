@@ -102,6 +102,15 @@ public class OrderService extends BaseService<Order> {
     public List<Order> findByfightgroupId(Long sn) {
         return orderDao.findByfightgroupId(sn);
     }
+    /**
+     * 根据编号查找订单
+     *
+     * @param sn 编号(忽略大小写)
+     * @return 订单，若不存在则返回null
+     */
+    public Page<Order> findByfightgroupId(Long sn,Pageable pageable) {
+        return orderDao.findByfightgroupId(sn,pageable);
+    }
 
     /**
      * 根据编号查找订单

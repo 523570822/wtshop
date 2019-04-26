@@ -135,10 +135,16 @@ public class RedisUtil {
 
                 }
             } catch (Exception e) {
-
+                if(jedis != null ) {
+                    close (jedis);
+                }
                // System.out.println(Thread.currentThread().getName()+":第"+i+"次获取失败!!!");
                 success = false;
                 e.printStackTrace();
+            }finally {
+                if(jedis != null ) {
+                    close (jedis);
+                }
             }
             if (jedis!=null){
                 success=true;

@@ -203,8 +203,9 @@ public class OrderController extends BaseController {
 	 */
 	public void chooseOrder() {
 		Pageable pageable = getBean(Pageable.class);
+		Long id = getParaToLong("flag");
 		setAttr("pageable", pageable);
-		setAttr("page", orderService.findPage(pageable));
+		setAttr("page", orderService.findByfightgroupId(id, pageable));
 		render("/admin/fightGroup/choose.ftl");
 	}
 
