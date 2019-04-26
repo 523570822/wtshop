@@ -162,11 +162,11 @@
                         <span class="green">[拼团成功]</span>
                     [/#if]
                     [#if  groupBuy.status==0 ]
-                        <span class="red">[拼图失败]</span>
+                        <span class="red">[拼团失败]</span>
                     [/#if]
 
                     [#if  groupBuy.status==2 ]
-                        <span class="blue">[拼图中]</span>
+                        <span class="blue">[拼团中]</span>
                      [/#if]
 
                 </td>
