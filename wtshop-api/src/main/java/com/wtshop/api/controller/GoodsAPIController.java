@@ -410,8 +410,11 @@ public class GoodsAPIController extends BaseAPIController {
 		Integer pageNumber = getParaToInt("pageNumber");
 		Integer pageSize = getParaToInt("pageSizes", 999);
 		Pageable pageable = new Pageable(pageNumber, pageSize);
-
-		Long productCategoryId = getParaToLong("productCategoryId");
+		Long productCategoryId =null;
+			if("null".equals(getPara("productCategoryId"))){
+				productCategoryId=123123l;
+			}
+		 productCategoryId = getParaToLong("productCategoryId");
 
 		//关键字
 		String keyword = getPara("keyword");
