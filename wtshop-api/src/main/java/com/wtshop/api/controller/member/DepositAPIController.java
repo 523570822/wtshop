@@ -207,7 +207,7 @@ public class DepositAPIController extends BaseAPIController {
 						logger.info("任性猫提现[微信] {}", map);
 						if (map != null) {
 							if (StringUtils.isNotEmpty(map.get("err_code"))) {
-								renderJson(ApiResult.fail("系统错误,请稍后尝试!"));
+								renderJson(ApiResult.fail("提现失败,请稍后尝试!"));
 								return;
 							}else if (map.get("result_code").equalsIgnoreCase("SUCCESS")){
 								String partner_trade_no = map.get("partner_trade_no");
@@ -233,7 +233,7 @@ public class DepositAPIController extends BaseAPIController {
 								renderJson(ApiResult.success("提现成功!","提现成功!"));
 								return;
 						}else {
-								renderJson(ApiResult.fail("系统错误,请稍后尝试"));
+								renderJson(ApiResult.fail("提现失败,请稍后尝试"));
 								return;
 						}
 
