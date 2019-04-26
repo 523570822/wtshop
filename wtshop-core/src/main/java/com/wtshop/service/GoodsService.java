@@ -1348,7 +1348,7 @@ public class GoodsService extends BaseService<Goods> {
         goods.setPrice(defaultProduct.getPrice());
         goods.setMarketPrice(defaultProduct.getMarketPrice());
         setValue(goods);
-        copyProperties(goods, pGoods, "sn", "type", "score", "totalScore", "scoreCount", "hits", "weekHits", "monthHits", "sales", "weekSales", "monthSales", "weekHitsDate", "monthHitsDate", "weekSalesDate", "monthSalesDate", "generateMethod", "reviews", "consultations", "favoriteMembers",
+        copyProperties(goods, pGoods, "sn","type", "score", "totalScore", "scoreCount", "hits", "weekHits", "monthHits", "sales", "weekSales", "monthSales", "weekHitsDate", "monthHitsDate", "weekSalesDate", "monthSalesDate", "generateMethod", "reviews", "consultations", "favoriteMembers",
                 "products", "createDate", "verifyState");
         pGoods.setGenerateMethod(Goods.GenerateMethod.eager.ordinal());
         goodsDao.update(pGoods);
