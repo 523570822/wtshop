@@ -1147,15 +1147,14 @@
                        disabled="disabled"[/#if] />
             </td>
         </tr>
-        <tr[#if goods.hasSpecification()] class="hidden"[/#if]>
+        <tr>
             <th>
                 <span class="requiredField">*</span>佣金比例（%）
             </th>
             <td>
-                <input type="text" id="commissionRate" name="product.commission_rate" class="text"
-                       value="${goods.defaultProduct.commissionRate}" maxlength="16"
-                       title="上级及本人优惠比例（如10%填写10）"[#if goods.hasSpecification()]
-                       disabled="disabled"[/#if] />
+                <input type="text" id="commissionRate" name="goods.commission_rate" class="text"
+                       value="${goods.commissionRate}" maxlength="16"
+                       title="上级及本人优惠比例（如10%填写10）"/>
             </td>
         </tr>
         <tr>

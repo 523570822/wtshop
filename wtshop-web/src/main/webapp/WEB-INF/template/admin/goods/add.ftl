@@ -913,7 +913,7 @@ $().ready(function() {
                     <span class="requiredField">*</span>佣金比例（%）
                 </th>
                 <td>
-                    <input type="text" id="commissionRate" name="product.commission_rate" class="text" maxlength="16" title="上级及本人优惠比例（如10%填写10）" />
+                    <input type="text" id="commissionRate" name="goods.commission_rate" class="text" maxlength="16" title="上级及本人优惠比例（如10%填写10）" />
                 </td>
             </tr>
 			<tr>
