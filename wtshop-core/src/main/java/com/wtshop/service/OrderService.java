@@ -333,18 +333,21 @@ public class OrderService extends BaseService<Order> {
                     fightGroup.setStatus(1);
                 }
                 BigDecimal ddd = order.getPrice().multiply(BigDecimal.valueOf(groupBuy.getGroupRate() == null ? 0 : groupBuy.getGroupRate())).divide(BigDecimal.valueOf(100));
-                DepositLog depositLog1 = new DepositLog();
-                depositLog1.setBalance(member1.getBalance());
-                depositLog1.setCredit(ddd);
-                depositLog1.setDebit(BigDecimal.ZERO);
-                depositLog1.setStatus(2);
-                depositLog1.setMemo("团购上级返现");
-                depositLog1.setType(DepositLog.Type.tuangou.ordinal());
-                depositLog1.setOrderId(order.getId());
-                depositLog1.setMemberId(member1.getId());
-                member1.setTuangouUnarrived(ddd.add(member1.getCommission()));
-                depositLogService.save(depositLog1);
-                memberService.update(member1);
+                if(ddd.compareTo(BigDecimal.ZERO)!=0){
+                    DepositLog depositLog1 = new DepositLog();
+                    depositLog1.setBalance(member1.getBalance());
+                    depositLog1.setCredit(ddd);
+                    depositLog1.setDebit(BigDecimal.ZERO);
+                    depositLog1.setStatus(2);
+                    depositLog1.setMemo("团购上级返现");
+                    depositLog1.setType(DepositLog.Type.tuangou.ordinal());
+                    depositLog1.setOrderId(order.getId());
+                    depositLog1.setMemberId(member1.getId());
+                    member1.setTuangouUnarrived(ddd.add(member1.getTuangouUnarrived()));
+                    depositLogService.save(depositLog1);
+                    memberService.update(member1);
+                }
+
 
 
                 fightGroupService.update(fightGroup);
