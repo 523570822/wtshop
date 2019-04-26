@@ -569,6 +569,7 @@ public class GoodsController extends BaseController {
         Long brandId = getParaToLong("brandId");
         Long[] promotionIds = getParaValuesToLong("promotionIds");
         Long[] tagIds = getParaValuesToLong("tagIds");
+        Long adminId = getParaToLong("adminId");
         Long areaId = getParaToLong("areaId");
         Long[] effectIds = getParaValuesToLong("effectIds");
 
@@ -579,6 +580,7 @@ public class GoodsController extends BaseController {
         goods.setIsDelivery(getParaToBoolean("isDelivery", false));
         goods.setIsVip(getParaToBoolean("isVip", false));
         goods.setIsDelete(false);
+        goods.setAdminId(adminId);
         goods.setAreaId(areaId);
         goods.setOperateIp(request.getRemoteAddr());
         Goods pGoods = goodsService.find(goods.getId());
