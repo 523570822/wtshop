@@ -149,7 +149,7 @@ public class InformationService extends BaseService<Information> {
         information.setTitle("团购提醒推送");
         information.setAction(Information.Action.inLink.ordinal());
         information.setLink(groupRemind.getGroupId()+"");
-        information.setType(Information.Type.order.ordinal());
+        information.setType(Information.Type.none.ordinal());
         informationDao.save(information);
 
         Cache actCache = Redis.use();
