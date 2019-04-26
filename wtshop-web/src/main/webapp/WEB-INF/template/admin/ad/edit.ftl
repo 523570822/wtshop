@@ -96,7 +96,7 @@ function sublevel() {
 }
 function checkParam() {
     var num = $("#targetTitleId").find("option:selected").attr("data");
-    if(num!=3){
+    if(num!=3||num==10){
         $("#param").attr("readonly",true);
     }else {
         $("#param").attr("readonly",false);
