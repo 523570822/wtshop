@@ -147,7 +147,7 @@ public class InformationService extends BaseService<Information> {
         information.setStatus(false);
         information.setMemberId(groupRemind.getMemberId());
         information.setTitle("团购提醒推送");
-        information.setAction(Information.Action.inLink.ordinal());
+        information.setAction(Information.Action.none.ordinal());
         information.setLink(groupRemind.getGroupId()+"");
         information.setType(Information.Type.none.ordinal());
         informationDao.save(information);
