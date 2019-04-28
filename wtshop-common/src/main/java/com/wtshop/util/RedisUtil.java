@@ -71,6 +71,7 @@ public class RedisUtil {
             threadLocalJedis.set(getJedis());
         } catch (Exception e) {
             e.printStackTrace();
+            close(getJedis());
 //            try{
 //                //如果第一个IP异常，则访问第二个IP
 //                JedisPoolConfig config = new JedisPoolConfig();

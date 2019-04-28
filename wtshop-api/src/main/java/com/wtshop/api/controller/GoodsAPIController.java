@@ -15,6 +15,7 @@ import com.wtshop.api.common.result.SearchResult;
 import com.wtshop.api.interceptor.ErrorInterceptor;
 import com.wtshop.api.interceptor.TokenInterceptor;
 import com.wtshop.entity.AreaResult;
+import com.wtshop.exception.AppRuntimeException;
 import com.wtshop.exception.ResourceNotFoundException;
 import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.*;
@@ -24,6 +25,7 @@ import com.wtshop.util.RedisUtil;
 import com.wtshop.util.SystemUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -453,22 +455,32 @@ public class GoodsAPIController extends BaseAPIController {
 		Long productCategoryId = getParaToLong("productCategoryId");
 
 		Pageable pageable = new Pageable(pageNumber, pageSize);
+        HttpServletRequest request = RequestContextHolder.currentRequestAttributes();
 
-		Member m=memberService.getCurrent();
-		MemberInterestCategory ddd = memberInterestService.findRecord(m.getId(), productCategoryId);
-		if(ddd==null){
-			MemberInterestCategory memberInterestCategory = new MemberInterestCategory();
-			memberInterestCategory.setMembers(m.getId());
-			memberInterestCategory.setInterestCategory(productCategoryId);
-			memberInterestCategory.setWeights(1);
+        if (StringUtils.isNotEmpty(request.getHeader("token")) && !"0".equals(request.getHeader("token")) ){
+            String userId = RedisUtil.getString(request.getHeader("token"));
+            if (userId == null ){
 
-			memberInterestService.save(memberInterestCategory);
+            }else{
+                Member m = memberService.getCurrent();
+                MemberInterestCategory ddd = memberInterestService.findRecord(m.getId(), productCategoryId);
+                if(ddd==null){
+                    MemberInterestCategory memberInterestCategory = new MemberInterestCategory();
+                    memberInterestCategory.setMembers(m.getId());
+                    memberInterestCategory.setInterestCategory(productCategoryId);
+                    memberInterestCategory.setWeights(1);
 
-		}else{
-			Integer dddd = ddd.getWeights();
-			ddd.setWeights(dddd+1);
-			memberInterestService.updateWeigth(ddd);
-		}
+                    memberInterestService.save(memberInterestCategory);
+
+                }else{
+                    Integer dddd = ddd.getWeights();
+                    ddd.setWeights(dddd+1);
+                    memberInterestService.updateWeigth(ddd);
+                }
+            }
+        }
+
+
 	//	memberInterestService.save()
 
 
