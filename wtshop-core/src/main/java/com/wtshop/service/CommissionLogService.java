@@ -216,4 +216,7 @@ public class CommissionLogService extends BaseService<CommissionLog> {
     public List<CommissionLog> findByStatus() {
 		return depositLogDao.findByStatus();
     }
+	public BigDecimal findMoneyByMemId(Long id) {
+		return depositLogDao.findMoneyByMemId(id);
+	}
 }

@@ -61,7 +61,6 @@ public class CommissionAPIController extends BaseAPIController {
         Logger logger = Logger.getLogger("recharge");
         String price = getPara("price");
 		Integer type = getParaToInt("type");
-        logger.info("TTTTTTTTTTTTTTTTTTTTTT" + type);
 		double value = Double.parseDouble(price);
         String ip = IpUtil.getIpAddr(getRequest());
 		if (StrKit.isBlank(ip) || ip.equals("0:0:0:0:0:0:0:1")) {
@@ -75,7 +74,6 @@ public class CommissionAPIController extends BaseAPIController {
 		exchangeLog.setMemberId(member.getId());
 		exchangeLogService.save(exchangeLog);
 		Map<String, String> map = new HashMap<>();
-
 		if(0 == type){
 			map = userPayService.getRechargePrepayId(value, ip ,exchangeLog.getId());
 		}
@@ -188,8 +186,18 @@ public class CommissionAPIController extends BaseAPIController {
 
 			Double amount =  Double.parseDouble( price);
 			Integer money =Integer.parseInt( String.format("%.0f", amount * 100));
-			//判断输入金额 和 余额
 
+			//计算可提现金额
+			BigDecimal km=depositLogService.findMoneyByMemId(member.getId());
+			if(km.doubleValue()<amount){
+				renderJson(ApiResult.fail("提现金额异常，请联系管理员!"));
+				return;
+			}
+
+			//判断输入金额 和 余额
+         /*    if(){
+
+			 }*/
 
 			BigDecimal scale = new BigDecimal(commission).subtract(new BigDecimal(price)).setScale(2, BigDecimal.ROUND_HALF_DOWN);
 			if(scale.doubleValue() >= 0.00){

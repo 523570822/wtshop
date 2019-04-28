@@ -25,18 +25,11 @@ import java.util.*;
 @ControllerBind(controllerKey = "/admin/groupBuy")
 public class GroupBuyController extends BaseController {
     private GroupBuyService fuDaiService = enhance(GroupBuyService.class);
-    private SpecificationService specificationService = enhance(SpecificationService.class);
-    private ProductService productService = enhance(ProductService.class);
-    private GoodsService goodsService = enhance(GoodsService.class);
+    private CommissionLogService depositLogService = enhance(CommissionLogService.class);
     public void list() {
-     /*   Long productCategoryId =494l;
-        List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
-        Goods goods = goodsService.find(productCategoryId);
-        if (goods == null || CollectionUtils.isEmpty(goods.getSpecificationItemsConverter())) {
-            renderJson(data);
-            return;
-        }
-        renderJson(ApiResult.success(goods.getSpecificationItemsConverter()));*/
+
+      //  BigDecimal km=depositLogService.findMoneyByMemId(1l);
+        //renderJson(ApiResult.success(km));
 
 
   Pageable pageable = getBean(Pageable.class);

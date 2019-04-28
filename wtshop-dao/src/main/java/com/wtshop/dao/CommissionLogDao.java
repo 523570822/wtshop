@@ -11,6 +11,7 @@ import com.wtshop.model.Member;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -137,5 +138,12 @@ public class CommissionLogDao extends BaseDao<CommissionLog> {
     public List<CommissionLog> findByStatus() {
 		String sql = "select * from commission_log where status = 2  and DATEDIFF(now(),create_date)>7" ;
 		return modelManager.find(sql);
+    }
+
+    public BigDecimal findMoneyByMemId(Long id) {
+		String sql = "select SUM(credit)-SUM(debit) kmoney from commission_log c where c.member_id="+id+" and `status`=1" ;
+		CommissionLog dddd = modelManager.findFirst(sql);
+		BigDecimal ddd=dddd.get("kmoney");
+		return ddd;
     }
 }
