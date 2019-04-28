@@ -14,10 +14,7 @@
     <script type="text/javascript" src="${base}/resources/admin/js/list.js"></script>
     <script type="text/javascript">
         $().ready(function () {
-
             [@flash_message /]
-
-
         });
     </script>
 </head>
