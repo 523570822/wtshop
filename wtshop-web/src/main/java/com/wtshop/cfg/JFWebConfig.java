@@ -180,7 +180,7 @@ public class JFWebConfig extends JFinalConfig {
         //redis
         // 用于缓存news模块的redis服务
         RedisPlugin newsRedis = new RedisPlugin("act", getProperty("redis.url"), getPropertyToInt("redis.port"), getPropertyToInt("redis.timeout"), getProperty("redis.password"));
-        JedisPoolConfig config = newsRedis.getJedisPoolConfig();
+            JedisPoolConfig config = newsRedis.getJedisPoolConfig();
         config.setMaxTotal(2000);
         config.setMaxIdle(500);
         config.setMaxWaitMillis(5000);
