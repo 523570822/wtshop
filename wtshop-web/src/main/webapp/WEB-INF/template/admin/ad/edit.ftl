@@ -96,7 +96,8 @@ function sublevel() {
 }
 function checkParam() {
     var num = $("#targetTitleId").find("option:selected").attr("data");
-    if(num!=3||num==10){
+    console.info(num);
+    if(num!=3&&num!=10){
         $("#param").attr("readonly",true);
     }else {
         $("#param").attr("readonly",false);
@@ -178,7 +179,7 @@ function checkParam() {
                     </span>${message("Ad.param")}:
                 </th>
                 <td>
-                    <input type="text" name="ad.param" class="text" title="跳转具体活动的参数" value="${ad.param}" maxlength="200" id="param"/>
+                    <input id="param" type="text" name="ad.param" class="text" title="跳转具体活动的参数" value="${ad.param}" maxlength="200" id="param"/>
                 </td>
             </tr>
 
