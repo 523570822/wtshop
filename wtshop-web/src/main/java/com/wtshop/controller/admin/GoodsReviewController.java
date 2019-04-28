@@ -255,6 +255,7 @@ public class GoodsReviewController extends BaseController {
                 redirect("/admin/goods/list.jhtml");
                 return;
             }
+
             goodsService.update(goods,  products,  admin,promotionsIdList.toArray(new Long[]{}), tagsIdList.toArray(new Long[]{}), effectIdList.toArray(new Long[]{}));
 
         } else {
