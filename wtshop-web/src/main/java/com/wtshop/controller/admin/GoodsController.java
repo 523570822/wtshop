@@ -542,7 +542,10 @@ public class GoodsController extends BaseController {
                 redirect("/admin/goods/list.jhtml");
                 return;
             }
-            goods.setCheck(0);
+            if(goods.getCheck()==null){
+                goods.setCheck(0);
+            }
+
             goodsService.update(goods, products, admin, promotionIds, tagIds, effectIds);
         } else {
             if (product == null) {
