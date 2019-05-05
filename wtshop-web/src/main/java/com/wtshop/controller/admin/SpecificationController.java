@@ -61,12 +61,8 @@ public class SpecificationController extends BaseController {
 			setAttr("specification", specification);
 			render("/admin/specification/add.ftl");
 			return;
-
 		}
-
-
 		specification.setProductCategoryId(productCategoryService.find(productCategoryId).getId());
-		
 		specification.setOptions(JSONArray.toJSONString(options));
 		specificationService.save(specification);
 		addFlashMessage(SUCCESS_MESSAGE);
