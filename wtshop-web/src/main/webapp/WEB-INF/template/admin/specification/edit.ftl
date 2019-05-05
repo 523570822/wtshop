@@ -71,6 +71,7 @@ $().ready(function() {
 				</th>
 				<td>
 					${specification.productCategory.name}
+                    <input type="text" name="specification.product_category_id" class="text" value="${specification.product_category_id}" maxlength="200" />
 				</td>
 			</tr>
 			<tr>

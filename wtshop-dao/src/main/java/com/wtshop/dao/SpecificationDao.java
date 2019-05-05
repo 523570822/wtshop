@@ -35,11 +35,20 @@ public class SpecificationDao extends OrderEntity<Specification> {
 
 	}
 
-    public List<Specification> findByName(String name) {
+    public List<Specification> findByName(Long id,String name,Long cdId) {
 		String sql = "select * from specification s where 1=1 ";
 		if(name != null){
 
-			sql += " AND s.name= "+ name;
+			sql += " AND s.name= '"+ name+"'";
+
+		}
+		if(id != null){
+
+			sql += " AND s.id<>"+ id+"";
+
+		}if(cdId != null){
+
+			sql += " AND s.product_category_id="+ cdId+"";
 
 		}
 		return modelManager.find(sql);

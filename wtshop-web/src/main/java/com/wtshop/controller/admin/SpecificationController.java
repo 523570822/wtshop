@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.wtshop.Message;
+import com.wtshop.util.ApiResult;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.functors.AndPredicate;
@@ -53,6 +54,17 @@ public class SpecificationController extends BaseController {
 				return StringUtils.isNotEmpty(option);
 			}
 		}));
+		List<Specification> specification1=specificationService.findByName(null,specification.getName(),specification.getProductCategoryId());
+		if(specification1.size()>0){
+			addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error, "该规格名称已经存在"));
+			setAttr("productCategoryTree", productCategoryService.findTree());
+			setAttr("specification", specification);
+			render("/admin/specification/add.ftl");
+			return;
+
+		}
+
+
 		specification.setProductCategoryId(productCategoryService.find(productCategoryId).getId());
 		
 		specification.setOptions(JSONArray.toJSONString(options));
@@ -87,15 +99,19 @@ public class SpecificationController extends BaseController {
 		}));
 		
 		specification.setOptions(JSONArray.toJSONString(options));
-		specification.remove("product_category_id");
-		List<Specification> specification1=specificationService.findByName(specification.getName());
+	//	specification.remove("product_category_id");
+		List<Specification> specification1=specificationService.findByName(specification.getId(),specification.getName(),specification.getProductCategoryId());
 		if(specification1.size()>0){
-			addFlashMessage(Message.error("该规格名称已经存在"));
-			redirect("list.jhtml");
+			addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error, "该规格名称已经存在"));
+			setAttr("productCategoryTree", productCategoryService.findTree());
+			setAttr("specification", specification);
+			render("/admin/specification/edit.ftl");
+			return;
+
 		}
 		specificationService.update(specification);
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("list.jhtml");
+		render("/admin/specification/edit.ftl");
 	}
 
 	/**

@@ -26,7 +26,7 @@ public class SpecificationService extends BaseService<Specification> {
 
 	}
 
-    public List<Specification> findByName(String name) {
-		return 	specificationDao.findByName(name);
+    public List<Specification> findByName(Long id,String name,Long pcID) {
+		return 	specificationDao.findByName(id,name,pcID);
     }
 }
