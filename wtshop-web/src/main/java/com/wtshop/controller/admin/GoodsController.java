@@ -545,7 +545,6 @@ public class GoodsController extends BaseController {
             if(goods.getCheck()==null){
                 goods.setCheck(0);
             }
-
             goodsService.update(goods, products, admin, promotionIds, tagIds, effectIds);
         } else {
             if (product == null) {

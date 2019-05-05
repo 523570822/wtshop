@@ -1247,7 +1247,6 @@ public class GoodsService extends BaseService<Goods> {
                 boolean bool2 = ( !product.isNew() );
                 boolean bool3 = ( !product.hasSpecification() );
                 boolean bool4 = (!product.hasSpecification());
-
                 return bool1|| bool3 ||bool4||bool2; //) || !specificationValueService.isValid(specificationItems, product.getSpecificationValues()
             }
         })) {
