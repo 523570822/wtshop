@@ -200,11 +200,12 @@ private  FightGroupService fightGroupService=enhance(FightGroupService.class);
 	}
 	public void wuxiaoyongJinList() {
 		Integer pageNumber = getParaToInt("pageNumbers");
+		String status = getPara("status");
 		Member member = memberService.getCurrent();
 		Pageable pageable = new Pageable(pageNumber, PAGE_SIZE);
 		//更新过期订单
 		orderService.updateExperce(member);
-		Page<Order> page = orderService.findWuXiaoYongJinPages( "2", member ,pageable );
+		Page<Order> page = orderService.findWuXiaoYongJinPages( status, member ,pageable );
 
 		List<Order> orderList = page.getList();
 		List<OrderGoods> orderGoodss = new ArrayList<>();
