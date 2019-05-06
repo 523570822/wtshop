@@ -661,7 +661,7 @@ public class OrderService extends BaseService<Order> {
                 depositLog.setStatus(2);
                 depositLog.setOrderId(order.getId());
                 depositLog.setMemberId(member.getId());
-
+                member.setCommissionUnarrived(b1.add(member.getCommissionUnarrived()));
                 commissionDao.save(depositLog);
 
                 memberService.update(member);
@@ -927,6 +927,8 @@ public class OrderService extends BaseService<Order> {
 
     public Page<Order> findYongJinPages(String status, Member member, Pageable pageable) {
         return orderDao.findYongJinPages(status, member, pageable);
+    }    public Page<Order> findWuXiaoYongJinPages(String status, Member member, Pageable pageable) {
+        return orderDao.findWuXiaoYongJinPages(status, member, pageable);
     }
 
     public Page<Order> findYongJinXiaPages(Integer memberId, Member member, Pageable pageable) {

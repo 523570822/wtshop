@@ -146,4 +146,9 @@ public class CommissionLogDao extends BaseDao<CommissionLog> {
 		BigDecimal ddd=dddd.get("kmoney");
 		return ddd;
     }
+
+    public List<CommissionLog> findByOrder(Long id) {
+		String sql = "select * from commission_log where order_id="+id ;
+		return modelManager.find(sql);
+    }
 }

@@ -7,6 +7,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Pageable;
 import com.wtshop.constants.Code;
+import com.wtshop.dao.CommissionLogDao;
 import com.wtshop.dao.DepositLogDao;
 import com.wtshop.dao.RefundsDao;
 import com.wtshop.dao.SnDao;
@@ -18,6 +19,7 @@ import com.wtshop.util.RedisUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 import static java.math.BigDecimal.ROUND_HALF_DOWN;
@@ -34,7 +36,7 @@ public class RefundsService extends BaseService<Refunds> {
     public RefundsService() {
         super(Refunds.class);
     }
-
+    private CommissionLogDao commissionDao = Enhancer.enhance(CommissionLogDao.class);
     private MemberService memberService = Enhancer.enhance(MemberService.class);
     private DepositLogDao depositLogDao = Enhancer.enhance(DepositLogDao.class);
     private RefundsDao refundsDao = Enhancer.enhance(RefundsDao.class);
@@ -281,7 +283,6 @@ public class RefundsService extends BaseService<Refunds> {
                     }
                 }
             }
-
         }
 
         Refunds refund = new Refunds();
@@ -292,7 +293,20 @@ public class RefundsService extends BaseService<Refunds> {
         refund.setReturnsId(returns.getId());
         super.save(refund);
 
+//后台退款后同时取消佣金
+      List<CommissionLog> commissionList= commissionDao.findByOrder(order.getId());
         memberService.update(member);
+        for (CommissionLog commissionLog:commissionList) {
+            commissionLog.setStatus(0);
+            Member memberL = commissionLog.getMember();
+            memberL.setCommissionUnarrived(memberL.getCommissionUnarrived().subtract(commissionLog.getCredit()));
+            memberL.setInvalidCommission(memberL.getInvalidCommission().add(commissionLog.getCredit()));
+            commissionDao.update(commissionLog);
+            memberService.update(memberL);
+        }
+
+
+
 
         order.setStatus(Order.Status.returnMoney.ordinal());
         order.update();

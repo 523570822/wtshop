@@ -3,6 +3,7 @@ package com.wtshop.api.controller.member;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
+import com.jfinal.aop.Enhancer;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.i18n.I18n;
 import com.jfinal.i18n.Res;
@@ -12,6 +13,7 @@ import com.wtshop.Pageable;
 import com.wtshop.Setting;
 import com.wtshop.api.common.result.PriceResult;
 import com.wtshop.api.common.result.member.OrderFindResult;
+import com.wtshop.dao.CommissionLogDao;
 import com.wtshop.entity.SpecificationValue;
 import com.wtshop.util.ApiResult;
 import com.wtshop.api.common.result.OrderGoods;
@@ -41,6 +43,7 @@ public class OrderAPIController extends BaseAPIController {
 	private static final int PAGE_SIZE = 10;
 private  FightGroupService fightGroupService=enhance(FightGroupService.class);
 	private MemberService memberService = enhance(MemberService.class);
+	private CommissionLogDao commissionDao = Enhancer.enhance(CommissionLogDao.class);
 	private GoodsService goodsService = enhance(GoodsService.class);
 	private OrderItemService orderItemService = enhance(OrderItemService.class);
 	private ShippingService shippingService = enhance(ShippingService.class);
@@ -167,6 +170,41 @@ private  FightGroupService fightGroupService=enhance(FightGroupService.class);
 		//更新过期订单
 		orderService.updateExperce(member);
 		Page<Order> page = orderService.findYongJinPages( status, member ,pageable );
+
+		List<Order> orderList = page.getList();
+		List<OrderGoods> orderGoodss = new ArrayList<>();
+		for(Order order : orderList){
+			//todo 退款订单显示问题 暂时这样修改
+			if(order.getStatus() == 11){
+				order.setStatus(110);
+			}
+
+			List<Goods> goodsList = goodsService.findGoodsByItemIdL(order.getId());
+			if (order.getType()==Order.Type.daopai.ordinal()){
+				//获取倒拍单价
+
+			}
+			OrderGoods orderGoods = new OrderGoods(goodsList, order);
+			orderGoodss.add(orderGoods);
+		}
+
+		HashMap<String, Object> hashMap = new HashMap<String, Object>();
+		hashMap.put("PageNumber",page.getPageNumber());
+		hashMap.put("memberId",member.getId());
+		hashMap.put("TotalPage",page.getTotalPage());
+		hashMap.put("TotalRow",page.getTotalRow());
+		hashMap.put("PageSize",page.getPageSize());
+		hashMap.put("orderGoodss",orderGoodss);
+		renderJson(ApiResult.success(hashMap));
+
+	}
+	public void wuxiaoyongJinList() {
+		Integer pageNumber = getParaToInt("pageNumbers");
+		Member member = memberService.getCurrent();
+		Pageable pageable = new Pageable(pageNumber, PAGE_SIZE);
+		//更新过期订单
+		orderService.updateExperce(member);
+		Page<Order> page = orderService.findWuXiaoYongJinPages( "2", member ,pageable );
 
 		List<Order> orderList = page.getList();
 		List<OrderGoods> orderGoodss = new ArrayList<>();
@@ -433,7 +471,19 @@ private  FightGroupService fightGroupService=enhance(FightGroupService.class);
 
 		}
 
-			orderService.cancel(order ,cause, desc, url);
+		orderService.cancel(order ,cause, desc, url);
+
+//app退款后同时取消佣金
+		List<CommissionLog> commissionList= commissionDao.findByOrder(order.getId());
+		memberService.update(member);
+		for (CommissionLog commissionLog:commissionList) {
+			commissionLog.setStatus(0);
+			Member memberL = commissionLog.getMember();
+			memberL.setCommissionUnarrived(memberL.getCommissionUnarrived().subtract(commissionLog.getCredit()));
+			memberL.setInvalidCommission(memberL.getInvalidCommission().add(commissionLog.getCredit()));
+			commissionDao.update(commissionLog);
+			memberService.update(memberL);
+		}
 
 
 

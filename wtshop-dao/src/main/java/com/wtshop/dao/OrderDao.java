@@ -407,7 +407,27 @@ public class OrderDao extends BaseDao<Order> {
 
 		sqlExceptSelect += "  order by o.modify_date desc";
 		return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
-	}	/**
+	}
+	public Page<Order> findWuXiaoYongJinPages(String status, Member member, Pageable pageable ) {
+		String select = "SELECT c.*, o.type, o.id, o. STATUS, o.quantity quantity, o.amount price, o.commission_rate, o.groupbuy_id, o.fightgroup_id, o.sn, o.create_date, o.freight, o.actOrderId fudaiId  ";
+
+		String sqlExceptSelect ="FROM commission_log c LEFT JOIN `order` o ON c.order_id = o.id WHERE 1 = 1 AND o.is_delete = 0 AND o.type = 0 AND o.on_share_code IS NOT NULL AND c.order_id IS NOT NULL ";
+		if(status != null){
+
+			if(status.equals("0")){
+
+				sqlExceptSelect += " AND c.`status`=0 ";
+			}
+			if(status.equals("2")){
+				sqlExceptSelect += " AND c.`status`=2  ";
+			}
+			sqlExceptSelect += " AND c.member_id="+member.getId()+"  ";
+		}
+		sqlExceptSelect += "  order by o.modify_date desc";
+		return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
+	}
+
+	/**
 	 * 查找佣金订单分页
 	 *
 
