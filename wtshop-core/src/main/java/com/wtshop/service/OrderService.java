@@ -642,7 +642,7 @@ public class OrderService extends BaseService<Order> {
                 member.setCommissionUnarrived(BigDecimal.ZERO);
 
             }
-            member.setCommissionUnarrived(b1.add(member.getCommissionUnarrived()));
+            //member.setCommissionUnarrived(b1.add(member.getCommissionUnarrived()));
             //判断是否是管家
             if (StringUtils.isNotEmpty(member.getShareCode())) {
                 order.setIsCommission(true);
