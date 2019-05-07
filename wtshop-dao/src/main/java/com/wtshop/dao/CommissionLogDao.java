@@ -144,6 +144,7 @@ public class CommissionLogDao extends BaseDao<CommissionLog> {
 		String sql = "select SUM(credit)-SUM(debit) kmoney from commission_log c where c.member_id="+id+" and `status`=1" ;
 		CommissionLog dddd = modelManager.findFirst(sql);
 		BigDecimal ddd=dddd.get("kmoney");
+
 		return ddd;
     }
 

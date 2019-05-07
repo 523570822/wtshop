@@ -589,6 +589,105 @@ public class OrderService extends BaseService<Order> {
 
                 depositLog1.setOrderId(order.getId());
                 depositLog1.setMemberId(member1.getId());
+                 boolean xunHuan=true;
+                 boolean jinPai=false;
+                 boolean baiJin=false;
+                 boolean zhuanShi=false;
+                    int i=0;
+                //计算新增银牌会员50奖励
+                if(member1.getHousekeeperId()==2){
+                    String onShareCode = member1.getOnShareCode();
+                while(xunHuan){
+                    logger.info("开始循环计算新增掌柜奖励50元—————————————第"+i+++"次———————————");
+                        Long dds1 = ShareCodeUtils.codeToId(onShareCode);
+                        Member member2 = memberService.find(dds1);
+                    if(member2.getOnShareCode()==null||member2.getShareCode()==null||member2.getOnShareCode().equals("")||member2.getShareCode().equals("")||member2.getOnShareCode().equals(member2.getShareCode())){
+                        break;
+                    //判断初始邀请码直接跳过
+                    } else  if(member2.getHousekeeperId()==1){
+                        //判断上级身份 白银直接跳到下一循环
+                        onShareCode=member2.getOnShareCode();
+                      //  continue;
+                    }else if (member2.getHousekeeperId()==2&&!jinPai){
+                        DepositLog depositLog5 = new DepositLog();
+                        depositLog5.setCredit(BigDecimal.valueOf(50l));
+                        member2.setBalance(BigDecimal.valueOf(50L).add(member2.getBalance()));
+                        depositLog5.setBalance(member2.getBalance());
+                        depositLog5.setDebit(BigDecimal.ZERO);
+                        depositLog5.setStatus(1);
+                        depositLog5.setMemo("扶持奖励");
+                        depositLog5.setType(DepositLog.Type.fuchi.ordinal());
+                        depositLog5.setOrderId(order.getId());
+                        depositLog5.setMemberId(member2.getId());
+                        memberService.update(member2);
+                        depositLogDao.save(depositLog5);
+                        //判断上级身份 黄金并且没有发过奖金 开始发奖金
+                        onShareCode=member2.getOnShareCode();
+                        jinPai=true;
+                    }else if (member2.getHousekeeperId()==3&&!baiJin){
+                        //判断上级身份白金并且没有发过奖金 开始发奖金
+                        DepositLog depositLog5 = new DepositLog();
+                        depositLog5.setCredit(BigDecimal.valueOf(50l));
+                        member2.setBalance(BigDecimal.valueOf(50L).add(member2.getBalance()));
+                        depositLog5.setBalance(member2.getBalance());
+                        depositLog5.setDebit(BigDecimal.ZERO);
+                        depositLog5.setStatus(1);
+                        depositLog5.setMemo("扶持奖励");
+                        depositLog5.setType(DepositLog.Type.fuchi.ordinal());
+                        depositLog5.setOrderId(order.getId());
+                        depositLog5.setMemberId(member2.getId());
+                        memberService.update(member2);
+                        depositLogDao.save(depositLog5);
+                        onShareCode=member2.getOnShareCode();
+                        baiJin=true;
+                    }else if((member2.getHousekeeperId()==4&&!baiJin&&!zhuanShi)){
+                        //判断上级身份砖石 并且上级没有白金 开始发奖金
+                        DepositLog depositLog5 = new DepositLog();
+                        depositLog5.setCredit(BigDecimal.valueOf(50l));
+                        member2.setBalance(BigDecimal.valueOf(50L).add(member2.getBalance()));
+                        depositLog5.setBalance(member2.getBalance());
+                        depositLog5.setDebit(BigDecimal.ZERO);
+                        depositLog5.setStatus(1);
+                        depositLog5.setMemo("扶持奖励");
+                        depositLog5.setType(DepositLog.Type.fuchi.ordinal());
+                        depositLog5.setOrderId(order.getId());
+                        depositLog5.setMemberId(member2.getId());
+                        memberService.update(member2);
+                        depositLogDao.save(depositLog5);
+                        onShareCode=member2.getOnShareCode();
+                        zhuanShi=true;
+
+                    }else if((member2.getHousekeeperId()==4&&baiJin&&!zhuanShi)){
+                        //判断上级身份砖石 并且上级有白金 开始发奖金 （这个根据比例算）
+                        List<Member> mm = memberService.findMemberByLinkShare(member2.getShareCode(), 3L);
+
+                        Long jinglijin=20L;
+                        if(mm.size()>3&&mm.size()<6){
+                            jinglijin=40l;
+                        }else  if(mm.size()>6){
+                            jinglijin=60l;
+                        }
+                        DepositLog depositLog5 = new DepositLog();
+                        depositLog5.setCredit(BigDecimal.valueOf(jinglijin));
+                        member2.setBalance(BigDecimal.valueOf(jinglijin).add(member2.getBalance()));
+                        depositLog5.setBalance(member2.getBalance());
+                        depositLog5.setDebit(BigDecimal.ZERO);
+                        depositLog5.setStatus(1);
+                        depositLog5.setMemo("扶持奖励");
+                        depositLog5.setType(DepositLog.Type.fuchi.ordinal());
+                        depositLog5.setOrderId(order.getId());
+                        depositLog5.setMemberId(member2.getId());
+                        memberService.update(member2);
+                        depositLogDao.save(depositLog5);
+                        onShareCode=member2.getOnShareCode();
+                        zhuanShi=true;
+                    }else{
+                        onShareCode=member2.getOnShareCode();
+                    }
+                    }
+                }
+
+
 
 
             } else {

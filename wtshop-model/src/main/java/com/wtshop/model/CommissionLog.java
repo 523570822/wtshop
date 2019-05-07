@@ -37,8 +37,9 @@ public class CommissionLog extends BaseCommissionLog<CommissionLog> {
 
 		/** 钱包兑换 6*/
 		exchange,
-		/** 钱包兑换 6*/
+		/** 福袋 6*/
 		fudan,
+
 
 	}
 

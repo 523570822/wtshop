@@ -51,6 +51,9 @@ public class MemberService extends BaseService<Member> {
 	public List<Member> findMemberByLinkShare(String shareCode){
 		return memberDao.findMemberByLinkShare(shareCode);
 	}
+	public List<Member> findMemberByLinkShare(String shareCode,long housekeeper_id){
+		return memberDao.findMemberByLinkShare(shareCode,housekeeper_id);
+	}
 
 	public List<Member> findMemberList(Long[] memberList){
 		return memberDao.findMemberList(memberList);

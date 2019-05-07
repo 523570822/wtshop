@@ -40,6 +40,15 @@ public class DepositLog extends BaseDepositLog<DepositLog> {
 		exchange,
 		/**  团购返利 7*/
 		tuangou,
+		/**
+		 * 扶持奖励 8
+		 */
+		fuchi,
+		/**
+		 * 月度奖励 9
+		 */
+		yuedu
+
 	}
 	
 	/** 会员 */
