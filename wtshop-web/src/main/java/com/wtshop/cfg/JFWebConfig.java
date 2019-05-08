@@ -24,9 +24,7 @@ import com.jfinal.render.FreeMarkerRender;
 import com.jfinal.render.ViewType;
 import com.jfinal.template.Engine;
 import com.wtshop.FreeMarkerExceptionHandler;
-import com.wtshop.activiti.ActivitiPlugin;
 import com.wtshop.constants.Code;
-import com.wtshop.controller.admin.DoTimeController;
 import com.wtshop.model._MappingKit;
 import com.wtshop.security.MyJdbcAuthzService;
 import com.wtshop.shiro.core.ShiroInterceptor;
@@ -121,9 +119,15 @@ public class JFWebConfig extends JFinalConfig {
 
 
         // 定时器插件
-		Cron4jPlugin cp = new Cron4jPlugin();
-		cp.addTask("* * * * *", new DoTimeController());
-		plugins.add(cp);
+	//	Cron4jPlugin cp = new Cron4jPlugin();
+	//	cp.addTask("*/5 * * * *", new DoTimeController());
+	//	plugins.add(cp);
+
+
+     //   Cron4jPlugin cp1 = new Cron4jPlugin();
+      //  cp1.addTask("*/5 * * * *", new YueDuTimeController());
+      //  plugins.add(cp1);
+
 
         plugins.add(new Cron4jPlugin(PropKit.use("wtshop.properties")));
 
