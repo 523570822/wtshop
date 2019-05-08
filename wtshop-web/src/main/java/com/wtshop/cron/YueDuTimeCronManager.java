@@ -52,6 +52,7 @@ if (jinglijin>0){
         depositLog5.setBalance(member.getBalance());
         depositLog5.setDebit(BigDecimal.ZERO);
         depositLog5.setStatus(1);
+    depositLog5.setPerformance(BigDecimal.valueOf(Double.parseDouble(member.get("zprice")+"")));
         depositLog5.setMemo("月度奖励奖励");
         depositLog5.setType(DepositLog.Type.yuedu.ordinal());
         depositLog5.setMemberId(member.getId());
@@ -76,6 +77,7 @@ if (jinglijin>0){
                     member.setBalance(BigDecimal.valueOf(jinglijin).add(member.getBalance()));
                     depositLog5.setBalance(member.getBalance());
                     depositLog5.setDebit(BigDecimal.ZERO);
+                    depositLog5.setPerformance(BigDecimal.valueOf(Double.parseDouble(member.get("zcommission")+"")));
                     depositLog5.setStatus(1);
                     depositLog5.setMemo("月度奖励奖励");
                     depositLog5.setType(DepositLog.Type.yuedu.ordinal());
@@ -99,6 +101,7 @@ if (jinglijin>0){
                     depositLog5.setCredit(BigDecimal.valueOf(jinglijin));
                     member.setBalance(BigDecimal.valueOf(jinglijin).add(member.getBalance()));
                     depositLog5.setBalance(member.getBalance());
+                    depositLog5.setPerformance(BigDecimal.valueOf(Double.parseDouble(member.get("zcommission")+"")));
                     depositLog5.setDebit(BigDecimal.ZERO);
                     depositLog5.setStatus(1);
                     depositLog5.setMemo("月度奖励奖励");
