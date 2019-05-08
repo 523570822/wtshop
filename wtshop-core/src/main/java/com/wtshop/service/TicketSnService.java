@@ -149,7 +149,7 @@ public class TicketSnService extends BaseService<Ticketsn>  {
                 ticketsn.update();
             }
             if (member==null){
-                memberService.register(phone, System.currentTimeMillis()+"" , ip,"");
+                memberService.register(phone, System.currentTimeMillis()+"" , ip,"",null,null);
                 member=memberDao.findByUsername(phone);
             }
 

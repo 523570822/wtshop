@@ -290,6 +290,16 @@ public class MemberDao extends BaseDao<Member> {
 			return null;
 		}
 	}
+	public List<Member> findMemberByHousekeeperId(Long housekeeperId) {
+		try {
+
+			String sql = "SELECT sum(s.price) zprice, sum( s.price * s.commission_rate / 100 ) zcommission, m.* FROM member m LEFT JOIN ( SELECT o1.member_id dddd, o1.price, o1.commission_rate, o1.create_date sssasa, o1.`status`, m1.* FROM member m1 LEFT JOIN `order` o1 ON o1.member_id = m1.id WHERE o1.id IS NOT NULL AND m1.housekeeper_id <"+housekeeperId+" AND ( date(o1.create_date) BETWEEN date_sub( date_sub(now(), INTERVAL 7 MONTH), INTERVAL 1 DAY ) AND date_sub(now(), INTERVAL 7 DAY)) AND o1.`status` IN (2, 3, 4, 5, 9, 10)) s ON s.link_share_code LIKE concat('%', m.share_code, '%') WHERE m.housekeeper_id ="+housekeeperId+" GROUP BY id";
+			return modelManager.find(sql);
+			//return modelManager.find(sql, housekeeperId);
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
 	/**
 	 * 根据手机号查找会员

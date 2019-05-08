@@ -327,6 +327,7 @@ public final class RSAUtils {
 		} catch (IllegalBlockSizeException e) {
 			throw new RuntimeException(e.getMessage(), e);
 		} catch (BadPaddingException e) {
+		//	System.out.println("加密异常");
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
@@ -356,7 +357,9 @@ public final class RSAUtils {
 			throw new RuntimeException(e.getMessage(), e);
 		} catch (IllegalBlockSizeException e) {
 			throw new RuntimeException(e.getMessage(), e);
+
 		} catch (BadPaddingException e) {
+			//System.out.println("解密异常");
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}

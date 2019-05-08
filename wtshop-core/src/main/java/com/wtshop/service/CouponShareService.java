@@ -78,7 +78,7 @@ public class CouponShareService extends BaseService<CouponShare> {
 
         Member member=memberDao.findByUsername(phone);
 			if (member==null){
-				member= memberService.register(phone, System.currentTimeMillis()+"" , ip,"");
+				member= memberService.register(phone, System.currentTimeMillis()+"" , ip,"",null,null);
 			}
 
 		Coupon cp=couponDao.find(cs.getCouponId());

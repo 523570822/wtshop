@@ -143,7 +143,7 @@ public class MemberService extends BaseService<Member> {
 
 
 
-	public Member register(String username, String password, String nickname, String remoteAddr,String onShareCode){
+	public Member register(String username, String password, String nickname, String remoteAddr,String onShareCode,String linkShareCode){
 		Setting setting = SystemUtils.getSetting();
 		//判断用户名是否是mongo数据库中数据
 		//查询mongo数据库
@@ -173,6 +173,9 @@ public class MemberService extends BaseService<Member> {
 		}
 if(StringUtils.isNotEmpty(onShareCode)){
 	member.setOnShareCode(onShareCode);
+}
+if(StringUtils.isNotEmpty(linkShareCode)){
+	member.setLinkShareCode(linkShareCode);
 }
 
 		member.setUsername(mixUserName);
@@ -242,8 +245,8 @@ if(StringUtils.isNotEmpty(onShareCode)){
 	 * @return
 	 */
 
-	public Member register(String username,String password ,String remoteAddr,String onShareCode){
-		return register(username, password, "", remoteAddr,onShareCode);
+	public Member register(String username,String password ,String remoteAddr,String onShareCode,String linkShareCode){
+		return register(username, password, "", remoteAddr,onShareCode,linkShareCode);
 	}
 
 
@@ -359,6 +362,9 @@ if(StringUtils.isNotEmpty(onShareCode)){
 	 */
 	public List<Member> findByShareCode(String onShareCode) {
 		return memberDao.findByShareCode(onShareCode);
+	}
+	public List<Member> findMemberByHousekeeperId(long housekeeperId) {
+		return memberDao.findMemberByHousekeeperId(housekeeperId);
 	}
 
 

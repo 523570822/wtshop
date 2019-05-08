@@ -65,7 +65,7 @@ public class AppManageService extends BaseService<AppManage> {
             if (member != null) {
                 throw new AppRuntimeException(Code.API_ERROR_BUSS, "用户已经存在");
             }
-            member = memberService.register(phone, RandomKit.randomStr(), nickname, ip);
+            member = memberService.register(phone, RandomKit.randomStr(), nickname, ip,null,null);
             resultMap = ImmutableMap.of("id", member.getId(), "username", member.getUsername(), "phone", member.getPhone());
         }
 

@@ -569,6 +569,7 @@ public class OrderService extends BaseService<Order> {
                 if (member.getHousekeeperId() == null || member.getHousekeeperId() <= 1) {
                     member.setHousekeeperId(2L);
                 }
+
                 member.setLinkShareCode(member1.getLinkShareCode() + "_" + member.getOnShareCode());
 
               /*  if(mmss.size()>=15){
@@ -795,6 +796,7 @@ public class OrderService extends BaseService<Order> {
         //福袋
         if (order.getType() == Order.Type.fudai.ordinal()) {
             order.setOnShareCode(member.getOnShareCode());
+
             List<Map<String, Object>> list = fuDaiService.luckDraw(order);
             //调用推送
         }

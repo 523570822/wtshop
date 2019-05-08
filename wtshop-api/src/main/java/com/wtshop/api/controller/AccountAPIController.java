@@ -137,6 +137,7 @@ public class AccountAPIController extends BaseAPIController {
 			renderJson(ApiResult.fail("邀请码不存在!"));
 			return;
 		}
+		String linkShareCode = me.get(0).getLinkShareCode() + "_" + me.get(0).getOnShareCode();
 		if(StringUtils.isEmpty(username)){
 			renderJson(ApiResult.fail("登录名不能为空!"));
 			return;
@@ -185,7 +186,7 @@ public class AccountAPIController extends BaseAPIController {
 		}
 		String remoteAddr = getRequest().getRemoteAddr();
 
-		Member member = memberService.register(username, password, remoteAddr,onShareCode);
+		Member member = memberService.register(username, password, "", remoteAddr, onShareCode,linkShareCode);
 
 
 

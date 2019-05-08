@@ -113,4 +113,12 @@ public abstract class BaseDepositLog<M extends BaseDepositLog<M>> extends Model<
 		return get("order_id");
 	}
 
+	public void setPerformance(java.math.BigDecimal performance) {
+		set("performance", performance);
+	}
+
+	public java.math.BigDecimal getPerformance() {
+		return get("performance");
+	}
+
 }

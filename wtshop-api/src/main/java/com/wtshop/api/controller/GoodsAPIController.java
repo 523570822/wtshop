@@ -484,8 +484,8 @@ public void onShareCode(){
 	Map<String,Object>  map=  new HashMap<>();
 	double sendMiaoBi=0;
 	sendMiaoBi = redisSetting.getDouble("registerSending") ;//邀请码赠送喵币
-
-
+	String linkShareCode = me.get(0).getLinkShareCode() + "_" + me.get(0).getOnShareCode();
+	m.setLinkShareCode(linkShareCode);
 	m.setOnShareCode(onShareCode);
 	MiaobiLog miaobiLog = new MiaobiLog();
 	miaobiLog.setMemberId(m.getId());

@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class StaffCronManager implements ITask{
     Logger logger = Logger.getLogger(StaffCronManager.class);
-    private InformationService informationService = Enhancer.enhance(InformationService.class);
+
     private MemberService memberService = Enhancer.enhance(MemberService.class);
     private CommissionLogService commissionLogService = Enhancer.enhance(CommissionLogService.class);
     private GroupRemindDao groupRemindDao = Enhancer.enhance(GroupRemindDao.class);
