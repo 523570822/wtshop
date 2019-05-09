@@ -143,4 +143,11 @@ public class DepositLogDao extends BaseDao<DepositLog> {
 		return orderSql;
 	}
 
+	public Record findJiangLi(Long memberId,Integer i) {
+		String sql = "	select SUM(credit) price from  deposit_log where member_id="+memberId+" ";
+		if(i!=null){
+			 sql =sql+"and type="+i+"";
+		}
+	return	Db.findFirst(sql);
+	}
 }

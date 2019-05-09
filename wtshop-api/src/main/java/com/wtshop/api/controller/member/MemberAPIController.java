@@ -5,6 +5,7 @@ import com.alibaba.common.logging.LoggerFactory;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
+import com.jfinal.aop.Enhancer;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
@@ -51,9 +52,7 @@ public class MemberAPIController extends BaseAPIController {
 	private ReceiverService receiverService = enhance(ReceiverService.class);
 	private MemberService memberService = enhance(MemberService.class);
 	private MiaobiLogService miaobiLogService = enhance(MiaobiLogService.class);
-	private MrmfShopService mrmfShopService = enhance(MrmfShopService.class);
 	private DepositLogService depositLogService = enhance(DepositLogService.class);
-
 
 	/**
 	 * 新用户赠送喵币
@@ -199,8 +198,12 @@ public class MemberAPIController extends BaseAPIController {
 
 		member.setAttributeValue2("rxm/goods/commission.html");
 
-
-
+		Double yudujiangli=depositLogService.findJiangLi(member.getId(),9);
+		Double fuchijiangli=depositLogService.findJiangLi(member.getId(),8);
+		Double wodejiangli=depositLogService.findJiangLi(member.getId(),null);
+		member.set("wodejiangli",wodejiangli);
+		member.set("yudujiangli",yudujiangli);
+		member.set("fuchijiangli",fuchijiangli);
 		renderJson(ApiResult.success(member));
 	}
 	/**

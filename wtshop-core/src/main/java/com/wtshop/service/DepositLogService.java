@@ -168,4 +168,12 @@ public class DepositLogService extends BaseService<DepositLog> {
 
 	}
 
+	public Double findJiangLi(Long memberId,Integer i) {
+		Record rechange = depositLogDao.findJiangLi(memberId, i);
+		Double price = 0.0;
+		if(rechange != null && rechange.get("price") != null){
+			price = rechange.get("price");
+		}
+		return price ;
+	}
 }

@@ -7,6 +7,7 @@ import com.wtshop.dao.DepositLogDao;
 import com.wtshop.dao.GroupRemindDao;
 import com.wtshop.model.DepositLog;
 import com.wtshop.model.Member;
+import com.wtshop.service.DepositLogService;
 import com.wtshop.service.InformationService;
 import com.wtshop.service.MemberService;
 import com.wtshop.service.OrderService;
@@ -24,7 +25,7 @@ import static com.jfinal.aop.Enhancer.enhance;
 public class YueDuTimeCronManager implements ITask {
     Logger logger = Logger.getLogger(YueDuTimeCronManager.class);
     private MemberService memberService = Enhancer.enhance(MemberService.class);
-    private DepositLogDao depositLogDao = Enhancer.enhance(DepositLogDao.class);
+    private DepositLogService depositLogService = Enhancer.enhance(DepositLogService.class);
     public void run() {
 
 //计算金牌的奖励
@@ -57,7 +58,7 @@ if (jinglijin>0){
         depositLog5.setType(DepositLog.Type.yuedu.ordinal());
         depositLog5.setMemberId(member.getId());
         memberService.update(member);
-        depositLogDao.save(depositLog5);
+    depositLogService.save(depositLog5);
 }
     };
 }
@@ -83,7 +84,7 @@ if (jinglijin>0){
                     depositLog5.setType(DepositLog.Type.yuedu.ordinal());
                     depositLog5.setMemberId(member.getId());
                     memberService.update(member);
-                    depositLogDao.save(depositLog5);
+                    depositLogService.save(depositLog5);
                 }
             };
         }
@@ -108,7 +109,7 @@ if (jinglijin>0){
                     depositLog5.setType(DepositLog.Type.yuedu.ordinal());
                     depositLog5.setMemberId(member.getId());
                     memberService.update(member);
-                    depositLogDao.save(depositLog5);
+                    depositLogService.save(depositLog5);
                 }
             };
         }
