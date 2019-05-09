@@ -40,6 +40,8 @@ public class ProfileAPIController extends BaseAPIController {
 		Member member = memberService.getCurrent();
 		String nickname = getPara("nickname");
 		String phone = getPara("phone");
+		String attributeValue5 = getPara("attributeValue5");
+		String attributeValue6 = getPara("attributeValue6");
 		Date birth = getParaToDate("birth");
 		Integer sex = getParaToInt("sex");
 		String sign = getPara("sign");
@@ -60,6 +62,12 @@ public class ProfileAPIController extends BaseAPIController {
 		}
 		if( sex != null){
 			member.setGender(sex);
+		}
+		if( attributeValue5 != null){
+			member.setAttributeValue5(attributeValue5);
+		}
+		if( attributeValue6 != null){
+			member.setAttributeValue6(attributeValue6);
 		}
 
 
