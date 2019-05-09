@@ -127,17 +127,22 @@ public class AccountAPIController extends BaseAPIController {
 		String onShareCode = getPara("onShareCode");
 		if(StringUtils.isNotEmpty(onShareCode)){
 			onShareCode=onShareCode.toUpperCase();
+		}else{
+
 		}
 
 		List<Member> me = memberService.findByShareCode(onShareCode);
 
-
+		String linkShareCode=null;
 		if((StringUtils.isNotEmpty(onShareCode)&&(me==null||me.size()==0))&&(!"VA3TYG".equals(onShareCode))){
 
 			renderJson(ApiResult.fail("邀请码不存在!"));
 			return;
+		}else{
+			linkShareCode= me.get(0).getLinkShareCode() + "_" + me.get(0).getOnShareCode();
 		}
-		String linkShareCode = me.get(0).getLinkShareCode() + "_" + me.get(0).getOnShareCode();
+
+
 		if(StringUtils.isEmpty(username)){
 			renderJson(ApiResult.fail("登录名不能为空!"));
 			return;

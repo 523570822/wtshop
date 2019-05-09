@@ -201,9 +201,9 @@ public class MemberAPIController extends BaseAPIController {
 		Double yudujiangli=depositLogService.findJiangLi(member.getId(),9);
 		Double fuchijiangli=depositLogService.findJiangLi(member.getId(),8);
 		Double wodejiangli=depositLogService.findJiangLi(member.getId(),null);
-		member.set("wodejiangli",wodejiangli);
-		member.set("yudujiangli",yudujiangli);
-		member.set("fuchijiangli",fuchijiangli);
+		member.setAttributeValue8(fuchijiangli+"");
+		member.setAttributeValue9(yudujiangli+"");
+		member.setAttributeValue7(wodejiangli+"");
 		renderJson(ApiResult.success(member));
 	}
 	/**

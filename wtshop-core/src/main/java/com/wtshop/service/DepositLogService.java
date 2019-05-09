@@ -15,6 +15,7 @@ import com.wtshop.model.MrmfShop;
 import com.wtshop.util.ApiResult;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Map;
 
 /**
@@ -170,10 +171,11 @@ public class DepositLogService extends BaseService<DepositLog> {
 
 	public Double findJiangLi(Long memberId,Integer i) {
 		Record rechange = depositLogDao.findJiangLi(memberId, i);
-		Double price = 0.0;
+		Double price = 0.00;
 		if(rechange != null && rechange.get("price") != null){
-			price = rechange.get("price");
+			price = Double.valueOf(rechange.get("price").toString());
 		}
+		price=(double)Math.round(price*100)/100;
 		return price ;
 	}
 }

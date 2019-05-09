@@ -309,9 +309,9 @@ public class GoodsDao extends BaseDao<Goods> {
 		if(productCategoryList != null && productCategoryList.size() > 0){
 			sqlExceptSelect += " AND m.product_category_id IN " + SqlUtils.getSQLIn(productCategoryList);
 		}
-		if( !priceUp && !priceDown){
+		//if( !priceUp && !priceDown){
 			sqlExceptSelect += "GROUP BY m.id order by is_top desc ";
-		}
+		//}
 
 		logger.info(sqlExceptSelect);
 		return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
