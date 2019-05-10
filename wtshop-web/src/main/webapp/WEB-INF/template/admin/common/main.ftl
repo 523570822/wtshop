@@ -320,7 +320,9 @@
 											[@shiro.hasPermission name="admin:messageConfig"]
 												<li><a href="../message_config/list.jhtml" target="iframe">${message("admin.main.messageConfig")}</a></li>
 											[/@shiro.hasPermission]
-
+												[@shiro.hasPermission name="admin:special"]
+												<li><a href="../special/list.jhtml" target="iframe">${message("admin.main.special")}</a></li>
+												[/@shiro.hasPermission]
 
 											[@shiro.hasPermission name="admin:feedback"]
                                                 <li><a href="../feedback/list.jhtml" target="iframe">${message("admin.main.feedback")}</a></li>

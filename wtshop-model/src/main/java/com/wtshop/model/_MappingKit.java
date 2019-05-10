@@ -185,6 +185,7 @@ public class _MappingKit {
 		arp.addMapping("ticketsnrecord", "id", Ticketsnrecord.class);
 		arp.addMapping("version", "id", Version.class);
 		arp.addMapping("vipGoods_history", "id", VipgoodsHistory.class);
+		arp.addMapping("special_personnel", "id", SpecialPersonnel.class);
 	}
 }
 
