@@ -405,7 +405,7 @@ public void findButler(){
         butlerUpgradeLog.setBankName(bank_name);
         butlerUpgradeLog.setBank(bank);
         Map<String,Object> map=new HashMap<>();
-        if(mmss.size()<14){
+        if(mmss.size()<3){
             renderJson( ApiResult.fail("升级失败升级人数不够"));
             return;
         }else if(member.getHousekeeperId()<=2){
