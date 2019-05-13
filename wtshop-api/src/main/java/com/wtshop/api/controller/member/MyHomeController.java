@@ -342,9 +342,9 @@ public void findButler(){
     List<Member> mmss = memberService.findMemberByOnShare(member.getShareCode());
 
 
-
+//升级金牌
    // map.put("status",1);
-    if(mmss.size()>=3){
+    if(mmss.size()>=2){
         List<ButlerUpgradeLog> butlerUpgradeLog=   butlerUpgradeLogService.findByMemberId(member.getId());
          if(butlerUpgradeLog.size()==0){
              map.put("status",2);
