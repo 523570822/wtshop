@@ -609,7 +609,7 @@ public class OrderService extends BaseService<Order> {
                         //判断上级身份 白银直接跳到下一循环
                         onShareCode=member2.getOnShareCode();
                       //  continue;
-                    }else if (member2.getHousekeeperId()==2&&!jinPai){
+                    }else if (member2.getHousekeeperId()==3&&!jinPai){
                         DepositLog depositLog5 = new DepositLog();
                         depositLog5.setCredit(BigDecimal.valueOf(50l));
                         member2.setBalance(BigDecimal.valueOf(50L).add(member2.getBalance()));
@@ -625,7 +625,7 @@ public class OrderService extends BaseService<Order> {
                         //判断上级身份 黄金并且没有发过奖金 开始发奖金
                         onShareCode=member2.getOnShareCode();
                         jinPai=true;
-                    }else if (member2.getHousekeeperId()==3&&!baiJin){
+                    }else if (member2.getHousekeeperId()==4&&!baiJin){
                         //判断上级身份白金并且没有发过奖金 开始发奖金
                         DepositLog depositLog5 = new DepositLog();
                         depositLog5.setCredit(BigDecimal.valueOf(50l));
@@ -641,7 +641,7 @@ public class OrderService extends BaseService<Order> {
                         depositLogDao.save(depositLog5);
                         onShareCode=member2.getOnShareCode();
                         baiJin=true;
-                    }else if((member2.getHousekeeperId()==4&&!baiJin&&!zhuanShi)){
+                    }else if((member2.getHousekeeperId()==5&&!baiJin&&!zhuanShi)){
                         //判断上级身份砖石 并且上级没有白金 开始发奖金
                         DepositLog depositLog5 = new DepositLog();
                         depositLog5.setCredit(BigDecimal.valueOf(50l));
@@ -658,7 +658,7 @@ public class OrderService extends BaseService<Order> {
                         onShareCode=member2.getOnShareCode();
                         zhuanShi=true;
 
-                    }else if((member2.getHousekeeperId()==4&&baiJin&&!zhuanShi)){
+                    }else if((member2.getHousekeeperId()==5&&baiJin&&!zhuanShi)){
                         //判断上级身份砖石 并且上级有白金 开始发奖金 （这个根据比例算）
                         List<Member> mm = memberService.findMemberByLinkShare(member2.getShareCode(), 3L);
 
