@@ -1,16 +1,20 @@
 package com.wtshop.controller.admin;
 
+
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.kit.LogKit;
-import com.jfinal.kit.StrKit;
+
 import com.wtshop.Message;
 import com.wtshop.Pageable;
+
 import com.wtshop.model.Brand;
 import com.wtshop.model.Brand.Type;
 import com.wtshop.model.Goods;
+import com.wtshop.model.Member;
 import com.wtshop.model.SpecialPersonnel;
-import com.wtshop.service.BrandService;
+
 import com.wtshop.service.GoodsService;
+import com.wtshop.service.MemberService;
 import com.wtshop.service.SpecialPersonnelService;
 import org.apache.commons.lang3.StringUtils;
 
@@ -28,6 +32,7 @@ public class SpecialPersonnelController extends BaseController {
 
 	private SpecialPersonnelService brandService = enhance(SpecialPersonnelService.class);
 	private GoodsService goodsService = enhance(GoodsService.class);
+	private MemberService memberService = enhance(MemberService.class);
 
 	/**
 	 * 添加
@@ -42,17 +47,23 @@ public class SpecialPersonnelController extends BaseController {
 	 */
 	public void save() {
 		SpecialPersonnel specialPersonnel = getModel(SpecialPersonnel.class);
-	   try {
-		   brandService.save(specialPersonnel);
-	   }catch (Exception e){
-		   //renderJson("sb");
-		   renderJson(e);
-				//e.
-		   return;
-	   }
 
-		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("/admin/special_personnel/list.jhtml");
+
+		   Member member = memberService.findByPhone(specialPersonnel.getPhone());
+if(member==null){
+	addFlashMessage(Message.errMsg("手机号不存在"));
+
+	redirect("/admin/special/list.jhtml");
+}else{
+	brandService.save(specialPersonnel);
+
+
+
+
+	addFlashMessage(SUCCESS_MESSAGE);
+	redirect("/admin/special/list.jhtml");
+}
+
 	}
 
 	/**
@@ -110,6 +121,29 @@ public class SpecialPersonnelController extends BaseController {
 	}
 
 
+	/**
+	 * 禁用福袋
+	 */
+	public void disabled() {
+		Long id = getParaToLong("id");
+		SpecialPersonnel activity = brandService.find(id);
+		activity.setStatus(false);
+		brandService.update(activity);
+		redirect("/admin/brand/list.jhtml");
+	}
 
+
+	/**
+	 * 启用福袋
+	 */
+	public void publish() {
+		Long id = getParaToLong("id");
+		SpecialPersonnel activity = brandService.find(id);
+
+
+		activity.setStatus(true);
+		brandService.update(activity);
+		redirect("/admin/brand/list.jhtml");
+	}
 
 }

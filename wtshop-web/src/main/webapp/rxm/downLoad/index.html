@@ -118,6 +118,7 @@
             var scheme = 'rxm://'
             var key = 'page'
             var location_url = checkQuery(key, scheme);
+            window.event.returnValue=false
             window.location.href = location_url;//android app协议
             window.setTimeout(function () {
                 window.event.returnValue=false
@@ -127,7 +128,7 @@
                 } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
                     window.location.href = "https://itunes.apple.com/us/app/%E4%BB%BB%E6%80%A7%E7%8C%AB/id1258409372?l=zh&ls=1&mt=8";
                 }
-            }, 2000)
+            }, 1000)
         }
 
         if (isNotBrowser()) {

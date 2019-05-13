@@ -90,25 +90,24 @@ $().ready(function() {
 					</td>
 
                     <td>
-					[#if brand.isDelete==0||brand.isDelete==null]
+					[#if brand.status==0||brand.status==null]
 
-                        <span class="green">[已显示]</span>
+                        <span class="red">[已禁用]</span>
 
 
 
 					[#else]
-                        <span class="red">[已隐藏]</span>
+                        <span class="green">[已启用]</span>
 					[/#if]
                     </td>
 					<td>
 						<a href="edit.jhtml?id=${brand.id}">[${message("admin.common.edit")}]</a>
 						[#--<a href="${base}${brand.path}" target="_blank">[${message("admin.common.view")}]</a>--]
 
-					[#if brand.isDelete==0||brand.isDelete==null]
-                        <a href="disabled.jhtml?id=${brand.id}" class="status" data="${brand.id}">][${message("admin.member.disabled")}]</a>
+					[#if brand.status==0||brand.status==null]
+  <a href="publish.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("LoginPlugin.isEnabled")}]</a>
 						 [#else ]
-
-                        <a href="publish.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("LoginPlugin.isEnabled")}]</a>
+ <a href="disabled.jhtml?id=${brand.id}" class="status" data="${brand.id}">][${message("admin.member.disabled")}]</a>
 						 [/#if]
 					</td>
 				</tr>
