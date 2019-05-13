@@ -344,7 +344,7 @@ public void findButler(){
 
 
    // map.put("status",1);
-    if(mmss.size()>=15){
+    if(mmss.size()>=3){
         List<ButlerUpgradeLog> butlerUpgradeLog=   butlerUpgradeLogService.findByMemberId(member.getId());
          if(butlerUpgradeLog.size()==0){
              map.put("status",2);
