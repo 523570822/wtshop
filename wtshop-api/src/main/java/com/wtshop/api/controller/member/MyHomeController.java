@@ -394,7 +394,7 @@ public void findButler(){
      */
     public void agreeButler() throws UnsupportedEncodingException {
         Member member = memberService.getCurrent();
-        List<Member> mmss = memberService.findMemberByOnShare(member.getShareCode());
+        List<Member> mmss = memberService.findMemberByOnShareJ(member.getShareCode());
         ButlerUpgradeLog butlerUpgradeLog = getModel(ButlerUpgradeLog.class);
         String name= URLDecoder.decode(butlerUpgradeLog.getName(),"UTF-8");
         String address= URLDecoder.decode(butlerUpgradeLog.getAddress(),"UTF-8");
@@ -405,7 +405,7 @@ public void findButler(){
         butlerUpgradeLog.setBankName(bank_name);
         butlerUpgradeLog.setBank(bank);
         Map<String,Object> map=new HashMap<>();
-        if(mmss.size()<3){
+        if(mmss.size()<1){
             renderJson( ApiResult.fail("升级失败升级人数不够"));
             return;
         }else if(member.getHousekeeperId()<=2){
