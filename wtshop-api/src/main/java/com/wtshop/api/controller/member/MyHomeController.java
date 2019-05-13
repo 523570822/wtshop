@@ -339,7 +339,7 @@ public void findButler(){
         return;
     }
 
-    List<Member> mmss = memberService.findMemberByOnShare(member.getShareCode());
+    List<Member> mmss = memberService.findMemberByOnShareJ(member.getShareCode());
 
 
 //升级金牌

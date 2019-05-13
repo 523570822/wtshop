@@ -47,6 +47,8 @@ public class MemberService extends BaseService<Member> {
 	private StaffMemberDao staffMemberDao = Enhancer.enhance(StaffMemberDao.class);
 	public List<Member> findMemberByOnShare(String shareCode){
 		return memberDao.findMemberByOnShare(shareCode);
+	}	public List<Member> findMemberByOnShareJ(String shareCode){
+		return memberDao.findMemberByOnShareJ(shareCode);
 	}
 	public List<Member> findMemberByLinkShare(String shareCode){
 		return memberDao.findMemberByLinkShare(shareCode);
