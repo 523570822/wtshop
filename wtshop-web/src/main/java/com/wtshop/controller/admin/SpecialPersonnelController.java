@@ -72,7 +72,7 @@ if(member==null){
 	public void edit() {
 		Long id = getParaToLong("id");
 		setAttr("types", Type.values());
-		setAttr("brand", brandService.find(id));
+		setAttr("specialPersonnel", brandService.find(id));
 		render("/admin/special_personnel/edit.ftl");
 	}
 
@@ -81,9 +81,18 @@ if(member==null){
 	 */
 	public void update() {
 		SpecialPersonnel brand = getModel(SpecialPersonnel.class);
-		brandService.update(brand);
-		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("/admin/special_personnel/list.jhtml");
+
+		Member member = memberService.findByPhone(brand.getPhone());
+		if(member==null){
+			addFlashMessage(Message.errMsg("手机号不存在"));
+
+			redirect("/admin/special/list.jhtml");
+		}else{
+			brandService.update(brand);
+			addFlashMessage(SUCCESS_MESSAGE);
+			redirect("/admin/special/list.jhtml");
+		}
+
 	}
 
 	/**
@@ -129,7 +138,7 @@ if(member==null){
 		SpecialPersonnel activity = brandService.find(id);
 		activity.setStatus(false);
 		brandService.update(activity);
-		redirect("/admin/brand/list.jhtml");
+		redirect("/admin/special/list.jhtml");
 	}
 
 
@@ -143,7 +152,7 @@ if(member==null){
 
 		activity.setStatus(true);
 		brandService.update(activity);
-		redirect("/admin/brand/list.jhtml");
+		redirect("/admin/special/list.jhtml");
 	}
 
 }

@@ -66,4 +66,15 @@ public class SpecialPersonnelDao extends OrderEntity<SpecialPersonnel> {
 		return super.findList(sql, null, count, filters, orders);
 	}
 
+    public Boolean findSpByPhone(String phone) {
+		String sql ="select * from special_personnel s where s.phone ="+phone+" and s.status=1 ";
+		SpecialPersonnel ssss = super.findBySql(sql);
+		Boolean bool=false;
+		if(ssss==null){
+			bool=false;
+		}else{
+			bool=true;
+		}
+		return  bool;
+    }
 }

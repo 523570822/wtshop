@@ -97,4 +97,9 @@ public class SpecialPersonnelService extends BaseService<SpecialPersonnel> {
 	public void delete(SpecialPersonnel brand) {
 		super.delete(brand);
 	}
+
+	public Boolean findSpByPhone(String phone) {
+
+		return  brandDao.findSpByPhone(phone);
+	}
 }

@@ -2,7 +2,6 @@ package com.wtshop.service;
 
 import com.jfinal.aop.Enhancer;
 import com.jfinal.ext.plugin.monogodb.MongoKit;
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.mongodb.BasicDBObject;
@@ -43,7 +42,7 @@ public class MemberService extends BaseService<Member> {
 	private MemberRankDao memberRankDao = Enhancer.enhance(MemberRankDao.class);
 	private MailService mailService = Enhancer.enhance(MailService.class);
 	private SmsService smsService = Enhancer.enhance(SmsService.class);
-	private MrmfShopDao mrmfShopDao = Enhancer.enhance(MrmfShopDao.class);
+private  SpecialPersonnelService specialPersonnelService=Enhancer.enhance(SpecialPersonnelService.class);
 	private StaffMemberDao staffMemberDao = Enhancer.enhance(StaffMemberDao.class);
 	public List<Member> findMemberByOnShare(String shareCode){
 		return memberDao.findMemberByOnShare(shareCode);
@@ -174,6 +173,23 @@ public class MemberService extends BaseService<Member> {
 			}
 		}
 if(StringUtils.isNotEmpty(onShareCode)){
+			//判断上级及上上及是否有特殊人员
+	List<Member> member1 = findMemberByOnShare(onShareCode);
+	Boolean bool1 = findShareByOnShare(member1.get(0).getPhone());
+	if(bool1){
+		String shareCode = ShareCodeUtils.idToCode(member1.get(0).getId());
+		member.setShareCode(shareCode);
+		member.setHousekeeperId(2l);
+	}else{
+		List<Member> member2 =findMemberByOnShare(member1.get(0).getOnShareCode());
+		Boolean bool2 = findShareByOnShare(member2.get(0).getPhone());
+		if(bool2){
+			String shareCode = ShareCodeUtils.idToCode(member1.get(0).getId());
+			member.setShareCode(shareCode);
+			member.setHousekeeperId(2l);
+		}
+	}
+
 	member.setOnShareCode(onShareCode);
 }
 if(StringUtils.isNotEmpty(linkShareCode)){
@@ -239,6 +255,14 @@ if(StringUtils.isNotEmpty(linkShareCode)){
 		}*/
 		return member;
 	}
+
+	private Boolean findShareByOnShare(String phone) {
+
+			//判断上级原因是否是特殊身份
+				return specialPersonnelService.findSpByPhone(phone);
+
+
+	 }
 
 	/**
 	 * 用户注册
