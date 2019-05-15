@@ -16,6 +16,7 @@ import com.wtshop.model.SpecialPersonnel;
 import com.wtshop.service.GoodsService;
 import com.wtshop.service.MemberService;
 import com.wtshop.service.SpecialPersonnelService;
+import com.wtshop.util.ShareCodeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -56,7 +57,13 @@ if(member==null){
 	redirect("/admin/special/list.jhtml");
 }else{
 	brandService.save(specialPersonnel);
+if(!StringUtils.isNotEmpty(member.getShareCode())){
+	String shareCode = ShareCodeUtils.idToCode(member.getId());
+	member.setShareCode(shareCode);
+	member.setHousekeeperId(2l);
+	memberService.update(member);
 
+}
 
 
 
@@ -88,7 +95,15 @@ if(member==null){
 
 			redirect("/admin/special/list.jhtml");
 		}else{
+
 			brandService.update(brand);
+			if(!StringUtils.isNotEmpty(member.getShareCode())){
+				String shareCode = ShareCodeUtils.idToCode(member.getId());
+				member.setShareCode(shareCode);
+				member.setHousekeeperId(2l);
+				memberService.update(member);
+
+			}
 			addFlashMessage(SUCCESS_MESSAGE);
 			redirect("/admin/special/list.jhtml");
 		}

@@ -194,7 +194,8 @@ public class OrderController extends BaseController {
 		setAttr("deliveryCorps", deliveryCorpService.findAll());
 		setAttr("isKuaidi100Enabled", StringUtils.isNotEmpty(setting.getKuaidi100Key()));
 		setAttr("area", areaService.findAll());
-		setAttr("order", orderService.find(id));
+		Order order = orderService.find(id);
+		setAttr("order", order);
 		render("/admin/order/view.ftl");
 	}
 
