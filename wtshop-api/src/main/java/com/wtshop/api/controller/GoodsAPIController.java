@@ -22,6 +22,7 @@ import com.wtshop.model.*;
 import com.wtshop.service.*;
 import com.wtshop.util.ApiResult;
 import com.wtshop.util.RedisUtil;
+import com.wtshop.util.ShareCodeUtils;
 import com.wtshop.util.SystemUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -470,7 +471,26 @@ public void onShareCode(){
 		renderJson(ApiResult.fail("邀请码不存在!"));
 		return;
 	}
+	Map<String,Object>  map=  new HashMap<>();
+	//map.put("shareCode","");
+		//判断上级及上上及是否有特殊人员
+		Boolean bool1 = memberService.findShareByOnShare(me.get(0).getPhone());
+	String shareCode = ShareCodeUtils.idToCode(m.getId());
+		if(bool1){
+			map.put("shareCode",shareCode);
+			m.setShareCode(shareCode);
+			m.setHousekeeperId(2l);
+		}else{
+			List<Member> member2 =memberService.findMemberByOnShare(me.get(0).getOnShareCode());
+			Boolean bool2 = memberService.findShareByOnShare(member2.get(0).getPhone());
+			if(bool2){
+				map.put("shareCode",map.put("shareCode",shareCode));
+				m.setShareCode(shareCode);
+				m.setHousekeeperId(2l);
+			}
+		}
 
+		m.setOnShareCode(onShareCode);
 
 
 
@@ -481,7 +501,7 @@ public void onShareCode(){
 
 
 	JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
-	Map<String,Object>  map=  new HashMap<>();
+
 	double sendMiaoBi=0;
 	sendMiaoBi = redisSetting.getDouble("registerSending") ;//邀请码赠送喵币
 	String linkShareCode = me.get(0).getLinkShareCode() + "_" + me.get(0).getOnShareCode();

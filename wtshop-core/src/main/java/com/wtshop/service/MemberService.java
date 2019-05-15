@@ -172,26 +172,7 @@ private  SpecialPersonnelService specialPersonnelService=Enhancer.enhance(Specia
 				mixUserName = "-";
 			}
 		}
-if(StringUtils.isNotEmpty(onShareCode)){
-			//判断上级及上上及是否有特殊人员
-	List<Member> member1 = findMemberByOnShare(onShareCode);
-	Boolean bool1 = findShareByOnShare(member1.get(0).getPhone());
-	if(bool1){
-		String shareCode = ShareCodeUtils.idToCode(member1.get(0).getId());
-		member.setShareCode(shareCode);
-		member.setHousekeeperId(2l);
-	}else{
-		List<Member> member2 =findMemberByOnShare(member1.get(0).getOnShareCode());
-		Boolean bool2 = findShareByOnShare(member2.get(0).getPhone());
-		if(bool2){
-			String shareCode = ShareCodeUtils.idToCode(member1.get(0).getId());
-			member.setShareCode(shareCode);
-			member.setHousekeeperId(2l);
-		}
-	}
 
-	member.setOnShareCode(onShareCode);
-}
 if(StringUtils.isNotEmpty(linkShareCode)){
 	member.setLinkShareCode(linkShareCode);
 }
@@ -235,8 +216,30 @@ if(StringUtils.isNotEmpty(linkShareCode)){
 		member.setIsDelete(false);
 		member.setIsVip(isVip);
 		member.setAvatar(setting.getAvatar());
-		memberDao.save(member);
+		Member me1 = memberDao.saveModel(member);
 
+
+		if(StringUtils.isNotEmpty(onShareCode)){
+			//判断上级及上上及是否有特殊人员
+			List<Member> member1 = findByShareCode(onShareCode);
+
+			Boolean bool1 = findShareByOnShare(member1.get(0).getPhone());
+			if(bool1){
+				String shareCode = ShareCodeUtils.idToCode(me1.getId());
+				member.setShareCode(shareCode);
+				member.setHousekeeperId(2l);
+			}else{
+				List<Member> member2 =findMemberByOnShare(member1.get(0).getOnShareCode());
+				Boolean bool2 = findShareByOnShare(member2.get(0).getPhone());
+				if(bool2){
+					String shareCode = ShareCodeUtils.idToCode(me1.getId());
+					member.setShareCode(shareCode);
+					member.setHousekeeperId(2l);
+				}
+			}
+
+			member.setOnShareCode(onShareCode);
+		}
 		//判断mogo是否存在 若存在 更新数据 若不存在 插入数据
 /*		if(user != null){
 			user.put("shopPassword", DigestUtils.md5Hex(password));
@@ -256,7 +259,7 @@ if(StringUtils.isNotEmpty(linkShareCode)){
 		return member;
 	}
 
-	private Boolean findShareByOnShare(String phone) {
+	public Boolean findShareByOnShare(String phone) {
 
 			//判断上级原因是否是特殊身份
 				return specialPersonnelService.findSpByPhone(phone);

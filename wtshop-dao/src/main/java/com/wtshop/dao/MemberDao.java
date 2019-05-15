@@ -66,14 +66,14 @@ public class MemberDao extends BaseDao<Member> {
 	 * 查询所有直系下线会员
 	 */
 	public List<Member> findMemberByOnShare(String shareCode){
-		String sql = " select * from member where 1 = 1 AND is_delete = 0 And on_share_code='"+shareCode+"'  ";
+		String sql = " select * from member where 1 = 1 AND is_delete = 0 And share_code='"+shareCode+"'  ";
 		return modelManager.find(sql);
 	}
 	/**
 	 * 查询所有直系下线金牌及以上
 	 */
 	public List<Member> findMemberByOnShareJ(String shareCode){
-		String sql = " select * from member where 1 = 1 AND is_delete = 0 And on_share_code='"+shareCode+"'and  housekeeper_id>1 ";
+		String sql = " select * from member where 1 = 1 AND is_delete = 0 And share_code='"+shareCode+"'and  housekeeper_id>1 ";
 		return modelManager.find(sql);
 	}
 	/**

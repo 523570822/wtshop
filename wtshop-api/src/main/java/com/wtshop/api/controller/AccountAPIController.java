@@ -28,6 +28,8 @@ import com.wtshop.util.RedisUtil;
 import com.wtshop.util.SMSUtils;
 import com.wtshop.util.SystemUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -37,7 +39,8 @@ import java.util.Map;
 @ControllerBind(controllerKey = "/api/account")
 @Before({WapInterceptor.class, ErrorInterceptor.class} )
 public class AccountAPIController extends BaseAPIController {
-	
+	Logger _logger = LoggerFactory.getLogger(AccountAPIController.class);
+
 	private MemberService memberService = enhance(MemberService.class);
 	private SmsService smsService = enhance(SmsService.class);
 	private AccountService accountService = enhance(AccountService.class);
@@ -107,6 +110,8 @@ public class AccountAPIController extends BaseAPIController {
 			sms.setSmsCode(smsCode);
 			sms.setSmsType(Setting.SmsType.memberRegister.ordinal());
 			smsService.saveOrUpdate(sms);
+			_logger.info("短信发送成功！【"+smsCode+"】");
+
 			renderJson(ApiResult.success("短信发送成功！【"+smsCode+"】"));
 		}else {
 			renderJson(ApiResult.fail("您发送的过于频繁,请稍后再试!"));
