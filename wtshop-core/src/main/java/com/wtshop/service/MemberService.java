@@ -224,15 +224,16 @@ if(StringUtils.isNotEmpty(linkShareCode)){
 			List<Member> member1 = findByShareCode(onShareCode);
 
 			Boolean bool1 = findShareByOnShare(member1.get(0).getPhone());
+			String shareCode = ShareCodeUtils.idToCode(me1.getId());
 			if(bool1){
-				String shareCode = ShareCodeUtils.idToCode(me1.getId());
+
 				member.setShareCode(shareCode);
 				member.setHousekeeperId(2l);
 			}else{
 				List<Member> member2 =findMemberByOnShare(member1.get(0).getOnShareCode());
 				Boolean bool2 = findShareByOnShare(member2.get(0).getPhone());
 				if(bool2){
-					String shareCode = ShareCodeUtils.idToCode(me1.getId());
+
 					member.setShareCode(shareCode);
 					member.setHousekeeperId(2l);
 				}
