@@ -62,7 +62,6 @@ if(!StringUtils.isNotEmpty(member.getShareCode())){
 	member.setShareCode(shareCode);
 	member.setHousekeeperId(2l);
 	memberService.update(member);
-
 }
 	addFlashMessage(SUCCESS_MESSAGE);
 	redirect("/admin/special/list.jhtml");

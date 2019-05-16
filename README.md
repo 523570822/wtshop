@@ -3,22 +3,15 @@
 
 
 #wtshop
-1.安装jdk（https://blog.csdn.net/github_38336924/article/details/82221258）配置yum安装的环境变量 https://www.cnblogs.com/benjamin77/p/8460030.html
-1.查看安装列表yum search java | grep -i --color jdk
-2.#或者如下命令，安装jdk1.8.0的所有文件 yum install -y java-1.8.0-openjdk* .
-安装tomcat（http://www.cnblogs.com/liaolongjun/p/5638740.html）
-安装git
-1.git --version
-2.yum install -y git
-安装maven
-sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
-sudo sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
-sudo yum install -y maven
-mvn -version
 
+1.tomcat version
+2.yum -y install tomcat 
+3.git --version
+4.yum install -y git
+5.mvn -version
+6.sudo yum install -y maven
+7.mvn idea:idea
 
-
-mvn idea:idea
 
 **远程代码测试服务器101.201.106.61部署：**
 
@@ -26,7 +19,7 @@ mvn idea:idea
 yum install tomcat
  yum install tomcat-admin-webapps
 
-  修改80端口  需要 更改防火墙iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+  修改80端口  需要 更改防火墙y
   通过  service tomcat start 启动
 第一次：
 mkdir learngit //创建文件夹
