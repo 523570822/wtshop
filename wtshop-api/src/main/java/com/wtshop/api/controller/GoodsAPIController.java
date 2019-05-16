@@ -484,7 +484,7 @@ public void onShareCode(){
 			List<Member> member2 =memberService.findMemberByOnShare(me.get(0).getOnShareCode());
 			Boolean bool2 = memberService.findShareByOnShare(member2.get(0).getPhone());
 			if(bool2){
-				map.put("shareCode",map.put("shareCode",shareCode));
+				map.put("shareCode",shareCode);
 				m.setShareCode(shareCode);
 				m.setHousekeeperId(2l);
 			}
