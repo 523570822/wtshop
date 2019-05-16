@@ -1,10 +1,6 @@
 package com.wtshop.dao;
-
-import com.sun.scenario.effect.impl.prism.PrDrawable;
 import com.wtshop.model.Prestore;
-
 import java.util.List;
-
 /**
  * Created by sq on 2017/9/15.
  */
