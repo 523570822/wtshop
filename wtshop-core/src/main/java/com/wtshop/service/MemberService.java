@@ -46,7 +46,8 @@ private  SpecialPersonnelService specialPersonnelService=Enhancer.enhance(Specia
 	private StaffMemberDao staffMemberDao = Enhancer.enhance(StaffMemberDao.class);
 	public List<Member> findMemberByOnShare(String shareCode){
 		return memberDao.findMemberByOnShare(shareCode);
-	}	public List<Member> findMemberByOnShareJ(String shareCode){
+	}
+	public List<Member> findMemberByOnShareJ(String shareCode){
 		return memberDao.findMemberByOnShareJ(shareCode);
 	}
 	public List<Member> findMemberByLinkShare(String shareCode){
@@ -223,7 +224,7 @@ if(StringUtils.isNotEmpty(linkShareCode)){
 			//判断上级及上上及是否有特殊人员
 			List<Member> member1 = findByShareCode(onShareCode);
 
-			Boolean bool1 = findShareByOnShare(member1.get(0).getPhone());
+			Boolean bool1 = findSpByPhone(member1.get(0).getPhone());
 			String shareCode = ShareCodeUtils.idToCode(me1.getId());
 			if(bool1){
 
@@ -231,7 +232,7 @@ if(StringUtils.isNotEmpty(linkShareCode)){
 				member.setHousekeeperId(2l);
 			}else{
 				List<Member> member2 =findMemberByOnShare(member1.get(0).getOnShareCode());
-				Boolean bool2 = findShareByOnShare(member2.get(0).getPhone());
+				Boolean bool2 = findSpByPhone(member2.get(0).getPhone());
 				if(bool2){
 
 					member.setShareCode(shareCode);
@@ -260,7 +261,7 @@ if(StringUtils.isNotEmpty(linkShareCode)){
 		return member;
 	}
 
-	public Boolean findShareByOnShare(String phone) {
+	public Boolean findSpByPhone(String phone) {
 
 			//判断上级原因是否是特殊身份
 				return specialPersonnelService.findSpByPhone(phone);

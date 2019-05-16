@@ -64,9 +64,6 @@ if(!StringUtils.isNotEmpty(member.getShareCode())){
 	memberService.update(member);
 
 }
-
-
-
 	addFlashMessage(SUCCESS_MESSAGE);
 	redirect("/admin/special/list.jhtml");
 }
