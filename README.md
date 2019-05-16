@@ -24,6 +24,7 @@
 9 
 
   通过  service tomcat start 启动
+    修改80端口  需要 更改防火墙iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
    systemctl start service
 第一次：
 mkdir learngit //创建文件夹

@@ -1,5 +1,5 @@
 echo "stop tomcat!"
-systemctl stop service
+systemctl stop tomcat
 sleep 5
 echo "删除文件及缓存"
 sudo rm -rf /root/learngit/wtshop/wtshop-web/target/*
@@ -19,5 +19,5 @@ rsync -rtlvz /root/wtshop/wtshop.properties /var/lib/tomcat/webapps/teacher/WEB-
 chmod 777 /usr/share/tomcat/webapps/wtshop/upload
 
 echo "开启tomcat"
-systemctl start service
+systemctl start tomcat
 #tail -f /mrmf/tomcat_shops/logs/catalina.out
