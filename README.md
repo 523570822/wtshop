@@ -16,6 +16,7 @@
 8.安装redis（https://www.cnblogs.com/fanlinglong/p/6635828.html）
     1.yum install epel-release
     2.yum install redis
+    3. /etc/redis.conf  bind 127.0.0.1 #requirepass foobared 
     3.service redis start  
    systemctl start redis
    
