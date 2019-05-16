@@ -12,6 +12,13 @@
 6.sudo yum install -y maven
 7.mvn idea:idea
 
+8.安装redis（https://www.cnblogs.com/fanlinglong/p/6635828.html）
+    1.yum install epel-release
+    2.yum install redis
+    3.service() redis start  
+
+
+
 
 **远程代码测试服务器101.201.106.61部署：**
 
