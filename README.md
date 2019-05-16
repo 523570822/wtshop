@@ -3,9 +3,10 @@
 
 
 #wtshop
-
+**远程代码测试服务器101.201.106.61部署：**
 1.tomcat version
 2.yum -y install tomcat 
+     yum install tomcat-admin-webapps
 3.git --version
 4.yum install -y git
 5.mvn -version
@@ -15,19 +16,14 @@
 8.安装redis（https://www.cnblogs.com/fanlinglong/p/6635828.html）
     1.yum install epel-release
     2.yum install redis
-    3.service() redis start  
+    3.service redis start  
+   systemctl start redis
+   
+   
+9 
 
-
-
-
-**远程代码测试服务器101.201.106.61部署：**
-
-通过yum安装的tomcat
-yum install tomcat
- yum install tomcat-admin-webapps
-
-  修改80端口  需要 更改防火墙y
   通过  service tomcat start 启动
+   systemctl start service
 第一次：
 mkdir learngit //创建文件夹
 cd learngit
