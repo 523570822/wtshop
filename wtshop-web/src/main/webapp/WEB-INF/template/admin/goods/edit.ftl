@@ -985,7 +985,27 @@
                     }
                 });
             });
+            $('.baoCunReview').click(function () {
+                $('.baoCunReview').attr('disable', true);
+                $.ajax({
+                    type: "POST",
+                    url: "update.jhtml",
+                    data: new FormData($('#inputForm')[0]),
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data.code == 1) {
 
+                        //返回上一页并刷新
+                            self.location=document.referrer;
+
+                        } else {
+                            $.message("warn", data.msg);
+                        }
+                    }
+                });
+            });
             $('.syncReview').click(function () {
                 $('.syncReview').attr('disable', true);
                 $.post("../goodsReview/reviewPass.jhtml", {goodsReviewId: $("#goodsReviewId").val()}, function (data) {
@@ -1009,7 +1029,7 @@
 </div>
 
 
-<form id="inputForm" action="update.jhtml" method="post" enctype="multipart/form-data">
+<form id="inputForm" [#--action="update.jhtml"--] method="post" enctype="multipart/form-data">
 [#-- 0/草稿, 2/待审核, 4/待产品主管审核, 6/待财务审核, 7/待财务主管审核, 8/上线 --]
     [#assign State_Draft=0 State_Review_ProductSpecialist=2 State_Review_ProductManager=4 State_Review_Financial=6 State_Review_FinanceDirector=7 State_Publish=8 ]
     <input type="hidden" name="goods.id" value="${goods.id}"/>
@@ -1558,7 +1578,9 @@
             <td>
                 [#if isReview != 1]
                     [#if goods.check < State_Publish ]
-                        <input type="submit" class="button" value="保存"/>
+                        [#--<input type="submit" class="button " value="保存"/>--]
+                        <input type="button" class="button baoCunReview" value="保存"/>
+
                     [/#if]
                     [#if goods.check == State_Publish ]
                         <input type="button" class="button updateReview" value="提交修改申请"/>

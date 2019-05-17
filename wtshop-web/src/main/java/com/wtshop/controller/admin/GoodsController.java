@@ -538,8 +538,9 @@ public class GoodsController extends BaseController {
         Admin admin = adminService.getCurrent();
         if (goods.hasSpecification()) {
             if (CollectionUtils.isEmpty(products)) {
-                addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error, "商品规格不能为空!"));
-                redirect("/admin/goods/list.jhtml");
+              //  addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error, "商品规格不能为空!"));
+                renderJson(ApiResult.fail("商品规格不能为空!"));
+             //   redirect("/admin/goods/list.jhtml");
                 return;
             }
             if(goods.getCheck()==null){
@@ -548,8 +549,10 @@ public class GoodsController extends BaseController {
             goodsService.update(goods, products, admin, promotionIds, tagIds, effectIds);
         } else {
             if (product == null) {
-                addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error, "产品不能为空!"));
-                redirect("/admin/goods/list.jhtml");
+             //   addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error, "产品不能为空!"));
+
+                renderJson(ApiResult.fail("产品不能为空!"));
+               // redirect("/admin/goods/list.jhtml");
                 return;
             }
             goodsService.update(goods, product, admin, promotionIds, tagIds, effectIds);
@@ -557,7 +560,7 @@ public class GoodsController extends BaseController {
 
 
         addFlashMessage(SUCCESS_MESSAGE);
-        redirect("/admin/goods/list.jhtml");
+        renderJson(ApiResult.success());
     }
 
 
