@@ -376,11 +376,11 @@
 	    <version>4.4.5</version>
 	</dependency>
 	
-	<dependency>  
+	<!--<dependency>
 	  <groupId>org.apache.httpcomponents</groupId>  
 	  <artifactId>httpclient</artifactId>  
 	  <version>4.2.3</version>  
-	</dependency>  
+	</dependency>  -->
 	<dependency>
 	    <groupId>redis.clients</groupId>
 	    <artifactId>jedis</artifactId>
@@ -463,11 +463,11 @@
 	    <artifactId>logback-core</artifactId>
 	    <version>1.1.7</version>
 	</dependency>
-	  <dependency>
+<!--	  <dependency>
 		  <groupId>org.slf4j</groupId>
 		  <artifactId>slf4j-log4j12</artifactId>
 		  <version>1.7.21</version>
-	  </dependency>
+	  </dependency>-->
       <dependency>
           <groupId>com.taobao</groupId>
           <artifactId>taobao-sdk</artifactId>
