@@ -1,9 +1,7 @@
-
-
-
-
 #wtshop
 **远程代码测试服务器101.201.106.61部署：**
+
+0.yum install -y java-1.8.0-openjdk*
 https://www.cnblogs.com/qianzf/p/6986962.html
 1.tomcat version
 2.sudo yum install tomcat
@@ -14,6 +12,8 @@ https://www.cnblogs.com/qianzf/p/6986962.html
 4.yum install -y git
 5.mvn -version
 6.sudo yum install -y maven
+(报错 wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo  yum -y install apache-maven )
+  
 7.mvn idea:idea
 
 8.安装redis（https://www.cnblogs.com/fanlinglong/p/6635828.html）
