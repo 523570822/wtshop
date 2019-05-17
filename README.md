@@ -4,9 +4,12 @@
 
 #wtshop
 **远程代码测试服务器101.201.106.61部署：**
+https://www.cnblogs.com/qianzf/p/6986962.html
 1.tomcat version
-2.yum -y install tomcat 
-     yum install tomcat-admin-webapps
+2.sudo yum install tomcat
+3.sudo yum install tomcat-webapps tomcat-admin-webapps 
+4.
+   yum install tomcat-admin-webapps
 3.git --version
 4.yum install -y git
 5.mvn -version
