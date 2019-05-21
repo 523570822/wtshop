@@ -3,6 +3,7 @@ package com.wtshop.dao;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Filter;
 import com.wtshop.Pageable;
 import com.wtshop.model.Goods;
@@ -559,7 +560,89 @@ public class OrderDao extends BaseDao<Order> {
 		}
 		return super.findPage(sqlExceptSelect, pageable);
 	}
-	
+
+	public Page<Order> findGoodsPage(String adminId,String beginDate,String endDate,Order.Type type, Order.Status status, Member member, Goods goods, Boolean isPendingReceive, Boolean isPendingRefunds, Boolean isUseCouponCode, Boolean isExchangePoint, Boolean isAllocatedStock, Boolean hasExpired, Pageable pageable) {
+		String select ="SELECT oo.*, oi.`name`, oi.specifications, oi.quantity,oi.quantity *oi.price*oo.miaobi_paid/oo.price miaobi_goodpaid,   oi.price good_price, oi.quantity * oi.price good_zprice, oi.admin_id";
+
+
+
+		String sqlExceptSelect = " FROM ( SELECT o.*,fg.count,fg.groupnum FROM `order` o LEFT JOIN fight_group fg  on fg.id=o.groupbuy_id  WHERE 1 = 1 AND o.is_delete = 0";
+		if (type != null) {
+			sqlExceptSelect += " AND o.type = " + type.ordinal();
+		}
+		if (status != null) {
+			sqlExceptSelect += " AND o.status = " + status.ordinal();
+		}
+		if (beginDate != null) {
+			sqlExceptSelect += " AND o.create_date >= '" + beginDate+"' ";
+		}	if (endDate != null) {
+			sqlExceptSelect += " AND o.create_date <= '" + endDate+"' ";
+		}
+		if (member != null) {
+			sqlExceptSelect += " AND o.member_id = " + member.getId();
+		}
+		if (goods != null) {
+			sqlExceptSelect += " AND EXISTS (SELECT 1 FROM `order_item` oi WHERE o.id = oi.order_id AND oi.product_id IN (SELECT p.id FROM `product` p LEFT JOIN `goods` g ON p.goods_id = g.id AND g.id = " + goods.getId() + ")) ";
+		}
+		if (isPendingReceive != null) {
+			String subQuery = ""
+					+ " ((o.expire IS NOT NULL OR o.expire <= '" + DateUtils.formatDateTime(new Date()) + "'"
+					+ " OR  o.`status` = " + Order.Status.failed.ordinal()
+					+ " OR  o.`status` = " + Order.Status.canceled.ordinal()
+					+ " OR  o.`status` = " + Order.Status.denied.ordinal() + ")"
+					+ " AND o.amount_paid > 0) "
+					+ " AND o.`status` = " + Order.Status.completed.ordinal()
+					+ " AND o.amount_paid > o.amount ";
+			if (isPendingReceive) {
+				sqlExceptSelect += " OR " + subQuery;
+			} else {
+
+			}
+		}
+		if (isPendingRefunds != null) {
+			String subQuery = ""
+					+ " ((o.expire IS NOT NULL OR o.expire <= '" + DateUtils.formatDateTime(new Date()) + "'"
+					+ " OR  o.`status` = " + Order.Status.failed.ordinal()
+					+ " OR  o.`status` = " + Order.Status.canceled.ordinal()
+					+ " OR  o.`status` = " + Order.Status.denied.ordinal() + ")"
+					+ " AND o.`status` = " + Order.Status.completed.ordinal();
+			if (isPendingRefunds) {
+				sqlExceptSelect += " OR " + subQuery;
+			} else {
+
+			}
+		}
+		if (isUseCouponCode != null) {
+			sqlExceptSelect += " o.is_use_coupon_code = " + isUseCouponCode;
+		}
+		if (isExchangePoint != null) {
+			sqlExceptSelect += " o.is_exchange_point = " + isExchangePoint;
+		}
+		if (isAllocatedStock != null) {
+			sqlExceptSelect += " o.is_allocated_stock = " + isAllocatedStock;
+		}
+		if (hasExpired != null) {
+			if (hasExpired) {
+				sqlExceptSelect += " AND o.expire IS NOT NULL AND o.expire <= '" + DateUtils.formatDateTime(new Date()) + "' ";
+			} else {
+				sqlExceptSelect += " AND o.expire IS NULL OR o.expire > '" + DateUtils.formatDateTime(new Date()) + "' ";
+			}
+		}
+		sqlExceptSelect += " ) oo LEFT JOIN (select oit.*,g.admin_id from order_item oit LEFT JOIN product p on oit.product_id = p.id  LEFT JOIN goods g on g.id=p.goods_id) oi ON oi.order_id = oo.id  where 1=1 ";
+
+		if (adminId != null&& !adminId.equals("")) {
+			if(adminId.equals("0")){
+				sqlExceptSelect +=" and (oi.admin_id=0 or   oi.admin_id is  null) ";
+			}else{
+				sqlExceptSelect +=" and oi.admin_id="+adminId+"  ";
+			}
+		}
+		pageable.setOrderProperty("admin_id");
+		pageable.setOrderDirection("desc");
+		//	return	Db.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sql);
+		return super.findPages(select,sqlExceptSelect, pageable);
+	}
+
 	/**
 	 * 查询订单数量
 	 * 

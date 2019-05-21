@@ -1,13 +1,15 @@
 package com.wtshop.controller.admin;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.util.*;
 
 import com.jfinal.aop.Before;
+import com.jfinal.ext.render.excel.PoiRender;
+import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.jfinal.render.Render;
 import com.wtshop.model.*;
 import com.wtshop.service.*;
 import org.apache.commons.lang3.StringUtils;
@@ -19,6 +21,7 @@ import com.wtshop.Pageable;
 import com.wtshop.Setting;
 import com.wtshop.entity.Invoice;
 import com.wtshop.util.SystemUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 /**
  * Controller - 订单
@@ -505,7 +508,7 @@ public class OrderController extends BaseController {
 	/**
 	 * 列表
 	 */
-	public void list() {
+	public void listGoods() {
 		String typeName = getPara("type");
 		Order.Type type = StrKit.notBlank(typeName) ? Order.Type.valueOf(typeName) : null;
 		
@@ -520,7 +523,17 @@ public class OrderController extends BaseController {
 		Boolean isAllocatedStock = getParaToBoolean("isAllocatedStock");
 		Boolean hasExpired = getParaToBoolean("hasExpired");
 		Pageable pageable = getBean(Pageable.class);
+		Date beginDate = getParaToDate("beginDate", null);
+		Date endDate = getParaToDate("endDate", null);
+		if (beginDate == null) {
+			beginDate = DateUtils.addMonths(new Date(), -1);
+		}
 
+		if (endDate == null) {
+			endDate = new Date();
+		}
+		setAttr("beginDate", beginDate);
+		setAttr("endDate", endDate);
 		setAttr("types", Order.Type.values());
 		setAttr("statuses", Order.Status.values());
 		setAttr("type", type);
@@ -540,7 +553,105 @@ public class OrderController extends BaseController {
 		}
 		render("/admin/order/list.ftl");
 	}
+	/**
+	 * 列表
+	 */
+	public void list() {
+		String typeName = getPara("type");
+		Order.Type type = StrKit.notBlank(typeName) ? Order.Type.valueOf(typeName) : null;
+		String adminId = getPara("adminId");
+		String statusName = getPara("status");
+		Order.Status status = StrKit.notBlank(statusName) ? Order.Status.valueOf(statusName) : null;
 
+		orderService.updateExperce(null);
+
+		String memberUsername = getPara("memberUsername");
+		Boolean isPendingReceive = getParaToBoolean("isPendingReceive");
+		Boolean isPendingRefunds = getParaToBoolean("isPendingRefunds");
+		Boolean isAllocatedStock = getParaToBoolean("isAllocatedStock");
+		Boolean hasExpired = getParaToBoolean("hasExpired");
+		Pageable pageable = getBean(Pageable.class);
+		Date beginDate = getParaToDate("beginDate", null);
+		Date endDate = getParaToDate("endDate", null);
+		if (beginDate == null) {
+			beginDate = DateUtils.addMonths(new Date(), -1);
+		}
+
+		if (endDate == null) {
+			endDate = new Date();
+		}
+		setAttr("adminId", adminId);
+		setAttr("beginDate", beginDate);
+		setAttr("endDate", endDate);
+		setAttr("types", Order.Type.values());
+		setAttr("statuses", Order.Status.values());
+		setAttr("type", type);
+		setAttr("status", status);
+		setAttr("memberUsername", memberUsername);
+		setAttr("isPendingReceive", isPendingReceive);
+		setAttr("isPendingRefunds", isPendingRefunds);
+		setAttr("isAllocatedStock", isAllocatedStock);
+		setAttr("hasExpired", hasExpired);
+		setAttr("pageable", pageable);
+
+		Member member = memberService.findByUsername(memberUsername);
+		if (StringUtils.isNotEmpty(memberUsername) && member == null) {
+			setAttr("page", "");
+		} else {
+
+			//Page<Order> oo = orderService.findPage(type, status, member, null, isPendingReceive, isPendingRefunds, null, null, isAllocatedStock, hasExpired, pageable);
+			Page<Order> oo = orderService.findGoodsPage(adminId,com.wtshop.util.DateUtils.formatDate(beginDate),com.wtshop.util.DateUtils.formatDate(endDate),type, status, member, null, isPendingReceive, isPendingRefunds, null, null, isAllocatedStock, hasExpired, pageable);
+
+
+			setAttr("page",oo );
+		}
+		render("/admin/order/list.ftl");
+	}
+	//导出
+	public  void   getOrderExcel(){
+		String typeName = getPara("type");
+		Order.Type type = StrKit.notBlank(typeName) ? Order.Type.valueOf(typeName) : null;
+		String adminId = getPara("adminId");
+		String statusName = getPara("status");
+		Order.Status status = StrKit.notBlank(statusName) ? Order.Status.valueOf(statusName) : null;
+
+		orderService.updateExperce(null);
+
+		String memberUsername = getPara("memberUsername");
+		Boolean isPendingReceive = getParaToBoolean("isPendingReceive");
+		Boolean isPendingRefunds = getParaToBoolean("isPendingRefunds");
+		Boolean isAllocatedStock = getParaToBoolean("isAllocatedStock");
+		Boolean hasExpired = getParaToBoolean("hasExpired");
+		Pageable pageable = getBean(Pageable.class);
+		Date beginDate = getParaToDate("beginDate", null);
+		Date endDate = getParaToDate("endDate", null);
+		if (beginDate == null) {
+			beginDate = DateUtils.addMonths(new Date(), -1);
+		}
+
+		if (endDate == null) {
+			endDate = new Date();
+		}
+		Member member = memberService.findByUsername(memberUsername);
+		Page<Order> oo=null ;
+		if (StringUtils.isNotEmpty(memberUsername) && member == null) {
+			setAttr("page", "");
+		} else {
+			pageable.setPageNumber(1);
+			pageable.setPageSize(10000000);
+			//Page<Order> oo = orderService.findPage(type, status, member, null, isPendingReceive, isPendingRefunds, null, null, isAllocatedStock, hasExpired, pageable);
+		oo = orderService.findGoodsPage(adminId,com.wtshop.util.DateUtils.formatDate(beginDate),com.wtshop.util.DateUtils.formatDate(endDate),type, status, member, null, isPendingReceive, isPendingRefunds, null, null, isAllocatedStock, hasExpired, pageable);
+
+
+
+		}
+		List<Order> fff = oo.getList();
+		String[] header={"订单编号","商品名称","数量","商品单价","商品总价","使用喵币","邮费","消费额","规格","拼团人数","订单备注","收货人","电话","地址","支付方式","是否开发票","配送方式","状态","种类","创建日期"};
+		String[] columns={"sn"     ,   "name", "quantity","good_price","good_zprice","miaobi_goodpaid","fee","amount","specifications","","","","","",""};
+		Render poirender = PoiRender.me(fff).fileName("caiwuOrder.xls").headers(header).sheetName("财务订单").columns(columns);
+		render(poirender);
+
+	}
 	/**
 	 * 删除
 	 */

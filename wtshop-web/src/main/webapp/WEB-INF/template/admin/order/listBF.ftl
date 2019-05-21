@@ -39,20 +39,7 @@ $().ready(function() {
 	var $print = $("#listTable select[name='print']");
 	
 	[@flash_message /]
-    $('#excelList').click(function () {
-        var  beginDate=$('#beginDate').val();
-        var  endDate=$('#endDate').val();
-        var  type=$('#type').val();
-        var  adminId=$('#adminId').val();
-        var  status=$('#status').val();
-        var  memberUsername=$('#memberUsername').val();
-        var  hasExpired=$('#hasExpired').val();
-        var  isPendingReceive=$('#isPendingReceive').val();
-        var  isPendingRefunds=$('#isPendingRefunds').val();
-        var  isAllocatedStock=$('#isAllocatedStock').val();
-        location.href='getOrderExcel.jhtml?beginDate='+beginDate+"&endDate="+endDate+"&type"+type+"&adminId"+adminId+"&status"+status+"&memberUsername"+memberUsername+"&hasExpired"+hasExpired+"&isPendingReceive"+isPendingReceive+"&isPendingRefunds"+isPendingRefunds+"&isAllocatedStock"+isAllocatedStock;
-
-    })
+	
 	// 筛选菜单
 	$filterMenu.hover(
 		function() {
@@ -86,7 +73,7 @@ $().ready(function() {
 								${message("Order.type")}:
 							<\/th>
 							<td>
-								<select id="type" name="type">
+								<select name="type">
 									<option value="">${message("admin.common.choose")}<\/option>
 									[#list types as value]
 										<option value="${value}"[#if value == type] selected="selected"[/#if]>${message("Order.Type." + value)}<\/option>
@@ -202,20 +189,18 @@ $().ready(function() {
 				</ul>
 			</div>
             商铺:
-			<select id="adminId" name="adminId">
-                <option value="">
-                    全部
-                </option>
-				<option value="0"
-					  [#if 0 == adminId]
-                                selected = "selected"[/#if]>
+			<select >
+				<option value="0">
+					  [#if 0 == goods.adminId]
+                               checked[/#if]
                     总店
 				</option>
   [#list 1..50 as i]
+
 			<option
-			  [#if i == adminId]
-                                selected = "selected"[/#if]
-					value="${i}">
+					  [#if i == goods.adminId]
+                               checked[/#if]
+					value="i">
                 店铺${i}
             </option>
   [/#list]
@@ -239,45 +224,16 @@ $().ready(function() {
 				</th>
 
 				<th>
-					<a href="javascript:;" name="amount">${message("Order.sn")}</a>
+					<a href="javascript:;" class="sort" name="sn">${message("Order.sn")}</a>
+				</th>
+				<th>
+					<a href="javascript:;" class="sort" name="amount">${message("Order.amount")}</a>
 				</th>
                 <th>
-                    <a href="javascript:;" name="amount">商品名称</a>
-                </th>
-                <th>
-                    <a href="javascript:;" name="amount">数  量</a>
-                </th>
-                <th>
-                    <a href="javascript:;" name="amount">单  价</a>
-                </th>
-                <th>
-                    <a href="javascript:;"  name="amount">商品总金额</a>
-                </th>
-
-                <th>
-                    <a href="javascript:;" name="amount">喵币支付</a>
-                </th>
-                <th>
-                    <a href="javascript:;" name="amount">邮费</a>
+                    <a href="javascript:;" class="sort" name="consignee">${message("Order.consignee")}</a>
                 </th>
 				<th>
-					<a href="javascript:;"  name="amount">${message("Order.amount")}</a>
-				</th>
-                <th>
-                    <a href="javascript:;" name="amount">规格</a>
-                </th>
-                <th>
-                    <a href="javascript:;" name="amount">拼团人数</a>
-                </th>
-                <th>
-                    <a href="javascript:;" name="amount">订单备注</a>
-                </th>
-
-                <th>
-                    <a href="javascript:;"  name="consignee">${message("Order.consignee")}</a>
-                </th>
-				<th>
-					<a href="javascript:;"  name="member_id">${message("Order.phone")}</a>
+					<a href="javascript:;" class="sort" name="member_id">${message("Order.phone")}</a>
 				</th>
 
 
@@ -316,45 +272,15 @@ $().ready(function() {
 				<tr>
 
                     <td>
-					<input type="checkbox" name="ids" value="${order.id}" /> 	${order.admin_id}	[#--${order_index+1}--]
+					<input type="checkbox" name="ids" value="${order.id}" />	${order_index+1}
 					</td>
 					<td>
 						${order.sn}
 					</td>
 					<td>
-						${order.name}
-					</td>
-                    <td>
-						${order.quantity}
-                    </td>
-                    <td>
-						${currency(order.good_price, true)}
-
-                    </td>
-                    <td>
-						${currency(order.good_zprice, true)}
-
-                    </td>
-
-                    <td>
-						${currency(order.miaobi_goodpaid, true)}
-
-                    </td>
-                    <td>
-						${currency(order.fee, true)}
-                    </td>
-					<td>
 						${currency(order.amount, true)}
 					</td>
-                    <td>
-						${order.specifications}
-                    </td>
-                    <td>
-						${order.count}/${order.groupnum}
-                    </td>
-                    <td>
-						${order.memo}
-                    </td>
+
 					<td>
 						${order.consignee}
 					</td>
