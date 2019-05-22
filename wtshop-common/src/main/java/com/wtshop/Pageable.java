@@ -24,7 +24,7 @@ public class Pageable implements Serializable {
 	private static final int DEFAULT_PAGE_SIZE = 20;
 
 	/** 最大每页记录数 */
-	private static final int MAX_PAGE_SIZE = 1000;
+	private static final int MAX_PAGE_SIZE = 1000000000;
 
 	/** 页码 */
 	private int pageNumber = DEFAULT_PAGE_NUMBER;

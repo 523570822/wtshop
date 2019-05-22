@@ -562,7 +562,7 @@ public class OrderDao extends BaseDao<Order> {
 	}
 
 	public Page<Order> findGoodsPage(String adminId,String beginDate,String endDate,Order.Type type, Order.Status status, Member member, Goods goods, Boolean isPendingReceive, Boolean isPendingRefunds, Boolean isUseCouponCode, Boolean isExchangePoint, Boolean isAllocatedStock, Boolean hasExpired, Pageable pageable) {
-		String select ="SELECT oo.*, oi.`name`, oi.specifications, oi.quantity,oi.quantity *oi.price*oo.miaobi_paid/oo.price miaobi_goodpaid,   oi.price good_price, oi.quantity * oi.price good_zprice, oi.admin_id";
+		String select ="SELECT oo.*, oi.`name`,CASE oo.type WHEN 0 THEN '普通订单' WHEN 1 THEN '兑换订单' WHEN 2 THEN '福袋订单' WHEN 3 THEN '倒拍订单' WHEN 4 THEN '喵币商品订单' WHEN 5 THEN '满减订单' WHEN 6 THEN 'vip置换订单' WHEN 6 THEN 'vip置换订单' WHEN 7 THEN '团购' END typeName,CASE oo.`status` WHEN 0 THEN '等待付款' WHEN 1 THEN '等待审核' WHEN 2 THEN '等待发货' WHEN 3 THEN '已发货' WHEN 4 THEN '已收货' WHEN 6 THEN '已失败' WHEN 7 THEN '已取消' WHEN 8 THEN '已拒绝' WHEN 9 THEN '待评价' WHEN 10 THEN '已评价' WHEN 11 THEN '已退款' WHEN 5 THEN '已完成' END statusName,  oo.count+'/'+oo.groupnum cg, oi.specifications, oi.quantity,ROUND(oi.quantity*oi.price*oo.miaobi_paid/oo.price,6) miaobi_goodpaid,oo.area_name+oo.address areaName_address,   oi.price good_price, oi.quantity * oi.price good_zprice, oi.admin_id";
 
 
 
