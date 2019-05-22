@@ -567,6 +567,8 @@ public class OrderDao extends BaseDao<Order> {
 
 
 		String sqlExceptSelect = " FROM ( SELECT o.*,fg.count,fg.groupnum FROM `order` o LEFT JOIN fight_group fg  on fg.id=o.groupbuy_id  WHERE 1 = 1 AND o.is_delete = 0";
+
+
 		if (type != null) {
 			sqlExceptSelect += " AND o.type = " + type.ordinal();
 		}

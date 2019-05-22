@@ -643,6 +643,8 @@ public class OrderController extends BaseController {
 		oo = orderService.findGoodsPage(adminId,com.wtshop.util.DateUtils.formatDate(beginDate),com.wtshop.util.DateUtils.formatDate(endDate),type, status, member, null, isPendingReceive, isPendingRefunds, null, null, isAllocatedStock, hasExpired, pageable);
 		
 		}
+
+
 		List<Order> fff = oo.getList();
 		String[] header={"商家编号","订单编号","商品名称","数量","商品单价","商品总价","使用喵币","邮费","消费额","规格","收货人","电话","省份","地址","支付方式","是否开发票","配送方式","状态","种类","创建日期","拼团人数","订单备注"};
 		String[] columns={"admin_id","sn"     ,   "name", "quantity","good_price","good_zprice","miaobi_goodpaid","fee","amount","specifications","consignee","phone","area_name","address","payment_method_name","isInvoiceName","shipping_method_name","statusName","typeName","create_date","cg","memo"};
