@@ -644,8 +644,8 @@ public class OrderController extends BaseController {
 		
 		}
 		List<Order> fff = oo.getList();
-		String[] header={"上家编号","订单编号","商品名称","数量","商品单价","商品总价","使用喵币","邮费","消费额","规格","收货人","电话","地址","支付方式","是否开发票","配送方式","状态","种类","创建日期","拼团人数","订单备注"};
-		String[] columns={"adminId","sn"     ,   "name", "quantity","good_price","good_zprice","miaobi_goodpaid","fee","amount","specifications","consignee","phone","areaName_address","payment_method_name","isInvoiceName","shipping_method_name","statusName","typeName","createDate","cg","memo"};
+		String[] header={"商家编号","订单编号","商品名称","数量","商品单价","商品总价","使用喵币","邮费","消费额","规格","收货人","电话","省份","地址","支付方式","是否开发票","配送方式","状态","种类","创建日期","拼团人数","订单备注"};
+		String[] columns={"admin_id","sn"     ,   "name", "quantity","good_price","good_zprice","miaobi_goodpaid","fee","amount","specifications","consignee","phone","area_name","address","payment_method_name","isInvoiceName","shipping_method_name","statusName","typeName","create_date","cg","memo"};
 		Render poirender = PoiRender.me(fff).fileName("order.xls").headers(header).sheetName("财务订单").columns(columns);
 		render(poirender);
 

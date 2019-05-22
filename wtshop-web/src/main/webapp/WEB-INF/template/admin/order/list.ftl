@@ -50,7 +50,7 @@ $().ready(function() {
         var  isPendingReceive=$('#isPendingReceive').val();
         var  isPendingRefunds=$('#isPendingRefunds').val();
         var  isAllocatedStock=$('#isAllocatedStock').val();
-        location.href='getOrderExcel.jhtml?beginDate='+beginDate+"&endDate="+endDate+"&type"+type+"&adminId"+adminId+"&status"+status+"&memberUsername"+memberUsername+"&hasExpired"+hasExpired+"&isPendingReceive"+isPendingReceive+"&isPendingRefunds"+isPendingRefunds+"&isAllocatedStock"+isAllocatedStock;
+        location.href='getOrderExcel.jhtml?beginDate='+beginDate+"&endDate="+endDate+"&type="+type+"&adminId="+adminId+"&status="+status+"&memberUsername="+memberUsername+"&hasExpired="+hasExpired+"&isPendingReceive="+isPendingReceive+"&isPendingRefunds="+isPendingRefunds+"&isAllocatedStock="+isAllocatedStock;
 
     })
 	// 筛选菜单
