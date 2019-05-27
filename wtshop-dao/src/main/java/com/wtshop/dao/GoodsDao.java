@@ -266,7 +266,7 @@ public class GoodsDao extends BaseDao<Goods> {
 		}
 		if(keyword != null){
 			//sqlExceptSelect += " AND (g.name like '%"+ keyword +"%' OR g.caption like '%"+ keyword +"%'  OR g.keyword like '%"+ keyword +"%' )";
-			sqlExceptSelect += " AND ( g. NAME LIKE '%"+ keyword +"%' OR g.caption LIKE '"+ keyword +"' OR g.keyword LIKE '"+ keyword +"' OR m.na1 LIKE '"+ keyword +"' OR m.na2 LIKE '"+ keyword +"' OR m.na LIKE '"+ keyword +"' ) ";
+			sqlExceptSelect += " AND ( g. NAME LIKE '%"+ keyword +"%' OR g.caption LIKE '"+ keyword +"' OR g.keyword LIKE '"+ keyword +"' OR pc1.`name` LIKE '%"+ keyword +"%' OR pc.`name` LIKE '%"+ keyword +"%' OR pc2.`name` LIKE '%"+ keyword +"%' ) ";
 		}
 		if(startPrice != null){
 			sqlExceptSelect +=" AND g.price >= " + startPrice ;
