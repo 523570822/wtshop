@@ -360,7 +360,57 @@ public class BaseDao <M extends Model<M>> {
 		return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
 
 	}
+	/**
+	 * 自定义分页查询
+	 * @param select
+	 * @param sqlExceptSelect
+	 * @param pageable
+	 * @return
+	 */
+	protected Page<M>  findPages(String select,String sqlExceptSelect, Pageable pageable,String jian) {
+		Assert.notNull(sqlExceptSelect);
+		if (pageable == null) {
+			pageable = new Pageable();
+		}
+		// 过滤条件
+		String filtersSQL = getFilters(pageable.getFilters());
+		LogKit.info("filtersSQL:" + filtersSQL);
 
+		// 搜索属性、搜索值
+		String searchProperty = pageable.getSearchProperty();
+		String searchValue = pageable.getSearchValue();
+		if (StringUtils.isNotEmpty(searchProperty) && StringUtils.isNotEmpty(searchValue)) {
+			filtersSQL += " AND "+jian+"." + searchProperty + " LIKE '%" + StringUtils.trim(searchValue) + "%' ";
+		}
+		sqlExceptSelect += filtersSQL;
+
+		String ordersSQL = getOrders(pageable.getOrders());
+		LogKit.info("ordersSQL:" + ordersSQL);
+
+		// 排序属性、方向
+		String orderProperty = pageable.getOrderProperty();
+		Order.Direction orderDirection = pageable.getOrderDirection();
+		if (StringUtils.isNotEmpty(orderProperty) && orderDirection != null) {
+			switch (orderDirection) {
+				case asc:
+					sqlExceptSelect += " ORDER BY " + orderProperty + " ASC ";
+					break;
+				case desc:
+					sqlExceptSelect += " ORDER BY " + orderProperty + " DESC ";
+					break;
+			}
+		} else if (StrKit.isBlank(ordersSQL)) {
+			if (compareClass()) {
+				ordersSQL = " ORDER BY " + OrderEntity.ORDER_NAME +" ASC ";
+			} else {
+				ordersSQL = " ORDER BY " + CREATE_DATE + " DESC ";
+			}
+		}
+		sqlExceptSelect += ordersSQL;
+		LogKit.info("sqlExceptSelect:" + sqlExceptSelect);
+		return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
+
+	}
 	/**
 	 * 转换为Predicate
 	 *

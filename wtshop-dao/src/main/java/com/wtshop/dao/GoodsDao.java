@@ -265,7 +265,7 @@ public class GoodsDao extends BaseDao<Goods> {
 			sqlExceptSelect += " AND g.is_vip = " + is_vip;
 		}
 		if(keyword != null){
-
+			//sqlExceptSelect += " AND (g.name like '%"+ keyword +"%' OR g.caption like '%"+ keyword +"%'  OR g.keyword like '%"+ keyword +"%' )";
 			sqlExceptSelect += " AND ( g. NAME LIKE '%"+ keyword +"%' OR g.caption LIKE '"+ keyword +"' OR g.keyword LIKE '"+ keyword +"' OR m.na1 LIKE '"+ keyword +"' OR m.na2 LIKE '"+ keyword +"' OR m.na LIKE '"+ keyword +"' ) ";
 		}
 		if(startPrice != null){
@@ -304,9 +304,9 @@ public class GoodsDao extends BaseDao<Goods> {
 		if(productCategoryList != null && productCategoryList.size() > 0){
 			sqlExceptSelect += " AND m.product_category_id IN " + SqlUtils.getSQLIn(productCategoryList);
 		}
-		//if( !priceUp && !priceDown){
+		if( !priceUp && !priceDown){
 			sqlExceptSelect += "GROUP BY m.id order by is_top desc ";
-		//}
+		}
 
 		logger.info(sqlExceptSelect);
 		return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
