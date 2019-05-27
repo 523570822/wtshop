@@ -248,7 +248,7 @@ public class GoodsDao extends BaseDao<Goods> {
 	 */
 	public Page<Goods> search(Boolean is_vip, List<Long> productCategoryList, Long[] brandId, List<Long> areaList, Long[] functionId, String keyword, BigDecimal startPrice, BigDecimal endPrice, Pageable pageable, Boolean modify_date, Boolean sell, Boolean review, Boolean priceUp ,Boolean priceDown){
 		Logger logger = LoggerFactory.getLogger("dddddd");
-		String sqlExceptSelect = " from (select pc1.`name` na1, pc2.`name` na2, pc.`name` na, g.sales,g.id,g.is_top, g.name,g.price,g.market_price,g.image,g.caption,g.product_category_id,g.is_delete,g.is_marketable,g.commission_rate FROM goods g left join goods_effct e on g.id = e.goods " +
+		String sqlExceptSelect = " from (select pc1.`name` na1, pc2.`name` na2, pc.`name` na, g.sales,g.id,g.is_top, g.`name`,g.price,g.market_price,g.image,g.caption,g.product_category_id,g.is_delete,g.is_marketable,g.commission_rate FROM goods g left join goods_effct e on g.id = e.goods " +
 				"LEFT JOIN (SELECT count(*) count,goods_id from review group by goods_id ) m ON g.id = m.goods_id " +
 				"LEFT JOIN (SELECT count(p.goods_id)count,p.goods_id,o.`status`,p.stock from order_item i LEFT JOIN `order` o ON i.order_id = o.id " +
 				"LEFT JOIN product p ON p.id =i.product_id GROUP BY p.goods_id ";
@@ -266,7 +266,7 @@ public class GoodsDao extends BaseDao<Goods> {
 		}
 		if(keyword != null){
 			//sqlExceptSelect += " AND (g.name like '%"+ keyword +"%' OR g.caption like '%"+ keyword +"%'  OR g.keyword like '%"+ keyword +"%' )";
-			sqlExceptSelect += " AND ( g. NAME LIKE '%"+ keyword +"%' OR g.caption LIKE '"+ keyword +"' OR g.keyword LIKE '"+ keyword +"' OR pc1.`name` LIKE '%"+ keyword +"%' OR pc.`name` LIKE '%"+ keyword +"%' OR pc2.`name` LIKE '%"+ keyword +"%' ) ";
+			sqlExceptSelect += " AND ( g.`name` LIKE '%"+ keyword +"%' OR g.caption LIKE '%"+ keyword +"%' OR g.keyword LIKE '%"+ keyword +"%' ) ";
 		}
 		if(startPrice != null){
 			sqlExceptSelect +=" AND g.price >= " + startPrice ;
@@ -300,6 +300,10 @@ public class GoodsDao extends BaseDao<Goods> {
 		}
 
 		sqlExceptSelect +=" ) m LEFT JOIN product p ON m.id = p.goods_id where 1 = 1 ";
+		if(keyword != null){
+			//sqlExceptSelect += " AND (g.name like '%"+ keyword +"%' OR g.caption like '%"+ keyword +"%'  OR g.keyword like '%"+ keyword +"%' )";
+			sqlExceptSelect += " AND (  m.na1 LIKE '%"+ keyword +"%' OR m.na2 LIKE '%"+ keyword +"%' OR m.na LIKE '%"+ keyword +"%' ) ";
+		}
 
 		if(productCategoryList != null && productCategoryList.size() > 0){
 			sqlExceptSelect += " AND m.product_category_id IN " + SqlUtils.getSQLIn(productCategoryList);
