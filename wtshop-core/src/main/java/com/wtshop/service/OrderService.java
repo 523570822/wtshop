@@ -579,9 +579,12 @@ public class OrderService extends BaseService<Order> {
                 if(member1.getHousekeeperId()==2||member1.getHousekeeperId()==1){
                     depositLog1.setCredit(BigDecimal.valueOf(100l));
                     member1.setCommission(BigDecimal.valueOf(100L).add(member1.getCommission()));
-                }else if(member1.getHousekeeperId()>2){
+                }else if(member1.getHousekeeperId()==3){
                     depositLog1.setCredit(BigDecimal.valueOf(150l));
                     member1.setCommission(BigDecimal.valueOf(150L).add(member1.getCommission()));
+                }else if(member1.getHousekeeperId()>=4){
+                    depositLog1.setCredit(BigDecimal.valueOf(230l));
+                    member1.setCommission(BigDecimal.valueOf(230L).add(member1.getCommission()));
                 }
                 depositLog1.setBalance(member1.getBalance());
                 depositLog1.setDebit(BigDecimal.ZERO);
