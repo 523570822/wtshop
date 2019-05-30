@@ -18,6 +18,7 @@ echo "拷贝到Tomcat下"
 rsync -rtlvz --exclude 'wtshop.properties'  /root/learngit/wtshop/wtshop-web/target/wtshop-web/*    /var/lib/tomcat/webapps/wtshop
 rsync -rtlvz /root/wtshop/wtshop.properties /var/lib/tomcat/webapps/wtshop/WEB-INF/classes
 chmod 777 /usr/share/tomcat/webapps/wtshop/upload
+chmod 777 /var/lib/tomcat/webapps/wtshop/WEB-INF/classes
 echo "开启tomcat"
 #systemctl start tomcat
 service tomcat start

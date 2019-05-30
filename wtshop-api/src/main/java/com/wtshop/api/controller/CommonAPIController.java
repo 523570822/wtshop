@@ -34,6 +34,9 @@ public class CommonAPIController extends BaseAPIController {
      * 首页
      */
     public void index() {
+
+
+
         Logger logger = Logger.getLogger("index");
         List<Ad> vipList = new ArrayList<>();
         String token = getPara("token");
@@ -42,6 +45,13 @@ public class CommonAPIController extends BaseAPIController {
             if (StringUtils.isNotEmpty(userId)) {
                 Member member = memberService.find((long) Integer.parseInt(userId));
                 if (member != null) {
+
+                    /**
+                     *  判断是否升级白金及以上
+                     */
+
+
+
                     BasicDBObject basicDBObject = new BasicDBObject();
                     basicDBObject.put("phone", member.getPhone());
                     basicDBObject.put("state", true);

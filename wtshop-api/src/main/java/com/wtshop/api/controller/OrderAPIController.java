@@ -156,7 +156,7 @@ public class OrderAPIController extends BaseAPIController {
 		Double miaoBiPrice = 0d;
 		String miaoBiDesc = "";
 		Double scale =  redisSetting.getDouble("scale");
-		if(is_useMiaobi && myMiaoBi >= 0){
+		if(is_useMiaobi &&isUseMiao &&myMiaoBi >= 0){
 			useMiaoBi = myMiaoBi;
 			Double limit =  redisSetting.getDouble("miaoBiLimit");
 			miaoBiPrice= new BigDecimal(useMiaoBi).divide(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -179,6 +179,7 @@ public class OrderAPIController extends BaseAPIController {
 
 		if(isUseMiao){
 			miaobiPrice = new PriceResult("喵币","-¥ "+MathUtil.getInt(miaoBiPrice.toString()));
+			//优惠钱数
 			favoreatePriced = MathUtil.add(miaoBiPrice,couponYunfei);
 			favoritePrice = MathUtil.getInt(favoreatePriced.toString());
 
@@ -220,7 +221,7 @@ public class OrderAPIController extends BaseAPIController {
 		/*//运费优惠金额
 		Double couponYunfei = MathUtil.subtract(delivery.getPrice() ,deliver);*/
 		//支付金额
-		Double amountpaid = MathUtil.subtract(realPriced ,favoritePrice);
+		Double amountpaid = MathUtil.subtract(MathUtil.subtract(realPriced ,couponYunfei),miaoBiPrice);
 		//优惠总额
 		favoritePrice = MathUtil.getInt(new BigDecimal(favoritePrice).add(new BigDecimal(marketPrice)).subtract(new BigDecimal(price)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 
