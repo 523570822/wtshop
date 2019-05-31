@@ -100,7 +100,6 @@ public void groupDetails() throws ParseException {
 Boolean isfight=true;
     if(order111.size()>0){
          isfight=false;
-
     }
 
 

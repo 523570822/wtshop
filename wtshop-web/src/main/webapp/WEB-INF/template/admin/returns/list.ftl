@@ -93,6 +93,12 @@ $().ready(function() {
 				<th>
 					<a href="javascript:;" class="sort" name="create_date">${message("admin.common.createDate")}</a>
 				</th>
+                <th>
+                    退换货类型
+				</th>
+                <th>
+                   退货状态
+                </th>
 				<th>
 					<span>${message("admin.common.action")}</span>
 				</th>
@@ -160,6 +166,16 @@ $().ready(function() {
 					<td>
 						<span title="${returns.createDate?string("yyyy-MM-dd HH:mm:ss")}">${returns.createDate}</span>
 					</td>
+                    <td>
+                          [#if returns.category == 1 ]
+                              <span class="green">换货</span>
+						  [#elseif returns.category == 2]
+                    <span class="red">退货</span>
+						  [/#if]
+                    </td>
+                    <td>
+						${message("ReturnsItem.Status." + returns.typeName)}
+                    </td>
 					<td>
 						<a href="view.jhtml?id=${returns.id}">[${message("admin.common.view")}]</a>
 					</td>

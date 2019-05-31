@@ -118,7 +118,7 @@ public class OrderDao extends BaseDao<Order> {
 	public List<Order> findByfightgroupId(Long groupbuyId) {
 
 	//	String sql = "SELECT * FROM `order` WHERE fightgroup_id ="+groupbuyId+" AND is_delete = 0 ";
-		String sql = "SELECT o.*,m.avatar FROM `order` o LEFT JOIN member m on o.member_id=m.id  WHERE fightgroup_id ="+groupbuyId+" AND o.is_delete = 0 and o.`status` <>7 and o.`status` <>6 and o.`status` <>0 and o.`status` <>8";
+		String sql = "SELECT o.*,m.avatar FROM `order` o LEFT JOIN member m on o.member_id=m.id  WHERE fightgroup_id ="+groupbuyId+" AND o.is_delete = 0  and o.`status` <>6 and o.`status` <>0 and o.`status` <>8";
 		try {
 			return modelManager.find(sql);
 		} catch (Exception e) {
@@ -158,7 +158,7 @@ public class OrderDao extends BaseDao<Order> {
 	public List<Order> findByfightgroupIdmemberId(Long groupbuyId,Long memberId) {
 
 	//	String sql = "SELECT * FROM `order` WHERE fightgroup_id ="+groupbuyId+" AND is_delete = 0 ";
-		String sql = "SELECT o.*,m.avatar FROM `order` o LEFT JOIN member m on o.member_id=m.id  WHERE fightgroup_id ="+groupbuyId+" and o.member_id="+memberId+"  AND o.is_delete = 0 and o.`status` <>7 and o.`status` <>6 and o.`status` <>0 and o.`status` <>8";
+		String sql = "SELECT o.*,m.avatar FROM `order` o LEFT JOIN member m on o.member_id=m.id  WHERE fightgroup_id ="+groupbuyId+" and o.member_id="+memberId+"  AND o.is_delete = 0  and o.`status` <>6 and o.`status` <>0 and o.`status` <>8";
 		try {
 			return modelManager.find(sql);
 		} catch (Exception e) {

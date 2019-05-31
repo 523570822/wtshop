@@ -119,14 +119,14 @@
             <th>
                 <a href="javascript:;" class="sort" name="create_date">${message("admin.common.createDate")}</a>
             </th>
-				[@shiro.hasPermission name = "admin:print"]
+			[#--	[@shiro.hasPermission name = "admin:print"]
 					<th>
                         <span>${message("admin.order.print")}</span>
                     </th>
                 [/@shiro.hasPermission]
             <th>
                 <span>${message("admin.common.action")}</span>
-            </th>
+            </th>--]
         </tr>
 			[#list page.list as order]
 				<tr>
@@ -183,7 +183,7 @@
                     <td>
                         <span title="${order.createDate?string("yyyy-MM-dd HH:mm:ss")}">${order.createDate}</span>
                     </td>
-					[@shiro.hasPermission name = "admin:print"]
+				[#--	[@shiro.hasPermission name = "admin:print"]
 						<td>
                             <select name="print">
                                 <option value="">${message("admin.common.choose")}</option>
@@ -203,7 +203,7 @@
                         [#else]
 							<span title="${message("admin.order.editNotAllowed")}">[${message("admin.common.edit")}]</span>
                         [/#if]
-                    </td>
+                    </td>--]
                 </tr>
             [/#list]
     </table>

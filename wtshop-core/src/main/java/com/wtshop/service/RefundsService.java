@@ -156,7 +156,7 @@ public class RefundsService extends BaseService<Refunds> {
             }
         } else { // 已收货的状态
             //获取订单支付的总价格-邮费
-            BigDecimal amount = order.getAmount().subtract(order.getFee()).setScale(2, ROUND_HALF_DOWN);
+            BigDecimal amount = order.getAmount().subtract(order.getFee()).add(order.getFreight()).setScale(2, ROUND_HALF_DOWN);
             //获取商品总价格
             BigDecimal orderAllPrice = order.getPrice();
             //获取退款商品的价格

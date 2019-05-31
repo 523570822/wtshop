@@ -259,7 +259,7 @@ public class ReturnsController extends BaseController {
 			returns.update();
 
 			Order order = returns.getOrder();
-			order.setStatus(Order.Status.canceled.ordinal());
+			order.setStatus(Order.Status.completed.ordinal());
 			order.update();
 
 			//增加库存
