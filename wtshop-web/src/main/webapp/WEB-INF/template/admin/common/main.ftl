@@ -264,9 +264,9 @@
                                                 <li><a href="../goodsSend/list.jhtml" target="iframe">${message("admin.role.goodsSend")}</a></li>
 											[/@shiro.hasPermission]
 
-											[@shiro.hasPermission name="admin:print"]
+										[#--	[@shiro.hasPermission name="admin:print"]
                                            		<li><a href="../print/list.jhtml" target="iframe">${message("admin.role.print")}</a></li>
-											[/@shiro.hasPermission]
+											[/@shiro.hasPermission]--]
 
 											[@shiro.hasPermission name="admin:payment"]
                                                 <li><a href="../payment/list.jhtml" target="iframe">${message("admin.main.payment")}</a></li>
