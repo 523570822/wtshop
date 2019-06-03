@@ -600,7 +600,8 @@ public class OrderController extends BaseController {
 		} else {
 
 			//Page<Order> oo = orderService.findPage(type, status, member, null, isPendingReceive, isPendingRefunds, null, null, isAllocatedStock, hasExpired, pageable);
-			Page<Order> oo = orderService.findGoodsPage(adminId,com.wtshop.util.DateUtils.formatDate(beginDate),com.wtshop.util.DateUtils.formatDate(endDate),type, status, member, null, isPendingReceive, isPendingRefunds, null, null, isAllocatedStock, hasExpired, pageable);
+			Boolean isEcel=false;
+			Page<Order> oo = orderService.findGoodsPage(isEcel,adminId,com.wtshop.util.DateUtils.formatDate(beginDate),com.wtshop.util.DateUtils.formatDate(endDate),type, status, member, null, isPendingReceive, isPendingRefunds, null, null, isAllocatedStock, hasExpired, pageable);
 
 
 			setAttr("page",oo );
@@ -640,7 +641,8 @@ public class OrderController extends BaseController {
 			pageable.setPageNumber(1);
 			pageable.setPageSize(10000000);
 			//Page<Order> oo = orderService.findPage(type, status, member, null, isPendingReceive, isPendingRefunds, null, null, isAllocatedStock, hasExpired, pageable);
-		oo = orderService.findGoodsPage(adminId,com.wtshop.util.DateUtils.formatDate(beginDate),com.wtshop.util.DateUtils.formatDate(endDate),type, status, member, null, isPendingReceive, isPendingRefunds, null, null, isAllocatedStock, hasExpired, pageable);
+			Boolean isEcel=true;
+			oo = orderService.findGoodsPage(isEcel,adminId,com.wtshop.util.DateUtils.formatDate(beginDate),com.wtshop.util.DateUtils.formatDate(endDate),type, status, member, null, isPendingReceive, isPendingRefunds, null, null, isAllocatedStock, hasExpired, pageable);
 		
 		}
 

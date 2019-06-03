@@ -109,7 +109,6 @@
 	<setting name="vipSending" value="200" />
 	<setting name="shareSending" value="200" />
 	<setting name="housekeeperSending" value="200" />
-
 	<setting name="registerPoint" value="http://shop.rxmao.cn/rxm/goods/register.html" />
 	<setting name="registerAgreement" value="&lt;p&gt;尊敬的用户欢迎您注册成为本网站会员。请用户仔细阅读以下全部内容。如用户不同意本服务条款任意内容，请不要注册或使用本网站服务。如用户通过本网站注册程序，即表示用户与本网站已达成协议，自愿接受本服务条款的所有内容。此后，用户不得以未阅读本服务条款内容作任何形式的抗辩。&lt;/p&gt;
 &lt;p&gt;一、本站服务条款的确认和接纳&lt;br /&gt;本网站涉及的各项服务的所有权和运作权归本网站所有。本网站所提供的服务必须按照其发布的服务条款和操作规则严格执行。本服务条款的效力范围及于本网站的一切产品和服务，用户在享受本网站的任何服务时，应当受本服务条款的约束。&lt;/p&gt;

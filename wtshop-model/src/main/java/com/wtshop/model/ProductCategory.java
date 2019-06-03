@@ -111,12 +111,12 @@ public class ProductCategory extends BaseProductCategory<ProductCategory> {
 
 	/**
 	 * 获取货品
-	 * 
+	 *新增条件只查询没有产出的商品
 	 * @return 货品
 	 */
 	public List<Goods> getGoods() {
 		if (CollectionUtils.isEmpty(goods)) {
-			String sql = "SELECT * FROM `goods` WHERE product_category_id = ?";
+			String sql = "SELECT * FROM `goods` WHERE product_category_id = ? and is_delete=0";
 			goods = Goods.dao.find(sql, getId());
 		}
 		return goods;

@@ -139,6 +139,9 @@ public class ProductCategoryController extends BaseController {
 			renderJson(Message.error("admin.productCategory.deleteExistProductNotAllowed"));
 			return;
 		}
+
+
+
 		productCategoryService.delete(id);
 		renderJson(SUCCESS_MESSAGE);
 	}

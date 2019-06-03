@@ -1021,11 +1021,11 @@ public class OrderService extends BaseService<Order> {
         }
         return orderDao.findPage(type, status, member, goods, isPendingReceive, isPendingRefunds, isUseCouponCode, isExchangePoint, isAllocatedStock, hasExpired, pageable);
     }
-    public Page<Order> findGoodsPage(String adminId,String beginDate,String endDate,Order.Type type, Order.Status status, Member member, Goods goods, Boolean isPendingReceive, Boolean isPendingRefunds, Boolean isUseCouponCode, Boolean isExchangePoint, Boolean isAllocatedStock, Boolean hasExpired, Pageable pageable) {
+    public Page<Order> findGoodsPage(Boolean isEcel,String adminId,String beginDate,String endDate,Order.Type type, Order.Status status, Member member, Goods goods, Boolean isPendingReceive, Boolean isPendingRefunds, Boolean isUseCouponCode, Boolean isExchangePoint, Boolean isAllocatedStock, Boolean hasExpired, Pageable pageable) {
         if (status != null && status.ordinal() == 10) {
             status = Order.Status.completed;
         }
-        return orderDao.findGoodsPage(adminId,beginDate,endDate,type, status, member, goods, isPendingReceive, isPendingRefunds, isUseCouponCode, isExchangePoint, isAllocatedStock, hasExpired, pageable);
+        return orderDao.findGoodsPage(isEcel,adminId,beginDate,endDate,type, status, member, goods, isPendingReceive, isPendingRefunds, isUseCouponCode, isExchangePoint, isAllocatedStock, hasExpired, pageable);
     }
 
     public Page<Order> findPages(Order.Status status, Member member, Pageable pageable, Integer type) {

@@ -248,15 +248,31 @@ public class GoodsDao extends BaseDao<Goods> {
 	 */
 	public Page<Goods> search(Boolean is_vip, List<Long> productCategoryList, Long[] brandId, List<Long> areaList, Long[] functionId, String keyword, BigDecimal startPrice, BigDecimal endPrice, Pageable pageable, Boolean modify_date, Boolean sell, Boolean review, Boolean priceUp ,Boolean priceDown){
 		Logger logger = LoggerFactory.getLogger("dddddd");
-		String sqlExceptSelect = " from (select pc1.`name` na1, pc2.`name` na2, pc.`name` na,g.keyword, g.sales,g.id,g.is_top, g.`name`,g.price,g.market_price,g.image,g.caption,g.product_category_id,g.is_delete,g.is_marketable,g.commission_rate FROM goods g left join goods_effct e on g.id = e.goods " +
+		String sqlExceptSelect = " from (select g.keyword, g.sales,g.id,g.is_top, g.`name`,g.price,g.market_price,g.image,g.caption,g.product_category_id,g.is_delete,g.is_marketable,g.commission_rate FROM goods g left join goods_effct e on g.id = e.goods " +
 				"LEFT JOIN (SELECT count(*) count,goods_id from review group by goods_id ) m ON g.id = m.goods_id " +
 				"LEFT JOIN (SELECT count(p.goods_id)count,p.goods_id,o.`status`,p.stock from order_item i LEFT JOIN `order` o ON i.order_id = o.id " +
 				"LEFT JOIN product p ON p.id =i.product_id GROUP BY p.goods_id ";
+		if(keyword != null&&!"".equals(keyword)){
+			 sqlExceptSelect = " from (select pc1.`name` na1, pc2.`name` na2, pc.`name` na,g.keyword, g.sales,g.id,g.is_top, g.`name`,g.price,g.market_price,g.image,g.caption,g.product_category_id,g.is_delete,g.is_marketable,g.commission_rate FROM goods g left join goods_effct e on g.id = e.goods " +
+					"LEFT JOIN (SELECT count(*) count,goods_id from review group by goods_id ) m ON g.id = m.goods_id " +
+					"LEFT JOIN (SELECT count(p.goods_id)count,p.goods_id,o.`status`,p.stock from order_item i LEFT JOIN `order` o ON i.order_id = o.id " +
+					"LEFT JOIN product p ON p.id =i.product_id GROUP BY p.goods_id ";
+				}
+
 		if(sell){
 			sqlExceptSelect += " AND o.`status` in (5,9,10) ";
 		}
-		sqlExceptSelect += " ) n ON n.goods_id =g.id LEFT JOIN product j ON j.goods_id = g.id LEFT JOIN product_category pc ON g.product_category_id = pc.id LEFT JOIN product_category pc1 ON pc.tree_path LIKE CONCAT('%', pc1.id, '%') LEFT JOIN product_category pc2 ON pc.tree_path LIKE CONCAT('%', pc1.parent_id, '%') WHERE 1 = 1 and g.is_delete = 0 and g.is_marketable = 1";
-		String select = " select m.*,p.stock ";
+
+		if(keyword != null&&!"".equals(keyword)){
+			sqlExceptSelect += " ) n ON n.goods_id =g.id LEFT JOIN product j ON j.goods_id = g.id LEFT JOIN product_category pc ON g.product_category_id = pc.id LEFT JOIN product_category pc1 ON pc.tree_path LIKE CONCAT('%', pc1.id, '%') LEFT JOIN product_category pc2 ON pc.tree_path LIKE CONCAT('%', pc1.parent_id, '%') WHERE 1 = 1 and g.is_delete = 0 and g.is_marketable = 1";
+
+		}else{
+			sqlExceptSelect += " ) n ON n.goods_id =g.id LEFT JOIN product j ON j.goods_id = g.id   WHERE 1 = 1 and g.is_delete = 0 and g.is_marketable = 1";
+
+		}
+
+
+				String select = " select m.*,p.stock ";
 
 		if(functionId != null){
 			sqlExceptSelect += " AND e.effect in " + SqlUtils.getSQLIn(Arrays.asList(functionId));

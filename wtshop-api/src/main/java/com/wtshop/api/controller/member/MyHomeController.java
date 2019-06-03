@@ -368,7 +368,8 @@ public void findButler(){
 
 }
     /**
-     * 获取是否需要提醒弹出升级协议
+     *
+     * 取消提醒弹出升级协议
      */
     public void cancelButler(){
         Member member = memberService.getCurrent();

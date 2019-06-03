@@ -49,7 +49,20 @@ public class CommonAPIController extends BaseAPIController {
                     /**
                      *  判断是否升级白金及以上
                      */
-
+                    if(member.getHousekeeperId()==3){
+                        List<Member> ddd = memberService.findMemberByLinkShare(member.getShareCode());
+                        if(ddd.size()>600){
+                            member.setHousekeeperId(4l);
+                            memberService.update(member);
+                        }
+                    }else if(member.getHousekeeperId()==4){
+                        //升级钻石
+                        List<Member> ddd = memberService.findMemberByLinkShare(member.getShareCode(),3l);
+                        if(ddd.size()>=1){
+                            member.setHousekeeperId(5l);
+                            memberService.update(member);
+                        }
+                    }
 
 
                     BasicDBObject basicDBObject = new BasicDBObject();
