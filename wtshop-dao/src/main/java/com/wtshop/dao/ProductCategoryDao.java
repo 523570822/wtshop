@@ -45,7 +45,7 @@ public class ProductCategoryDao extends OrderEntity<ProductCategory> {
 	 * @return一级和二级商品分类
 	 */
 	public List<ProductCategory> findOneAndTwoRoots(Integer count) {
-		String sql = "SELECT * FROM product_category WHERE GRADE = 0 ORDER BY orders ASC ";
+		String sql = "SELECT * FROM product_category WHERE GRADE = 0 ORDER BY orders DESC ";
 		if (count != null) {
 			sql += "LIMIT 0, " + count;
 		}

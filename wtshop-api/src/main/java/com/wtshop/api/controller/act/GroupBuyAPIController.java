@@ -63,11 +63,8 @@ public class GroupBuyAPIController extends BaseAPIController {
         Integer pageNumber = getParaToInt("pageNumbers");
         boolean status = getParaToBoolean("status");
         Member m=memberService.getCurrent();
-
         Map<String, Object> map = new HashedMap();
         Pageable pageable = new Pageable(pageNumber, PAGE_SIZE);
-
-
         Page<GroupBuy> list = fuDaiService.findPages(pageable,status,m.getId());
         // map.put("list", list);
         renderJson(ApiResult.success(list));

@@ -51,7 +51,7 @@ public class CommonAPIController extends BaseAPIController {
                      */
                     if(member.getHousekeeperId()==3){
                         List<Member> ddd = memberService.findMemberByLinkShare(member.getShareCode());
-                        if(ddd.size()>600){
+                        if(ddd.size()>=8){
                             member.setHousekeeperId(4l);
                             memberService.update(member);
                         }
