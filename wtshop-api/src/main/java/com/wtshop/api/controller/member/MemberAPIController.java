@@ -133,6 +133,23 @@ public class MemberAPIController extends BaseAPIController {
 			Member member1 =memberService.find(ShareCodeUtils.codeToId(member.getOnShareCode().toUpperCase()));
 			member.setAttributeValue0(member1.getWeChatQcode());
 			member.setAttributeValue1(member1.getWeChatNumber());
+			/**
+			 *  判断是否升级白金及以上
+			 */
+			if(member.getHousekeeperId()==3){
+				List<Member> ddd = memberService.findMemberByLinkShare(member.getShareCode());
+				if(ddd.size()>=8){
+					member.setHousekeeperId(4l);
+					memberService.update(member);
+				}
+			}else if(member.getHousekeeperId()==4){
+				//升级钻石
+				List<Member> ddd = memberService.findMemberByLinkShare(member.getShareCode(),3l);
+				if(ddd.size()>=1){
+					member.setHousekeeperId(5l);
+					memberService.update(member);
+				}
+			}
 		}
 		String phone = member.getPhone();
 		Integer gender = member.getGender();
