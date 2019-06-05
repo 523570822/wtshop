@@ -213,14 +213,40 @@ public class MemberAPIController extends BaseAPIController {
 			item.put("onWeChatQcode",member1.getWeChatQcode());*/
 		}
 
+
+		/**
+		 *  判断是否升级白金及以上
+		 */
+		if(member.getHousekeeperId()==3){
+			List<Member> ddd = memberService.findMemberByLinkShare(member.getShareCode());
+			if(ddd.size()>=8){
+				member.setHousekeeperId(4l);
+				memberService.update(member);
+			}
+		}else if(member.getHousekeeperId()==4){
+			//升级钻石
+			List<Member> ddd = memberService.findMemberByLinkShare(member.getShareCode(),4l);
+			if(ddd.size()>=1){
+				member.setHousekeeperId(5l);
+				memberService.update(member);
+			}
+		}
+
+
+
+
 		member.setAttributeValue2("rxm/goods/commission.html");
 
 		Double yudujiangli=depositLogService.findJiangLi(member.getId(),9);
 		Double fuchijiangli=depositLogService.findJiangLi(member.getId(),8);
-		Double wodejiangli=depositLogService.findJiangLi(member.getId(),null);
+		//Double wodejiangli=depositLogService.findJiangLi(member.getId(),null);
 		member.setAttributeValue8(fuchijiangli+"");
 		member.setAttributeValue9(yudujiangli+"");
-		member.setAttributeValue7(wodejiangli+"");
+		BigDecimal b1=new BigDecimal(Double.toString(yudujiangli));
+		BigDecimal b2 = new BigDecimal(Double.toString(fuchijiangli));
+		BigDecimal gfff = b1.add(b2);
+
+		member.setAttributeValue7(gfff.doubleValue()+"");
 		renderJson(ApiResult.success(member));
 	}
 	/**
