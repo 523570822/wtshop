@@ -653,7 +653,7 @@ public class OrderService extends BaseService<Order> {
                         depositLog5.setBalance(member2.getBalance());
                         depositLog5.setDebit(BigDecimal.ZERO);
                         depositLog5.setStatus(1);
-                        depositLog5.setMemo("扶持奖励");
+                        depositLog5.setMemo("扶持奖励50元");
                         depositLog5.setType(DepositLog.Type.fuchi.ordinal());
                         depositLog5.setOrderId(order.getId());
                         depositLog5.setMemberId(member2.getId());
@@ -669,7 +669,7 @@ public class OrderService extends BaseService<Order> {
                         Long jinglijin=20L;
                         if(mm.size()>3&&mm.size()<6){
                             jinglijin=40l;
-                        }else  if(mm.size()>6){
+                        }else  if(mm.size()>=6){
                             jinglijin=60l;
                         }
                         DepositLog depositLog5 = new DepositLog();

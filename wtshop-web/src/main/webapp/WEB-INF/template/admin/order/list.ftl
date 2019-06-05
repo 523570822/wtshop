@@ -238,10 +238,10 @@ $().ready(function() {
 					<input type="checkbox" id="selectAll" />${message("Order.selectAll")}
 				</th>
 
-				<th>
+				<th width="120px">
 					<a href="javascript:;" name="amount">${message("Order.sn")}</a>
 				</th>
-                <th>
+                <th width="120px">
                     <a href="javascript:;" name="amount">商品名称</a>
                 </th>
                 <th>
@@ -276,8 +276,8 @@ $().ready(function() {
                 <th>
                     <a href="javascript:;"  name="consignee">${message("Order.consignee")}</a>
                 </th>
-				<th>
-					<a href="javascript:;"  name="member_id">${message("Order.phone")}</a>
+				<th  class="phone" width="86px"  >
+					<a href="javascript:;"   name="member_id">${message("Order.phone")}</a>
 				</th>
 
 

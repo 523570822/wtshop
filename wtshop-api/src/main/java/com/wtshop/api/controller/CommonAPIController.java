@@ -57,7 +57,7 @@ public class CommonAPIController extends BaseAPIController {
                         }
                     }else if(member.getHousekeeperId()==4){
                         //升级钻石
-                        List<Member> ddd = memberService.findMemberByLinkShare(member.getShareCode(),3l);
+                        List<Member> ddd = memberService.findMemberByLinkShare(member.getShareCode(),4l);
                         if(ddd.size()>=1){
                             member.setHousekeeperId(5l);
                             memberService.update(member);
