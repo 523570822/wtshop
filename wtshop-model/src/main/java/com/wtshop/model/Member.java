@@ -124,6 +124,9 @@ public class Member extends BaseMember<Member> {
 	/** 会员等级 */
 	private MemberRank memberRank;
 
+	/** 店铺等级 */
+	private Houserkeeper houserkeeper;
+
 	/** 购物车 */
 	private Cart cart;
 	
@@ -222,7 +225,27 @@ public class Member extends BaseMember<Member> {
 	public void setMemberRank(MemberRank memberRank) {
 		this.memberRank = memberRank;
 	}
+	/**
+	 * 获取会员等级
+	 *
+	 * @return 会员等级
+	 */
+	public Houserkeeper getHouserkeeper() {
+		if (ObjectUtils.isEmpty(houserkeeper)) {
+			houserkeeper = Houserkeeper.dao.findById(getHousekeeperId());
+		}
+		return houserkeeper;
+	}
 
+	/**
+	 * 设置会员等级
+	 *
+	 * @param memberRank
+	 *            会员等级
+	 */
+	public void setHouserkeeper(MemberRank memberRank) {
+		this.memberRank = memberRank;
+	}
 	/**
 	 * 获取购物车
 	 * 

@@ -661,10 +661,9 @@ public class OrderService extends BaseService<Order> {
                         depositLogDao.save(depositLog5);
                         onShareCode=member2.getOnShareCode();
                         zhuanShi=true;
-
                     }else if((member2.getHousekeeperId()==5&&baiJin&&!zhuanShi)){
                         //判断上级身份砖石 并且上级有白金 开始发奖金 （这个根据比例算）
-                        List<Member> mm = memberService.findMemberByLinkShare(member2.getShareCode(), 3L);
+                        List<Member> mm = memberService.findMemberByLinkShare(member2.getShareCode(), 4L);
 
                         Long jinglijin=20L;
                         if(mm.size()>3&&mm.size()<6){
@@ -678,7 +677,7 @@ public class OrderService extends BaseService<Order> {
                         depositLog5.setBalance(member2.getBalance());
                         depositLog5.setDebit(BigDecimal.ZERO);
                         depositLog5.setStatus(1);
-                        depositLog5.setMemo("扶持奖励");
+                        depositLog5.setMemo("扶持奖励"+jinglijin+"元");
                         depositLog5.setType(DepositLog.Type.fuchi.ordinal());
                         depositLog5.setOrderId(order.getId());
                         depositLog5.setMemberId(member2.getId());

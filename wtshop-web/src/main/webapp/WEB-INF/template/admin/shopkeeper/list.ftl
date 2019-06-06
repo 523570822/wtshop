@@ -8,6 +8,35 @@
     <meta name="author" content="${setting.siteAuthor}" />
     <meta name="copyright" content="${setting.siteCopyright}" />
     <link href="${base}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .bar .inputv {
+            width: 180px;
+            height: 26px;
+            position: relative;
+            -webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075);
+            -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075);
+            box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075);
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            border: 1px solid;
+            border-color: #bfbfbf #d7d7d7 #d7d7d7 #bfbfbf;
+            background: url(../images/list.gif) 0px 0px no-repeat;
+        }
+        .bar .inputv input {
+            width: 120px;
+            height: 18px;
+            line-height: 18px;
+            padding: 4px;
+            margin: 0px;
+            position: absolute;
+            top: 0px;
+            color: #666666;
+            outline: none;
+            border: 0px;
+            background: none;
+        }
+    </style>
     <script type="text/javascript" src="${base}/resources/admin/js/jquery.js"></script>
     <script type="text/javascript" src="${base}/resources/admin/js/common.js"></script>
     <script type="text/javascript" src="${base}/resources/admin/js/list.js"></script>
@@ -44,18 +73,27 @@
                 </ul>
             </div>
         </div>
-        <div id="searchPropertyMenu" class="dropdownMenu">
-            <div class="search">
-                <span class="arrow">&nbsp;</span>
-                <input type="text" id="searchValue" name="pageable.searchValue" value="${pageable.searchValue}" maxlength="200" />
-                <button type="submit">&nbsp;</button>
+        姓名：<div class="dropdownMenu">
+
+            <div class="inputv">
+          <input type="text" name="memname" />
             </div>
-            <ul>
-                <li[#if pageable.searchProperty == "username"] class="current"[/#if] val="phone">${message("Member.username")}</li>
-                <li[#if pageable.searchProperty == "email"] class="current"[/#if] val="email">${message("Member.email")}</li>
-                <li[#if pageable.searchProperty == "nickname"] class="current"[/#if] val="nickname">${message("Member.nickname")}</li>
-            </ul>
         </div>
+        联系电话：<div class="dropdownMenu">
+
+        <div class="inputv">
+            <input type="text" name="memname" />
+        </div>
+    </div>
+        <div class="dropdownMenu">
+            级别：<select name="memberRankId">
+						[#list houserkeeperList as houserkeeper]
+                            <option value="${houserkeeper.id}"[#if houserkeeper == member.houserkeeperId] selected="selected"[/#if]>${houserkeeper.name}</option>
+                        [/#list]
+        </select>
+        </div>
+        <input type="submit" class="button" value="${message("admin.common.submit")}" />
+
     </div>
     <table id="listTable" class="list">
         <tr>
@@ -90,7 +128,7 @@
                         ${member.phone}
                     </td>
                     <td>
-                        ${member.memberRank.name}
+                        ${member.houserkeeper.name}
                     </td>
                     <td>
                         ${member.nickname}
