@@ -129,7 +129,7 @@ public class Member extends BaseMember<Member> {
 	public Integer getTotalPeople() {
 		if (ObjectUtils.isEmpty(totalPeople)) {
 
-			String sql = "SELECT * FROM member s WHERE s.link_share_code LIKE concat('%', '"+getShareCode()+"', '%')";
+			String sql = "SELECT * FROM member s WHERE s.link_share_code LIKE concat('%', '"+getShareCode()+"', '%') and s.share_code is not null";
 			List<Member> memeberlist = Member.dao.find(sql);
 			totalPeople=memeberlist.size();
 		}
