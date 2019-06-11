@@ -59,7 +59,7 @@
 					${pagen.phone}
                 </td>
                 <td>
-					${pagen.memeber_num}
+					${pagen.totalPeople}
                 </td>
                 <td>
 					${pagen.weChatNumber}
