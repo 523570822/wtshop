@@ -86,7 +86,7 @@
         </div>
     </div>
         <div class="dropdownMenu">
-            级别${memberRankId}：
+            级别
             <select name="memberRankId">
             <option value="0"
                 [#if memberRankId=="0"]
@@ -96,7 +96,7 @@
 						[#list houserkeeperList as houserkeeper]
                             <option value="${houserkeeper.id}"
                                 [#if memberRankId == houserkeeper.id] selected="selected"[/#if]
-                            >${houserkeeper.name}${memberRankId}${houserkeeper.id}</option>
+                            >${houserkeeper.name}</option>
                         [/#list]
         </select>
         </div>
