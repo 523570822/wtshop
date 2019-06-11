@@ -299,9 +299,9 @@ if(StringUtils.isNotEmpty(linkShareCode)){
 		return memberDao.findPage(pageable);
 
 	}
-	public Page<Member> findMemberPages(Pageable pageable){
+	public Page<Member> findMemberPages(Pageable pageable,String memname,String phone,String memberRankId){
 
-		return memberDao.findMemberPages(pageable);
+		return memberDao.findMemberPages(pageable,memname,phone,memberRankId);
 
 	}
 	/**

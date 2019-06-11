@@ -76,19 +76,27 @@
         姓名：<div class="dropdownMenu">
 
             <div class="inputv">
-          <input type="text" name="memname" />
+          <input type="text" name="memname" value="${memname}" />
             </div>
         </div>
         联系电话：<div class="dropdownMenu">
 
         <div class="inputv">
-            <input type="text" name="memname" />
+            <input type="text" name="phone" value="${phone}" />
         </div>
     </div>
         <div class="dropdownMenu">
-            级别：<select name="memberRankId">
+            级别${memberRankId}：
+            <select name="memberRankId">
+            <option value="0"
+                [#if memberRankId=="0"]
+                    selected="selected"
+                [/#if]>
+                全部</option>
 						[#list houserkeeperList as houserkeeper]
-                            <option value="${houserkeeper.id}"[#if houserkeeper == member.houserkeeperId] selected="selected"[/#if]>${houserkeeper.name}</option>
+                            <option value="${houserkeeper.id}"
+                                [#if memberRankId == houserkeeper.id] selected="selected"[/#if]
+                            >${houserkeeper.name}${memberRankId}${houserkeeper.id}</option>
                         [/#list]
         </select>
         </div>

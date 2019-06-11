@@ -264,16 +264,27 @@ public class ShopkeeperController extends BaseController {
 	 */
 	public void list() {
 		Pageable pageable = getBean(Pageable.class);
+
+		String memname = getPara("memname","");
+		String phone = getPara("phone","");
+		String memberRankId = getPara("memberRankId","0");
+
+
+
+
 		pageable.setOrderProperty("housekeeper_id");
 		pageable.setOrderDirection("desc");
 
 
 		//Page<Member> pages = memberService.findPages(pageable, null);
-		Page<Member> pages=	memberService.findMemberPages(pageable);
+		Page<Member> pages=	memberService.findMemberPages(pageable,memname,phone,memberRankId);
 		List<Houserkeeper> houserkeeperList = houserkeeperGradeService.findAll();
 		setAttr("houserkeeperList", houserkeeperList);
 		List<MemberAttribute> ssss = memberAttributeService.findAll();
 		setAttr("memberAttributes", ssss);
+		setAttr("memname", memname);
+		setAttr("phone", phone);
+		setAttr("memberRankId", memberRankId);
 		setAttr("pageable", pageable);
 		setAttr("page", pages );
 		render("/admin/shopkeeper/list.ftl");

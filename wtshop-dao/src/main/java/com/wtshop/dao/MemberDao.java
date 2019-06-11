@@ -161,11 +161,21 @@ public class MemberDao extends BaseDao<Member> {
 	 * @param pageable
 	 * @return
 	 */
-	public Page findMemberPages(Pageable pageable){
+	public Page findMemberPages(Pageable pageable,String memname,String phone,String memberRankId){
 
 		String select = "SELECT sum(s.price) zprice, sum( s.price * s.commission_rate / 100 ) zcommission, m.*" ;
-		String from = "FROM member m LEFT JOIN ( SELECT o1.member_id dddd, o1.price, o1.commission_rate, o1.create_date sssasa, o1.`status`, m1.* FROM member m1 LEFT JOIN `order` o1 ON o1.member_id = m1.id WHERE o1.id IS NOT NULL AND o1.`status` IN (2, 3, 4, 5, 9, 10)) s ON s.link_share_code LIKE concat('%', m.share_code, '%') GROUP BY m.id";
-		return super.findPages(select,from,pageable);
+		String from = "FROM member m LEFT JOIN ( SELECT o1.member_id dddd, o1.price, o1.commission_rate, o1.create_date sssasa, o1.`status`, m1.* FROM member m1 LEFT JOIN `order` o1 ON o1.member_id = m1.id WHERE o1.id IS NOT NULL AND o1.`status` IN (2, 3, 4, 5, 9, 10)) s ON s.link_share_code LIKE concat('%', m.share_code, '%') where 1=1 ";
+	if(StringUtils.isNotEmpty(memname)){
+		from=from+" and ( m.`name` like '%"+memname+"%' or m.nickname like '%"+memname+"%' ) ";
+	}
+		if(StringUtils.isNotEmpty(phone)){
+			from=from+" and  m.phone like '%"+phone+"%' ";
+		}
+		if(!"0".equals(memberRankId)){
+			from=from+" and  m.housekeeper_id='"+memberRankId+"'";
+		}
+		from=from+ " GROUP BY m.id ";
+			return super.findPages(select,from,pageable);
 	}
 	/**
 	 * 个人信息
@@ -174,7 +184,6 @@ public class MemberDao extends BaseDao<Member> {
 
 		if(memberId == null){
 			return null;
-
 		}else {
 			String sql = "SELECT name,c.id from member_interest_category i LEFT JOIN interest_category c on i.interest_category = c.id WHERE i.members = " + memberId;
 			return super.findListBySql(sql);
