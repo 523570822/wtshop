@@ -50,7 +50,7 @@ public class ReviewController extends BaseController {
 		reviewService.reply(review, replyReview);
 
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("reply.jhtml?id=" + id);
+		redirect("/admin/review/reply.jhtml?id=" + id);
 	}
 	
 	/**
@@ -79,7 +79,7 @@ public class ReviewController extends BaseController {
 		review.setStatus(true);
 		reviewService.update(review);
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("list.jhtml");
+		redirect("/admin/review/list.jhtml");
 	}
 
 	/**

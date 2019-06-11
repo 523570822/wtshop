@@ -175,13 +175,13 @@ public class OrderController extends BaseController {
 		Admin admin = adminService.getCurrent();
 		if (orderService.isLocked(order, admin, true)) {
 			addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error,"该订单被锁定"));
-			redirect("list.jhtml");
+			redirect("/admin/review/list.jhtml");
 			return;
 		}
 		orderService.update(order, admin);
 
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("list.jhtml");
+		redirect("/admin/review/list.jhtml");
 	}
 
 	/**
@@ -224,18 +224,18 @@ public class OrderController extends BaseController {
 		Order order = orderService.find(id);
 		if (order == null || order.hasExpired() || !Order.Status.pendingReview.equals(order.getStatusName())) {
 			addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error,"订单已过期"));
-			redirect("list.jhtml");
+			redirect("/admin/review/list.jhtml");
 			return;
 		}
 		Admin admin = adminService.getCurrent();
 		if (orderService.isLocked(order, admin, true)) {
 			addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error,"订单锁定中"));
-			redirect("list.jhtml");
+			redirect("/admin/review/list.jhtml");
 			return;
 		}
 		orderService.review(order, passed, admin);
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("view.jhtml?id=" + id);
+		redirect("/admin/review/view.jhtml?id=" + id);
 	}
 
 	/**
@@ -255,7 +255,7 @@ public class OrderController extends BaseController {
 		Order order = orderService.find(orderId);
 		if (order == null) {
 			addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error,"订单不存在"));
-			redirect("list.jhtml");
+			redirect("/admin/review/list.jhtml");
 			return;
 		}
 		payment.setOrderId(order.getId());
@@ -264,19 +264,19 @@ public class OrderController extends BaseController {
 		Admin admin = adminService.getCurrent();
 		if (orderService.isLocked(order, admin, true)) {
 			addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error,"订单锁定中"));
-			redirect("list.jhtml");
+			redirect("/admin/review/list.jhtml");
 			return;
 		}
 		Member member = order.getMember();
 		if (Payment.Method.deposit.equals(payment.getMethod()) && payment.getAmount().compareTo(member.getBalance()) > 0) {
 			addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error,"收款金额有误"));
-			redirect("list.jhtml");
+			redirect("/admin/review/list.jhtml");
 			return;
 		}
 		payment.setOperator(admin);
 		orderService.payment(order, payment, admin);
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("view.jhtml?id=" + orderId);
+		redirect("/admin/review/view.jhtml?id=" + orderId);
 	}
 
 	/**
@@ -302,12 +302,12 @@ public class OrderController extends BaseController {
 		Admin admin = adminService.getCurrent();
 		if (orderService.isLocked(order, admin, true)) {
 			addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error,"订单锁定中"));
-			redirect("list.jhtml");
+			redirect("/admin/review/list.jhtml");
 			return;
 		}
 		refunds.setOperator(admin);
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("view.jhtml?id=" + orderId);
+		redirect("/admin/review/view.jhtml?id=" + orderId);
 	}
 
 	/**
@@ -402,7 +402,7 @@ public class OrderController extends BaseController {
 		Order order = orderService.find(orderId);
 		if (order == null || order.getReturnableQuantity() <= 0) {
 			addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error,"可退货数有误"));
-			redirect("list.jhtml");
+			redirect("/admin/review/list.jhtml");
 			return;
 		}
 		List<ReturnsItem> returnsItems = getBeans(ReturnsItem.class, "returnsItems");
@@ -431,13 +431,13 @@ public class OrderController extends BaseController {
 		Admin admin = adminService.getCurrent();
 		if (orderService.isLocked(order, admin, true)) {
 			addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error,"订单锁定中"));
-			redirect("list.jhtml");
+			redirect("/admin/review/list.jhtml");
 			return;
 		}
 		returns.setOperator(admin);
 		orderService.returns(order, returns, admin);
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("view.jhtml?id=" + orderId);
+		redirect("/admin/review/view.jhtml?id=" + orderId);
 	}
 
 	/**
@@ -448,18 +448,18 @@ public class OrderController extends BaseController {
 		Order order = orderService.find(id);
 		if (order == null || order.hasExpired() || !Order.Status.shipped.equals(order.getStatusName())) {
 			addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error,"订单不存在或者已过期"));
-			redirect("list.jhtml");
+			redirect("/admin/review/list.jhtml");
 			return;
 		}
 		Admin admin = adminService.getCurrent();
 		if (orderService.isLocked(order, admin, true)) {
 			addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error,"订单锁定中"));
-			redirect("list.jhtml");
+			redirect("/admin/review/list.jhtml");
 			return;
 		}
 		orderService.receive(order, admin);
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("view.jhtml?id=" + id);
+		redirect("/admin/review/view.jhtml?id=" + id);
 	}
 
 	/**
@@ -476,12 +476,12 @@ public class OrderController extends BaseController {
 		Admin admin = adminService.getCurrent();
 		if (orderService.isLocked(order, admin, true)) {
 			addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error,"订单锁定中"));
-			redirect("list.jhtml");
+			redirect("/admin/review/list.jhtml");
 			return;
 		}
 		orderService.complete(order, admin);
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("view.jhtml?id=" + id);
+		redirect("/admin/review/view.jhtml?id=" + id);
 	}
 
 	/**
@@ -497,12 +497,12 @@ public class OrderController extends BaseController {
 		Admin admin = adminService.getCurrent();
 		if (orderService.isLocked(order, admin, true)) {
 			addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error,"订单锁定中"));
-			redirect("list.jhtml");
+			redirect("/admin/review/list.jhtml");
 			return;
 		}
 		orderService.fail(order, admin);
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("view.jhtml?id=" + id);
+		redirect("/admin/review/view.jhtml?id=" + id);
 	}
 
 	/**
