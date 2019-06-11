@@ -32,7 +32,7 @@
                     type: 2,
                     skin: 'layui-layer-rim', //加上边框
                     area: ['870px', '540px'], //宽高
-                    content: "/admin/reverseAuction/chooseGoods.jhtml?flag=6",
+                    content: "../../admin/reverseAuction/chooseGoods.jhtml?flag=6",
                     shadeClose: true,
                 });
             });

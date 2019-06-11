@@ -15,6 +15,8 @@ import com.wtshop.model.base.BaseMember;
 import com.wtshop.util.JsonUtils;
 import com.wtshop.util.ObjectUtils;
 
+import static com.jfinal.aop.Enhancer.enhance;
+
 /**
  * Model - 会员
  * 
@@ -23,7 +25,7 @@ import com.wtshop.util.ObjectUtils;
 public class Member extends BaseMember<Member> {
 	private static final long serialVersionUID = -2107766706595334754L;
 	public static final Member dao = new Member();
-	
+
 	/**
 	 * 性别
 	 */
@@ -124,9 +126,26 @@ public class Member extends BaseMember<Member> {
 	/** 会员等级 */
 	private MemberRank memberRank;
 
+	public Integer getTotalPeople() {
+		if (ObjectUtils.isEmpty(totalPeople)) {
+
+			String sql = "SELECT * FROM member s WHERE s.link_share_code LIKE concat('%', '"+getShareCode()+"', '%')";
+			List<Member> memeberlist = Member.dao.find(sql);
+			totalPeople=memeberlist.size();
+		}
+
+		return totalPeople;
+	}
+
+	public void setTotalPeople(Integer totalPeople) {
+		this.totalPeople = totalPeople;
+	}
+
+	/** 会员等级 */
+	private Integer totalPeople;
+
 	/** 店铺等级 */
 	private Houserkeeper houserkeeper;
-
 	/** 购物车 */
 	private Cart cart;
 	

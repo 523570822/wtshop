@@ -299,7 +299,11 @@ if(StringUtils.isNotEmpty(linkShareCode)){
 		return memberDao.findPage(pageable);
 
 	}
+	public Page<Member> findMemberPages(Pageable pageable){
 
+		return memberDao.findMemberPages(pageable);
+
+	}
 	/**
 	 * 判断用户名是否存在
 	 * 
@@ -555,9 +559,17 @@ if(StringUtils.isNotEmpty(linkShareCode)){
  */
 public Page<TeamManagement> getTeamManagementList(String onShareCode,Pageable pageable){
 	Page<TeamManagement> page = teamManagementDao.getTeamManagementList(onShareCode,pageable);
-
 	return page;
 }/**
+	 /**
+	 *计算下级人员售出金额
+	 */
+	public TeamManagement getTeamManagement(String onShareCode){
+		TeamManagement page = teamManagementDao.getTeamManagement(onShareCode);
+		return page;
+	}
+
+	/**
  *团队管理
  */
 public Page<TeamManagement> getTeamManagementListFind(String onShareCode,Pageable pageable,String str){

@@ -40,6 +40,17 @@ public class TeamManagementDao extends BaseDao<TeamManagement> {
 		return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
 
 	}
+
+	/**
+	 * 查找技师所有集合
+	 */
+
+	public TeamManagement getTeamManagement(String onShareCode){
+		String select ="SELECT mm.*, sum(o.price) price_num FROM ( SELECT m.id, m.avatar, m.share_code, m.create_date, m.we_chat_number, m.phone, m.nickname, m.phone_status FROM member m WHERE m.on_share_code = '"+onShareCode+"' ) mm LEFT JOIN `order` o ON mm.id = o.member_id WHERE o.on_share_code = '"+onShareCode+"' AND mm.share_code IS NOT NULL";
+
+		return modelManager.find(select).get(0);
+
+	}
 	/**
 	 * 查找技师所有集合
 	 */

@@ -110,8 +110,14 @@
                 <a href="javascript:;" class="sort" name="nickname">${message("Member.nickname")}</a>
             </th>
             <th>
-                <a href="javascript:;" class="sort" name="create_date">${message("admin.common.createDate")}</a>
+                <a href="javascript:;" class="sort" name="nickname">团队售出总金额</a>
             </th>
+            <th>
+                <a href="javascript:;" class="sort" name="nickname">团队总人数</a>
+            </th>
+            [#--<th>
+                <a href="javascript:;" class="sort" name="create_date">${message("admin.common.createDate")}</a>
+            </th>--]
             <th>
                 <span>${message("admin.member.status")}</span>
             </th>
@@ -134,8 +140,14 @@
                         ${member.nickname}
                     </td>
                     <td>
-                        <span title="${member.createDate?string("yyyy-MM-dd HH:mm:ss")}">${member.createDate}</span>
+                        ${member.zprice}
                     </td>
+                    <td>
+                        ${member.totalPeople}
+                    </td>
+                  [#--  <td>
+                        <span title="${member.createDate?string("yyyy-MM-dd HH:mm:ss")}">${member.createDate}</span>
+                    </td>--]
                     <td>
 						[#if !member.isEnabled]
                             <span class="red">${message("admin.member.disabled")}</span>

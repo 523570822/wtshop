@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.UUID;
 
 import com.jfinal.plugin.activerecord.Page;
-import com.wtshop.model.Houserkeeper;
-import com.wtshop.model.MemberRank;
+import com.wtshop.Order;
+import com.wtshop.model.*;
 import com.wtshop.service.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -17,8 +17,6 @@ import com.jfinal.kit.StrKit;
 import com.wtshop.Message;
 import com.wtshop.Pageable;
 import com.wtshop.Setting;
-import com.wtshop.model.Member;
-import com.wtshop.model.MemberAttribute;
 import com.wtshop.util.SystemUtils;
 
 /**
@@ -33,8 +31,9 @@ public class ShopkeeperController extends BaseController {
 	private MemberRankService memberRankService = enhance(MemberRankService.class);
 	private HouserkeeperGradeService houserkeeperGradeService = enhance(HouserkeeperGradeService.class);
 	private MemberAttributeService memberAttributeService = enhance(MemberAttributeService.class);
+	private OrderService orderService = enhance(OrderService.class);
 	private PluginService pluginService = new PluginService();;
-
+	private static final int PAGE_SIZE = 100000;
 	/**
 	 * 检查用户名是否被禁用或已存在
 	 */
@@ -68,9 +67,37 @@ public class ShopkeeperController extends BaseController {
 		Member member = memberService.find(id);
 		setAttr("genders", Member.Gender.values());
 		setAttr("memberAttributes", memberAttributeService.findList(true, true));
+		Integer pageNumber = getParaToInt("pageNumbers");
+		Pageable pageable = new Pageable(pageNumber, PAGE_SIZE);
+		Page<TeamManagement> page = memberService.getTeamManagementListFind(member.getShareCode(),pageable,"");
+		List<TeamManagement> sdds = page.getList();
+		BigDecimal shouChuZongJinE=BigDecimal.ZERO;
+		BigDecimal maiRuJinE=BigDecimal.ZERO;
+		for ( TeamManagement teamManagement:sdds) {
+
+			TeamManagement page22page22 = memberService.getTeamManagement(teamManagement.getShareCode());
+		if(page22page22.getPriceNum()==null){
+			teamManagement.setWeChatNumber(("0"));
+
+		}else {
+			shouChuZongJinE=shouChuZongJinE.add(page22page22.getPriceNum());
+			teamManagement.setWeChatNumber((page22page22.getPriceNum()+""));
+		}
+			if(teamManagement.getPriceNum()==null){
+				teamManagement.setPriceNum(BigDecimal.ZERO);
+
+			}else{
+				maiRuJinE=maiRuJinE.add(teamManagement.getPriceNum());
+			}
+
+
+		}
+		setAttr("shouChuZongJinE", shouChuZongJinE);
+		setAttr("maiRuJinE", maiRuJinE);
+		setAttr("pageList", sdds);
 		setAttr("member", member);
 		setAttr("loginPlugin", pluginService.getLoginPlugin(member.getLoginPluginId()));
-		render("/admin/member/view.ftl");
+		render("/admin/shopkeeper/view.ftl");
 	}
 
 	/**
@@ -237,7 +264,12 @@ public class ShopkeeperController extends BaseController {
 	 */
 	public void list() {
 		Pageable pageable = getBean(Pageable.class);
-		Page<Member> pages = memberService.findPages(pageable, null);
+		pageable.setOrderProperty("housekeeper_id");
+		pageable.setOrderDirection("desc");
+
+
+		//Page<Member> pages = memberService.findPages(pageable, null);
+		Page<Member> pages=	memberService.findMemberPages(pageable);
 		List<Houserkeeper> houserkeeperList = houserkeeperGradeService.findAll();
 		setAttr("houserkeeperList", houserkeeperList);
 		List<MemberAttribute> ssss = memberAttributeService.findAll();

@@ -18,15 +18,66 @@
 		<a href="${base}/admin/common/index.jhtml">${message("admin.breadcrumb.home")}</a> &raquo; ${message("admin.member.view")}
 	</div>
 	<ul id="tab" class="tab">
+        <li>
+            <input type="button" value="直属代理" />
+        </li>
 		<li>
 			<input type="button" value="${message("admin.member.base")}" />
 		</li>
-		[#if memberAttributes?has_content]
-			<li>
-				<input type="button" value="${message("admin.member.profile")}" />
-			</li>
-		[/#if]
+
 	</ul>
+    <table class="item tabContent">
+        <tr>
+            <th>
+                姓名
+            </th>
+            <th>
+                级别
+            </th>
+            <th>
+                联系电话
+            </th>
+            <th>
+                团队规模
+            </th>
+            <th>
+                售出总金额
+            </th>
+            <th>
+                买入金额
+            </th>
+        </tr>
+		[#list pageList as  pagen]
+			<tr>
+                <td>
+					${pagen.nickname}
+                </td>
+                <td >
+					${pagen.housername}
+                </td>
+                <td>
+					${pagen.phone}
+                </td>
+                <td>
+					${pagen.memeber_num}
+                </td>
+                <td>
+					${pagen.weChatNumber}
+                </td>
+                <td>
+					${pagen.price_num}
+                </td>
+            </tr>
+		[/#list]
+		<tr>
+			<td colspan="1">    </td>
+			<td colspan="1">   </td>
+			<td colspan="1">   </td>
+			<td colspan="1">  </td>
+			<td colspan="1">售出总金额： 	${shouChuZongJinE}    </td>
+            <td colspan="1"> 买入总金额：${maiRuJinE}    </td>
+		</tr>
+    </table>
 	<table class="input tabContent">
 		<tr>
 			<th>

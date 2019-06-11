@@ -90,6 +90,8 @@ public class MemberDao extends BaseDao<Member> {
 		return modelManager.find(sql);
 	}
 
+
+
 	/**
 	 * 根据idList的集合获取id的信息
 	 *
@@ -154,7 +156,17 @@ public class MemberDao extends BaseDao<Member> {
 
 	}
 
+	/**
+	 *
+	 * @param pageable
+	 * @return
+	 */
+	public Page findMemberPages(Pageable pageable){
 
+		String select = "SELECT sum(s.price) zprice, sum( s.price * s.commission_rate / 100 ) zcommission, m.*" ;
+		String from = "FROM member m LEFT JOIN ( SELECT o1.member_id dddd, o1.price, o1.commission_rate, o1.create_date sssasa, o1.`status`, m1.* FROM member m1 LEFT JOIN `order` o1 ON o1.member_id = m1.id WHERE o1.id IS NOT NULL AND o1.`status` IN (2, 3, 4, 5, 9, 10)) s ON s.link_share_code LIKE concat('%', m.share_code, '%') GROUP BY m.id";
+		return super.findPages(select,from,pageable);
+	}
 	/**
 	 * 个人信息
 	 */
