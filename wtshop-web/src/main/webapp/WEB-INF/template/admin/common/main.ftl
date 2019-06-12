@@ -304,8 +304,12 @@
 		                                <ul class="nav nav-pills nav-stacked">
 		                                    [@shiro.hasPermission name="admin:member"]
 												<li><a href="../member/list.jhtml" target="iframe">${message("admin.main.member")}</a></li>
-												<li><a href="../shopkeeper/list.jhtml" target="iframe">掌柜管理</a></li>
+
 											[/@shiro.hasPermission]
+											[@shiro.hasPermission name="admin:shopkeeper"]
+                                            <li><a href="../shopkeeper/list.jhtml" target="iframe">${message("admin.main.shopkeeper")}掌柜管理</a></li>
+											[/@shiro.hasPermission]
+
 											[@shiro.hasPermission name="admin:certificates_shenhe"]
                                                 <li><a href="../certificates_shenhe/list.jhtml" target="iframe">${message("certificates.shenhe")}</a></li>
 											[/@shiro.hasPermission]
