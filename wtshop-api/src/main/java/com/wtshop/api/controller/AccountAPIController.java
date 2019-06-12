@@ -142,7 +142,7 @@ public class AccountAPIController extends BaseAPIController {
 				return;
 			}else{
 
-				linkShareCode= me.get(0).getLinkShareCode() + "_" + me.get(0).getOnShareCode();
+				linkShareCode= me.get(0).getLinkShareCode() + "_" + me.get(0).getShareCode();
 			}
 		}else{
 

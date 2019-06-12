@@ -500,8 +500,10 @@
                                         <ul class="nav nav-pills nav-stacked">
 											[@shiro.hasPermission name="admin:groupBuy"]
                                                 <li><a href="../groupBuy/list.jhtml" target="iframe">${message("admin.role.groupBuy")}</a></li>
+                                            [/@shiro.hasPermission]
+                                [@shiro.hasPermission name="admin:fightGroup"]
                                                 <li><a href="../fightGroup/list.jhtml" target="iframe">${message("admin.role.fightGroup")}</a></li>
-											[/@shiro.hasPermission]
+                                [/@shiro.hasPermission]
                                         </ul>
                                     </div>
                                 </div>
