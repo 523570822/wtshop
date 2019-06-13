@@ -412,7 +412,6 @@ public void findButler(){
             return;
         }else if(member.getHousekeeperId()<=2){
             List<ButlerUpgradeLog> butlerUpgradeLogList=   butlerUpgradeLogService.findByMemberId(member.getId());
-
             if(butlerUpgradeLogList.size()==0){
 
                 butlerUpgradeLog.setMemberId(member.getId());
