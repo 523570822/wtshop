@@ -307,7 +307,7 @@
 
 											[/@shiro.hasPermission]
 											[@shiro.hasPermission name="admin:shopkeeper"]
-                                            <li><a href="../shopkeeper/list.jhtml" target="iframe">${message("admin.main.shopkeeper")}掌柜管理</a></li>
+                                            <li><a href="../shopkeeper/list.jhtml" target="iframe">${message("admin.main.shopkeeper")}</a></li>
 											[/@shiro.hasPermission]
 
 											[@shiro.hasPermission name="admin:certificates_shenhe"]

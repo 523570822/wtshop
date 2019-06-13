@@ -344,7 +344,7 @@ public void findButler(){
 
 //升级金牌
    // map.put("status",1);
-    if(mmss.size()>=3){
+    if(mmss.size()>=15){
         List<ButlerUpgradeLog> butlerUpgradeLog=   butlerUpgradeLogService.findByMemberId(member.getId());
          if(butlerUpgradeLog.size()==0){
              map.put("status",2);
@@ -407,7 +407,7 @@ public void findButler(){
         butlerUpgradeLog.setBank(bank);
         Map<String,Object> map=new HashMap<>();
         //升级金牌
-        if(mmss.size()<3){
+        if(mmss.size()<15){
             renderJson( ApiResult.fail("升级失败升级人数不够"));
             return;
         }else if(member.getHousekeeperId()<=2){
