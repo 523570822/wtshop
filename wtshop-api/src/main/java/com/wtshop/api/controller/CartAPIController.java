@@ -49,17 +49,6 @@ public class CartAPIController extends BaseAPIController {
 		Boolean buyNow = getParaToBoolean("buy_nows");
 
 		Member member = memberService.getCurrent();
-
-		if(StringUtils.isEmpty(member.getOnShareCode())){
-			renderJson(ApiResult.fail(7,"请填写邀请码"));
-			return;
-		}
-
-
-		if (quantity == null || quantity < 1) {
-			renderJson(ApiResult.fail("数量不能为空!"));
-			return ;
-		}
 		Product product = productService.find(productId);
 		if (product == null) {
 			renderJson(ApiResult.fail(resZh.format("shop.cart.productNotExist")));

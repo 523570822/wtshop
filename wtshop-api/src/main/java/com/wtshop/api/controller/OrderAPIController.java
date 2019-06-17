@@ -68,13 +68,6 @@ public class OrderAPIController extends BaseAPIController {
 	public void buyNow() {
 
 		Member member = memberService.getCurrent();
-
-         if( member==null ||StringUtils.isEmpty(member.getOnShareCode())){
-			 renderJson(ApiResult.fail(7,"请填写邀请码"));
-			 return;
-		 }
-
-
 		//获取商品和数量
 		Long productId = getParaToLong("productId");
 		Long quantity = getParaToLong("quantity",1L);
