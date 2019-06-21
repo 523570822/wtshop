@@ -291,7 +291,7 @@
 							[#break /]
 						[/@shiro.hasPermission]
 					[/#list]
-                    [#list ["admin:member", "admin:certificates_shenhe", "admin:review" ,"admin:consultation", "admin:messageConfig", "admin:feedback"] as permission]
+                    [#list ["admin:member", "admin:certificates_shenhe", "admin:review" ,"admin:consultation", "admin:messageConfig", "admin:feedback","admin:identifier"] as permission]
 						[@shiro.hasPermission name = permission]
 							<div class="panel panel-default">
 		                        <div class="panel-heading">
@@ -332,6 +332,10 @@
 											[@shiro.hasPermission name="admin:feedback"]
                                                 <li><a href="../feedback/list.jhtml" target="iframe">${message("admin.main.feedback")}</a></li>
 											[/@shiro.hasPermission]
+
+												[@shiro.hasPermission name="admin:identifier"]
+                                                <li><a href="../identifier/list.jhtml" target="iframe">${message("admin.main.identifier")}</a></li>
+												[/@shiro.hasPermission]
 		                                </ul>
 
 		                            </div>

@@ -1,3 +1,4 @@
+
 echo "stop tomcat!"
 service tomcat stop
 #systemctl stop tomcat
@@ -16,9 +17,9 @@ mvn -X install -Dmaven.test.skip=true
 #mvn install -Dmaven.test.skip=true -U -P dev
 echo "拷贝到Tomcat下"
 rsync -rtlvz --exclude 'wtshop.properties'  /root/learngit/wtshop/wtshop-web/target/wtshop-web/*    /var/lib/tomcat/webapps/wtshop
-rsync -rtlvz /root/wtshop/wtshop.properties /var/lib/tomcat/webapps/wtshop/WEB-INF/classes
+rsync -rtlvz /root/wtrties /var/lib/tomcat/webapps/wtshop/WEB-INF/classes
 chmod 777 /usr/share/tomcat/webapps/wtshop/upload
-chmod 777 /var/lib/tomcat/webapps/wtshop/WEB-INF/classes
+chmod 777 /usr/share/tomcat/webapps/wtshop/WEB-INF/classes/*
 echo "开启tomcat"
 #systemctl start tomcat
 service tomcat start

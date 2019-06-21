@@ -34,10 +34,10 @@ public class BaseService<M extends Model<M>> {
 	public BaseService(Class<M> modelClass) {
 		this.baseDao = new BaseDao<M>(modelClass);
 	}
-	
+
 	/**
 	 * 查找实体对象
-	 * 
+	 *
 	 * @param id
 	 *            ID
 	 * @return 实体对象，若不存在则返回null
@@ -46,6 +46,14 @@ public class BaseService<M extends Model<M>> {
 		return baseDao.find(id);
 	}
 
+
+
+	/**
+	 * 获取最后一条记录
+	 */
+	public M findByLast(){
+		return  baseDao.findByLast();
+	}
 	/**
 	 * 查找所有实体对象集合
 	 * 

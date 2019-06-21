@@ -127,6 +127,11 @@ public class BaseDao <M extends Model<M>> {
 		return findPage(sqlExceptSelect, pageable);
 	}
 
+	public  M findByLast( ){
+		String sql = "select * from  `" + getTableName() + "` order by id DESC limit 1";
+
+		return   (M)modelManager.findFirst(sql);
+	}
 	/**
 	 * 查询实体对象数量
 	 *
@@ -259,7 +264,7 @@ public class BaseDao <M extends Model<M>> {
 	 *            分页信息
 	 * @return 实体对象分页
 	 */
-	protected Page<M> findPage(String sqlExceptSelect, Pageable pageable,String... flag) {
+	public Page<M> findPage(String sqlExceptSelect, Pageable pageable,String... flag) {
 		Assert.notNull(sqlExceptSelect);
 		if (pageable == null) {
 			pageable = new Pageable();

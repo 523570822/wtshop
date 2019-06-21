@@ -24,7 +24,7 @@ import java.util.List;
 import static com.wtshop.api.controller.BaseAPIController.convertToLong;
 
 /**
- * Controller - 品牌
+ * 特殊用户管理
  * 
  * 
  */
