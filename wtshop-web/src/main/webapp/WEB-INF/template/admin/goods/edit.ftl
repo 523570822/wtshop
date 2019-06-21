@@ -968,7 +968,14 @@
 
 
             $('.updateReview').click(function () {
-                $('.updateReview').attr('disable', true);
+
+            if( $inputForm.valid()==false){
+                return;
+            }
+
+
+
+               $('.updateReview').attr('disable', true);
                 $.ajax({
                     type: "POST",
                     url: "updateReview.jhtml",
