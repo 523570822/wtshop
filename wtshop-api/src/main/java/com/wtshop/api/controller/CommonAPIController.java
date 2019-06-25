@@ -12,9 +12,11 @@ import com.wtshop.api.common.result.IndexResult;
 import com.wtshop.model.Ad;
 import com.wtshop.model.Goods;
 import com.wtshop.model.Member;
+import com.wtshop.model.SpecialGoods;
 import com.wtshop.service.AdService;
 import com.wtshop.service.GoodsService;
 import com.wtshop.service.MemberService;
+import com.wtshop.service.SpecialGoodsService;
 import com.wtshop.util.ApiResult;
 import com.wtshop.util.ObjectUtils;
 import com.wtshop.util.RedisUtil;
@@ -33,7 +35,7 @@ public class CommonAPIController extends BaseAPIController {
     private AdService adService = enhance(AdService.class);
     private GoodsService goodsService = enhance(GoodsService.class);
     private MemberService memberService = enhance(MemberService.class);
-
+    private SpecialGoodsService specialGoodsService = enhance(SpecialGoodsService.class);
     /**
      * 首页
      */
@@ -111,6 +113,16 @@ public class CommonAPIController extends BaseAPIController {
         Pageable pageable = new Pageable(pageNumber, 10);
         Page<Goods> goodsList = goodsService.findSpecialGoods( pageable);
         List<Ad> adList = adService.findAdList(17L);
+        for (Ad ad:adList) {
+            if(ad.getUrlType().getUrltype()==3){
+                SpecialGoods s = specialGoodsService.find(Long.parseLong(ad.getParam()));
+                if(s!=null){
+                    ad.put("goodsId",s.getId());
+                }else{
+                    ad.put("goodsId",0);
+                }
+            }
+        }
         Map<String ,Object> map=new HashMap();
         map.put("goodsList",goodsList);
         map.put("adList",adList);

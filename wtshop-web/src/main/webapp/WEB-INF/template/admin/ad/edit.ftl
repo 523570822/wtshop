@@ -179,7 +179,14 @@ function checkParam() {
                     </span>${message("Ad.param")}:
                 </th>
                 <td>
-                    <input id="param" type="text" name="ad.param" class="text" title="跳转具体活动的参数" value="${ad.param}" maxlength="200" id="param"/>
+                    <input type="text"
+                           id="param" name="ad.param" class="text"   title="${message("admin.ad.param")}" value="${ad.param}"
+                           maxlength="12"
+                           onkeyup="value=value.replace(/[^\d]/g,'')"
+                                  onblur="value=value.replace(/[^\d]/g,'')"
+                           ng-model="schedule.round"
+                           placeholder="请输入数字">
+
                 </td>
             </tr>
 

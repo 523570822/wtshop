@@ -38,6 +38,20 @@ public class IndexController extends BaseController {
 		Pageable pageable = new Pageable(pageNumber, 10);
 		Page<Goods> goodsList = goodsService.findSpecialGoods( pageable);
 		List<Ad> adList = adService.findAdList(17L);
+		for (Ad ad:adList) {
+			if(ad.getUrlType().getUrltype()==3){
+				SpecialGoods s = specialGoodsService.find(Long.parseLong(ad.getParam()));
+				if(s!=null){
+					ad.put("goodsId",s);
+				}else{
+					ad.put("goodsId",0);
+				}
+			}
+
+
+		}
+		Ad ad = adList.get(0);
+
 		Map<String ,Object> map=new HashMap();
 		map.put("goodsList",goodsList);
 		map.put("adList",adList);

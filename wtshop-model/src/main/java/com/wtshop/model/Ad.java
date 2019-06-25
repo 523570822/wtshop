@@ -15,7 +15,7 @@ import com.wtshop.util.ObjectUtils;
 public class Ad extends BaseAd<Ad> {
 	private static final long serialVersionUID = 5279484023423432835L;
 	public static final Ad dao = new Ad();
-	
+
 	/**
 	 * 类型
 	 */

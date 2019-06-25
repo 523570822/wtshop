@@ -132,7 +132,7 @@ $().ready(function() {
 					${message("Member.memberRank")}:
 				</th>
 				<td>
-					<select name="memberRankId">
+					<select name="memberRankId"   >
 						[#list memberRanks as memberRank]
 							<option value="${memberRank.id}"[#if memberRank.isDefault] selected="selected"[/#if]>${memberRank.name}</option>
 						[/#list]

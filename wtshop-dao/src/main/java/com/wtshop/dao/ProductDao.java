@@ -189,7 +189,7 @@ public class ProductDao extends BaseDao<Product> {
 	}
 
 	public Page<Product> findReverseAuctionByPage(Pageable page, String flag){
-		if (StringUtils.equals(flag, "4") || StringUtils.equals(flag, "2")){
+		if (StringUtils.equals(flag, "4") || StringUtils.equals(flag, "2")||StringUtils.equals(flag, "6") ){
 			String sql = "FROM product p LEFT JOIN goods g ON p.goods_id=g.id WHERE 1=1  and g.is_delete = 0 and g.type = 0 and g.is_vip = 0 and g.is_marketable = 1 " ;
 			return this.findPage(sql, page, "11");
 		}

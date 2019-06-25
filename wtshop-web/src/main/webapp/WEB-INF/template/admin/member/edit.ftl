@@ -117,11 +117,12 @@ $().ready(function() {
 					${message("Member.memberRank")}:
 				</th>
 				<td>
-					<select name="memberRankId">
+					${member.memberRank.name}<input type="hidden" name="memberRankId" class="text" value="${member.memberRank.id}" maxlength="200" />
+					[#--<select name="memberRankId">
 						[#list memberRanks as memberRank]
 							<option value="${memberRank.id}"[#if memberRank == member.memberRank] selected="selected"[/#if]>${memberRank.name}</option>
 						[/#list]
-					</select>
+					</select>--]
 				</td>
 			</tr>
 			<tr>
