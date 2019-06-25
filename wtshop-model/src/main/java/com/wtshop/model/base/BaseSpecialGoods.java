@@ -121,12 +121,12 @@ public abstract class BaseSpecialGoods<M extends BaseSpecialGoods<M>> extends Mo
 		return get("explain");
 	}
 
-	public void setProductId(Long productId) {
-		set("product_id", productId);
+	public void setGoodsId(Long goodsId) {
+		set("goods_id", goodsId);
 	}
 
-	public Long getProductId() {
-		return get("product_id");
+	public Long getGoodsId() {
+		return get("goods_id");
 	}
 
 }

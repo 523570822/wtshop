@@ -6,7 +6,9 @@ import java.util.Map;
 
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.kit.StrKit;
+import com.jfinal.plugin.activerecord.Page;
 import com.wtshop.Message;
+import com.wtshop.Pageable;
 import com.wtshop.model.*;
 import com.wtshop.service.ArticleService;
 import com.wtshop.service.GoodsService;
@@ -33,7 +35,9 @@ public class IndexController extends BaseController {
 	 *
 	 */
 	public void ceshi() {
-		List<SpecialGoods> list = specialGoodsService.findLists();
+		Integer pageNumber = getParaToInt("pageNumber", 1);
+		Pageable pageable = new Pageable(pageNumber, 10);
+		Page<Goods> list = goodsService.findSpecialGoods(pageable);
 		renderJson(list);
 	}
 	public enum GenerateType {

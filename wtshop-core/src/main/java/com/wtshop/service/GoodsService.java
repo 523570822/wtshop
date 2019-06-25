@@ -82,7 +82,10 @@ public class GoodsService extends BaseService<Goods> {
         return goodsDao.findByBrandId(id);
     }
 
-
+    public Page<Goods>  findSpecialGoods(Pageable pageable)
+        {
+            return goodsDao.findSpecialGoods(pageable);
+    }
     /**
      * 新品推荐
      */

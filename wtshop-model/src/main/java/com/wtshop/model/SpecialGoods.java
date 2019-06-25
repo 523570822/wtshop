@@ -13,7 +13,7 @@ public class SpecialGoods extends BaseSpecialGoods<SpecialGoods> {
 
 	public Product getProduct() {
 		if(ObjectUtils.isEmpty(product)){
-			product = Product.dao.findById(getProductId());
+			product = Product.dao.findById(getGoodsId());
 		}
 		return product;
 	}

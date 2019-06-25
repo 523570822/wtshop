@@ -47,10 +47,10 @@ public class SpecialGoodsController extends BaseController {
         SpecialGoods fuDai = getModel(SpecialGoods.class);
 
 
-        Long productId = getParaToLong("productId");
+        Long goodsId = getParaToLong("goodsId");
         Integer productImageIndex = getBeans(ProductImage.class, "productImages").size();
         fuDai.setStatus(1);
-        fuDai.setProductId(productId);
+        fuDai.setGoodsId(goodsId);
         fuDaiService.save(fuDai);
 
 

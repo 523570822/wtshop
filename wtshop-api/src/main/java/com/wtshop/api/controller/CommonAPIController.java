@@ -34,9 +34,6 @@ public class CommonAPIController extends BaseAPIController {
      * 首页
      */
     public void index() {
-
-
-
         Logger logger = Logger.getLogger("index");
         List<Ad> vipList = new ArrayList<>();
         String token = getPara("token");

@@ -34,7 +34,7 @@
                     type: 2,
                     skin: 'layui-layer-rim', //加上边框
                     area: ['870px', '540px'], //宽高
-                    content: "../reverseAuction/chooseGoods.jhtml?flag=2",
+                    content: "../reverseAuction/chooseGoods.jhtml?flag=6",
                     shadeClose:true,
                 });
             });
@@ -142,8 +142,8 @@
             </th>
             </th>
             <td>
-                <input type="hidden" name="productId" id="product_id" class="text" maxlength="200" />
-                <input type="text" class="text" maxlength="200" id="product_name" name="product_name" title=${message("fudai.phone.title")}  />
+                <input type="hidden" name="goodsId" id="goods_id" class="text" maxlength="200" />
+                <input type="text" class="text" maxlength="200" id="goods_name" name="goods_name" title=${message("fudai.phone.title")}  />
                 <input type="button" value="选择产品" class="button" id="addProduct"/>
             </td>
         </tr>

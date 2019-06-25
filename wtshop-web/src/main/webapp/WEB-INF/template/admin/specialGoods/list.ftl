@@ -98,8 +98,8 @@
         </tr>
         [#list page.list as fuDai]
             <tr>
-                <td>
-                    <input type="checkbox" name="ids" value="${fuDai.id}"/>
+                <td width="50px">
+                    <input type="checkbox" name="ids" value="${fuDai.id}"/>${fuDai.id}
                 </td>
                 <td>
                     <span title="${fuDai.title}">${abbreviate(fuDai.title, 50, "...")}</span>

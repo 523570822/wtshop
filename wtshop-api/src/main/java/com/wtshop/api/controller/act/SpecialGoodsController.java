@@ -5,6 +5,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.i18n.I18n;
 import com.jfinal.i18n.Res;
+import com.jfinal.plugin.activerecord.Page;
 import com.wtshop.Pageable;
 import com.wtshop.api.controller.BaseAPIController;
 import com.wtshop.api.interceptor.ErrorInterceptor;
@@ -40,14 +41,20 @@ public class SpecialGoodsController extends BaseAPIController {
     private ActIntroduceService actIntroduceService = enhance(ActIntroduceService.class);
     private CertificatesService certificatesService= enhance(CertificatesService.class);
     private Res resZh = I18n.use();
-
+    private AdService adService = enhance(AdService.class);
 
     /**
      * 福袋主页
      */
     public void specialGoods() {
-        List<SpecialGoods> list = fuDaiService.findLists();
-        renderJson(list);
+        Integer pageNumber = getParaToInt("pageNumber", 1);
+        Pageable pageable = new Pageable(pageNumber, 10);
+        Page<Goods> goodsList = goodsService.findSpecialGoods( pageable);
+        List<Ad> adList = adService.findAdList(7L);
+        Map <String ,Object> map=new HashMap();
+        map.put("goodsList",goodsList);
+        map.put("adList",adList);
+        renderJson(ApiResult.success(map));
     }
 
     /**
