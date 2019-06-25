@@ -311,8 +311,8 @@ $().ready(function() {
 			</tr>
 			[#list page.list as goods]
 				<tr class="getId">
-					<td>
-						<input type="checkbox" name="ids" value="${goods.id}" />
+					<td width="50px">
+						<input type="checkbox" name="ids" value="${goods.id}" />${goods.id}
 					</td>
 					<td>
 						<span[#if goods.isOutOfStock] class="red"[#elseif goods.isStockAlert] class="blue"[/#if]>

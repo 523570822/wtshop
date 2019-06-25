@@ -10,10 +10,8 @@ import com.jfinal.plugin.activerecord.Page;
 import com.wtshop.Message;
 import com.wtshop.Pageable;
 import com.wtshop.model.*;
-import com.wtshop.service.ArticleService;
-import com.wtshop.service.GoodsService;
-import com.wtshop.service.SearchService;
-import com.wtshop.service.SpecialGoodsService;
+import com.wtshop.service.*;
+import com.wtshop.util.ApiResult;
 import org.apache.commons.collections.CollectionUtils;
 
 /**
@@ -28,6 +26,7 @@ public class IndexController extends BaseController {
 	private GoodsService goodsService = enhance(GoodsService.class);
 	private SearchService searchService = enhance(SearchService.class);
 	private SpecialGoodsService specialGoodsService = enhance(SpecialGoodsService.class);
+	private AdService adService = enhance(AdService.class);
 	/**
 	 * 生成类型
 	 */
@@ -37,8 +36,12 @@ public class IndexController extends BaseController {
 	public void ceshi() {
 		Integer pageNumber = getParaToInt("pageNumber", 1);
 		Pageable pageable = new Pageable(pageNumber, 10);
-		Page<Goods> list = goodsService.findSpecialGoods(pageable);
-		renderJson(list);
+		Page<Goods> goodsList = goodsService.findSpecialGoods( pageable);
+		List<Ad> adList = adService.findAdList(17L);
+		Map<String ,Object> map=new HashMap();
+		map.put("goodsList",goodsList);
+		map.put("adList",adList);
+		renderJson(ApiResult.success(map));
 	}
 	public enum GenerateType {
 		/**

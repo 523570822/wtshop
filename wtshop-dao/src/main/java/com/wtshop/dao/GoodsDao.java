@@ -50,7 +50,7 @@ public class GoodsDao extends BaseDao<Goods> {
 	}
 	public Page<Goods> findSpecialGoods(Pageable pageable){
 
-			String select = " select g.`name`,g.id,g.image,g.price  ";
+			String select = " select g.`name` ,s.id attribute_value0,g.id,g.image,g.price  ";
 		String sql = " from special_goods s LEFT JOIN goods g on s.goods_id=g.id where s.`status`=0  ORDER BY orders  ";
 		return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sql);
 		//	return modelManager.find(sql);
