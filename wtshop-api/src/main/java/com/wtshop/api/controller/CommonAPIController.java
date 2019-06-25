@@ -3,8 +3,10 @@ package com.wtshop.api.controller;
 
 import com.jfinal.ext.plugin.monogodb.MongoKit;
 import com.jfinal.ext.route.ControllerBind;
+import com.jfinal.plugin.activerecord.Page;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.wtshop.Pageable;
 import com.wtshop.RequestContextHolder;
 import com.wtshop.api.common.result.IndexResult;
 import com.wtshop.model.Ad;
@@ -21,7 +23,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @ControllerBind(controllerKey = "/api")
 public class CommonAPIController extends BaseAPIController {
@@ -99,5 +103,17 @@ public class CommonAPIController extends BaseAPIController {
         IndexResult indexResult = new IndexResult(adList, fudaiList, vipList, goodsList, newGoodsList, charactersList, newGoodsAdList, charactersAdList,shouYeList);
         renderJson(ApiResult.success(indexResult));
     }
-
+    /**
+     * 福袋主页
+     */
+    public void specialGoods() {
+        Integer pageNumber = getParaToInt("pageNumber", 1);
+        Pageable pageable = new Pageable(pageNumber, 10);
+        Page<Goods> goodsList = goodsService.findSpecialGoods( pageable);
+        List<Ad> adList = adService.findAdList(7L);
+        Map<String ,Object> map=new HashMap();
+        map.put("goodsList",goodsList);
+        map.put("adList",adList);
+        renderJson(ApiResult.success(map));
+    }
 }

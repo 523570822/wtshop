@@ -43,19 +43,7 @@ public class SpecialGoodsController extends BaseAPIController {
     private Res resZh = I18n.use();
     private AdService adService = enhance(AdService.class);
 
-    /**
-     * 福袋主页
-     */
-    public void specialGoods() {
-        Integer pageNumber = getParaToInt("pageNumber", 1);
-        Pageable pageable = new Pageable(pageNumber, 10);
-        Page<Goods> goodsList = goodsService.findSpecialGoods( pageable);
-        List<Ad> adList = adService.findAdList(7L);
-        Map <String ,Object> map=new HashMap();
-        map.put("goodsList",goodsList);
-        map.put("adList",adList);
-        renderJson(ApiResult.success(map));
-    }
+
 
     /**
      * 主福袋信息
