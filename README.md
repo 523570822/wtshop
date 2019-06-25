@@ -141,7 +141,7 @@ git rm --cached -r  "target"
    杀死java线程  pkill -9  java
    杀死线程kill -9 23119
    
-  
+  ````
    查找大于100M的文件
   find / -size +100M -exec ls -lh {} \;
   

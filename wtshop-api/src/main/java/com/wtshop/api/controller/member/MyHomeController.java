@@ -399,12 +399,12 @@ public void findButler(){
         ButlerUpgradeLog butlerUpgradeLog = getModel(ButlerUpgradeLog.class);
         String name= URLDecoder.decode(butlerUpgradeLog.getName(),"UTF-8");
         String address= URLDecoder.decode(butlerUpgradeLog.getAddress(),"UTF-8");
-        String bank_name = URLDecoder.decode(butlerUpgradeLog.getBankName(),"UTF-8");
-        String bank = URLDecoder.decode(butlerUpgradeLog.getBank(),"UTF-8");
+        //String bank_name = URLDecoder.decode(butlerUpgradeLog.getBankName(),"UTF-8");
+      ///  String bank = URLDecoder.decode(butlerUpgradeLog.getBank(),"UTF-8");
         butlerUpgradeLog.setName(name);
         butlerUpgradeLog.setAddress(address);
-        butlerUpgradeLog.setBankName(bank_name);
-        butlerUpgradeLog.setBank(bank);
+       // butlerUpgradeLog.setBankName(bank_name);
+     //   butlerUpgradeLog.setBank(bank);
         Map<String,Object> map=new HashMap<>();
         //升级金牌
         if(mmss.size()<15){

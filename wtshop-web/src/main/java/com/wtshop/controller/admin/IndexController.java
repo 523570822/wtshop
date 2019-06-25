@@ -6,11 +6,13 @@ import java.util.Map;
 
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.kit.StrKit;
-import com.wtshop.model.Article;
-import com.wtshop.model.Goods;
+import com.wtshop.Message;
+import com.wtshop.model.*;
 import com.wtshop.service.ArticleService;
 import com.wtshop.service.GoodsService;
 import com.wtshop.service.SearchService;
+import com.wtshop.service.SpecialGoodsService;
+import org.apache.commons.collections.CollectionUtils;
 
 /**
  * Controller - 索引
@@ -23,10 +25,17 @@ public class IndexController extends BaseController {
 	private ArticleService articleService = enhance(ArticleService.class);
 	private GoodsService goodsService = enhance(GoodsService.class);
 	private SearchService searchService = enhance(SearchService.class);
-
+	private SpecialGoodsService specialGoodsService = enhance(SpecialGoodsService.class);
 	/**
 	 * 生成类型
 	 */
+	/**
+	 *
+	 */
+	public void ceshi() {
+		List<SpecialGoods> list = specialGoodsService.findLists();
+		renderJson(list);
+	}
 	public enum GenerateType {
 		/**
 		 * 文章

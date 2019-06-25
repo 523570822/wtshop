@@ -974,7 +974,135 @@ public class OrderService extends BaseService<Order> {
         return order;
 
     }
+    /**
+     * 创建特殊订单
+     */
+    @Before(Tx.class)
+    public Order createSpecial(Order.Type type, SpecialGoods fuDai, Receiver receiver, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName) {
 
+        List<ShippingMethod> shippingMethods = shippingMethodService.findMethodList();
+        // 默认网上支付
+        PaymentMethod paymentMethod = paymentMethodService.find(1L);
+
+        //快递公司
+        Member member = memberService.getCurrent();
+
+        Order order = new Order();
+
+        order.setIsInvoice(isInvoice);
+        order.setIsPersonal(isPersonal);
+        order.setTaxNumber(taxNumber);
+        order.setCompanyName(companyName);
+
+        order.setSn(snDao.generate(Sn.Type.order));
+        order.setType(type.ordinal());
+        order.setPaymentMethodId(1L);
+        order.setPrice(new BigDecimal(fuDai.getPrice()));
+        order.setFee(BigDecimal.ZERO);
+        order.setFreight(BigDecimal.ZERO); //福袋运费是0
+        order.setPromotionDiscount(BigDecimal.ZERO);
+        order.setMiaobiPaid(BigDecimal.ZERO);
+        order.setReturnCopyPaid(BigDecimal.ZERO);
+        order.setOffsetAmount(BigDecimal.ZERO);
+        order.setAmountPaid(BigDecimal.ZERO);
+        order.setRefundAmount(BigDecimal.ZERO);
+        order.setAreaId(receiver.getAreaId());
+        order.setRewardPoint(0L);
+        order.setExchangePoint(0L);
+        order.setWeight(0);
+        order.setQuantity(1);
+        order.setShippedQuantity(0);
+        order.setReturnedQuantity(0);
+        order.setIsDelete(false);
+        order.setConsignee(receiver.getConsignee());
+        order.setAreaName(receiver.getAreaName());
+        order.setAddress(receiver.getAddress());
+        order.setZipCode(receiver.getZipCode());
+        order.setPhone(receiver.getPhone());
+        order.setArea(receiver.getArea());
+        order.setMemo(null);
+        order.setIsUseCouponCode(false);
+        order.setIsExchangePoint(false);
+        order.setIsAllocatedStock(false);
+        // order.setInvoice(null);
+        order.setShippingMethodId(shippingMethods.get(0).getId());
+        order.setMemberId(member.getId());
+        order.setCouponDiscount(BigDecimal.ZERO);
+        order.setTax(calculateTax(order));
+        order.setAmount(calculateAmount(order));
+        order.setStatus(Order.Status.pendingPayment.ordinal());
+        order.setPaymentMethod(null);
+        order.setActOrderId(fuDai.getId().toString());
+        Setting setting = SystemUtils.getSetting();
+        BigDecimal amountPayable = order.getAmount();
+
+        order.setTax(BigDecimal.ZERO);
+        order.setStatus(Order.Status.pendingPayment.ordinal());
+        order.setPaymentMethod(null);
+        order.setPaymentMethodId(1L);
+        order.setPaymentMethodName("网上支付");
+        order.setExpire(DateUtils.addMinutes(new Date(), setting.getCommomPayTime()));
+        lock(order, member);
+
+        if (order.getArea() != null) {
+            order.setAreaName(order.getArea().getFullName());
+        }
+        if (order.getPaymentMethod() != null) {
+            order.setPaymentMethodName(order.getPaymentMethod().getName());
+            order.setPaymentMethodType(order.getPaymentMethod().getType());
+            order.setPaymentMethodId(paymentMethod.getId());
+        }
+        if (order.getShippingMethod() != null) {
+            order.setShippingMethodName(order.getShippingMethod().getName());
+        }
+
+        orderDao.save(order);
+
+        //先保存主产品,等付款后再抽取副产品
+
+        List<Long> fudaiIdList = new ArrayList<>();//fuDaiProductService.lotteryProduct(fuDai.getId(),member.getId());
+        FudaiProduct primary = fuDaiProductService.findPrimary(fuDai.getId());
+        fudaiIdList.add(primary.getId());
+        for (Long fudaiId : fudaiIdList) {
+            Product product1 = productService.findProductByFudaiId(fudaiId);
+            FudaiProduct fudaiProduct = fuDaiProductService.find(fudaiId);
+            OrderItem orderItem = new OrderItem();
+            orderItem.setSn(product1.getSn());
+            orderItem.setName(product1.getName());
+            orderItem.setType(product1.getType().ordinal());
+            orderItem.setPrice(product1.getPrice());
+            orderItem.setWeight(product1.getWeight());
+            orderItem.setIsDelivery(product1.getIsDelivery());
+            orderItem.setThumbnail(product1.getThumbnail());
+            orderItem.setQuantity(1);
+            orderItem.setShippedQuantity(0);
+            orderItem.setThumbnail(product1.getThumbnail());
+            orderItem.setReturnedQuantity(0);
+            orderItem.setProductId(product1.getId());
+            orderItem.setSpecifications(JSON.toJSONString(product1.getSpecifications()));
+            orderItem.setOrderId(order.getId());
+            orderItem.setActitemId(0l);
+            orderItemDao.save(orderItem);
+        }
+
+        OrderLog orderLog = new OrderLog();
+        orderLog.setType(OrderLog.Type.create.ordinal());
+        orderLog.setOrderId(order.getId());
+        orderLogDao.save(orderLog);
+
+        Order order1 = orderDao.findOrderByStatus(member.getId(), "0");
+        try {
+            informationService.noPayMessage(order1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mailService.sendCreateOrderMail(order);
+        smsService.sendCreateOrderSms(order);
+
+        return order;
+
+    }
     /**
      * 查找订单
      *

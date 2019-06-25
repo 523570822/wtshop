@@ -441,7 +441,7 @@
 						[/@shiro.hasPermission]
 					[/#list]
 					[#list ["admin:fuDai"] as permission]
-						[@shiro.hasPermission name = permission]
+					[@shiro.hasPermission name = permission]
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <a href="#fuDaiGroup" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
@@ -458,9 +458,31 @@
                                     </div>
                                 </div>
                             </div>
-							[#break /]
-						[/@shiro.hasPermission]
-					[/#list]
+						[#break /]
+					[/@shiro.hasPermission]
+				[/#list]
+
+								[#list ["admin:specialGoods"] as permission]
+									[@shiro.hasPermission name = permission]
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <a href="#specialGoods" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
+                                        <i class="glyphicon glyphicon-gift"></i> ${message("admin.main.specialGoods")}
+                                    </a>
+                                </div>
+                                <div class="accordion-body collapse" id="specialGoods">
+                                    <div class="panel-body">
+                                        <ul class="nav nav-pills nav-stacked">
+											[@shiro.hasPermission name="admin:specialGoods"]
+                                                <li><a href="../specialGoods/list.jhtml" target="iframe">${message("admin.main.specialGoods")}</a></li>
+											[/@shiro.hasPermission]
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+										[#break /]
+									[/@shiro.hasPermission]
+								[/#list]
 
 	[#list ["admin:housekeeper"] as permission]
 		[@shiro.hasPermission name = permission]
