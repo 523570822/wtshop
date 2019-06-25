@@ -62,12 +62,12 @@ $().ready(function() {
 				</div>
 				<ul>
 					<li[#if pageable.searchProperty == "title"] class="current"[/#if] val="title">批次</li>
-					<li[#if pageable.searchProperty == "code"] class="current"[/#if] val="code">邀请码</li>
+					<li[#if pageable.searchProperty == "code"] class="current"[/#if] val="code">识别码</li>
 				</ul>
 			</div>
 		生成批次：
             <input type="text"
-                   id="titleB" name="titleB" class="text"
+                   id="titleB" name="titleB" class="text"  value="${titleB}"
                    maxlength="12"
                    onkeyup="value=value.replace(/[^\d]/g,'')"
                           onblur="value=value.replace(/[^\d]/g,'')"
@@ -76,7 +76,7 @@ $().ready(function() {
 		-
 
             <input type="text"
-                   id="titleE" name="titleE"  class="text"
+                   id="titleE" name="titleE"  class="text"  value="${titleE}"
                    maxlength="12"
                    onkeyup="value=value.replace(/[^\d]/g,'')"
                    onblur="value=value.replace(/[^\d]/g,'')"

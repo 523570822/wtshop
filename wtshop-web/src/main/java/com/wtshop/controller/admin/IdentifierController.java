@@ -68,7 +68,7 @@ public class IdentifierController extends BaseController {
 			String code = ShareCodeUtils.idToCode(i);
 			Identifier identifier1= new Identifier();
 			identifier1.setCode(code);
-			identifier1.setStatus(false);
+			identifier1.setStatus(0);
 
 			identifier1.setTitle(title);
 				System.out.println("开始计数"+i+"验证码"+code);
@@ -139,6 +139,8 @@ public class IdentifierController extends BaseController {
 		setAttr("page", identifierService.findPage(sql,pageable));
 		LogKit.info(">" + pageable.getPageNumber());
 		setAttr("pageable", pageable);
+		setAttr("titleB", titleB);
+		setAttr("titleE", titleE);
 		render("/admin/identifier/list.ftl");
 	}
 
@@ -172,7 +174,7 @@ public class IdentifierController extends BaseController {
 	public void disabled() {
 		Long id = getParaToLong("id");
 		Identifier activity = identifierService.find(id);
-		activity.setStatus(false);
+		activity.setStatus(0);
 		identifierService.update(activity);
 		redirect("/admin/special/list.jhtml");
 	}
@@ -186,7 +188,7 @@ public class IdentifierController extends BaseController {
 		Identifier activity = identifierService.find(id);
 
 
-		activity.setStatus(true);
+		activity.setStatus(1);
 		identifierService.update(activity);
 		redirect("/admin/special/list.jhtml");
 	}

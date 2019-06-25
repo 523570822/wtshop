@@ -110,7 +110,7 @@ public class CommonAPIController extends BaseAPIController {
         Integer pageNumber = getParaToInt("pageNumber", 1);
         Pageable pageable = new Pageable(pageNumber, 10);
         Page<Goods> goodsList = goodsService.findSpecialGoods( pageable);
-        List<Ad> adList = adService.findAdList(7L);
+        List<Ad> adList = adService.findAdList(17L);
         Map<String ,Object> map=new HashMap();
         map.put("goodsList",goodsList);
         map.put("adList",adList);

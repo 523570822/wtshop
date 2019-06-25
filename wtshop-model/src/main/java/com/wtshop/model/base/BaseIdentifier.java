@@ -49,11 +49,11 @@ public abstract class BaseIdentifier<M extends BaseIdentifier<M>> extends Model<
 		return get("title");
 	}
 
-	public void setStatus(Boolean status) {
+	public void setStatus(Integer status) {
 		set("status", status);
 	}
 
-	public Boolean getStatus() {
+	public Integer getStatus() {
 		return get("status");
 	}
 
@@ -71,6 +71,30 @@ public abstract class BaseIdentifier<M extends BaseIdentifier<M>> extends Model<
 
 	public Integer getOrders() {
 		return get("orders");
+	}
+
+	public void setEndDate(java.util.Date endDate) {
+		set("end_date", endDate);
+	}
+
+	public java.util.Date getEndDate() {
+		return get("end_date");
+	}
+
+	public void setShareCode(String shareCode) {
+		set("share_code", shareCode);
+	}
+
+	public String getShareCode() {
+		return get("share_code");
+	}
+
+	public void setPrice(java.math.BigDecimal price) {
+		set("price", price);
+	}
+
+	public java.math.BigDecimal getPrice() {
+		return get("price");
 	}
 
 }

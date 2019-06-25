@@ -81,8 +81,8 @@ $().ready(function() {
 			</tr>
 			[#list page.list as adPosition]
 				<tr>
-					<td>
-						<input type="checkbox" name="ids" value="${adPosition.id}" />
+					<td width="50px">
+						<input type="checkbox" name="ids" value="${adPosition.id}" />${adPosition.id}
 					</td>
 					<td>
 						${adPosition.name}
