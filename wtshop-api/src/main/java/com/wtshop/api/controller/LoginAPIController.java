@@ -118,9 +118,17 @@ public class LoginAPIController extends BaseAPIController {
             String s = it.next();
             System.out.println(s+":"+access_token.get(s));//这里的s就是map中的key，map.get(s)就是key对应的value。
         }
-        Map<String, Object> user = xcxAccountService.getUserInfo(access_token);
+      /* Map<String, Object> user = xcxAccountService.getUserInfo(access_token);
+
+        System.out.println("user 打印");
+        Set<String> key1 = user.keySet();
+        for (Iterator<String> it = key1.iterator(); it.hasNext();) {
+            String s = it.next();
+            System.out.println(s+":"+user.get(s));//这里的s就是map中的key，map.get(s)就是key对应的value。
+        }
         //String nickname = com.wtshop.util.StringUtils.filterEmoji(user.get("nickname").toString()) ;
-        String openid = user.get("unionid").toString();
+        String openid = user.get("unionid").toString();*/
+        String openid = access_token.get("openid").toString();
         int codes = 9000; //不需要绑定手机号
         Member member = null;
         //获取微信社交绑定的openId
