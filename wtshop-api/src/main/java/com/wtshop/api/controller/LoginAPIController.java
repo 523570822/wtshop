@@ -108,6 +108,8 @@ public class LoginAPIController extends BaseAPIController {
     }
     public void codeXCXSubmit() {
         String code = getPara("code");
+        String img = getPara("img","");
+        String nickname = getPara("name","");
         HttpServletRequest request = getRequest();
         Map<String, Object> access_token = xcxAccountService.getXCXAccess_token(code);
         Set<String> key = access_token.keySet();
@@ -142,7 +144,7 @@ public class LoginAPIController extends BaseAPIController {
             member = new Member();
             member.setIsDelete(false);
             member.setOpenId(openid);
-           // member.setNickname(nickname);
+            member.setNickname(nickname);
             member.setAmount(BigDecimal.ZERO);
             member.setBalance(BigDecimal.ZERO);
             member.setPrestore(BigDecimal.ZERO);
@@ -152,12 +154,13 @@ public class LoginAPIController extends BaseAPIController {
             member.setLoginIp(request.getRemoteAddr());
             member.setMemberRankId(1L);
             member.setIsEnabled(true);
+            member.setAvatar(img);
             memberService.save(member);
 
             Account account1 = new Account();
             account1.setAccount(openid);
             account1.setType(0);
-         //   account1.setNickname(nickname);
+            account1.setNickname(nickname);
             account1.setMemberId(member.getId());
             accountService.save(account1);
 
