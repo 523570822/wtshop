@@ -77,6 +77,7 @@ public class _MappingKit {
 		// Composite Primary Key order: effect,goods
 		arp.addMapping("goods_effct", "effect,goods", GoodsEffct.class);
 		arp.addMapping("goods_oper_flow", "id", GoodsOperFlow.class);
+		arp.addMapping("xcx_account", "id", XcxAccount.class);
 		// Composite Primary Key order: goods,promotions
 		arp.addMapping("goods_promotion", "goods,promotions", GoodsPromotion.class);
 		arp.addMapping("goods_review", "id", GoodsReview.class);

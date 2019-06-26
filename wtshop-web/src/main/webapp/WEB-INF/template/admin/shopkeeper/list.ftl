@@ -167,7 +167,7 @@
                     </td>
                     <td>
                         <a href="view.jhtml?id=${member.id}">[${message("admin.common.view")}]</a>
-                        <a href="edit.jhtml?id=${member.id}">[${message("admin.common.edit")}]</a>
+                    [#--    <a href="edit.jhtml?id=${member.id}">[${message("admin.common.edit")}]</a>--]
                     </td>
                 </tr>
             [/#list]

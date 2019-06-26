@@ -4,18 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
-import com.alipay.api.domain.AlipayAccount;
 import com.alipay.api.domain.AlipayFundTransOrderQueryModel;
 import com.alipay.api.domain.AlipayFundTransToaccountTransferModel;
-import com.alipay.api.domain.AlipayOpenAppCodetesttestModel;
 import com.alipay.api.domain.AlipayTradeRefundModel;
 import com.alipay.api.internal.util.AlipaySignature;
-import com.alipay.api.request.*;
-import com.alipay.api.response.AlipayFundTransOrderQueryResponse;
-import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
-import com.alipay.api.response.AlipaySystemOauthTokenResponse;
-import com.alipay.api.response.AlipayTradeRefundResponse;
-import com.alipay.api.response.AlipayUserUserinfoShareResponse;
+import com.alipay.api.request.AlipayFundTransOrderQueryRequest;
+import com.alipay.api.request.AlipaySystemOauthTokenRequest;
+import com.alipay.api.request.AlipayTradeRefundRequest;
+import com.alipay.api.request.AlipayUserUserinfoShareRequest;
+import com.alipay.api.response.*;
 import com.jfinal.aop.Enhancer;
 import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
@@ -26,13 +23,13 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
 import com.wtshop.CommonAttributes;
 import com.wtshop.dao.AccountDao;
+import com.wtshop.dao.XcxAccountDao;
 import com.wtshop.entity.WXPayReqData;
 import com.wtshop.entity.WXPaymentReqData;
 import com.wtshop.exception.AppRuntimeException;
 import com.wtshop.model.Account;
+import com.wtshop.model.XcxAccount;
 import com.wtshop.util.AliPayUtil;
-import com.wtshop.util.AliSignUtils;
-import com.wtshop.util.ApiResult;
 import com.wtshop.util.UUIDUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
@@ -47,49 +44,48 @@ import org.apache.http.util.EntityUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+
 import javax.net.ssl.SSLContext;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.StringReader;
 import java.net.URLEncoder;
 import java.security.KeyStore;
 import java.util.*;
 
-import static com.jfinal.ext.kit.AliPayApi.toMap;
 import static com.jfinal.ext.kit.AliPayApi.transferToResponse;
 
 /**
  * Created by sq on 2017/9/6.
  */
-public class AccountService extends BaseService<Account> {
+public class XcxAccountService extends BaseService<XcxAccount> {
 
-    Logger logger = Logger.getLogger(AccountService.class);
+    Logger logger = Logger.getLogger(XcxAccountService.class);
 
-     public AccountService(){
-         super(Account.class);
+     public XcxAccountService(){
+         super(XcxAccount.class);
      }
 
-     private AccountDao accountDao = Enhancer.enhance(AccountDao.class);
+     private XcxAccountDao accountDao = Enhancer.enhance(XcxAccountDao.class);
 
     /**
      * 根据用户id 获取用户账号绑定信息
      */
-    public Account getUserInfo(Long memberId ,Integer type){
+    public XcxAccount getUserInfo(Long memberId ,Integer type){
         return accountDao.getUserInfo(memberId, type);
     }
 
     /**
      * 根据用户id 获取用户账号绑定信息
      */
-    public List<Account> getUserInfoList(Long memberId){
+    public List<XcxAccount> getUserInfoList(Long memberId){
         return accountDao.getUserInfoList(memberId);
     }
 
     /**
      * 根据openId 获取用户信息
      */
-    public Account findByAccount(String openId ,Integer type){
+    public XcxAccount findByAccount(String openId ,Integer type){
         return accountDao.findByAccount(openId, type);
     }
 
@@ -567,7 +563,7 @@ public class AccountService extends BaseService<Account> {
         Map<String, String> returnResult = null;
         KeyStore keyStore  = KeyStore.getInstance("PKCS12");
 
-        FileInputStream instream = new FileInputStream(new File(AccountService.class.getClassLoader().getResource("1486268352.p12").getPath()));
+        FileInputStream instream = new FileInputStream(new File(XcxAccountService.class.getClassLoader().getResource("1486268352.p12").getPath()));
 
         try {
             keyStore.load(instream, "1486268352".toCharArray());
@@ -631,7 +627,7 @@ public class AccountService extends BaseService<Account> {
         Map<String, String> returnResult = null;
         KeyStore keyStore  = KeyStore.getInstance("PKCS12");
 
-        FileInputStream instream = new FileInputStream(new File(AccountService.class.getClassLoader().getResource("1486268352.p12").getPath()));
+        FileInputStream instream = new FileInputStream(new File(XcxAccountService.class.getClassLoader().getResource("1486268352.p12").getPath()));
 
         try {
             keyStore.load(instream, "1486268352".toCharArray());

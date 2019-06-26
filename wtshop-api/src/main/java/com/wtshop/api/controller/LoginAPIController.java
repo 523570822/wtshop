@@ -21,6 +21,7 @@ import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.Account;
 import com.wtshop.model.Member;
 import com.wtshop.model.MiaobiLog;
+import com.wtshop.model.XcxAccount;
 import com.wtshop.service.*;
 import com.wtshop.util.ApiResult;
 import com.wtshop.util.ObjectUtils;
@@ -41,6 +42,7 @@ public class LoginAPIController extends BaseAPIController {
     private MemberService memberService = enhance(MemberService.class);
     private AppManageService appManageService = enhance(AppManageService.class);
     private AccountService accountService = enhance(AccountService.class);
+    private XcxAccountService xcxAccountService = enhance(XcxAccountService.class);
     private SmsService smsService = enhance(SmsService.class);
     private MiaobiLogService miaobiLogService = enhance(MiaobiLogService.class);
     public void submit() {
@@ -105,6 +107,70 @@ public class LoginAPIController extends BaseAPIController {
             return;
         }
 
+    }
+    public void codeXCXSubmit() {
+        String code = getPara("code");
+        HttpServletRequest request = getRequest();
+        Map<String, Object> access_token = xcxAccountService.getXCXAccess_token(code);
+        Map<String, Object> user = xcxAccountService.getUserInfo(access_token);
+        String nickname = com.wtshop.util.StringUtils.filterEmoji(user.get("nickname").toString()) ;
+        String openid = user.get("openid").toString();
+        int codes = 9000; //不需要绑定手机号
+        Member member = null;
+        //获取微信社交绑定的openId
+        Long accountId = 0L;
+        XcxAccount account = xcxAccountService.findByAccount(openid, 0);
+        if(account != null){
+            member = memberService.find(account.getMemberId());
+        }
+
+        if (member == null) {
+            member = new Member();
+            member.setIsDelete(false);
+            member.setOpenId(openid);
+            member.setNickname(nickname);
+            member.setAmount(BigDecimal.ZERO);
+            member.setBalance(BigDecimal.ZERO);
+            member.setPrestore(BigDecimal.ZERO);
+            member.setCommission(BigDecimal.ZERO);
+            member.setRecharge(BigDecimal.ZERO);
+            member.setLoginDate(new Date());
+            member.setLoginIp(request.getRemoteAddr());
+            member.setMemberRankId(1L);
+            member.setIsEnabled(true);
+            memberService.save(member);
+
+            Account account1 = new Account();
+            account1.setAccount(openid);
+            account1.setType(0);
+            account1.setNickname(nickname);
+            account1.setMemberId(member.getId());
+            accountService.save(account1);
+
+            codes = 9001;
+            accountId = account1.getId();
+        }else {
+            //本身没有绑定手机号
+            if(member.getPhone() == null){
+                codes = 9001;
+                accountId = account.getId();
+            }
+            member.setLoginIp(request.getRemoteAddr());
+            member.setLoginDate(new Date());
+            memberService.update(member);
+        }
+
+        setSessionAttr(Member.PRINCIPAL_ATTRIBUTE_NAME, new Principal(member.getId(), member.getUsername()));
+        String token = TokenManager.getMe().generateToken(member);
+        RedisUtil.setString(token, 60 * 60 * 24 * 7, String.valueOf(member.getId()));
+        RedisUtil.setString("TOKEN:" + member.getId(),60 * 60 * 24 * 7, token);
+        Cache actCache = Redis.use();
+        actCache.set("SYSTEMMESSAGR_SWITCH:" + member.getId(),true);
+        actCache.set("ORDERMMESSAGR_SWITCH:" + member.getId(),true);
+        actCache.set("STAFFMESSAGR_SWITCH:" + member.getId(),true);
+        actCache.set("SOUND:" + member.getId(),"default");
+        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode());
+        renderJson(ApiResult.success(codeResult, "登录成功"));
     }
 
     public void codeSubmit() {

@@ -107,7 +107,7 @@ public class ShopkeeperController extends BaseController {
 		setAttr("genders", Member.Gender.values());
 		setAttr("memberRanks", memberRankService.findAll());
 		setAttr("memberAttributes", memberAttributeService.findList(true, true));
-		render("/admin/member/add.ftl");
+		render("/admin/shopkeeper/add.ftl");
 	}
 
 	/**
@@ -124,17 +124,17 @@ public class ShopkeeperController extends BaseController {
 		Setting setting = SystemUtils.getSetting();
 		if (member.getUsername().length() < setting.getUsernameMinLength() || member.getUsername().length() > setting.getUsernameMaxLength()) {
 			addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error,"用户名长度不符,请重新输入!"));
-			redirect("list.jhtml");
+			redirect("/admin/shopkeeper/list.jhtml");
 			return;
 		}
 		if (member.getPassword().length() < setting.getPasswordMinLength() || member.getPassword().length() > setting.getPasswordMaxLength()) {
 			addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error,"密码长度不符,请重新输入!"));
-			redirect("list.jhtml");
+			redirect("/admin/shopkeeper/list.jhtml");
 			return;
 		}
 		if (memberService.usernameDisabled(member.getUsername()) || memberService.usernameExists(member.getUsername())) {
 			addFlashMessage(new com.wtshop.Message(com.wtshop.Message.Type.error,"您输入的用户名已存在,请重新输入!"));
-			redirect("list.jhtml");
+			redirect("/admin/shopkeeper/list.jhtml");
 			return;
 		}
 		if (!setting.getIsDuplicateEmail() && memberService.emailExists(member.getEmail())) {
@@ -186,7 +186,7 @@ public class ShopkeeperController extends BaseController {
 		member.setLockKey(DigestUtils.md5Hex(UUID.randomUUID() + RandomStringUtils.randomAlphabetic(30)));
 		memberService.save(member);
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("list.jhtml");
+		redirect("/admin/shopkeeper/list.jhtml");
 	}
 
 	/**
@@ -200,7 +200,7 @@ public class ShopkeeperController extends BaseController {
 		setAttr("memberAttributes", memberAttributeService.findList(true, true));
 		setAttr("member", member);
 		setAttr("loginPlugin", pluginService.getLoginPlugin(member.getLoginPluginId()));
-		render("/admin/member/edit.ftl");
+		render("/admin/shopkeeper/edit.ftl");
 	}
 
 	/**
