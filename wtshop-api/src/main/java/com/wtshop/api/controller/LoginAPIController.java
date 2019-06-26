@@ -31,9 +31,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @ControllerBind(controllerKey = "/api/login")
 @Before({WapInterceptor.class, ErrorInterceptor.class})
@@ -112,6 +110,14 @@ public class LoginAPIController extends BaseAPIController {
         String code = getPara("code");
         HttpServletRequest request = getRequest();
         Map<String, Object> access_token = xcxAccountService.getXCXAccess_token(code);
+        Set<String> key = access_token.keySet();
+
+        System.out.println("code：====="+code);
+        System.out.println("token 打印");
+        for (Iterator<String> it = key.iterator(); it.hasNext();) {
+            String s = it.next();
+            System.out.println(s+":"+access_token.get(s));//这里的s就是map中的key，map.get(s)就是key对应的value。
+        }
         Map<String, Object> user = xcxAccountService.getUserInfo(access_token);
         String nickname = com.wtshop.util.StringUtils.filterEmoji(user.get("nickname").toString()) ;
         String openid = user.get("openid").toString();
