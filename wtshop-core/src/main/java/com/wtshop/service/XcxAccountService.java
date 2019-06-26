@@ -123,7 +123,7 @@ public class XcxAccountService extends BaseService<XcxAccount> {
                 .append(code).append("&grant_type=authorization_code");
         try {
             String results = HttpUtils.get(requestUrl.toString());
-
+            System.out.println("results：====="+results);
             Map<String, Object> resultMap= JSON.parseObject(results, HashMap.class);
             if(resultMap!=null){
                 return resultMap;
