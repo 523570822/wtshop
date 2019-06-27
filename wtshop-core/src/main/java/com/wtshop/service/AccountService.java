@@ -100,6 +100,8 @@ public class AccountService extends BaseService<Account> {
      */
     public Map<String, Object> getAccess_token(String code){
         Prop prop = PropKit.use(CommonAttributes.wtshop_PROPERTIES_PATH);
+        System.out.println("AppID 打印"+prop.get("AppID"));
+        System.out.println("secret：====="+prop.get("SECRET"));
 
         StringBuilder requestUrl = new StringBuilder("https://api.weixin.qq.com/sns/oauth2/access_token?appid=")
                 .append(prop.get("AppID")).append("&secret=").append(prop.get("SECRET")).append("&code=")
