@@ -8,9 +8,12 @@ import com.jfinal.i18n.Res;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
+import com.mongodb.DB;
 import com.wtshop.Pageable;
 import com.wtshop.RequestContextHolder;
 import com.wtshop.api.interceptor.TokenInterceptor;
+import com.wtshop.service.MemberFavoriteGoodsService;
 import com.wtshop.util.ApiResult;
 import com.wtshop.api.common.result.member.FavoriteListResult;
 import com.wtshop.api.controller.BaseAPIController;
@@ -43,7 +46,9 @@ public class FavoriteAPIController extends BaseAPIController {
 
 	private MemberService memberService = enhance(MemberService.class);
 	private GoodsService goodsService = enhance(GoodsService.class);
-	private MemberFavoriteGoodsDao mfgDao=enhance(MemberFavoriteGoodsDao.class);
+
+	private MemberFavoriteGoodsService mfgGoodsService=enhance(MemberFavoriteGoodsService.class);
+	private MemberFavoriteGoodsDao mfgGoodsDaoe=enhance(MemberFavoriteGoodsDao.class);
 
 	/**
 	 * 添加
@@ -53,10 +58,12 @@ public class FavoriteAPIController extends BaseAPIController {
 	public void add() {
 
 		String[] values = StringUtils.split(getPara("sku_id"), ",");
+		Long sPecialId = getParaToLong("sPecialIds",0l);
 		Long[] goodsLists = values == null ? null :convertToLong(values);
+		Long goodsId = goodsLists[0];
 		Res resZh = I18n.use();
 
-		for(Long goodsId : goodsLists){
+	//	for(Long goodsId : goodsLists){
 			Goods goods = goodsService.find(goodsId);
 			JSONObject object = new JSONObject();
 
@@ -66,24 +73,27 @@ public class FavoriteAPIController extends BaseAPIController {
 				renderJson(ApiResult.fail("请登录后操作!"));
 				return;
 			}
-			if (member.getFavoriteGoods().contains(goods)) {
+		MemberFavoriteGoods ss = mfgGoodsService.findGoods(member.getId(), goods.getId(), sPecialId);
+			if (ss!=null) {
 				renderJson(ApiResult.fail(resZh.format("shop.member.favorite.exist"),object));
 				return;
 			}
 
-			List<Long> goodsList = mfgDao.findGoodsByMemberId(member.getId());
-			if(goodsList.contains(goodsId)){
-				MemberFavoriteGoods goodsByGoodsId = mfgDao.findGoodsByGoodsId(goodsId, member.getId());
+
+			if(ss!=null){
+				MemberFavoriteGoods goodsByGoodsId = mfgGoodsService.findGoodsByGoodsId(goodsId, member.getId());
 				goodsByGoodsId.setCreateDate(new Date());
+				goodsByGoodsId.setFavoriteSpecial(sPecialId);
 				goodsByGoodsId.update();
 			}else {
 				MemberFavoriteGoods memberFavoriteGood = new MemberFavoriteGoods();
 				memberFavoriteGood.setFavoriteGoods(goodsId);
 				memberFavoriteGood.setFavoriteMembers(member.getId());
-				mfgDao.save(memberFavoriteGood);
+				memberFavoriteGood.setFavoriteSpecial(sPecialId);
+				mfgGoodsService.save(memberFavoriteGood);
 			}
 
-		}
+		//}
 
 		renderJson(ApiResult.success(resZh.format("shop.member.favorite.success")));
 	}
@@ -116,6 +126,7 @@ public class FavoriteAPIController extends BaseAPIController {
 
 	public void delete() {
 		Long id = getParaToLong("sku_id");
+		Long sPecialId = getParaToLong("sPecialIds",0l);
 		Goods goods = goodsService.find(id);
 		if (goods == null) {
 			renderJson(ApiResult.fail());
@@ -123,11 +134,15 @@ public class FavoriteAPIController extends BaseAPIController {
 		}
 
 		Member member = memberService.getCurrent();
-		if (!member.getFavoriteGoods().contains(goods)) {
+		MemberFavoriteGoods ss = mfgGoodsService.findGoods(member.getId(), id, sPecialId);
+		if (ss==null) {
 			renderJson(ApiResult.fail());;
 			return;
 		}
-		Db.deleteById("member_favorite_goods", "favorite_goods", goods.getId());
+
+		Db.update("delete from `member_favorite_goods` where `favorite_goods` = "+id+" and `favorite_members` = "+member.getId()+" and `favorite_special` = "+sPecialId+"");
+		//mfgGoodsService.delete(ss);
+		//mfgGoodsDaoe.findBySql("delete from `member_favorite_goods` where `favorite_goods` = "+id+" and `favorite_members` = "+member.getId()+" and `favorite_special` = "+sPecialId+"");
 		renderJson(ApiResult.success());
 	}
 

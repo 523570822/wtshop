@@ -50,7 +50,10 @@ public static final int NOT_SHARECODE = 7;
      * 帐号已存在*
      */
     public static final int ACCOUNT_EXISTS = 3;
-
+    /**
+     * 特殊商品已经下架
+     */
+    public static final int SPECIAL_ERROR = 3;
     /**
      * 验证码错误
      */

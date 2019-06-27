@@ -21,13 +21,16 @@ public class MemberFavoriteGoodsDao  extends BaseDao<MemberFavoriteGoods>  {
     /**
      *查询会员是否已经关注过此商品
      */
-    public MemberFavoriteGoods findGoods(Long memberId, Long gooosId){
-        String sql = " SELECT favorite_members FROM member_favorite_goods WHERE 1 = 1  ";
+    public MemberFavoriteGoods findGoods(Long memberId, Long gooosId,Long sPecialId){
+        String sql = " SELECT * FROM member_favorite_goods WHERE 1 = 1  ";
         if(memberId != null){
             sql += " and favorite_members =" + memberId;
         }
         if(gooosId != null){
             sql += " and favorite_goods =" + gooosId;
+        }
+        if(sPecialId != null){
+            sql += " and favorite_special =" + sPecialId;
         }
         return modelManager.findFirst(sql);
     }

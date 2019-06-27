@@ -117,9 +117,10 @@ public class CommonAPIController extends BaseAPIController {
             if(ad.getUrlType().getUrltype()==3){
                 SpecialGoods s = specialGoodsService.find(Long.parseLong(ad.getParam()));
                 if(s!=null){
-                    ad.put("goodsId",s.getId());
+                    ad.put("goodsId",s.getGoodsId());
                 }else{
-                    ad.put("goodsId",0);
+                    //参数有问题不显示
+                    adList.remove(ad);
                 }
             }
         }

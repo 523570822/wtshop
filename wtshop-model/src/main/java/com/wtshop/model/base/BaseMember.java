@@ -561,4 +561,20 @@ public abstract class BaseMember<M extends BaseMember<M>> extends Model<M> imple
 		return get("jieritixing_num");
 	}
 
+	public void setStore(String store) {
+		set("store", store);
+	}
+
+	public String getStore() {
+		return get("store");
+	}
+
+	public void setIsStore(Boolean isStore) {
+		set("is_store", isStore);
+	}
+
+	public Boolean getIsStore() {
+		return get("is_store");
+	}
+
 }

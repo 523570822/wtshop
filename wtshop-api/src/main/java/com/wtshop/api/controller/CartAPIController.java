@@ -403,7 +403,7 @@ public class CartAPIController extends BaseAPIController {
 			}
 			cartItemService.delete(cartItem);
 			cart.getCartItems().remove(cartItem);
-			MemberFavoriteGoods goods = favoriteGoodsService.findGoods(member.getId(), cartItem.getProduct().getGoodsId());
+			MemberFavoriteGoods goods = favoriteGoodsService.findGoods(member.getId(), cartItem.getProduct().getGoodsId(),0l);
 			if( goods == null ){
 				goodsLists.add(cartItem.getProduct().getGoodsId());
 			}

@@ -125,6 +125,12 @@ public class MemberController extends BaseController {
 				member.setAttributeValue(memberAttribute, memberAttributeValue);
 			}
 		}
+		if(member.getStore()!=null&&member.getStore().trim().length()>0){
+			member.setIsStore(true);
+		}else {
+			member.setIsStore(false);
+		}
+
 		member.setPhone(member.getUsername());
 		member.setPassword(DigestUtils.md5Hex(member.getPassword()));
 		member.setIsDelete(false);

@@ -49,4 +49,12 @@ public abstract class BaseMemberFavoriteGoods<M extends BaseMemberFavoriteGoods<
 		return get("version");
 	}
 
+	public void setFavoriteSpecial(Long favoriteSpecial) {
+		set("favorite_special", favoriteSpecial);
+	}
+
+	public Long getFavoriteSpecial() {
+		return get("favorite_special");
+	}
+
 }
