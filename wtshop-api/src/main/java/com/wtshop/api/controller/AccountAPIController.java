@@ -265,6 +265,16 @@ public class AccountAPIController extends BaseAPIController {
 		Member member = memberService.getCurrent();
 		String code = getPara("code");
 		Map<String, Object> access_token = accountService.getAccess_token(code);
+
+		Set<String> key = access_token.keySet();
+		System.out.println("code：====="+code);
+		System.out.println("token 打印");
+		for (Iterator<String> it = key.iterator(); it.hasNext();) {
+			String s = it.next();
+			System.out.println(s+":"+access_token.get(s));//这里的s就是map中的key，map.get(s)就是key对应的value。
+		}
+
+
 		Map<String, Object> user = accountService.getUserInfo(access_token);
 
 		System.out.println("user 打印===============");

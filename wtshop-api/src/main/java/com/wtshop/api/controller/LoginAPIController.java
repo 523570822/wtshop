@@ -113,7 +113,6 @@ public class LoginAPIController extends BaseAPIController {
         HttpServletRequest request = getRequest();
         Map<String, Object> access_token = xcxAccountService.getXCXAccess_token(code);
         Set<String> key = access_token.keySet();
-
         System.out.println("code：====="+code);
         System.out.println("token 打印");
         for (Iterator<String> it = key.iterator(); it.hasNext();) {
