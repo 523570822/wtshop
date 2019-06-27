@@ -32,9 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @ControllerBind(controllerKey = "/api/account")
 @Before({WapInterceptor.class, ErrorInterceptor.class} )
@@ -268,6 +266,13 @@ public class AccountAPIController extends BaseAPIController {
 		String code = getPara("code");
 		Map<String, Object> access_token = accountService.getAccess_token(code);
 		Map<String, Object> user = accountService.getUserInfo(access_token);
+
+		System.out.println("user 打印===============");
+		Set<String> key1 = user.keySet();
+		for (Iterator<String> it = key1.iterator(); it.hasNext();) {
+			String s = it.next();
+			System.out.println(s+":"+user.get(s));//这里的s就是map中的key，map.get(s)就是key对应的value。
+		}
 		String nickname = com.wtshop.util.StringUtils.filterEmoji(user.get("nickname").toString()) ;
 		String openid = user.get("openid").toString();
 		Account accounts = accountService.findByAccount(openid, 0);
