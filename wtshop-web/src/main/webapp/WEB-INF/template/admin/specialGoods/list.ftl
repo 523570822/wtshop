@@ -77,6 +77,9 @@
             <th>
                 <span>${message("Promotion.title")}</span>
             </th>
+            <th>
+                <span>商品id</span>
+            </th>
            [#-- <th>
                 <span>${message("Fudai.price")}</span>
             </th>
@@ -103,6 +106,9 @@
                 </td>
                 <td>
                     <span title="${fuDai.title}">${abbreviate(fuDai.title, 50, "...")}</span>
+                </td>
+                <td>
+                    <span title="${fuDai.title}">${fuDai.goods_id}</span>
                 </td>
               [#--  <td>
                 ${fuDai.price}

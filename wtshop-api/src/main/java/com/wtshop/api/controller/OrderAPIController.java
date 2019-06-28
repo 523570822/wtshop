@@ -55,6 +55,7 @@ public class OrderAPIController extends BaseAPIController {
 	private GoodsPromotionService goodsPromotionService = enhance(GoodsPromotionService.class);
 	private  FightGroupService fightGroupService= Enhancer.enhance(FightGroupService.class);
 	private CartItemService cartItemService =Enhancer.enhance(CartItemService.class);
+	private IdentifierService identifierService =Enhancer.enhance(IdentifierService.class);
 	private Res resZh = I18n.use();
 
 	private GroupBuyService groupBuyService = enhance(GroupBuyService.class);
@@ -70,15 +71,30 @@ public class OrderAPIController extends BaseAPIController {
 
 		Member member = memberService.getCurrent();
 
-         if( member==null ||StringUtils.isEmpty(member.getOnShareCode())){
-			 renderJson(ApiResult.fail(7,"请填写邀请码"));
-			 return;
-		 }
+
 
 
 		//获取商品和数量
 		Long productId = getParaToLong("productId");
 		Long sPecialIds = getParaToLong("sPecialIds",0l);
+
+		if(sPecialIds!=0){
+			List<Identifier> dddd = identifierService.findByMemberId(member.getId());
+			if(dddd.size()==0){
+				if(member==null ||StringUtils.isEmpty(member.getOnShareCode())){
+					renderJson(ApiResult.fail(8,"请绑定识别码"));
+					return;
+				}
+			}
+
+		}else{
+			if(member==null ||StringUtils.isEmpty(member.getOnShareCode())){
+				renderJson(ApiResult.fail(7,"请绑定邀请码"));
+				return;
+			}
+		}
+
+
 		Long quantity = getParaToLong("quantity",1L);
 		Product product = productService.find(productId);
 		Goods goods = goodsService.findGoodsByPro(productId);
@@ -263,24 +279,22 @@ public class OrderAPIController extends BaseAPIController {
 		Member member = memberService.getCurrent();
 		Long receiverId = getParaToLong("receiverId"); //收货人
 		Long quantity  = getParaToLong("quantity",1L); //收货人
+		Boolean isPersonal=getParaToBoolean("isPersonal");
 
-		if(StringUtils.isEmpty(member.getOnShareCode())){
-			renderJson(ApiResult.fail(7,"请填写邀请码"));
-			return;
-		}
+
+
+
 		//1是 ，0否  是否開發票
 		Boolean isInvoice=getParaToBoolean("isInvoice");
 		//1是 ，0否  是否是個人发票还是单位发票
-		Boolean isPersonal=getParaToBoolean("isPersonal");
+
 		String taxNumber = getPara("taxNumber"); 	//單位名稱
 		String companyName = getPara("companyName"); 	//稅號
 
 
 		Receiver receiver = receiverService.find(receiverId);
 		Long goodsId = getParaToLong("goodsId");//商品
-		Long productId = getParaToLong("productId",0l);//商品
 
-		Product product = productService.find(productId);
 		Goods goods = goodsService.find(goodsId);
 		String memo = getPara("memo"); 	//备注
 
@@ -291,11 +305,9 @@ public class OrderAPIController extends BaseAPIController {
 			return;
 		}
 		Double price =0d;
-		if(productId==0){
+
 	 price = MathUtil.multiply(goods.getPrice(), 1);
-}else {
-			price = MathUtil.multiply(product.getPrice(), 1);
-}
+
 
 		String[] values = StringUtils.split(RedisUtil.getString("ORDERPARAM:" + member.getId()), ",");
 		Double[] skuids = values == null ? null :convertToDouble(values);
