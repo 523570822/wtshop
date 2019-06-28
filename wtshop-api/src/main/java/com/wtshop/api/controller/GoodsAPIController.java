@@ -116,7 +116,7 @@ public class GoodsAPIController extends BaseAPIController {
 		if(sPecialId!=0){
 			SpecialGoods ddd = specialGoodsService.find(sPecialId);
 			if(ddd==null||ddd.getStatus()==1){
-				renderJson(ApiResult.fail("60001","商品已下架"));
+				renderJson(ApiResult.fail(60001,"商品已下架"));
 				return;
 			}
 

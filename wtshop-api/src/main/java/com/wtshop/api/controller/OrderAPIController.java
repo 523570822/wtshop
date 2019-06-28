@@ -54,6 +54,7 @@ public class OrderAPIController extends BaseAPIController {
 	private PromotionService promotionService = enhance(PromotionService.class);
 	private GoodsPromotionService goodsPromotionService = enhance(GoodsPromotionService.class);
 	private  FightGroupService fightGroupService= Enhancer.enhance(FightGroupService.class);
+	private CartItemService cartItemService =Enhancer.enhance(CartItemService.class);
 	private Res resZh = I18n.use();
 
 	private GroupBuyService groupBuyService = enhance(GroupBuyService.class);
@@ -77,6 +78,7 @@ public class OrderAPIController extends BaseAPIController {
 
 		//获取商品和数量
 		Long productId = getParaToLong("productId");
+		Long sPecialIds = getParaToLong("sPecialIds",0l);
 		Long quantity = getParaToLong("quantity",1L);
 		Product product = productService.find(productId);
 		Goods goods = goodsService.findGoodsByPro(productId);
@@ -88,10 +90,13 @@ public class OrderAPIController extends BaseAPIController {
 
 
 		Boolean isUseMiao = getParaToBoolean("isUseMiao",false);
+		if(sPecialIds!=0){
+			isUseMiao=false;
+		}
+
 
 		//获取商品价格
 		Double price = MathUtil.multiply(product.getPrice(), quantity);
-
 
 		//判断商品是否是促销商品
 		Boolean is_promotion = false;
@@ -120,7 +125,6 @@ public class OrderAPIController extends BaseAPIController {
 
 			}
 		}
-
 		//商品运费
 		List<ShippingMethod> shippingMethods = shippingMethodService.findMethodList();
 		double value = shippingMethodService.calculateFreight(shippingMethods.get(0), defaultReceiver, goods.getWeight() * 1).doubleValue();
@@ -209,10 +213,9 @@ public class OrderAPIController extends BaseAPIController {
 		priceList.add(oldTotalPrice);
 		priceList.add(totalPrice);
 		priceList.add(deliveryPrice);
-		if(!is_promotion){
+		if(!is_promotion&&sPecialIds==0){
 			priceList.add(miaobiPrice);
 		}
-
 		priceList.add(newDeliveryPrice);
 		priceList.add(manjianPrice);
 
@@ -240,7 +243,7 @@ public class OrderAPIController extends BaseAPIController {
 			realPrice =  MathUtil.getInt(amountpaid.toString());
 		goods.setPrice(product.getPrice());
 
-
+		goods.put("special_id",sPecialIds);
 		List<String> specifications = product.getSpecifications();
 		OrderBuyNowResult orderBuyNowResult = new OrderBuyNowResult(taxUrl, yunfei, member, defaultReceiver, goods, Integer.valueOf(quantity+""), receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, priceList,
 			realPrice, favoritePrice, param, is_promotion, amountpaid,specifications);
@@ -275,6 +278,9 @@ public class OrderAPIController extends BaseAPIController {
 
 		Receiver receiver = receiverService.find(receiverId);
 		Long goodsId = getParaToLong("goodsId");//商品
+		Long productId = getParaToLong("productId",0l);//商品
+
+		Product product = productService.find(productId);
 		Goods goods = goodsService.find(goodsId);
 		String memo = getPara("memo"); 	//备注
 
@@ -284,8 +290,13 @@ public class OrderAPIController extends BaseAPIController {
 			renderJson(new ApiResult(101,"请先进行实名认证!"));
 			return;
 		}
+		Double price =0d;
+		if(productId==0){
+	 price = MathUtil.multiply(goods.getPrice(), 1);
+}else {
+			price = MathUtil.multiply(product.getPrice(), 1);
+}
 
-		Double price = MathUtil.multiply(goods.getPrice(), 1);
 		String[] values = StringUtils.split(RedisUtil.getString("ORDERPARAM:" + member.getId()), ",");
 		Double[] skuids = values == null ? null :convertToDouble(values);
 
@@ -617,7 +628,7 @@ if(!isSinglepurchase){
 		renderJson(ApiResult.success(map));
 	}
 	/**
-	 * 普通订单-结算
+	 * 购物车普通订单-结算
 	 * {"msg":"","code":1,"data":{"receiver":{"address":"中南海1号","area_id":12,"area_name":"北京市昌平区","consignee":"史强","create_date":"2017-05-24 14:42:02","id":14,"is_default":true,"member_id":18,"modify_date":"2017-05-24 14:42:02","phone":"13581856711","version":0,"zip_code":"100000"},"member":{"address":null,"amount":0E-12,"area_id":null,"attribute_value0":null,"attribute_value1":null,"attribute_value2":null,"attribute_value3":null,"attribute_value4":null,"attribute_value5":null,"attribute_value6":null,"attribute_value7":null,"attribute_value8":null,"attribute_value9":null,"avatar":null,"balance":0E-12,"birth":null,"create_date":"2017-05-09 15:40:29","email":"sq@163.com","gender":null,"id":18,"is_enabled":true,"is_locked":false,"lock_key":"b16f3025929c413e27fb4fd39a4f46ee","locked_date":null,"login_date":"2017-05-25 11:09:12","login_failure_count":0,"login_ip":"127.0.0.1","login_plugin_id":null,"member_rank_id":1,"mobile":null,"modify_date":"2017-05-25 11:09:12","name":null,"nickname":"sq","open_id":null,"password":"e10adc3949ba59abbe56e057f20f883e","phone":null,"point":0,"register_ip":"127.0.0.1","safe_key_expire":null,"safe_key_value":null,"username":"sq123","version":14,"zip_code":null},"paymentMethod":{"content":null,"create_date":"2015-10-19 00:58:54","description":"支持支付宝、财付通、快钱以及大多数网上银行支付","icon":"/4.0/201501/b0b6da31-6abf-4824-8dfa-c1f251732e20.gif","id":1,"method":0,"modify_date":"2015-10-19 00:58:54","name":"网上支付","orders":1,"timeout":1440,"type":0,"version":0},"invoice":{"title":"","content":"不开发票"},"title":"核对订单信息","url":"/api/order/checkout.jhtml?skuids=86","cart":{"cart_key":"8041fb81fccd462825b9b9a94f32c35f","create_date":"2017-05-23 15:58:57","expire":"2017-06-01","id":120,"member_id":18,"modify_date":"2017-05-24 14:42:25","version":1},"order":{"address":"中南海1号","amount":70.00,"amount_paid":0,"area_name":"北京市昌平区","consignee":"史强","coupon_discount":0,"exchange_point":0,"fee":0,"freight":0,"is_allocated_stock":false,"is_exchange_point":false,"is_use_coupon_code":false,"memo":null,"offset_amount":0,"payment_method_id":null,"phone":"13581856711","price":70.00,"promotion_discount":0.00,"promotion_names":"[]","quantity":1,"refund_amount":0,"returned_quantity":0,"reward_point":10,"shipped_quantity":0,"tax":0,"type":0,"weight":1000,"zip_code":"100000"},"token":"dda9efa110d25d8548b7c3ccdcb78cdb"}}
 	 */
 	@Before(Tx.class)
@@ -630,279 +641,528 @@ if(!isSinglepurchase){
 		}
 		//product 的数组
 		String[] values = StringUtils.split(getPara("cartTokens"), ",");
-		Long[] skuids = values == null ? null :convertToLong(values);
 
-        Boolean isUseMiao = getParaToBoolean("isUseMiao",false);
-        Boolean isReturnInsurans = false;
 
-        List<Product> products = productService.findList(skuids);
+		Boolean isSPecialIds = getParaToBoolean("isSPecialIds",false);
+		Long[] skuids = values == null ? null : convertToLong(values);
+		/**
+		 * 判断是否是特殊商品
+		 */
+		if(isSPecialIds){
 
-        //判断商品是否是促销商品
-		Boolean is_promotion = false;
-		if(products !=null && products.size() > 0){
-			for(Product product : products){
-				GoodsPromotion goods = goodsPromotionService.findPromitByGoodsId(product.getGoodsId());
-				if(goods != null){
-					is_promotion = true;
-					break;
+			Boolean isUseMiao =false;
+			Boolean isReturnInsurans = false;
+			List<CartItem> cartItemList = cartItemService.findList(skuids);
+			Cart cart = cartService.getCurrent();
+
+		//	List<Product> products = productService.findList(skuids);
+			//更新购物车信息
+			List<CartItem> cartItems = cart.getCartItems();
+			if ((CollectionUtils.isNotEmpty(cartItems))) {
+				List<CartItem> selectedItems = new ArrayList<CartItem>();
+				for (CartItem cartItem : cartItems) {
+					if (cartItemList.contains(cartItem)) {
+						selectedItems.add(cartItem);
+					}
+				}
+				cart.setCartItems(selectedItems);
+			}
+			List<CartItem> cartItems1 = cart.getCartItems();
+			//返回商品信息
+			List<Goods> goodsList = new ArrayList<Goods>();
+
+			//现价支付总金额 购物项分类 用来筛选优惠券
+			Double price = 0d;
+
+			//原价支付总金额
+			Double oldPrice = 0d;
+			//购物项分类的id集合
+			List<Long> categoryList = new ArrayList<>();
+
+			//购物项产品的id集合
+			List<Long> productList = new ArrayList<>();
+			for (CartItem cartItem : cartItems1) {
+				Goods goods = goodsService.findGoodsByCartItemId(cartItem.getId());
+				Product product = productService.find(cartItem.getProductId());
+				price += product.getPrice().multiply(new BigDecimal(cartItem.getQuantity())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				oldPrice += product.getMarketPrice().multiply(new BigDecimal(cartItem.getQuantity())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				if (!categoryList.contains(goods.getProductCategoryId())) {
+					categoryList.add(goods.getProductCategoryId());
+				}
+				if (!productList.contains(product.getId())) {
+					productList.add(product.getId());
+				}
+				goods.setAttributeValue10(product.getSpecificationValues());
+
+				String sss = goods.getAttributeValue10();
+
+				if (StringUtil.isNotBlank(sss)) {
+					JSONArray specificationValueArrays = JSONArray.parseArray(sss);
+					String dsb = "";
+					for (int i = 0; i < specificationValueArrays.size(); i++) {
+						SpecificationValue fffff = JSONObject.parseObject(specificationValueArrays.getString(i), SpecificationValue.class);
+						if (i == 0) {
+							dsb = dsb + fffff.getValue();
+						} else {
+							dsb = dsb + "," + fffff.getValue();
+						}
+
+					}
+					goods.setAttributeValue11(dsb);
+
+				}
+				goods.put("special_id",cartItem.getSpecialId());
+
+				goodsList.add(goods);
+			}
+
+			//筛选商品可用的优惠券
+			//查询符合商品分类的优惠券
+			List<Coupon> codeList = couponService.findCodeList(member.getId(), price, categoryList);
+			if (productList != null && productList.size() == 1) {
+				//查询符合专属商品的优惠券
+				List<Coupon> codeLists = couponService.findCodeLists(member.getId(), price, productList);
+				if (codeLists != null && codeLists.size() > 0) {
+					for (Coupon coupon : codeLists) {
+						codeList.add(coupon);
+					}
 				}
 			}
-		}
 
-		Cart cart = cartService.getCurrent();
+
+			//获取默认的收货地址
+			Receiver defaultReceiver = receiverService.findDefault(member);
+		//	System.out.println("goodsList.size():" + goodsList.size());
+			Goods goods = areaService.findMaxLong(goodsList);
+
+			//商品配送
+			String receiveTime = null;
+			if (defaultReceiver != null) {
+				AreaDescribe areaDescribe = areaDescribeService.findByAreaId(goods.getAreaId());
+				//判断本级地区是否填写
+				if (areaDescribe != null && areaDescribe.getReceivingBegintime() != null) {
+					receiveTime = areaDescribe.getReceivingBegintime();
+				} else {
+					AreaDescribe areaDescribes = areaDescribeService.findByAreaId(areaService.find(goods.getAreaId()).getParentId());
+					if (areaDescribes != null) {
+						receiveTime = areaDescribes.getReceivingBegintime();
+					}
+
+				}
+			}
+			List<ShippingMethod> shippingMethods = shippingMethodService.findMethodList();
+			double value = shippingMethodService.calculateFreight(shippingMethods.get(0), defaultReceiver, cart.getWeight()).doubleValue();
+			Delivery delivery = new Delivery(shippingMethods.get(0).getId(), shippingMethods.get(0).getName(), value);
+
+
+			JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
+			//是否包邮
+
+			Boolean is_freeMoney = redisSetting.getBoolean("isFreeMoney") || price >= redisSetting.getDouble("freeMoney") ? true : false;
+			//运费优惠金额
+			Double deliver = 0d;
+			PriceResult newDeliveryPrice = new PriceResult("运费优惠金额", "-¥ " + 0);
+			if (is_freeMoney) {
+				deliver = delivery.getPrice();
+				newDeliveryPrice = new PriceResult("运费优惠金额", "-¥ " + MathUtil.getInt(delivery.getPrice().toString()));
+			}
+			//包税 计算税金
+			Double taxRate = redisSetting.getDouble("taxRate");
+			Double tax = 0.0d;
+			String taxUrl = "http://shop.rxmao.cn/rxm/goods/tax.html";
+
+
+			//我的喵币个数
+			Double myMiaoBi = member.getPoint().doubleValue();
+			//可用喵币
+			Double useMiaoBi = 0d;
+			//抵扣金额
+			Double miaoBiPrice = 0d;
+			String miaoBiDesc = "";
+			Double scale = redisSetting.getDouble("scale");
+			//退货保险
+			Boolean isReturnInsurance = redisSetting.getBoolean("isReturnInsurance");
+			Double returnMoney = 0d;
+			String returnCopy = "";
+
+			if (isReturnInsurance) {
+				returnMoney = redisSetting.getDouble("returnMoney");
+				returnCopy = redisSetting.getString("returnCopyUrl");
+			}
+
+			Cache actCache = Redis.use();
+			actCache.set("CART:" + member.getId(), cart);
+
+			PriceResult returnPrice = null;
+			PriceResult miaobiPrice = null;
+			String realPrice = null;
+			String favoritePrice = null;
+			Double realPriced = 0d;
+			Double favoreatePriced = 0d;
+			Double miaobi = 0d;
+			Double returns = 0d;
+
+			if (isUseMiao) {
+				if (isReturnInsurans) {
+					returnPrice = new PriceResult("退货保险", "¥ " + MathUtil.getInt(returnMoney.toString()));
+					realPriced = MathUtil.add(price, delivery.getPrice());
+					realPriced = MathUtil.add(realPriced, returnMoney);
+					realPrice = MathUtil.getInt(realPriced.toString());
+
+					miaobiPrice = new PriceResult("喵币", "-¥ " + MathUtil.getInt(miaoBiPrice.toString()));
+					favoreatePriced = MathUtil.add(miaoBiPrice, deliver);
+					favoritePrice = MathUtil.getInt(favoreatePriced.toString());
+					returns = returnMoney;
+				} else {
+					returnPrice = new PriceResult("退货保险", "¥ " + 0);
+					realPriced = MathUtil.add(price, delivery.getPrice());
+					realPrice = MathUtil.getInt(realPriced.toString());
+
+					miaobiPrice = new PriceResult("喵币", "-¥ " + MathUtil.getInt(miaoBiPrice.toString()));
+					favoreatePriced = MathUtil.add(miaoBiPrice, deliver);
+					favoritePrice = MathUtil.getInt(favoreatePriced.toString());
+					returns = 0d;
+				}
+				miaobi = miaoBiPrice;
+			} else {
+				if (isReturnInsurans) {
+					returnPrice = new PriceResult("退货保险", "¥ " + MathUtil.getInt(returnMoney.toString()));
+					realPriced = MathUtil.add(price, delivery.getPrice());
+					realPriced = MathUtil.add(realPriced, returnMoney);
+					realPrice = MathUtil.getInt(realPriced.toString());
+
+					miaobiPrice = new PriceResult("喵币", "-¥ " + 0);
+					favoritePrice = MathUtil.getInt(deliver.toString());
+					returns = returnMoney;
+				} else {
+					returnPrice = new PriceResult("退货保险", "¥ " + 0);
+					realPriced = MathUtil.add(price, delivery.getPrice());
+					realPrice = MathUtil.getInt(realPriced.toString());
+
+					miaobiPrice = new PriceResult("喵币", "-¥ " + 0);
+					favoritePrice = MathUtil.getInt(deliver.toString());
+					returns = 0d;
+				}
+				miaobi = 0d;
+			}
+			PriceResult manjianPrice = null;
+			Promotion promotion = promotionService.find(5L);
+			Double prom = cartService.findPriceByCartItem(cartItems1);
+			Double manJianPrices = 0d;
+			if (prom >= promotion.getTotalMoney().doubleValue()) {
+				manjianPrice = new PriceResult(promotion.getTitle(), "-¥ " + MathUtil.getInt(promotion.getMoney().toString()));
+				favoritePrice = MathUtil.getInt(new BigDecimal(favoritePrice).add(promotion.getMoney()).toString());
+				manJianPrices = promotion.getMoney().doubleValue();
+			}
+			PriceResult totalPrice = new PriceResult("商品总金额", "¥ " + MathUtil.getInt(price.toString()));
+			PriceResult oldTotalPrice = new PriceResult("商品优惠前总金额", "¥ " + MathUtil.getInt(oldPrice.toString()));
+			PriceResult deliveryPrice = new PriceResult("运费", "¥ " + MathUtil.getInt(delivery.getPrice().toString()));
+			List<PriceResult> priceList = new ArrayList<>();
+			priceList.add(oldTotalPrice);
+			priceList.add(totalPrice);
+			priceList.add(deliveryPrice);
+			priceList.add(newDeliveryPrice);
+			priceList.add(manjianPrice);
+			Double couponYunfei = MathUtil.subtract(delivery.getPrice(), deliver);
+			Double amountpaid = MathUtil.subtract(realPrice, favoritePrice);
+			if (amountpaid < 0) {
+				miaobi = miaobi + amountpaid;
+				useMiaoBi = new BigDecimal(miaobi).multiply(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				miaoBiPrice = new BigDecimal(useMiaoBi).divide(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				amountpaid = 0d;
+			}
+			miaoBiDesc = "共" + MathUtil.getInt(member.getPoint().toString()) + "喵币,可用" + MathUtil.getInt(useMiaoBi.toString()) + "喵币,抵扣¥" + MathUtil.getInt(miaoBiPrice.toString());
+
+			Double[] param = {deliver, miaobi, returns, amountpaid, couponYunfei, manJianPrices};
+			Double yunfei = delivery.getPrice();
+			Boolean is_useMiaobi =false;
+			Boolean is_promotion =false;
+			favoritePrice = MathUtil.getInt(new BigDecimal(favoritePrice).add(new BigDecimal(oldPrice)).subtract(new BigDecimal(price)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			OrderDetailsResult orderDetailsResult = new OrderDetailsResult(taxUrl, couponYunfei, skuids, yunfei, member, cart.getToken(), defaultReceiver, codeList, goodsList,
+					receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, isReturnInsurance, returns, returnCopy, priceList, amountpaid.toString(), favoritePrice, param, is_promotion);
+			renderJson(ApiResult.success(orderDetailsResult));
+
+
+
+		}else {
+
+
+
+
+	Boolean isUseMiao = getParaToBoolean("isUseMiao", false);
+	Boolean isReturnInsurans = false;
+
+	List<Product> products = productService.findList(skuids);
+
+	//判断商品是否是促销商品
+	Boolean is_promotion = false;
+	if (products != null && products.size() > 0) {
+		for (Product product : products) {
+			GoodsPromotion goods = goodsPromotionService.findPromitByGoodsId(product.getGoodsId());
+			if (goods != null) {
+				is_promotion = true;
+				break;
+			}
+		}
+	}
+
+	Cart cart = cartService.getCurrent();
 
 //		if (cart == null || cart.isEmpty()) {
 //			Cache actCache = Redis.use();
 //			cart = actCache.get("CART:"+ member.getId());
 //		}
 
-		//更新购物车信息
-		List<CartItem> cartItems = cart.getCartItems();
-		if (CollectionUtils.isNotEmpty(products) && (CollectionUtils.isNotEmpty(cartItems))) {
-			List<CartItem> selectedItems = new ArrayList<CartItem>();
-			for (CartItem cartItem : cartItems) {
-				if (products.contains(cartItem.getProduct())) {
+	//更新购物车信息
+	List<CartItem> cartItems = cart.getCartItems();
+	if (CollectionUtils.isNotEmpty(products) && (CollectionUtils.isNotEmpty(cartItems))) {
+		List<CartItem> selectedItems = new ArrayList<CartItem>();
+		for (CartItem cartItem : cartItems) {
+			if (products.contains(cartItem.getProduct())) {
+				if(cartItem.getSpecialId()==0){
 					selectedItems.add(cartItem);
 				}
-			}
-			cart.setCartItems(selectedItems);
-		}
-		List<CartItem> cartItems1 = cart.getCartItems();
 
-
-        //返回商品信息
-		List<Goods> goodsList = new ArrayList<Goods>();
-
-		//现价支付总金额 购物项分类 用来筛选优惠券
-		Double price = 0d;
-
-		//原价支付总金额
-		Double oldPrice = 0d;
-		//购物项分类的id集合
-		List<Long> categoryList = new ArrayList<>();
-		//购物项产品的id集合
-		List<Long> productList = new ArrayList<>();
-		for(CartItem cartItem : cartItems1){
-			Goods goods = goodsService.findGoodsByCartItemId(cartItem.getId());
-			Product product = productService.find(cartItem.getProductId());
-			price += product.getPrice().multiply(new BigDecimal(cartItem.getQuantity())).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
-			oldPrice += product.getMarketPrice().multiply(new BigDecimal(cartItem.getQuantity())).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
-			if(!categoryList.contains(goods.getProductCategoryId())){
-				categoryList.add(goods.getProductCategoryId());
-			}
-			if(!productList.contains(product.getId())){
-				productList.add(product.getId());
-			}
-			goods.setAttributeValue10(product.getSpecificationValues());
-
-			String sss = goods.getAttributeValue10();
-
-			if (StringUtil.isNotBlank(sss)) {
-				JSONArray specificationValueArrays = JSONArray.parseArray(sss);
-				String dsb="";
-				for(int i = 0; i < specificationValueArrays.size(); i++) {
-					SpecificationValue fffff = JSONObject.parseObject(specificationValueArrays.getString(i), SpecificationValue.class);
-					if(i ==0){
-						dsb=dsb+fffff.getValue();
-					}else{
-						dsb=dsb+","+fffff.getValue();
-					}
-
-				}
-				goods.setAttributeValue11(dsb);
-
-			}
-
-
-
-			goodsList.add(goods);
-		}
-
-		//筛选商品可用的优惠券
-        //查询符合商品分类的优惠券
-		List<Coupon> codeList = couponService.findCodeList(member.getId() ,price ,categoryList);
-		if(productList != null && productList.size() == 1){
-			//查询符合专属商品的优惠券
-			List<Coupon> codeLists = couponService.findCodeLists(member.getId() ,price ,productList);
-			if(codeLists != null && codeLists.size() > 0){
-				for(Coupon coupon : codeLists){
-					codeList.add(coupon);
-				}
 			}
 		}
+		cart.setCartItems(selectedItems);
+	}
+	List<CartItem> cartItems1 = cart.getCartItems();
 
 
+	//返回商品信息
+	List<Goods> goodsList = new ArrayList<Goods>();
 
-		//获取默认的收货地址
-		Receiver defaultReceiver = receiverService.findDefault(member);
-		System.out.println("goodsList.size():"+goodsList.size());
-		Goods goods = areaService.findMaxLong(goodsList);
+	//现价支付总金额 购物项分类 用来筛选优惠券
+	Double price = 0d;
 
-		//商品配送
-		String receiveTime = null;
-		if(defaultReceiver != null){
-			AreaDescribe areaDescribe = areaDescribeService.findByAreaId(goods.getAreaId());
-			//判断本级地区是否填写
-			if(areaDescribe != null && areaDescribe.getReceivingBegintime() != null){
-				receiveTime = areaDescribe.getReceivingBegintime();
-			}else {
-				AreaDescribe areaDescribes = areaDescribeService.findByAreaId(areaService.find(goods.getAreaId()).getParentId());
-				if(areaDescribes != null){
-					receiveTime = areaDescribes.getReceivingBegintime();
+	//原价支付总金额
+	Double oldPrice = 0d;
+	//购物项分类的id集合
+	List<Long> categoryList = new ArrayList<>();
+	//购物项产品的id集合
+	List<Long> productList = new ArrayList<>();
+	for (CartItem cartItem : cartItems1) {
+		Goods goods = goodsService.findGoodsByCartItemId(cartItem.getId());
+		Product product = productService.find(cartItem.getProductId());
+		price += product.getPrice().multiply(new BigDecimal(cartItem.getQuantity())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		oldPrice += product.getMarketPrice().multiply(new BigDecimal(cartItem.getQuantity())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		if (!categoryList.contains(goods.getProductCategoryId())) {
+			categoryList.add(goods.getProductCategoryId());
+		}
+		if (!productList.contains(product.getId())) {
+			productList.add(product.getId());
+		}
+		goods.setAttributeValue10(product.getSpecificationValues());
+
+		String sss = goods.getAttributeValue10();
+
+		if (StringUtil.isNotBlank(sss)) {
+			JSONArray specificationValueArrays = JSONArray.parseArray(sss);
+			String dsb = "";
+			for (int i = 0; i < specificationValueArrays.size(); i++) {
+				SpecificationValue fffff = JSONObject.parseObject(specificationValueArrays.getString(i), SpecificationValue.class);
+				if (i == 0) {
+					dsb = dsb + fffff.getValue();
+				} else {
+					dsb = dsb + "," + fffff.getValue();
 				}
 
 			}
+			goods.setAttributeValue11(dsb);
+
 		}
-        List<ShippingMethod> shippingMethods = shippingMethodService.findMethodList();
-        double value = shippingMethodService.calculateFreight(shippingMethods.get(0), defaultReceiver, cart.getWeight()).doubleValue();
-        Delivery delivery = new Delivery(shippingMethods.get(0).getId(), shippingMethods.get(0).getName(), value);
+		goods.put("special_id",cartItem.getSpecialId());
+
+		goodsList.add(goods);
+	}
+
+	//筛选商品可用的优惠券
+	//查询符合商品分类的优惠券
+	List<Coupon> codeList = couponService.findCodeList(member.getId(), price, categoryList);
+	if (productList != null && productList.size() == 1) {
+		//查询符合专属商品的优惠券
+		List<Coupon> codeLists = couponService.findCodeLists(member.getId(), price, productList);
+		if (codeLists != null && codeLists.size() > 0) {
+			for (Coupon coupon : codeLists) {
+				codeList.add(coupon);
+			}
+		}
+	}
 
 
-		JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
-		//是否包邮
+	//获取默认的收货地址
+	Receiver defaultReceiver = receiverService.findDefault(member);
+	System.out.println("goodsList.size():" + goodsList.size());
+	Goods goods = areaService.findMaxLong(goodsList);
 
-		Boolean is_freeMoney = redisSetting.getBoolean("isFreeMoney") || price >= redisSetting.getDouble("freeMoney") ? true : false;
-        //运费优惠金额
-        Double deliver = 0d;
-		PriceResult newDeliveryPrice = new PriceResult("运费优惠金额","-¥ "+0 );
-		if(is_freeMoney){
-            deliver = delivery.getPrice();
-			newDeliveryPrice = new PriceResult("运费优惠金额","-¥ "+MathUtil.getInt(delivery.getPrice().toString()));
-        }
-		//包税 计算税金
-		Double taxRate = redisSetting.getDouble("taxRate");
-		Double tax = 0.0d;
-		String taxUrl = "http://shop.rxmao.cn/rxm/goods/tax.html";
-
-		//是否可以使用喵币
-		Boolean is_useMiaobi = redisSetting.getBoolean("isUseMiaoBi") ? true : false;
-		//我的喵币个数
-		Double myMiaoBi =  member.getPoint().doubleValue();
-		//可用喵币
-		Double useMiaoBi = 0d;
-		//抵扣金额
-		Double miaoBiPrice = 0d;
-		String miaoBiDesc = "";
-		Double scale =  redisSetting.getDouble("scale");
-		if(is_useMiaobi && myMiaoBi >= 0){
-			useMiaoBi = myMiaoBi;
-			Double limit =  redisSetting.getDouble("miaoBiLimit");
-			miaoBiPrice= new BigDecimal(useMiaoBi).divide(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-			double multiply = new BigDecimal(price).multiply(new BigDecimal(limit)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-			//重新计算可用喵币
-			if(miaoBiPrice > multiply){
-				useMiaoBi = new BigDecimal(multiply).multiply(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-				miaoBiPrice= new BigDecimal(useMiaoBi).divide(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	//商品配送
+	String receiveTime = null;
+	if (defaultReceiver != null) {
+		AreaDescribe areaDescribe = areaDescribeService.findByAreaId(goods.getAreaId());
+		//判断本级地区是否填写
+		if (areaDescribe != null && areaDescribe.getReceivingBegintime() != null) {
+			receiveTime = areaDescribe.getReceivingBegintime();
+		} else {
+			AreaDescribe areaDescribes = areaDescribeService.findByAreaId(areaService.find(goods.getAreaId()).getParentId());
+			if (areaDescribes != null) {
+				receiveTime = areaDescribes.getReceivingBegintime();
 			}
 
 		}
+	}
+	List<ShippingMethod> shippingMethods = shippingMethodService.findMethodList();
+	double value = shippingMethodService.calculateFreight(shippingMethods.get(0), defaultReceiver, cart.getWeight()).doubleValue();
+	Delivery delivery = new Delivery(shippingMethods.get(0).getId(), shippingMethods.get(0).getName(), value);
 
-		//退货保险
-		Boolean isReturnInsurance = redisSetting.getBoolean("isReturnInsurance");
-		Double returnMoney = 0d;
-		String returnCopy = "";
 
-		if(isReturnInsurance){
-			returnMoney =  redisSetting.getDouble("returnMoney");
-			returnCopy =  redisSetting.getString("returnCopyUrl");
+	JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
+	//是否包邮
+
+	Boolean is_freeMoney = redisSetting.getBoolean("isFreeMoney") || price >= redisSetting.getDouble("freeMoney") ? true : false;
+	//运费优惠金额
+	Double deliver = 0d;
+	PriceResult newDeliveryPrice = new PriceResult("运费优惠金额", "-¥ " + 0);
+	if (is_freeMoney) {
+		deliver = delivery.getPrice();
+		newDeliveryPrice = new PriceResult("运费优惠金额", "-¥ " + MathUtil.getInt(delivery.getPrice().toString()));
+	}
+	//包税 计算税金
+	Double taxRate = redisSetting.getDouble("taxRate");
+	Double tax = 0.0d;
+	String taxUrl = "http://shop.rxmao.cn/rxm/goods/tax.html";
+
+	//是否可以使用喵币
+	Boolean is_useMiaobi = redisSetting.getBoolean("isUseMiaoBi") ? true : false;
+	//我的喵币个数
+	Double myMiaoBi = member.getPoint().doubleValue();
+	//可用喵币
+	Double useMiaoBi = 0d;
+	//抵扣金额
+	Double miaoBiPrice = 0d;
+	String miaoBiDesc = "";
+	Double scale = redisSetting.getDouble("scale");
+	if (is_useMiaobi && myMiaoBi >= 0) {
+		useMiaoBi = myMiaoBi;
+		Double limit = redisSetting.getDouble("miaoBiLimit");
+		miaoBiPrice = new BigDecimal(useMiaoBi).divide(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double multiply = new BigDecimal(price).multiply(new BigDecimal(limit)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		//重新计算可用喵币
+		if (miaoBiPrice > multiply) {
+			useMiaoBi = new BigDecimal(multiply).multiply(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			miaoBiPrice = new BigDecimal(useMiaoBi).divide(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		}
 
-        Cache actCache = Redis.use();
-        actCache.set("CART:" + member.getId(), cart);
+	}
 
-        PriceResult returnPrice = null;
-        PriceResult miaobiPrice = null;
-        String realPrice = null;
-        String favoritePrice = null;
-        Double realPriced = 0d;
-        Double favoreatePriced = 0d;
-        Double miaobi = 0d;
-        Double returns = 0d;
+	//退货保险
+	Boolean isReturnInsurance = redisSetting.getBoolean("isReturnInsurance");
+	Double returnMoney = 0d;
+	String returnCopy = "";
 
-        if(isUseMiao){
-            if(isReturnInsurans){
-                returnPrice = new PriceResult("退货保险","¥ "+ MathUtil.getInt(returnMoney.toString()) );
-                realPriced = MathUtil.add(price, delivery.getPrice());
-                realPriced = MathUtil.add(realPriced, returnMoney);
-                realPrice = MathUtil.getInt(realPriced.toString());
+	if (isReturnInsurance) {
+		returnMoney = redisSetting.getDouble("returnMoney");
+		returnCopy = redisSetting.getString("returnCopyUrl");
+	}
 
-                miaobiPrice = new PriceResult("喵币","-¥ "+MathUtil.getInt(miaoBiPrice.toString()));
-                favoreatePriced = MathUtil.add(miaoBiPrice, deliver);
-                favoritePrice = MathUtil.getInt(favoreatePriced.toString());
-                returns = returnMoney;
-            }else {
-                returnPrice = new PriceResult("退货保险","¥ "+0);
-                realPriced = MathUtil.add(price, delivery.getPrice());
-                realPrice = MathUtil.getInt(realPriced.toString());
+	Cache actCache = Redis.use();
+	actCache.set("CART:" + member.getId(), cart);
 
-                miaobiPrice = new PriceResult("喵币","-¥ "+MathUtil.getInt(miaoBiPrice.toString()));
-                favoreatePriced = MathUtil.add(miaoBiPrice, deliver);
-                favoritePrice = MathUtil.getInt(favoreatePriced.toString());
-                returns = 0d;
-            }
-            miaobi = miaoBiPrice;
-        }else {
-            if(isReturnInsurans){
-                returnPrice = new PriceResult("退货保险","¥ "+MathUtil.getInt(returnMoney.toString()));
-                realPriced = MathUtil.add(price, delivery.getPrice());
-                realPriced = MathUtil.add(realPriced, returnMoney);
-                realPrice = MathUtil.getInt(realPriced.toString());
+	PriceResult returnPrice = null;
+	PriceResult miaobiPrice = null;
+	String realPrice = null;
+	String favoritePrice = null;
+	Double realPriced = 0d;
+	Double favoreatePriced = 0d;
+	Double miaobi = 0d;
+	Double returns = 0d;
 
-                miaobiPrice = new PriceResult("喵币","-¥ "+0);
-                favoritePrice =  MathUtil.getInt(deliver.toString());
-                returns = returnMoney;
-            }else {
-                returnPrice = new PriceResult("退货保险","¥ "+0);
-                realPriced = MathUtil.add(price, delivery.getPrice());
-                realPrice = MathUtil.getInt(realPriced.toString());
+	if (isUseMiao) {
+		if (isReturnInsurans) {
+			returnPrice = new PriceResult("退货保险", "¥ " + MathUtil.getInt(returnMoney.toString()));
+			realPriced = MathUtil.add(price, delivery.getPrice());
+			realPriced = MathUtil.add(realPriced, returnMoney);
+			realPrice = MathUtil.getInt(realPriced.toString());
 
-                miaobiPrice = new PriceResult("喵币","-¥ "+0);
-				favoritePrice =  MathUtil.getInt(deliver.toString());
-                returns = 0d;
-            }
-            miaobi = 0d;
-        }
-		PriceResult manjianPrice = null;
-		Promotion promotion = promotionService.find(5L);
-		Double prom = cartService.findPriceByCartItem(cartItems1);
-		Double manJianPrices = 0d;
-		if ( prom >= promotion.getTotalMoney().doubleValue()){
-			manjianPrice = new PriceResult(promotion.getTitle(),"-¥ "+MathUtil.getInt(promotion.getMoney().toString()));
-			favoritePrice = MathUtil.getInt(new BigDecimal(favoritePrice).add(promotion.getMoney()).toString());
-			manJianPrices = promotion.getMoney().doubleValue();
+			miaobiPrice = new PriceResult("喵币", "-¥ " + MathUtil.getInt(miaoBiPrice.toString()));
+			favoreatePriced = MathUtil.add(miaoBiPrice, deliver);
+			favoritePrice = MathUtil.getInt(favoreatePriced.toString());
+			returns = returnMoney;
+		} else {
+			returnPrice = new PriceResult("退货保险", "¥ " + 0);
+			realPriced = MathUtil.add(price, delivery.getPrice());
+			realPrice = MathUtil.getInt(realPriced.toString());
+
+			miaobiPrice = new PriceResult("喵币", "-¥ " + MathUtil.getInt(miaoBiPrice.toString()));
+			favoreatePriced = MathUtil.add(miaoBiPrice, deliver);
+			favoritePrice = MathUtil.getInt(favoreatePriced.toString());
+			returns = 0d;
 		}
-        PriceResult totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(price.toString()));
-		PriceResult oldTotalPrice = new PriceResult("商品优惠前总金额","¥ "+ MathUtil.getInt(oldPrice.toString()));
-        PriceResult deliveryPrice = new PriceResult("运费","¥ "+ MathUtil.getInt(delivery.getPrice().toString()));
-		List<PriceResult> priceList = new ArrayList<>();
-		priceList.add(oldTotalPrice);
-		priceList.add(totalPrice);
-		priceList.add(deliveryPrice);
-		if(!is_promotion){
-			priceList.add(miaobiPrice);
+		miaobi = miaoBiPrice;
+	} else {
+		if (isReturnInsurans) {
+			returnPrice = new PriceResult("退货保险", "¥ " + MathUtil.getInt(returnMoney.toString()));
+			realPriced = MathUtil.add(price, delivery.getPrice());
+			realPriced = MathUtil.add(realPriced, returnMoney);
+			realPrice = MathUtil.getInt(realPriced.toString());
+
+			miaobiPrice = new PriceResult("喵币", "-¥ " + 0);
+			favoritePrice = MathUtil.getInt(deliver.toString());
+			returns = returnMoney;
+		} else {
+			returnPrice = new PriceResult("退货保险", "¥ " + 0);
+			realPriced = MathUtil.add(price, delivery.getPrice());
+			realPrice = MathUtil.getInt(realPriced.toString());
+
+			miaobiPrice = new PriceResult("喵币", "-¥ " + 0);
+			favoritePrice = MathUtil.getInt(deliver.toString());
+			returns = 0d;
 		}
+		miaobi = 0d;
+	}
+	PriceResult manjianPrice = null;
+	Promotion promotion = promotionService.find(5L);
+	Double prom = cartService.findPriceByCartItem(cartItems1);
+	Double manJianPrices = 0d;
+	if (prom >= promotion.getTotalMoney().doubleValue()) {
+		manjianPrice = new PriceResult(promotion.getTitle(), "-¥ " + MathUtil.getInt(promotion.getMoney().toString()));
+		favoritePrice = MathUtil.getInt(new BigDecimal(favoritePrice).add(promotion.getMoney()).toString());
+		manJianPrices = promotion.getMoney().doubleValue();
+	}
+	PriceResult totalPrice = new PriceResult("商品总金额", "¥ " + MathUtil.getInt(price.toString()));
+	PriceResult oldTotalPrice = new PriceResult("商品优惠前总金额", "¥ " + MathUtil.getInt(oldPrice.toString()));
+	PriceResult deliveryPrice = new PriceResult("运费", "¥ " + MathUtil.getInt(delivery.getPrice().toString()));
+	List<PriceResult> priceList = new ArrayList<>();
+	priceList.add(oldTotalPrice);
+	priceList.add(totalPrice);
+	priceList.add(deliveryPrice);
+	if (!is_promotion) {
+		priceList.add(miaobiPrice);
+	}
 
-		priceList.add(newDeliveryPrice);
-		priceList.add(manjianPrice);
+	priceList.add(newDeliveryPrice);
+	priceList.add(manjianPrice);
 
 
-		Double couponYunfei = MathUtil.subtract( delivery.getPrice() ,deliver);
-        Double amountpaid = MathUtil.subtract(realPrice ,favoritePrice);
+	Double couponYunfei = MathUtil.subtract(delivery.getPrice(), deliver);
+	Double amountpaid = MathUtil.subtract(realPrice, favoritePrice);
 
-        if(amountpaid < 0){
-			miaobi = miaobi + amountpaid;
-			useMiaoBi = new BigDecimal(miaobi).multiply(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-			miaoBiPrice= new BigDecimal(useMiaoBi).divide(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-            amountpaid = 0d;
-		}
-		miaoBiDesc ="共" + MathUtil.getInt(member.getPoint().toString()) + "喵币,可用" + MathUtil.getInt(useMiaoBi.toString()) + "喵币,抵扣¥" + MathUtil.getInt(miaoBiPrice.toString()) ;
+	if (amountpaid < 0) {
+		miaobi = miaobi + amountpaid;
+		useMiaoBi = new BigDecimal(miaobi).multiply(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		miaoBiPrice = new BigDecimal(useMiaoBi).divide(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		amountpaid = 0d;
+	}
+	miaoBiDesc = "共" + MathUtil.getInt(member.getPoint().toString()) + "喵币,可用" + MathUtil.getInt(useMiaoBi.toString()) + "喵币,抵扣¥" + MathUtil.getInt(miaoBiPrice.toString());
 
-        Double[] param = {deliver, miaobi, returns, amountpaid ,couponYunfei ,manJianPrices};
-        Double  yunfei=  delivery.getPrice();
-		favoritePrice = MathUtil.getInt(new BigDecimal(favoritePrice).add(new BigDecimal(oldPrice)).subtract(new BigDecimal(price)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-       OrderDetailsResult orderDetailsResult = new OrderDetailsResult(taxUrl, couponYunfei, skuids, yunfei, member, cart.getToken(), defaultReceiver, codeList, goodsList,
-				receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, isReturnInsurance, returns, returnCopy , priceList ,amountpaid.toString(), favoritePrice, param, is_promotion);
-		renderJson(ApiResult.success(orderDetailsResult));
+	Double[] param = {deliver, miaobi, returns, amountpaid, couponYunfei, manJianPrices};
+	Double yunfei = delivery.getPrice();
+	favoritePrice = MathUtil.getInt(new BigDecimal(favoritePrice).add(new BigDecimal(oldPrice)).subtract(new BigDecimal(price)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	OrderDetailsResult orderDetailsResult = new OrderDetailsResult(taxUrl, couponYunfei, skuids, yunfei, member, cart.getToken(), defaultReceiver, codeList, goodsList,
+			receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, isReturnInsurance, returns, returnCopy, priceList, amountpaid.toString(), favoritePrice, param, is_promotion);
+	renderJson(ApiResult.success(orderDetailsResult));
+
+}
 	}
 
 	/**
@@ -928,7 +1188,7 @@ if(!isSinglepurchase){
 
 	
 	/**
-	 * 普通订单-创建
+	 * 购物车
 	 */
 	@Before(Tx.class)
 	public void create() {

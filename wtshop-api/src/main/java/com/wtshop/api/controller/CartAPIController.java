@@ -263,7 +263,8 @@ public class CartAPIController extends BaseAPIController {
 
 			subtract = MathUtil.subtract(freeMoney, price);
 			if(subtract > 0){
-				message = "满"+ MathUtil.getInt(freeMoney.toString())+"元减免运费,还差"+ MathUtil.getInt(subtract.toString())+"元";
+				//message = "满"+ MathUtil.getInt(freeMoney.toString())+"元减免运费,还差"+ MathUtil.getInt(subtract.toString())+"元";
+				message = "满"+ MathUtil.getInt(freeMoney.toString())+"元减免运费";
 			}else {
 				subtract = 0d;
 			}
@@ -275,6 +276,7 @@ public class CartAPIController extends BaseAPIController {
 
 			promSubtract = MathUtil.subtract(promotion.getTotalMoney(), prom);
 			if(promSubtract > 0){
+				//promMessage = "满"+ MathUtil.getInt(promotion.getTotalMoney().toString())+"元减"+ MathUtil.getInt(promotion.getMoney().toString())+"元,还差"+ MathUtil.getInt(promSubtract.toString())+"元";
 				promMessage = "满"+ MathUtil.getInt(promotion.getTotalMoney().toString())+"元减"+ MathUtil.getInt(promotion.getMoney().toString())+"元,还差"+ MathUtil.getInt(promSubtract.toString())+"元";
 			}else {
 				promSubtract = 0d;
@@ -358,7 +360,8 @@ public class CartAPIController extends BaseAPIController {
 			Double freeMoney = redisSetting.getDouble("freeMoney");
 			subtract = MathUtil.subtract(freeMoney, price);
 			if(subtract > 0){
-				message = "满"+ MathUtil.getInt(freeMoney.toString())+"元减免运费,还差"+ MathUtil.getInt(subtract.toString())+"元";
+				//message = "满"+ MathUtil.getInt(freeMoney.toString())+"元减免运费,还差"+ MathUtil.getInt(subtract.toString())+"元";
+				message = "满"+ MathUtil.getInt(freeMoney.toString())+"元减免运费";
 				messageList.add (new CartGoodsResult(message, 1, "去凑单"));
 			}else {
 				subtract = 0d;
