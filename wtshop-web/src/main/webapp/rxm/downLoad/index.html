@@ -92,7 +92,13 @@
             }else if (host == 'GroupPropleList') {     //团购详情
                 host = 'GroupPropleList'
                 params = '?tuanGouID=' + GetQueryString('tuanGouID') + '&fightGroupId='+GetQueryString('fightGroupId') +'';
+            }else if (host == 'RXMTeShuGoodsDetaile') {     //特殊商品详情
+                host = 'RXMTeShuGoodsDetaile'
+                params = '?goodId=' + GetQueryString('params') + '&RXMTeShuGoodsId='+GetQueryString('RXMTeShuGoodsId') +'';
             }
+
+
+         //   http://shop.rxmao.cn/rxm/downLoad/index.html?page=RXMTeShuGoodsDetaile&params=%ld&RXMTeShuGoodsId=%@
             if (host != null) {
                 url = url + host + params
             }
