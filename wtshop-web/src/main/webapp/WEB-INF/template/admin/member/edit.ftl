@@ -112,6 +112,14 @@ $().ready(function() {
 					<input type="text" name="member.nickname" class="text" value="${member.nickname}" maxlength="200" />
 				</td>
 			</tr>
+            <tr>
+                <th>
+                    门店名称:
+                </th>
+                <td>
+                    <input type="text" name="member.store" class="text" maxlength="200" />
+                </td>
+            </tr>
 			<tr>
 				<th>
 					${message("Member.memberRank")}:

@@ -230,6 +230,11 @@ public class MemberController extends BaseController {
 			member.setLoginFailureCount(pMember.getLoginFailureCount());
 			member.setLockedDate(pMember.getLockedDate());
 		}
+		if(member.getStore()!=null&&member.getStore().trim().length()>0){
+			member.setIsStore(true);
+		}else {
+			member.setIsStore(false);
+		}
 		member.setPhone(pMember.getPhone());
 		member.remove("username");
 		memberService.update(member);

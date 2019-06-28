@@ -94,8 +94,21 @@ $().ready(function() {
 					<a href="javascript:;" class="sort" name="name">生产批次</a>
 				</th>
 				<th>
-					<a href="javascript:;" class="sort" name="logo">验证码</a>
+					<a href="javascript:;" class="sort" name="logo">识别码</a>
 				</th>
+                <th>
+                    <a href="javascript:;" class="sort" name="logo">邀请码</a>
+                </th>
+                <th>
+                    <a href="javascript:;" class="sort" name="logo">用户id</a>
+                </th>
+
+                <th>
+                    <a href="javascript:;" class="sort" name="isShow">开始时间</a>
+                </th>
+                <th>
+                    <a href="javascript:;" class="sort" name="isShow">结束时间</a>
+                </th>
                 <th>
                     <a href="javascript:;" class="sort" name="isShow">状态</a>
                 </th>
@@ -114,7 +127,18 @@ $().ready(function() {
 					<td>
 						${brand.code}
 					</td>
-
+                    <td>
+						${brand.share_code}
+                    </td>
+                    <td>
+						${brand.member_id}
+                    </td>
+                    <td>
+						${brand.create_date}
+                    </td>
+                    <td>
+						${brand.end_date}
+                    </td>
                     <td>
 					[#if brand.status==0||brand.status==null]
 

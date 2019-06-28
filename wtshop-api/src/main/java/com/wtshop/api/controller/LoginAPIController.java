@@ -206,6 +206,7 @@ public class LoginAPIController extends BaseAPIController {
         }
         String nickname = com.wtshop.util.StringUtils.filterEmoji(user.get("nickname").toString()) ;
         String openid = user.get("openid").toString();
+        String unionid = user.get("unionid").toString();
         int codes = 9000; //不需要绑定手机号
         Member member = null;
         //获取微信社交绑定的openId
@@ -219,6 +220,7 @@ public class LoginAPIController extends BaseAPIController {
             member = new Member();
             member.setIsDelete(false);
             member.setOpenId(openid);
+
             member.setNickname(nickname);
             member.setAmount(BigDecimal.ZERO);
             member.setBalance(BigDecimal.ZERO);
@@ -233,6 +235,7 @@ public class LoginAPIController extends BaseAPIController {
 
             Account account1 = new Account();
             account1.setAccount(openid);
+            account1.setUnionid(unionid);
             account1.setType(0);
             account1.setNickname(nickname);
             account1.setMemberId(member.getId());

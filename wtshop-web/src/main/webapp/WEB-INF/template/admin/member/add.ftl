@@ -99,17 +99,17 @@ $().ready(function() {
 				<th>
 					<span class="requiredField">*</span>${message("Member.username")}:
 				</th>
-				<td>
-					<input type="text" name="member.phone" class="text" maxlength="${setting.usernameMaxLength}" title="${message("admin.member.phone")}/>
-				</td>
+                <th>
+					<input type="text" name="member.phone" class="text" maxlength="${setting.usernameMaxLength}" title="${message("admin.member.phone")}"/>
+				</th>
 			</tr>
 			<tr>
 				<th>
 					<span class="requiredField">*</span>${message("Member.password")}:
 				</th>
-				<td>
+                <th>
 					<input type="password" id="password" name="member.password" class="text" maxlength="${setting.passwordMaxLength}" autocomplete="off" title="${message("admin.member.limit")} />
-				</td>
+				</th>
 			</tr>
 			<tr>
 				<th>

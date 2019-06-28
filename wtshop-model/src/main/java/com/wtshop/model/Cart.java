@@ -440,11 +440,11 @@ public class Cart extends BaseCart<Cart> {
 	 *            商品
 	 * @return 购物车项
 	 */
-	public CartItem getCartItem(Product product) {
+	public CartItem getCartItem(Product product,Long sPecialIds) {
 		if (product != null && getCartItems() != null) {
 			 List<CartItem> cartItems = getCartItems();
 			for (CartItem cartItem : cartItems) {
-				if (cartItem.getProduct() != null && cartItem.getProduct().equals(product)) {
+				if (cartItem.getProduct() != null && cartItem.getProduct().equals(product)&&cartItem.getSpecialId()==sPecialIds) {
 					return cartItem;
 				}
 			}
@@ -459,10 +459,20 @@ public class Cart extends BaseCart<Cart> {
 	 *            商品
 	 * @return 是否包含商品
 	 */
-	public boolean contains(Product product) {
-		return getCartItem(product) != null;
+	/*public boolean contains(Product product) {
+		return getCartItem(product,0l) != null;
+	}*/
+	/**
+	 * 判断是否包含商品
+	 *
+	 * @param product
+	 * @param sPecialIds 0 表示不是特殊商品
+	 *            商品
+	 * @return 是否包含商品
+	 */
+	public boolean contains(Product product,Long sPecialIds) {
+		return getCartItem(product,sPecialIds) != null;
 	}
-
 	/**
 	 * 判断是否包含购物车项
 	 * 

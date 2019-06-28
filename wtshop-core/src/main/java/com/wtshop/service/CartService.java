@@ -194,7 +194,7 @@ public class CartService extends BaseService<Cart> {
 	 *            数量
 	 * @return 当前购物车
 	 */
-	public Cart add(Product product, int quantity, Boolean buyNow) {
+	public Cart add(Product product, int quantity, Boolean buyNow,Long sPecialIds) {
 		Assert.notNull(product);
 		Assert.state(quantity > 0);
 
@@ -210,13 +210,13 @@ public class CartService extends BaseService<Cart> {
 			cartDao.save(cart);
 		}
 		
-		if (cart.contains(product)) {
+		if (cart.contains(product,sPecialIds)) {
 			if (buyNow) {
-				CartItem cartItem = cart.getCartItem(product);
+				CartItem cartItem = cart.getCartItem(product,sPecialIds);
 				cartItem.setQuantity(quantity);
 				cartItemDao.update(cartItem);
 			} else {
-				CartItem cartItem = cart.getCartItem(product);
+				CartItem cartItem = cart.getCartItem(product,sPecialIds);
 				cartItem.add(quantity);
 				cartItemDao.update(cartItem);
 			}
@@ -224,6 +224,7 @@ public class CartService extends BaseService<Cart> {
 			CartItem cartItem = new CartItem();
 			cartItem.setQuantity(quantity);
 			cartItem.setProductId(product.getId());
+			cartItem.setSpecialId(sPecialIds);
 			cartItem.setCartId(cart.getId());
 			cartItemDao.save(cartItem);
 		}
@@ -247,8 +248,8 @@ public class CartService extends BaseService<Cart> {
 			if (cart.getCartItems() != null) {
 				for (CartItem cartItem : cart.getCartItems()) {
 					Product product = cartItem.getProduct();
-					if (memberCart.contains(product)) {
-						CartItem memberCartItem = memberCart.getCartItem(product);
+					if (memberCart.contains(product,0l)) {
+						CartItem memberCartItem = memberCart.getCartItem(product,0l);
 						if (CartItem.MAX_QUANTITY != null && memberCartItem.getQuantity() + cartItem.getQuantity() > CartItem.MAX_QUANTITY) {
 							continue;
 						}

@@ -10,6 +10,7 @@ import com.wtshop.model.Brand;
 import com.wtshop.model.Identifier;
 import com.wtshop.model.ProductCategory;
 import com.wtshop.model.SpecialPersonnel;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -35,5 +36,25 @@ public class IdentifierDao extends   BaseDao<Identifier> {
 		String sql = " select id , name from brand order by name";
 		return Db.find(sql);
 
+	}
+
+    public List<Identifier> findByIdfCode(String idfCode) {
+		if (StringUtils.isEmpty(idfCode)) {
+			return null;
+		}
+		try {
+			String sql = "SELECT * FROM identifier i where   i.code= UPPER(?)";
+			return modelManager.find(sql, idfCode);
+		} catch (Exception e) {
+			return null;
+		}
+    }
+	public List<Identifier> findByMemberId(Long memberId) {
+		try {
+			String sql = "SELECT * FROM identifier i where   i.member_id= ?";
+			return modelManager.find(sql, memberId);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }

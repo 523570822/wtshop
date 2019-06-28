@@ -72,6 +72,12 @@
                 <a href="javascript:;" class="sort" name="nickname">${message("Member.nickname")}</a>
             </th>
             <th>
+                <a href="javascript:;" >邀请码</a>
+            </th>
+            <th>
+                <a href="javascript:;"  >门店名称</a>
+            </th>
+            <th>
                 <a href="javascript:;" class="sort" name="create_date">${message("admin.common.createDate")}</a>
             </th>
             <th>
@@ -94,6 +100,12 @@
                     </td>
                     <td>
                         ${member.nickname}
+                    </td>
+                    <td>
+                        ${member.share_code}
+                    </td>
+                    <td>
+                        ${member.store}
                     </td>
                     <td>
                         <span title="${member.createDate?string("yyyy-MM-dd HH:mm:ss")}">${member.createDate}</span>

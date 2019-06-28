@@ -68,8 +68,8 @@ public class CartController extends BaseController {
 
 		Cart cart = cartService.getCurrent();
 		if (cart != null) {
-			if (cart.contains(product)) {
-				CartItem cartItem = cart.getCartItem(product);
+			if (cart.contains(product,0l)) {
+				CartItem cartItem = cart.getCartItem(product,0l);
 				if (CartItem.MAX_QUANTITY != null && cartItem.getQuantity() + quantity > CartItem.MAX_QUANTITY) {
 					renderJson(Message.warn("shop.cart.addQuantityNotAllowed", CartItem.MAX_QUANTITY));
 					return;
@@ -102,7 +102,7 @@ public class CartController extends BaseController {
 				return;
 			}
 		}
-		cart = cartService.add(product, quantity, false);
+		cart = cartService.add(product, quantity, false,0l);
 
 		Member member = memberService.getCurrent();
 		if (member == null) {

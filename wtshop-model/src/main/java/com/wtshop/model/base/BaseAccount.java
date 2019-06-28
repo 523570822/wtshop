@@ -73,4 +73,12 @@ public abstract class BaseAccount<M extends BaseAccount<M>> extends Model<M> imp
 		return get("type");
 	}
 
+	public void setUnionid(String unionid) {
+		set("unionid", unionid);
+	}
+
+	public String getUnionid() {
+		return get("unionid");
+	}
+
 }

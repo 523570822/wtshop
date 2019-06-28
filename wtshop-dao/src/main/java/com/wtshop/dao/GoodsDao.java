@@ -107,7 +107,7 @@ public class GoodsDao extends BaseDao<Goods> {
 	 * @return 购物车，若不存在则返回null
 	 */
 	public List<Goods> findCartItemList(Long id) {
-		String sql = "SELECT c.id item_id ,p.id product_id,g.id,g.attribute_value0, g.id goodsId ,g.area_id, g.image,g.`name`,g.caption, g.caption,p.price price,p.market_price market_price ,c.quantity FROM cart_item c left join product p on c.product_id = p.id left join goods g on p.goods_id = g.id WHERE cart_id = " + id ;
+		String sql = "SELECT c.special_id ,c.id item_id ,p.id product_id,g.id,g.attribute_value0, g.id goodsId ,g.area_id, g.image,g.`name`,g.caption, g.caption,p.price price,p.market_price market_price ,c.quantity FROM cart_item c left join product p on c.product_id = p.id left join goods g on p.goods_id = g.id WHERE cart_id = " + id ;
 		sql += " order by c.modify_date desc ";
 		return modelManager.find(sql);
 

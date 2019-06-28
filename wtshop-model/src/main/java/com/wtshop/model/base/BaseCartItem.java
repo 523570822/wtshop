@@ -65,4 +65,12 @@ public abstract class BaseCartItem<M extends BaseCartItem<M>> extends Model<M> i
 		return get("product_id");
 	}
 
+	public void setSpecialId(Long specialId) {
+		set("special_id", specialId);
+	}
+
+	public Long getSpecialId() {
+		return get("special_id");
+	}
+
 }

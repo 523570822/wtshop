@@ -97,4 +97,20 @@ public abstract class BaseIdentifier<M extends BaseIdentifier<M>> extends Model<
 		return get("price");
 	}
 
+	public void setMemberId(Long memberId) {
+		set("member_id", memberId);
+	}
+
+	public Long getMemberId() {
+		return get("member_id");
+	}
+
+	public void setStartDate(java.util.Date startDate) {
+		set("start_date", startDate);
+	}
+
+	public java.util.Date getStartDate() {
+		return get("start_date");
+	}
+
 }

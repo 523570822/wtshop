@@ -71,8 +71,8 @@ public class CartController extends BaseController {
 
 		Cart cart = cartService.getCurrent();
 		if (cart != null) {
-			if (cart.contains(product)) {
-				CartItem cartItem = cart.getCartItem(product);
+			if (cart.contains(product,0l)) {
+				CartItem cartItem = cart.getCartItem(product,0l);
 				if (CartItem.MAX_QUANTITY != null && cartItem.getQuantity() + quantity > CartItem.MAX_QUANTITY) {
 					map.put(STATUS, ERROR);
 					map.put(MESSAGE, resZh.format("shop.cart.addQuantityNotAllowed", CartItem.MAX_QUANTITY));
@@ -119,7 +119,7 @@ public class CartController extends BaseController {
 				return;
 			}
 		}
-		cart = cartService.add(product, quantity, buyNow);
+		cart = cartService.add(product, quantity, buyNow,0l);
 
 		Member member = memberService.getCurrent();
 		if (member == null) {
@@ -172,8 +172,8 @@ public class CartController extends BaseController {
 			
 			Cart cart = cartService.getCurrent();
 			if (cart != null) {
-				if (cart.contains(product)) {
-					CartItem cartItem = cart.getCartItem(product);
+				if (cart.contains(product,0l)) {
+					CartItem cartItem = cart.getCartItem(product,0l);
 					if (CartItem.MAX_QUANTITY != null && cartItem.getQuantity() + quantity > CartItem.MAX_QUANTITY) {
 						map.put(STATUS, ERROR);
 						map.put(MESSAGE, resZh.format("shop.cart.addQuantityNotAllowed", CartItem.MAX_QUANTITY));
@@ -221,7 +221,7 @@ public class CartController extends BaseController {
 				}
 			}
 			ids += productId + ",";
-			cart = cartService.add(product, quantity, false);
+			cart = cartService.add(product, quantity, false,0l);
 		}
 		map.put("referer", "/wap/order/checkout.jhtml?skuids=" + StringUtils.substringBeforeLast(ids, ","));
 		map.put(STATUS, SUCCESS);
@@ -306,7 +306,7 @@ public class CartController extends BaseController {
 			renderJson(map);
 			return;
 		}
-		CartItem cartItem = cart.getCartItem(product);
+		CartItem cartItem = cart.getCartItem(product,0l);
 		if (cartItem == null) {
 			map.put(STATUS, ERROR);
 			map.put(MESSAGE, resZh.format("shop.cart.cartItemNotExist"));

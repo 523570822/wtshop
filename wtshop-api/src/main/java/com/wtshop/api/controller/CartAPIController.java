@@ -45,6 +45,14 @@ public class CartAPIController extends BaseAPIController {
 	 */
 	public void add() {
 		Long productId = getParaToLong("productIds");
+
+		/**
+		 *特殊商品码
+		 */
+		Long sPecialIds = getParaToLong("sPecialIds",0l);
+		/**
+		 *  数量
+		 */
 		Integer quantity = getParaToInt("quantitys");
 		Boolean buyNow = getParaToBoolean("buy_nows");
 
@@ -73,8 +81,8 @@ public class CartAPIController extends BaseAPIController {
 
 		Cart cart = cartService.getCurrent();
 		if (cart != null) {
-			if (cart.contains(product)) {
-				CartItem cartItem = cart.getCartItem(product);
+			if (cart.contains(product,sPecialIds)) {
+				CartItem cartItem = cart.getCartItem(product,sPecialIds);
 				if (CartItem.MAX_QUANTITY != null && cartItem.getQuantity() + quantity > CartItem.MAX_QUANTITY) {
 					renderJson(ApiResult.fail(resZh.format("shop.cart.addQuantityNotAllowed", CartItem.MAX_QUANTITY)));
 					return;
@@ -107,7 +115,7 @@ public class CartAPIController extends BaseAPIController {
 				return;
 			}
 		}
-		cart = cartService.add(product, quantity, buyNow);
+		cart = cartService.add(product, quantity, buyNow,sPecialIds);
 		if (member == null) {
 			WebUtils.addCookie(getRequest(), getResponse(), Cart.KEY_COOKIE_NAME, cart.getCartKey(), Cart.TIMEOUT);
 		}
@@ -145,7 +153,7 @@ public class CartAPIController extends BaseAPIController {
 	public void again() {
 		String params = getPara("param");
 		JSONArray arr = JSONArray.parseArray(params);
-
+		Long sPecialIds = getParaToLong("sPecialIds",0l);
 		// 定义组数存放产品id
 		String ids = "";
 		for (int i = 0; i < arr.size(); i++) {
@@ -173,8 +181,8 @@ public class CartAPIController extends BaseAPIController {
 			
 			Cart cart = cartService.getCurrent();
 			if (cart != null) {
-				if (cart.contains(product)) {
-					CartItem cartItem = cart.getCartItem(product);
+				if (cart.contains(product,sPecialIds)) {
+					CartItem cartItem = cart.getCartItem(product,sPecialIds);
 					if (CartItem.MAX_QUANTITY != null && cartItem.getQuantity() + quantity > CartItem.MAX_QUANTITY) {
 						renderJson(ApiResult.fail(resZh.format("shop.cart.addQuantityNotAllowed", CartItem.MAX_QUANTITY)));
 						return;
@@ -208,7 +216,7 @@ public class CartAPIController extends BaseAPIController {
 				}
 			}
 			ids += productId + ",";
-			cart = cartService.add(product, quantity, false);
+			cart = cartService.add(product, quantity, false,sPecialIds);
 		}
 		renderJson(ApiResult.success());
 	}
@@ -403,7 +411,7 @@ public class CartAPIController extends BaseAPIController {
 			}
 			cartItemService.delete(cartItem);
 			cart.getCartItems().remove(cartItem);
-			MemberFavoriteGoods goods = favoriteGoodsService.findGoods(member.getId(), cartItem.getProduct().getGoodsId(),0l);
+			MemberFavoriteGoods goods = favoriteGoodsService.findGoods(member.getId(), cartItem.getProduct().getGoodsId(),cartItem.getSpecialId());
 			if( goods == null ){
 				goodsLists.add(cartItem.getProduct().getGoodsId());
 			}
@@ -431,7 +439,7 @@ public class CartAPIController extends BaseAPIController {
 	public void setNums(){
 		Long productId = getParaToLong("productIds", null);
 		Integer quantity = getParaToInt("quantitys", null);
-
+		Long sPecialIds = getParaToLong("sPecialIds",0l);
 		if (quantity == null) {
 			renderJson(ApiResult.fail("数量不能为空!"));
 			return;
@@ -448,7 +456,7 @@ public class CartAPIController extends BaseAPIController {
 			renderJson(ApiResult.fail(resZh.format("shop.cart.notEmpty")));
 			return;
 		}
-		CartItem cartItem = cart.getCartItem(product);
+		CartItem cartItem = cart.getCartItem(product,sPecialIds);
 		if (cartItem == null) {
 			renderJson(ApiResult.fail(resZh.format("shop.cart.cartItemNotExist")));
 			return;
