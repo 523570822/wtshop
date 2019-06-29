@@ -143,7 +143,7 @@ public class UserPayService {
         parameterMap.put("appid", prop.get("XCX_APPID")); // 公众账号ID
         parameterMap.put("mch_id", prop.get("MCH_ID")); // 商户号
         parameterMap.put("nonce_str", RandomUtils.randomUpperWords(32)); // 随机字符串
-        parameterMap.put("body", "任性猫微信支付"); // 商品描述
+        parameterMap.put("body", "小程序支付"); // 商品描述
         parameterMap.put("out_trade_no", "RXM" + order.getSn()); // 商户订单号
         parameterMap.put("total_fee", String.format("%.0f", money * 100));// 订单总金额
         parameterMap.put("spbill_create_ip", ip); // 终端IP
@@ -151,10 +151,10 @@ public class UserPayService {
         parameterMap.put("trade_type", PaymentApi.TradeType.JSAPI.name()); // 交易类型
 
         Map<String, String> params = convertAttributes(parameterMap);
-        String sign = PaymentKit.createSign(params, prop.get("API_KEY"));
+     //   String sign = PaymentKit.createSign(params, prop.get("API_KEY"));
 
+        String sign=qianMing(params);
         params.put("sign", sign);
-        RedisUtil.setString("SIGN",sign);
         // 统一下单
         String xmlResult = PaymentApi.pushOrder(params);
 
@@ -170,12 +170,10 @@ public class UserPayService {
       //  packageParams.put("prepayid", prepay_id);
     //    packageParams.put("partnerid", prop.get("MCH_ID"));
    //    String packageSign = PaymentKit.createSign(packageParams, prop.get("API_KEY"));
-      packageParams.remove("sign");
-        String stringA = PaymentKit.packageSign(params, false);
-        String stringSignTemp = stringA ;
-        String packageSign=HashKit.md5(stringSignTemp).toUpperCase();
+        String packageSign=qianMing(packageParams);
+
         packageParams.put("signType", "MD5");
-        packageParams.put("paySign", "packageSign");
+        packageParams.put("paySign", packageSign);
 
         return packageParams;
     }
@@ -373,6 +371,12 @@ public class UserPayService {
             }
         }
         return parameterNewMap;
+    }
+    private String qianMing(Map<String, String> parameterMap){
+        parameterMap.remove("sign");
+        String stringA = PaymentKit.packageSign(parameterMap, false);
+        String stringSignTemp = stringA ;
+        return HashKit.md5(stringSignTemp).toUpperCase();
     }
 
 }
