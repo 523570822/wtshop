@@ -176,7 +176,7 @@ public class UserPayService {
         packageParams.put("timeStamp", System.currentTimeMillis() / 1000 + "");
         packageParams.put("nonceStr", System.currentTimeMillis() + "");
         packageParams.put("package", "prepay_id="+prepay_id);
-        packageParams.put("openid", "prepay_id="+prepay_id);
+        packageParams.put("openid", account.getAccount());
       //  packageParams.put("prepayid", prepay_id);
     //    packageParams.put("partnerid", prop.get("MCH_ID"));
        String packageSign = PaymentKit.createSign(packageParams, prop.get("API_KEY"));
