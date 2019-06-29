@@ -83,4 +83,16 @@ public class AccountDao extends BaseDao<Account>{
         }
         return modelManager.findFirst(sql);
     }
+
+    public Account findByOpenid(String openid) {
+        String sql = " select * from account where 1 = 1 ";
+        if (openid != null) {
+
+            sql += " AND account = " + openid +" or unionid ="+openid +" or openId_xcx ="+openid;
+
+
+
+        }
+        return modelManager.findFirst(sql);
+    }
 }

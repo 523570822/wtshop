@@ -716,4 +716,8 @@ public class AccountService extends BaseService<Account> {
 
             return accountDao.findByUnionid(unionid, i);
     }
+
+    public Account findByOpenid(String openid) {
+        return accountDao.findByOpenid(openid);
+    }
 }

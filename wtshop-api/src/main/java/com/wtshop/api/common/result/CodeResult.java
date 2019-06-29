@@ -15,12 +15,33 @@ public class CodeResult implements Serializable{
     private String token;
 
     private Long accountId;
+    private String   openid;
 
-    public CodeResult(int code, String token, Long accountId,String shareCode) {
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
+    public String getUnionid() {
+        return unionid;
+    }
+
+    public void setUnionid(String unionid) {
+        this.unionid = unionid;
+    }
+
+    private String   unionid;
+
+    public CodeResult(int code, String token, Long accountId,String shareCode,String openid,String unionid) {
         this.code = code;
         this.token = token;
         this.accountId = accountId;
         this.shareCode = shareCode;
+        this.openid = openid;
+        this.unionid = unionid;
     }
     private String shareCode;
 

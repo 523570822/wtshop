@@ -190,7 +190,8 @@ public class LoginAPIController extends BaseAPIController {
         actCache.set("ORDERMMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("STAFFMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("SOUND:" + member.getId(),"default");
-        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode());
+        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode(),openid,unionid);
+
         renderJson(ApiResult.success(codeResult, "登录成功"));
     }
 
@@ -268,7 +269,7 @@ public class LoginAPIController extends BaseAPIController {
         actCache.set("ORDERMMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("STAFFMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("SOUND:" + member.getId(),"default");
-        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode());
+        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode(),openid,unionid);
         renderJson(ApiResult.success(codeResult, "登录成功"));
     }
 
@@ -336,7 +337,7 @@ public class LoginAPIController extends BaseAPIController {
         actCache.set("ORDERMMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("STAFFMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("SOUND:" + member.getId(),"default");
-        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode());
+        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode(),openId,"");
         renderJson(ApiResult.success(codeResult, "登录成功"));
     }
 
@@ -406,7 +407,7 @@ public class LoginAPIController extends BaseAPIController {
         actCache.set("ORDERMMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("STAFFMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("SOUND:" + member.getId(),"default");
-        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode());
+        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode(),openId,"");
         renderJson(ApiResult.success(codeResult , "登录成功"));
     }
 
@@ -425,6 +426,7 @@ public class LoginAPIController extends BaseAPIController {
      * 手机号绑定
      */
     public void phoneBang(){
+        Integer type =getParaToInt("type");
         Long accountId = getParaToLong("accountId");
         String phone = getPara("phone");
         String passWord = getPara("passWord");
@@ -484,6 +486,113 @@ public class LoginAPIController extends BaseAPIController {
         }
         renderJson(ApiResult.fail("系统错误,请稍后尝试"));
     }
+    /**
+     * 手机号绑定
+     */
+    public void phoneBangXCX(){
 
+        String openidXCX = getPara("openid");
+        String unionid = getPara("unionid");
+        String phone = getPara("phone");
+        String passWord = getPara("passWord");
+        String code = getPara("code");
+        String passWordMD = DigestUtils.md5Hex(passWord);
+        if (!smsService.smsExists(phone, code, Setting.SmsType.memberRegister)) {
+            renderJson(ApiResult.fail("验证码输入错误!"));
+            return;
+        }
+        Member member = memberService.findByPhone(phone);
+      String  openid=member.getOpenId();
+        Account account = accountService.findByOpenid(openid);
+        if(account != null){
+            account.setOpenidXcx(openidXCX);
+            account.setUnionid(unionid);
+            //account1.setNickname(nickname);
+            account.setMemberId(member.getId());
+            if(member != null){
+                member.setPhone(phone);
+                member.setPassword(passWordMD);
+                memberService.update(member);
+
+                setSessionAttr(Member.PRINCIPAL_ATTRIBUTE_NAME, new Principal(member.getId(), member.getUsername()));
+                String token = TokenManager.getMe().generateToken(member);
+                RedisUtil.setString(token, 60 * 60 * 24 * 7, String.valueOf(member.getId()));
+                RedisUtil.setString("TOKEN:" + member.getId(),60 * 60 * 24 * 7, token);
+                Cache actCache = Redis.use();
+                actCache.set("SYSTEMMESSAGR_SWITCH:" + member.getId(),true);
+                actCache.set("ORDERMMESSAGR_SWITCH:" + member.getId(),true);
+                actCache.set("STAFFMESSAGR_SWITCH:" + member.getId(),true);
+                actCache.set("SOUND:" + member.getId(),"default");
+
+
+
+                JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
+                Double sendMiaoBi = redisSetting.getDouble("registerSending");;
+
+                //更新用户喵币
+
+                Map<String,Object>  map=  new HashMap<>();
+
+                map.put("sendMiaobi",sendMiaoBi);
+                map.put("title","合并成功");
+                map.put("type",1);
+
+                map.put("miaobilId",0);
+                map.put("token",token);
+
+
+                renderJson(ApiResult.success(map));
+
+
+                return;
+            }
+        }else{
+            Account account1 = new Account();
+            account1.setOpenidXcx(openidXCX);
+            account1.setUnionid(unionid);
+            account1.setType(2);
+            //account1.setNickname(nickname);
+            account1.setMemberId(member.getId());
+            accountService.save(account1);
+            if(member != null){
+                member.setPhone(phone);
+                member.setPassword(passWordMD);
+                memberService.update(member);
+
+                setSessionAttr(Member.PRINCIPAL_ATTRIBUTE_NAME, new Principal(member.getId(), member.getUsername()));
+                String token = TokenManager.getMe().generateToken(member);
+                RedisUtil.setString(token, 60 * 60 * 24 * 7, String.valueOf(member.getId()));
+                RedisUtil.setString("TOKEN:" + member.getId(),60 * 60 * 24 * 7, token);
+                Cache actCache = Redis.use();
+                actCache.set("SYSTEMMESSAGR_SWITCH:" + member.getId(),true);
+                actCache.set("ORDERMMESSAGR_SWITCH:" + member.getId(),true);
+                actCache.set("STAFFMESSAGR_SWITCH:" + member.getId(),true);
+                actCache.set("SOUND:" + member.getId(),"default");
+
+
+
+                JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
+                Double sendMiaoBi = redisSetting.getDouble("registerSending");;
+
+                //更新用户喵币
+
+                Map<String,Object>  map=  new HashMap<>();
+
+                map.put("sendMiaobi",sendMiaoBi);
+                map.put("title","合并成功");
+                map.put("type",1);
+
+                map.put("miaobilId",0);
+                map.put("token",token);
+
+
+                renderJson(ApiResult.success(map));
+
+
+                return;
+            }
+        }
+        renderJson(ApiResult.fail("系统错误,请稍后尝试"));
+    }
 
 }
