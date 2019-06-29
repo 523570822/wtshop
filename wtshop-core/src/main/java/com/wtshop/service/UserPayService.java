@@ -4,6 +4,7 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.domain.AlipayTradeAppPayModel;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
+import com.jfinal.kit.HashKit;
 import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
 import com.jfinal.log.Logger;
@@ -125,7 +126,59 @@ public class UserPayService {
         return packageParams;
     }
 
+    /**
+     * 小程序微信端 获取支付信息 倒拍
+     * @return
+     */
+    public Map<String, String> getPrepayIdXCX (Order order , String ip, Boolean price){
 
+        Logger logger = Logger.getLogger("getPrepayId");
+        Double money = order.getAmountPayable().doubleValue();
+        if (Code.isDevMode){
+            money = 0.01;
+        }
+
+        Prop prop = PropKit.use(CommonAttributes.wtshop_PROPERTIES_PATH);
+        Map<String, Object> parameterMap = new HashMap<>();
+        parameterMap.put("appid", prop.get("XCX_APPID")); // 公众账号ID
+        parameterMap.put("mch_id", prop.get("MCH_ID")); // 商户号
+        parameterMap.put("nonce_str", RandomUtils.randomUpperWords(32)); // 随机字符串
+        parameterMap.put("body", "任性猫微信支付"); // 商品描述
+        parameterMap.put("out_trade_no", "RXM" + order.getSn()); // 商户订单号
+        parameterMap.put("total_fee", String.format("%.0f", money * 100));// 订单总金额
+        parameterMap.put("spbill_create_ip", ip); // 终端IP
+        parameterMap.put("notify_url", prop.get("notify_url")); // 通知地址
+        parameterMap.put("trade_type", PaymentApi.TradeType.APP.name()); // 交易类型
+
+        Map<String, String> params = convertAttributes(parameterMap);
+        String sign = PaymentKit.createSign(params, prop.get("API_KEY"));
+
+        params.put("sign", sign);
+        RedisUtil.setString("SIGN",sign);
+        // 统一下单
+        String xmlResult = PaymentApi.pushOrder(params);
+
+        Map<String, String> result = PaymentKit.xmlToMap(xmlResult);
+
+        String prepay_id = result.get("prepay_id");
+
+        Map<String, String> packageParams = new HashMap<>();
+        packageParams.put("appId", prop.get("XCX_APPID"));
+        packageParams.put("timeStamp", System.currentTimeMillis() / 1000 + "");
+        packageParams.put("nonceStr", System.currentTimeMillis() + "");
+        packageParams.put("package", "prepay_id="+prepay_id);
+      //  packageParams.put("prepayid", prepay_id);
+    //    packageParams.put("partnerid", prop.get("MCH_ID"));
+   //    String packageSign = PaymentKit.createSign(packageParams, prop.get("API_KEY"));
+      packageParams.remove("sign");
+        String stringA = PaymentKit.packageSign(params, false);
+        String stringSignTemp = stringA ;
+        String packageSign=HashKit.md5(stringSignTemp).toUpperCase();
+        packageParams.put("signType", "MD5");
+        packageParams.put("paySign", "packageSign");
+
+        return packageParams;
+    }
 
     /**
      * 支付宝 支付下单

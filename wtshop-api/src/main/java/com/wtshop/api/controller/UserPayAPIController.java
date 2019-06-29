@@ -67,7 +67,14 @@ public class UserPayAPIController extends BaseAPIController {
             }
             Map<String, String> map = userPayService.getPrepayId(order, ip, true);
             renderJson(ApiResult.success(map));
-        } else if (2 == type) {  //支付宝
+        } else if(3 == type) {
+            String ip = IpUtil.getIpAddr(getRequest());
+            if (StrKit.isBlank(ip) || ("0:0:0:0:0:0:0:1").equals(ip)) {
+                ip = "127.0.0.1";
+            }
+            Map<String, String> map = userPayService.getPrepayIdXCX(order, ip, true);
+            renderJson(ApiResult.success(map));
+        }else if (2 == type) {  //支付宝
             Map<String, String> map = userPayService.aliPayOrder(order, true);
             renderJson(ApiResult.success(map));
         } else {
