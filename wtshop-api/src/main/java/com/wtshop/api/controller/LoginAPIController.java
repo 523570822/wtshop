@@ -169,7 +169,7 @@ public class LoginAPIController extends BaseAPIController {
             accountService.save(account1);
             accountId = account1.getId();*/
             codes = 9001;
-            CodeResult codeResult = new CodeResult(codes,"", accountId,member.getShareCode(),openid,unionid);
+            CodeResult codeResult = new CodeResult(codes,"", accountId,"",openid,unionid);
             renderJson(ApiResult.success(codeResult, "登录成功"));
             return;
 
