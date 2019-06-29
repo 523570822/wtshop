@@ -12,6 +12,7 @@ import com.jfinal.weixin.sdk.api.PaymentApi;
 import com.jfinal.weixin.sdk.kit.PaymentKit;
 import com.wtshop.CommonAttributes;
 import com.wtshop.constants.Code;
+import com.wtshop.model.Account;
 import com.wtshop.model.ExchangeLog;
 import com.wtshop.model.Order;
 import com.wtshop.util.AliPayUtil;
@@ -132,7 +133,7 @@ public class UserPayService {
      * @return
      */
     public Map<String, String> getPrepayIdXCX (Order order , String ip, Boolean price){
-
+        Account account = order.getAccount();
         Logger logger = Logger.getLogger("getPrepayId");
         Double money = order.getAmountPayable().doubleValue();
         if (Code.isDevMode){
@@ -150,6 +151,8 @@ public class UserPayService {
         parameterMap.put("spbill_create_ip", ip); // 终端IP
         parameterMap.put("notify_url", prop.get("notify_url")); // 通知地址
         parameterMap.put("trade_type", PaymentApi.TradeType.JSAPI.name()); // 交易类型
+
+        parameterMap.put("openid", account.getOpenidXcx()); // 交易类型
 
 
         Map<String, String> params = convertAttributes(parameterMap);

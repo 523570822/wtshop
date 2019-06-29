@@ -137,6 +137,22 @@ public class Order extends BaseOrder<Order> {
 	/** 会员 */
 	private Member member;
 
+
+	public Account getAccount() {
+		if (ObjectUtils.isEmpty(account)) {
+			account = Account.dao.findFirst("Select * from account a where  a.member_id='"+getMemberId()+"");
+		}
+
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+
+	/** 微信*/
+	private Account account;
+
 	/** 优惠码 */
 	private CouponCode couponCode;
 	
