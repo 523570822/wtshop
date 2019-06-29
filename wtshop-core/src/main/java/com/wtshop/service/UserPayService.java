@@ -176,14 +176,14 @@ public class UserPayService {
         packageParams.put("timeStamp", System.currentTimeMillis() / 1000 + "");
         packageParams.put("nonceStr", System.currentTimeMillis() + "");
         packageParams.put("package", "prepay_id="+prepay_id);
-
+        packageParams.put("signType", "MD5");
       //  packageParams.put("prepayid", prepay_id);
     //    packageParams.put("partnerid", prop.get("MCH_ID"));
        String packageSign = PaymentKit.createSign(packageParams, prop.get("API_KEY"));
       //  packageParams.put("openid", account.getAccount());
       //  String packageSign=qianMing(packageParams);
 
-        packageParams.put("signType", "MD5");
+       // packageParams.put("signType", "MD5");
         packageParams.put("paySign", packageSign);
 
         return packageParams;
