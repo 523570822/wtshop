@@ -510,10 +510,12 @@ public class LoginAPIController extends BaseAPIController {
       String  openid=member.getOpenId();
         Account account = accountService.findByOpenid(openid);
         if(account != null){
+
             account.setOpenidXcx(openidXCX);
             account.setUnionid(unionid);
             //account1.setNickname(nickname);
             account.setMemberId(member.getId());
+            accountService.update(account);
             if(member != null){
                 member.setPhone(phone);
                 member.setPassword(passWordMD);
