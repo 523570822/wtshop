@@ -495,6 +495,8 @@ public class LoginAPIController extends BaseAPIController {
         String unionid = getPara("unionid");
         String phone = getPara("phone");
         String passWord = getPara("passWord");
+        String nickname = getPara("nickname");
+
         String code = getPara("code");
         String passWordMD = DigestUtils.md5Hex(passWord);
         if (!smsService.smsExists(phone, code, Setting.SmsType.memberRegister)) {
@@ -551,7 +553,7 @@ public class LoginAPIController extends BaseAPIController {
             account1.setOpenidXcx(openidXCX);
             account1.setUnionid(unionid);
             account1.setType(2);
-            //account1.setNickname(nickname);
+            account1.setNickname(nickname);
             account1.setMemberId(member.getId());
             accountService.save(account1);
             if(member != null){
