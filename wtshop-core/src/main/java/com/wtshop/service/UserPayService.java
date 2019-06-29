@@ -156,9 +156,9 @@ public class UserPayService {
 
         System.out.println("***********************统一下单接口");
         System.out.println(parameterMap.toString());
-     //   String sign = PaymentKit.createSign(params, prop.get("API_KEY"));
+       String sign = PaymentKit.createSign(params, prop.get("API_KEY"));
 
-        String sign=qianMing(params);
+       // String sign=qianMing(params);
         params.put("sign", sign);
         // 统一下单
         String xmlResult = PaymentApi.pushOrder(params);
@@ -175,8 +175,8 @@ public class UserPayService {
         packageParams.put("package", "prepay_id="+prepay_id);
       //  packageParams.put("prepayid", prepay_id);
     //    packageParams.put("partnerid", prop.get("MCH_ID"));
-   //    String packageSign = PaymentKit.createSign(packageParams, prop.get("API_KEY"));
-        String packageSign=qianMing(packageParams);
+       String packageSign = PaymentKit.createSign(packageParams, prop.get("API_KEY"));
+      //  String packageSign=qianMing(packageParams);
 
         packageParams.put("signType", "MD5");
         packageParams.put("paySign", packageSign);
