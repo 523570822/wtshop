@@ -74,7 +74,7 @@ public class AccountDao extends BaseDao<Account>{
         String sql = " select * from account where 1 = 1 ";
         if(unionid != null){
 
-            sql += " AND member_id = '"+ unionid+"'";
+            sql += " AND unionid = '"+ unionid+"'";
 
         }if(i != null){
 

@@ -137,8 +137,8 @@ public class LoginAPIController extends BaseAPIController {
         Member member = null;
         //获取微信社交绑定的openId
         Long accountId = 0L;
-      Account  account=accountService.findByUnionid(unionid,0);
-       // XcxAccount account = xcxAccountService.findByAccount(openid, 0);
+   //   Account  account=accountService.findByUnionid(unionid,0);
+        Account account = accountService.findByAccount(openid, 0);
         if(account != null){
             member = memberService.find(account.getMemberId());
         }
@@ -507,11 +507,11 @@ public class LoginAPIController extends BaseAPIController {
             return;
         }
         Member member = memberService.findByPhone(phone);
-      String  openid=member.getOpenId();
-        Account account = accountService.findByMemberId(openid);
+
+        Account account = accountService.findByAccount(openidXCX,null);
         if(account != null){
 
-            account.setOpenidXcx(openidXCX);
+            account.setAccount(openidXCX);
             account.setUnionid(unionid);
             //account1.setNickname(nickname);
             account.setMemberId(member.getId());
@@ -555,7 +555,7 @@ public class LoginAPIController extends BaseAPIController {
             }
         }else{
             Account account1 = new Account();
-            account1.setOpenidXcx(openidXCX);
+            account1.setAccount(openidXCX);
             account1.setUnionid(unionid);
             account1.setType(2);
             account1.setNickname(nickname);
