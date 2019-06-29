@@ -148,7 +148,7 @@ public class UserPayService {
         parameterMap.put("total_fee", String.format("%.0f", money * 100));// 订单总金额
         parameterMap.put("spbill_create_ip", ip); // 终端IP
         parameterMap.put("notify_url", prop.get("notify_url")); // 通知地址
-        parameterMap.put("trade_type", PaymentApi.TradeType.APP.name()); // 交易类型
+        parameterMap.put("trade_type", PaymentApi.TradeType.JSAPI.name()); // 交易类型
 
         Map<String, String> params = convertAttributes(parameterMap);
         String sign = PaymentKit.createSign(params, prop.get("API_KEY"));
