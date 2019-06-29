@@ -152,7 +152,7 @@ public class UserPayService {
         parameterMap.put("notify_url", prop.get("notify_url")); // 通知地址
         parameterMap.put("trade_type", PaymentApi.TradeType.JSAPI.name()); // 交易类型
 
-        parameterMap.put("openid", account.getOpenidXcx()); // 交易类型
+        parameterMap.put("openid", account.getAccount()); // 交易类型
 
 
         Map<String, String> params = convertAttributes(parameterMap);
