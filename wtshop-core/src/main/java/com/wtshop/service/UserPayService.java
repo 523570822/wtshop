@@ -162,7 +162,8 @@ public class UserPayService {
         params.put("sign", sign);
         // 统一下单
         String xmlResult = PaymentApi.pushOrder(params);
-
+        _logger.info("***********************统一xmlResult");
+        _logger.info(xmlResult);
         Map<String, String> result = PaymentKit.xmlToMap(xmlResult);
 
         String prepay_id = result.get("prepay_id");
