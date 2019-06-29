@@ -74,6 +74,7 @@ public class AccountAPIController extends BaseAPIController {
     public void sendRegisterSms() {
 		Prop prop = PropKit.use(CommonAttributes.wtshop_PROPERTIES_PATH);
 		String username = getPara("phone");
+		Integer type = getParaToInt("type",0);
 		Cache sm = Redis.use();
 
 		if (StringUtils.isEmpty(username)) {
@@ -81,7 +82,7 @@ public class AccountAPIController extends BaseAPIController {
             return;
         }
 		boolean ismember = memberService.usernameExists(username);
-		if( ismember ){
+		if( ismember&&type==0 ){
 			renderJson(ApiResult.fail("手机号已被注册或已经被绑定,请直接登录!"));
 			return;
 		}
