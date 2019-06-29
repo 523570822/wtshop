@@ -83,7 +83,7 @@ public class AccountAPIController extends BaseAPIController {
         }
 		boolean ismember = memberService.usernameExists(username);
 		if( ismember&&type==0 ){
-			renderJson(ApiResult.fail("手机号已被注册或已经被绑定,请直接登录!"));
+			renderJson(ApiResult.fail(2,"手机号已被注册或已经被绑定,请直接登录!"));
 			return;
 		}
 
