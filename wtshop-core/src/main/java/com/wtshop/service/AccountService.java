@@ -720,4 +720,8 @@ public class AccountService extends BaseService<Account> {
     public Account findByOpenid(String openid) {
         return accountDao.findByOpenid(openid);
     }
+    public
+    Account findByMemberId(String memberId) {
+        return accountDao.findByMemberId(memberId);
+    }
 }

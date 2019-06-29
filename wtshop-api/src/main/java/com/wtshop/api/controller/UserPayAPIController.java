@@ -67,7 +67,7 @@ public class UserPayAPIController extends BaseAPIController {
             }
             Map<String, String> map = userPayService.getPrepayId(order, ip, true);
             renderJson(ApiResult.success(map));
-        } else if(3 == type) {
+        } else if(4== type) {
             String ip = IpUtil.getIpAddr(getRequest());
             if (StrKit.isBlank(ip) || ("0:0:0:0:0:0:0:1").equals(ip)) {
                 ip = "127.0.0.1";

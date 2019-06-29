@@ -508,7 +508,7 @@ public class LoginAPIController extends BaseAPIController {
         }
         Member member = memberService.findByPhone(phone);
       String  openid=member.getOpenId();
-        Account account = accountService.findByOpenid(openid);
+        Account account = accountService.findByMemberId(openid);
         if(account != null){
 
             account.setOpenidXcx(openidXCX);
