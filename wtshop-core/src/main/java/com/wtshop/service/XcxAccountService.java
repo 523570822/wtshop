@@ -190,6 +190,7 @@ public class XcxAccountService extends BaseService<XcxAccount> {
         return null;
     }
 
+
     /**
      * 获取用户基本信息
      * @param access_token 通过openid token

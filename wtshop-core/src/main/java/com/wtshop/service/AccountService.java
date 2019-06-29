@@ -138,6 +138,7 @@ public class AccountService extends BaseService<Account> {
             e.printStackTrace();
         }
         return null;
+
     }
 
     /**
@@ -174,7 +175,25 @@ public class AccountService extends BaseService<Account> {
         }
         return null;
     }
-
+    /**
+     * 获取用户基本信息
+     * @param access_token 通过code获取的token
+     * @return
+     */
+    public Map<String,Object> getUserInfoXCX(Map<String,Object> access_token){
+        StringBuilder requestUrl = new StringBuilder("https://api.weixin.qq.com/wxa/getpaidunionid?access_token=").append(access_token.get("session_key").toString()).append("&openid=").append(access_token.get("openid").toString());
+        try {
+            //String res = HttpService.doGet(requestUrl.toString());
+            String results = HttpUtils.get(requestUrl.toString());
+            Map<String, Object> resultMap=JSON.parseObject(results, HashMap.class);
+            if(resultMap!=null){
+                return resultMap;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * 获取用户基本信息
@@ -693,4 +712,8 @@ public class AccountService extends BaseService<Account> {
     }
 
 
+    public Account findByUnionid(String unionid, int i) {
+
+            return accountDao.findByUnionid(unionid, i);
+    }
 }

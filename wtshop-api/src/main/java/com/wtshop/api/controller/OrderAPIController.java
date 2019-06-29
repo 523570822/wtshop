@@ -81,10 +81,10 @@ public class OrderAPIController extends BaseAPIController {
 		if(sPecialIds!=0){
 			List<Identifier> dddd = identifierService.findByMemberId(member.getId());
 			if(dddd.size()==0){
-				if(member==null ||StringUtils.isEmpty(member.getOnShareCode())){
+				//if(member==null ||StringUtils.isEmpty(member.getOnShareCode())){
 					renderJson(ApiResult.fail(8,"请绑定识别码"));
 					return;
-				}
+				//}
 			}
 
 		}else{

@@ -70,4 +70,17 @@ public class AccountDao extends BaseDao<Account>{
 
     }
 
+    public Account findByUnionid(String unionid, Integer i) {
+        String sql = " select * from account where 1 = 1 ";
+        if(unionid != null){
+
+            sql += " AND member_id = "+ unionid;
+
+        }if(i != null){
+
+            sql += " AND type = "+ i;
+
+        }
+        return modelManager.findFirst(sql);
+    }
 }

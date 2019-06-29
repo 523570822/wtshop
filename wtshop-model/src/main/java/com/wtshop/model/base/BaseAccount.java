@@ -81,4 +81,12 @@ public abstract class BaseAccount<M extends BaseAccount<M>> extends Model<M> imp
 		return get("unionid");
 	}
 
+	public void setOpenidXcx(String openidXcx) {
+		set("openId_xcx", openidXcx);
+	}
+
+	public String getOpenidXcx() {
+		return get("openId_xcx");
+	}
+
 }

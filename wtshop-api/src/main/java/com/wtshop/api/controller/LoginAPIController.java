@@ -111,16 +111,18 @@ public class LoginAPIController extends BaseAPIController {
         String img = getPara("img","");
         String nickname = getPara("name","");
         HttpServletRequest request = getRequest();
-        Map<String, Object> access_token = xcxAccountService.getXCXAccess_token(code);
+        Map<String, Object> access_token = accountService.getXCXAccess_token(code);
+     // accountService.getXCXAccess_token(code);
         Set<String> key = access_token.keySet();
         System.out.println("code：====="+code);
+
         System.out.println("token 打印");
         for (Iterator<String> it = key.iterator(); it.hasNext();) {
             String s = it.next();
             System.out.println(s+":"+access_token.get(s));//这里的s就是map中的key，map.get(s)就是key对应的value。
         }
-      Map<String, Object> user = xcxAccountService.getUserInfo(access_token);
-
+    //  Map<String, Object> user = xcxAccountService.getUserInfo(access_token);
+        Map<String, Object> user = accountService.getUserInfoXCX(access_token);
         System.out.println("user 打印===============");
         Set<String> key1 = user.keySet();
         for (Iterator<String> it = key1.iterator(); it.hasNext();) {
@@ -130,17 +132,19 @@ public class LoginAPIController extends BaseAPIController {
         //String nickname = com.wtshop.util.StringUtils.filterEmoji(user.get("nickname").toString()) ;
         /*   String openid = user.get("unionid").toString();*/
         String openid = access_token.get("openid").toString();
+        String unionid = user.get("unionid").toString();
         int codes = 9000; //不需要绑定手机号
         Member member = null;
         //获取微信社交绑定的openId
         Long accountId = 0L;
-        XcxAccount account = xcxAccountService.findByAccount(openid, 0);
+      Account  account=accountService.findByUnionid(unionid,0);
+       // XcxAccount account = xcxAccountService.findByAccount(openid, 0);
         if(account != null){
             member = memberService.find(account.getMemberId());
         }
 
         if (member == null) {
-            member = new Member();
+/*            member = new Member();
             member.setIsDelete(false);
             member.setOpenId(openid);
             member.setNickname(nickname);
@@ -157,14 +161,15 @@ public class LoginAPIController extends BaseAPIController {
             memberService.save(member);
 
             Account account1 = new Account();
-            account1.setAccount(openid);
+            account1.setUnionid(unionid);
+            account1.setOpenidXcx(openid);
             account1.setType(0);
             account1.setNickname(nickname);
             account1.setMemberId(member.getId());
             accountService.save(account1);
-
+            accountId = account1.getId();*/
             codes = 9001;
-            accountId = account1.getId();
+
         }else {
             //本身没有绑定手机号
             if(member.getPhone() == null){
