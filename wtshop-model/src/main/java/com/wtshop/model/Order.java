@@ -140,7 +140,7 @@ public class Order extends BaseOrder<Order> {
 
 	public Account getAccount() {
 		if (ObjectUtils.isEmpty(account)) {
-			account = Account.dao.findFirst("Select * from account a where  a.member_id='"+getMemberId()+"");
+			account = Account.dao.findFirst("Select * from account a where  a.member_id='"+getMemberId()+"'");
 		}
 
 		return account;
