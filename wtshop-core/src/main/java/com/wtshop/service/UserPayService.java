@@ -154,16 +154,16 @@ public class UserPayService {
 
         Map<String, String> params = convertAttributes(parameterMap);
 
-        _logger.info("***********************统一下单接口");
-        _logger.info(parameterMap.toString());
+        System.out.println("***********************统一下单接口");
+        System.out.println(parameterMap.toString());
      //   String sign = PaymentKit.createSign(params, prop.get("API_KEY"));
 
         String sign=qianMing(params);
         params.put("sign", sign);
         // 统一下单
         String xmlResult = PaymentApi.pushOrder(params);
-        _logger.info("***********************统一xmlResult");
-        _logger.info(xmlResult);
+        System.out.println("***********************统一xmlResult");
+        System.out.println(xmlResult);
         Map<String, String> result = PaymentKit.xmlToMap(xmlResult);
 
         String prepay_id = result.get("prepay_id");
