@@ -18,6 +18,7 @@ import com.wtshop.util.AliPayUtil;
 import com.wtshop.util.RandomUtils;
 import com.wtshop.util.RedisUtil;
 import com.wtshop.util.UUIDUtils;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +29,7 @@ import static com.jfinal.aop.Enhancer.enhance;
  * Created by jobfo on 2017/7/30.
  */
 public class UserPayService {
-
+    org.slf4j.Logger _logger = LoggerFactory.getLogger(UserPayService.class);
     private ExchangeLogService exchangeLogService = enhance(ExchangeLogService.class);
     /**
      * 微信端 获取支付信息
@@ -150,7 +151,11 @@ public class UserPayService {
         parameterMap.put("notify_url", prop.get("notify_url")); // 通知地址
         parameterMap.put("trade_type", PaymentApi.TradeType.JSAPI.name()); // 交易类型
 
+
         Map<String, String> params = convertAttributes(parameterMap);
+
+        _logger.info("***********************统一下单接口");
+        _logger.info(parameterMap.toString());
      //   String sign = PaymentKit.createSign(params, prop.get("API_KEY"));
 
         String sign=qianMing(params);
