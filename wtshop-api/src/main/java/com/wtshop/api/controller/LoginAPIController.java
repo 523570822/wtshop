@@ -138,7 +138,7 @@ public class LoginAPIController extends BaseAPIController {
         //获取微信社交绑定的openId
         Long accountId = 0L;
    //   Account  account=accountService.findByUnionid(unionid,0);
-        Account account = accountService.findByAccount(openid, 0);
+        Account account = accountService.findByAccount(openid, 4);
         if(account != null){
             member = memberService.find(account.getMemberId());
         }
