@@ -76,8 +76,8 @@ public class OrderAPIController extends BaseAPIController {
 
 		//获取商品和数量
 		Long productId = getParaToLong("productId");
-
 		Long sPecialIds = getParaToLong("sPecialIds",0l);
+
 		Identifier identifier=new Identifier();
 		if(sPecialIds!=0){
 			List<Identifier> dddd = identifierService.findByMemberId(member.getId());
@@ -291,6 +291,7 @@ public class OrderAPIController extends BaseAPIController {
 		Long quantity  = getParaToLong("quantity",1L); //收货人
 		Boolean isPersonal=getParaToBoolean("isPersonal");
 		Long sPecialIds = getParaToLong("sPecialIds",0l);
+		Long identifierId = getParaToLong("identifierId",0l);
 
 
 
@@ -340,7 +341,7 @@ public class OrderAPIController extends BaseAPIController {
 		Double rate = goods.getCommissionRate();
 
 
-		Order order = orderService.createBuyNow(Order.Type.general, member, goods, price, Integer.valueOf(quantity+""), manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,null,0,0,rate);
+		Order order = orderService.createBuyNow(Order.Type.general, member, goods, price, Integer.valueOf(quantity+""), manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,null,0,0,rate,sPecialIds,identifierId);
 
 		renderJson(ApiResult.success(order.getId()));
 	}
@@ -641,7 +642,7 @@ if(!isSinglepurchase){
 
 
 		Order order = orderService.createBuyNow(Order.Type.group, member, goods, price, 1, manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney
-				, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,isSinglepurchase,fightGroupId,tuanGouId,rate);
+				, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,isSinglepurchase,fightGroupId,tuanGouId,rate,0l,0l);
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("order",order.getId()+"");
@@ -658,10 +659,6 @@ if(!isSinglepurchase){
 	public void checkout() {
 
 		Member member = memberService.getCurrent();
-
-
-
-
 		//product 的数组
 		String[] values = StringUtils.split(getPara("cartTokens"), ",");
 
@@ -1244,7 +1241,7 @@ if(!isSinglepurchase){
 	public void create() {
 		Cache actCache = Redis.use();
 		Member member = memberService.getCurrent();
-
+		Long identifierId = getParaToLong("identifierId",0l);
 		//是否实名认证
 		Certificates certificates = certificatesService.queryByMemberId(member.getId());
 		if(certificates != null && certificates.getState() != 1){
@@ -1314,7 +1311,7 @@ if(!isSinglepurchase){
 		String taxNumber = getPara("taxNumber"); 		// 單位名稱
 		String companyName = getPara("companyName");   //稅號
 
-		  Order order = orderService.create(Order.Type.general, cart, manjianPrice, receiver, amountMoney, returnMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName);
+		  Order order = orderService.create(Order.Type.general, cart, manjianPrice, receiver, amountMoney, returnMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,identifierId);
 
 		  renderJson(ApiResult.success(order.getId()));
 

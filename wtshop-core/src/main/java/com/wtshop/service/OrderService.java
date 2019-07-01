@@ -1582,7 +1582,7 @@ public class OrderService extends BaseService<Order> {
      * @return 订单
      */
 
-    public Order create(Order.Type type, Cart cart, Double manjianPrice, Receiver receiver, Double amountMoney, Double returnMoney, Double deliveryMoney, Double miaobiMoney, String memo, Double couponYunfei, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName) {
+    public Order create(Order.Type type, Cart cart, Double manjianPrice, Receiver receiver, Double amountMoney, Double returnMoney, Double deliveryMoney, Double miaobiMoney, String memo, Double couponYunfei, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName,Long identifierId) {
         Assert.notNull(type);
         Assert.notNull(cart);
         Assert.notNull(cart.getMember());
@@ -1610,7 +1610,7 @@ public class OrderService extends BaseService<Order> {
         order.setTaxNumber(taxNumber);
         order.setCompanyName(companyName);
 
-
+        order.setIdentifierId(identifierId);
         order.setSn(snDao.generate(Sn.Type.order));
         order.setType(type.ordinal());
         order.setPrice(cart.getPrice());
@@ -1721,6 +1721,7 @@ public class OrderService extends BaseService<Order> {
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setShippedQuantity(0);
             orderItem.setReturnedQuantity(0);
+            orderItem.setSpecialGoodsId(cartItem.getSpecialId());
             orderItem.setProductId(cartItem.getProduct().getId());
             orderItem.setSpecifications(JSON.toJSONString(product.getSpecifications()));
             orderItems.add(orderItem);
@@ -1775,7 +1776,7 @@ public class OrderService extends BaseService<Order> {
      */
 
     public Order createBuyNow(Order.Type type, Member member, Goods goods, Double price, int quantity, Double manjianPrice, Receiver receiver, Double amountMoney, Double deliveryMoney, Double
-            miaobiMoney, String memo, Double couponYunfei, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName, Boolean isSinglepurchase, long fightGroupId, long tuanGouId, Double rate) {
+            miaobiMoney, String memo, Double couponYunfei, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName, Boolean isSinglepurchase, long fightGroupId, long tuanGouId, Double rate,Long sPecialIds,Long identifierId) {
 
 
         JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
@@ -1841,6 +1842,7 @@ public class OrderService extends BaseService<Order> {
         order.setTax(BigDecimal.ZERO);
         order.setStatus(Order.Status.pendingPayment.ordinal());
         order.setPaymentMethod(null);
+        order.setIdentifierId(identifierId);
         order.setPaymentMethodId(1L);
         order.setPaymentMethodName("网上支付");
         order.setExpire(DateUtils.addMinutes(new Date(), redisSetting.getInteger("commomPayTime")));
@@ -1868,6 +1870,7 @@ public class OrderService extends BaseService<Order> {
         orderItem.setPrice(goods.getPrice());
         orderItem.setWeight(product.getWeight());
         orderItem.setIsDelivery(product.getIsDelivery());
+        orderItem.setSpecialGoodsId(sPecialIds);
         orderItem.setThumbnail(product.getThumbnail());
         orderItem.setQuantity(quantity);
         orderItem.setShippedQuantity(0);

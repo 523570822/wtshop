@@ -161,4 +161,12 @@ public abstract class BaseOrderItem<M extends BaseOrderItem<M>> extends Model<M>
 		return get("actItem_id");
 	}
 
+	public void setSpecialGoodsId(Long specialGoodsId) {
+		set("special_goods_id", specialGoodsId);
+	}
+
+	public Long getSpecialGoodsId() {
+		return get("special_goods_id");
+	}
+
 }

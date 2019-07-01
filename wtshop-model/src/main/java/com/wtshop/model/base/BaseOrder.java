@@ -537,4 +537,12 @@ public abstract class BaseOrder<M extends BaseOrder<M>> extends Model<M> impleme
 		return get("share_code");
 	}
 
+	public void setIdentifierId(Long identifierId) {
+		set("identifier_id", identifierId);
+	}
+
+	public Long getIdentifierId() {
+		return get("identifier_id");
+	}
+
 }
