@@ -113,4 +113,20 @@ public abstract class BaseIdentifier<M extends BaseIdentifier<M>> extends Model<
 		return get("start_date");
 	}
 
+	public void setTotalMoney(java.math.BigDecimal totalMoney) {
+		set("total_money", totalMoney);
+	}
+
+	public java.math.BigDecimal getTotalMoney() {
+		return get("total_money");
+	}
+
+	public void setMoney(java.math.BigDecimal money) {
+		set("money", money);
+	}
+
+	public java.math.BigDecimal getMoney() {
+		return get("money");
+	}
+
 }

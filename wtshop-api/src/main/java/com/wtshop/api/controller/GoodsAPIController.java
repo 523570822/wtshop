@@ -59,6 +59,7 @@ public class GoodsAPIController extends BaseAPIController {
 	private SpecificationService specificationService = enhance(SpecificationService.class);
 	private SpecialGoodsService specialGoodsService = enhance(SpecialGoodsService.class);
 	private IdentifierService identifierService = enhance(IdentifierService.class);
+	private FullReductionService fullReductionService =enhance(FullReductionService.class);
 
 	/**
 	 * 列表
@@ -542,6 +543,9 @@ public void onShareCode(){
 	public void bindingStore(){
 		String onShareCode = getPara("onShareCode","").toUpperCase();
 		String idfCode = getPara("idfCode","").toUpperCase();
+		Long fullReId = getParaToLong("fullReId");
+
+		FullReduction ss = fullReductionService.find(fullReId);
 		Member m=memberService.getCurrent();
 		List<Member> me = memberService.findByShareCode(onShareCode);
 		if((StringUtils.isNotEmpty(onShareCode)&&(me==null||me.size()==0))&&(!"VA3TYG".equals(onShareCode))){
@@ -581,6 +585,8 @@ public void onShareCode(){
 		identifier.setStatus(1);
 		identifier.setMemberId(m.getId());
 		identifier.setShareCode(onShareCode);
+		identifier.setMoney(ss.getMoney());
+		identifier.setTotalMoney(ss.getTotalMoney());
 
 
 		Calendar cal = Calendar.getInstance();
@@ -598,15 +604,81 @@ public void onShareCode(){
 		map.put("type",1);
 		renderJson(ApiResult.success(map,"绑定成功"));
 	}
+	/**
+	 * 绑定门店
+	 * 填写onShareCode邀请码和idfCode识别码
+	 */
+	public void bindingStoreY(){
+		String onShareCode = getPara("onShareCode","").toUpperCase();
+		String idfCode = getPara("idfCode","").toUpperCase();
+		Long fullReId = getParaToLong("fullReId");
 
+		FullReduction ss = fullReductionService.find(fullReId);
+		Member m=memberService.getCurrent();
+		List<Member> me = memberService.findByShareCode(onShareCode);
+		if((StringUtils.isNotEmpty(onShareCode)&&(me==null||me.size()==0))&&(!"VA3TYG".equals(onShareCode))){
+			renderJson(ApiResult.fail("邀请码不存在!"));
+			return;
+		}
+		List<Identifier>	identifierL=identifierService.findByIdfCode(idfCode);
+		Identifier identifier=new Identifier() ;
+		if(identifierL.size()>0){
+			if(identifierL.get(0).getStatus()!=0){
+				renderJson(ApiResult.fail("识别码已失效!"));
+				return;
+			}else{
+				identifier=identifierL.get(0);
+			}
+
+		}else{
+			renderJson(ApiResult.fail("识别码不存在!"));
+			return;
+		}
+		if(me.get(0).getStore()==null||"".equals(me.get(0).getStore().trim())){
+			renderJson(ApiResult.fail("邀请码与识别码不匹配!"));
+			return;
+		}
+
+		Map<String,Object>  map=  new HashMap<>();
+		renderJson(ApiResult.success(map,"验证成功"));
+	}
 	/**
 	 * 门店列表接口
 	 */
 
 	public void storeList() {
 		Member m=memberService.getCurrent();
-		List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+		Member x=new Member();
+		if(m.getOnShareCode()!=null){
+			x=memberService.findByShareCode(m.getOnShareCode()).get(0);
+		}
+		List<Identifier>identifierLL=new LinkedList<Identifier>();
 		List<Identifier>identifierL=identifierService.findByMemberId(m.getId());
+		if(x.getIsStore()){
+			List<Identifier> identifierList = identifierService.findByOnCodeShare(m.getOnShareCode(),m.getId());
+
+
+			if(identifierList.size()==0){
+				Identifier identifier=new Identifier();
+				identifier.setStatus(4);
+				identifier.put("store",x.getStore());
+				identifier.setShareCode(x.getShareCode());
+				identifierLL.add(identifier);
+
+			}
+
+		}
+		identifierLL.addAll(identifierL);
+		renderJson(ApiResult.success(identifierLL));
+	}
+	/**
+	 * 续约记录门店列表接口
+	 */
+
+	public void storeRecordingList() {
+		String onShareCode = getPara("onShareCode","").toUpperCase();
+		Member m=memberService.getCurrent();
+		List<Identifier>identifierL=identifierService.findByOnCodeShareSB(onShareCode,m.getId());
 		renderJson(ApiResult.success(identifierL));
 	}
 	/**

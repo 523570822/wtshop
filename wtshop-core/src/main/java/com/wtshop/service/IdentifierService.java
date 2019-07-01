@@ -57,7 +57,10 @@ public class IdentifierService extends BaseService<Identifier> {
 	public Identifier update(Identifier brand) {
 		return super.update(brand);
 	}
+	public int update(String sql) {
+		return	brandDao.update(sql);
 
+	}
 //	public Brand update(Brand brand, String... ignoreProperties) {
 //		return super.update(brand, ignoreProperties);
 //	}
@@ -85,7 +88,13 @@ public class IdentifierService extends BaseService<Identifier> {
 
     public List<Identifier> findByIdfCode(String idfCode) {
 		return brandDao.findByIdfCode(idfCode);
-    }    public List<Identifier> findByMemberId(Long memberId) {
+    }
+    public List<Identifier> findByOnCodeShare(String onCodeShare,Long memberId) {
+		return brandDao.findByOnCodeShare(onCodeShare,memberId);
+    }  public List<Identifier> findByOnCodeShareSB(String onCodeShare,Long memberId) {
+		return brandDao.findByOnCodeShareSB(onCodeShare,memberId);
+    }
+    public List<Identifier> findByMemberId(Long memberId) {
 		return brandDao.findByMemberId(memberId);
     }
 }

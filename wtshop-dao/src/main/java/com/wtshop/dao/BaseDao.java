@@ -124,6 +124,7 @@ public class BaseDao <M extends Model<M>> {
 	 */
 	public Page<M> findPage(Pageable pageable) {
 		String sqlExceptSelect = "FROM `" + getTableName() + "` WHERE 1 = 1 ";
+
 		return findPage(sqlExceptSelect, pageable);
 	}
 

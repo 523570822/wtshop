@@ -5,6 +5,7 @@ import com.jfinal.aop.Enhancer;
 import com.jfinal.log.Logger;
 import com.wtshop.dao.GroupRemindDao;
 import com.wtshop.model.GroupRemind;
+import com.wtshop.service.IdentifierService;
 import com.wtshop.service.InformationService;
 import com.wtshop.service.OrderService;
 import com.wtshop.util.RedisUtil;
@@ -22,6 +23,7 @@ public class DoTimeCronManager implements Runnable {
     private OrderService orderService = enhance(OrderService.class);
     private GroupRemindDao groupRemindDao = Enhancer.enhance(GroupRemindDao.class);
     private InformationService informationService = Enhancer.enhance(InformationService.class);
+    private IdentifierService identifierService=Enhancer.enhance(IdentifierService.class);
     Logger logger = Logger.getLogger(DoTimeCronManager.class);
 
     public void run() {
@@ -53,5 +55,11 @@ public class DoTimeCronManager implements Runnable {
                 ex.printStackTrace();
             }
         }
+
+
+        /**
+         * 更新识别码过期
+         */
+        identifierService.update("UPDATE identifier i set i.status=2 where i.end_date  <NOW()  ");
    }
 }

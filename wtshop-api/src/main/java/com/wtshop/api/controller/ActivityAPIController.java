@@ -4,7 +4,6 @@ import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.plugin.activerecord.Page;
 import com.wtshop.Pageable;
-import com.wtshop.api.interceptor.TokenInterceptor;
 import com.wtshop.model.*;
 import com.wtshop.util.ApiResult;
 import com.wtshop.api.interceptor.ErrorInterceptor;
@@ -32,6 +31,14 @@ public class ActivityAPIController extends  BaseAPIController{
     private MemberService memberService = enhance(MemberService.class);
     private MiaobiLogService miaobiLogService = enhance(MiaobiLogService.class);
     private ActivityProductService activityProductService = enhance(ActivityProductService.class);
+  private FullReductionService fullReductionService =enhance(FullReductionService.class);
+
+  public void fullReduction(){
+
+      List<FullReduction> kkk = fullReductionService.findAll();
+      renderJson(ApiResult.success(kkk));
+
+  }
 
     /**
      * 猜你喜欢

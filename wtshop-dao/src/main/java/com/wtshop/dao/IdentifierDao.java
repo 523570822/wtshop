@@ -49,12 +49,44 @@ public class IdentifierDao extends   BaseDao<Identifier> {
 			return null;
 		}
     }
+
+	public List<Identifier> findByOnCodeShare(String onCodeShare,Long memberId) {
+		if (StringUtils.isEmpty(onCodeShare)) {
+			return null;
+		}
+		try {
+			String sql = "SELECT *, m.store FROM identifier i LEFT JOIN member m ON i.share_code = m.share_code where   i.share_code= UPPER(?) and i.member_id= '"+memberId+"'";
+			return modelManager.find(sql, onCodeShare);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	public List<Identifier> findByOnCodeShareSB(String onCodeShare,Long memberId) {
+		if (StringUtils.isEmpty(onCodeShare)) {
+			return null;
+		}
+		try {
+			String sql = "SELECT *, m.store FROM identifier i LEFT JOIN member m ON i.share_code = m.share_code where  i.status<>'1' and  i.share_code= UPPER(?) and i.member_id= '"+memberId+"'";
+			return modelManager.find(sql, onCodeShare);
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
 	public List<Identifier> findByMemberId(Long memberId) {
 		try {
-			String sql = "SELECT * FROM identifier i where   i.member_id= ?";
+			String sql = "SELECT * FROM ( SELECT i.*, m.store FROM identifier i LEFT JOIN member m ON i.share_code = m.share_code WHERE i.member_id = ? ORDER BY i.end_date DESC ) j GROUP BY j.share_code\n";
 			return modelManager.find(sql, memberId);
 		} catch (Exception e) {
 			return null;
+		}
+	}
+	public int update(String sql) {
+		try {
+
+			return Db.update(sql);
+		} catch (Exception e) {
+			return 0;
 		}
 	}
 }
