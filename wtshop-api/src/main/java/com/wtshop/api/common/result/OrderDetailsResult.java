@@ -60,7 +60,17 @@ public class OrderDetailsResult  implements Serializable {
 
     private Boolean is_promotion;
 
-    public OrderDetailsResult(String taxUrl, Double couponYunfei, Long[] cartTokens, Double delivery, Member member, String token, Receiver receiver, List<Coupon> codeList, List<Goods> goodsList, String receiveTime, Boolean is_freeMoney, Boolean is_useMiaobi, String miaoBiDesc, Boolean isReturnInsurance, Double returnMoney, String returnCopy, List<PriceResult> priceList, String realPrice, String couponPrice, Double[] param, Boolean is_promotion) {
+    public Identifier getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(Identifier identifier) {
+        this.identifier = identifier;
+    }
+
+    private Identifier identifier;
+
+    public OrderDetailsResult(String taxUrl, Double couponYunfei, Long[] cartTokens, Double delivery, Member member, String token, Receiver receiver, List<Coupon> codeList, List<Goods> goodsList, String receiveTime, Boolean is_freeMoney, Boolean is_useMiaobi, String miaoBiDesc, Boolean isReturnInsurance, Double returnMoney, String returnCopy, List<PriceResult> priceList, String realPrice, String couponPrice, Double[] param, Boolean is_promotion,Identifier identifier ) {
         this.taxUrl = taxUrl;
         this.couponYunfei = couponYunfei;
         this.cartTokens = cartTokens;
@@ -82,6 +92,7 @@ public class OrderDetailsResult  implements Serializable {
         this.couponPrice = couponPrice;
         this.param = param;
         this.is_promotion = is_promotion;
+        this.identifier = identifier;
     }
 
     public Boolean getIs_promotion() {

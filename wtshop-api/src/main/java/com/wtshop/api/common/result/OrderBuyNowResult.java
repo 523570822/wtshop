@@ -48,6 +48,16 @@ public class OrderBuyNowResult implements Serializable{
 
     private Double payPrice;
 
+    public Identifier getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(Identifier identifier) {
+        this.identifier = identifier;
+    }
+
+    private Identifier identifier;
+
 
 
     private List<String> specifications;
@@ -60,7 +70,7 @@ public class OrderBuyNowResult implements Serializable{
         this.specifications = specifications;
     }
 
-    public OrderBuyNowResult(String taxUrl, Double delivery, Member member, Receiver receiver, Goods goods, Integer quantity, String receiveTime, Boolean is_freeMoney, Boolean is_useMiaobi, String miaoBiDesc, List<PriceResult> priceList, String realPrice, String couponPrice, Double[] param, Boolean is_promotion, Double payPrice,List<String> specifications) {
+    public OrderBuyNowResult(String taxUrl, Double delivery, Member member, Receiver receiver, Goods goods, Integer quantity, String receiveTime, Boolean is_freeMoney, Boolean is_useMiaobi, String miaoBiDesc, List<PriceResult> priceList, String realPrice, String couponPrice, Double[] param, Boolean is_promotion, Double payPrice,List<String> specifications,Identifier identifier) {
         this.taxUrl = taxUrl;
         this.delivery = delivery;
         this.member = member;
@@ -78,6 +88,7 @@ public class OrderBuyNowResult implements Serializable{
         this.is_promotion = is_promotion;
         this.payPrice = payPrice;
         this.specifications = specifications;
+        this.identifier = identifier;
     }
 
     public Integer getQuantity() {

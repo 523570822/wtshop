@@ -76,8 +76,9 @@ public class OrderAPIController extends BaseAPIController {
 
 		//获取商品和数量
 		Long productId = getParaToLong("productId");
-		Long sPecialIds = getParaToLong("sPecialIds",0l);
 
+		Long sPecialIds = getParaToLong("sPecialIds",0l);
+		Identifier identifier=new Identifier();
 		if(sPecialIds!=0){
 			List<Identifier> dddd = identifierService.findByMemberId(member.getId());
 			if(dddd.size()==0){
@@ -86,6 +87,16 @@ public class OrderAPIController extends BaseAPIController {
 					return;
 				//}
 			}
+
+			for (Identifier identifier1:dddd) {
+				if(identifier1.getStatus()==1){
+					List<Member> m = memberService.findByShareCode(identifier1.getShareCode());
+					identifier=identifier1;
+					identifier.put("store",m.get(0).getStore());
+					break;
+				}
+			}
+
 
 		}else{
 			if(member==null ||StringUtils.isEmpty(member.getOnShareCode())){
@@ -262,9 +273,8 @@ public class OrderAPIController extends BaseAPIController {
 		goods.put("special_id",sPecialIds);
 		List<String> specifications = product.getSpecifications();
 		OrderBuyNowResult orderBuyNowResult = new OrderBuyNowResult(taxUrl, yunfei, member, defaultReceiver, goods, Integer.valueOf(quantity+""), receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, priceList,
-			realPrice, favoritePrice, param, is_promotion, amountpaid,specifications);
+			realPrice, favoritePrice, param, is_promotion, amountpaid,specifications,identifier);
 		RedisUtil.setString("ORDERPARAM:"+member.getId(), params);
-
 		renderJson(ApiResult.success(orderBuyNowResult));
 
 	}
@@ -280,7 +290,7 @@ public class OrderAPIController extends BaseAPIController {
 		Long receiverId = getParaToLong("receiverId"); //收货人
 		Long quantity  = getParaToLong("quantity",1L); //收货人
 		Boolean isPersonal=getParaToBoolean("isPersonal");
-
+		Long sPecialIds = getParaToLong("sPecialIds",0l);
 
 
 
@@ -331,6 +341,7 @@ public class OrderAPIController extends BaseAPIController {
 
 
 		Order order = orderService.createBuyNow(Order.Type.general, member, goods, price, Integer.valueOf(quantity+""), manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,null,0,0,rate);
+
 		renderJson(ApiResult.success(order.getId()));
 	}
 
@@ -647,15 +658,42 @@ if(!isSinglepurchase){
 	public void checkout() {
 
 		Member member = memberService.getCurrent();
-		if(StringUtils.isEmpty(member.getOnShareCode())){
-			renderJson(ApiResult.fail(7,"请填写邀请码"));
-			return;
-		}
+
+
+
+
 		//product 的数组
 		String[] values = StringUtils.split(getPara("cartTokens"), ",");
 
 
 		Boolean isSPecialIds = getParaToBoolean("isSPecialIds",false);
+		Identifier identifier=new Identifier();
+		if(isSPecialIds){
+			List<Identifier> dddd = identifierService.findByMemberId(member.getId());
+			if(dddd.size()==0){
+				//if(member==null ||StringUtils.isEmpty(member.getOnShareCode())){
+				renderJson(ApiResult.fail(8,"请绑定识别码"));
+				return;
+				//}
+			}
+
+			for (Identifier identifier1:dddd) {
+				if(identifier1.getStatus()==1){
+					List<Member> m = memberService.findByShareCode(identifier1.getShareCode());
+					identifier=identifier1;
+					identifier.put("store",m.get(0).getStore());
+					break;
+				}
+			}
+
+
+		}else{
+			if(member==null ||StringUtils.isEmpty(member.getOnShareCode())){
+				renderJson(ApiResult.fail(7,"请绑定邀请码"));
+				return;
+			}
+		}
+
 		Long[] skuids = values == null ? null : convertToLong(values);
 		/**
 		 * 判断是否是特殊商品
@@ -891,7 +929,7 @@ if(!isSinglepurchase){
 			Boolean is_promotion =false;
 			favoritePrice = MathUtil.getInt(new BigDecimal(favoritePrice).add(new BigDecimal(oldPrice)).subtract(new BigDecimal(price)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			OrderDetailsResult orderDetailsResult = new OrderDetailsResult(taxUrl, couponYunfei, skuids, yunfei, member, cart.getToken(), defaultReceiver, codeList, goodsList,
-					receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, isReturnInsurance, returns, returnCopy, priceList, amountpaid.toString(), favoritePrice, param, is_promotion);
+					receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, isReturnInsurance, returns, returnCopy, priceList, amountpaid.toString(), favoritePrice, param, is_promotion,identifier);
 			renderJson(ApiResult.success(orderDetailsResult));
 
 
@@ -1171,7 +1209,7 @@ if(!isSinglepurchase){
 	Double yunfei = delivery.getPrice();
 	favoritePrice = MathUtil.getInt(new BigDecimal(favoritePrice).add(new BigDecimal(oldPrice)).subtract(new BigDecimal(price)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	OrderDetailsResult orderDetailsResult = new OrderDetailsResult(taxUrl, couponYunfei, skuids, yunfei, member, cart.getToken(), defaultReceiver, codeList, goodsList,
-			receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, isReturnInsurance, returns, returnCopy, priceList, amountpaid.toString(), favoritePrice, param, is_promotion);
+			receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, isReturnInsurance, returns, returnCopy, priceList, amountpaid.toString(), favoritePrice, param, is_promotion,identifier);
 	renderJson(ApiResult.success(orderDetailsResult));
 
 }
