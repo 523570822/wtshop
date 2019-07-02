@@ -552,6 +552,9 @@ public void onShareCode(){
 			renderJson(ApiResult.fail("邀请码不存在!"));
 			return;
 		}
+
+
+
 		List<Identifier>	identifierL=identifierService.findByIdfCode(idfCode);
 		Identifier identifier=new Identifier() ;
 		if(identifierL.size()>0){
@@ -570,7 +573,11 @@ public void onShareCode(){
 			renderJson(ApiResult.fail("邀请码与识别码不匹配!"));
 			return;
 		}
-
+		List<Identifier> ddd = identifierService.findByOnCodeShare(onShareCode, m.getId(),"1");
+		if(ddd.size()>0){
+			renderJson(ApiResult.fail("门店使用中"));
+			return;
+		}
 		Map<String,Object>  map=  new HashMap<>();
 
 		if(m.getOnShareCode()==null||"".equals(m.getOnShareCode().trim())){
@@ -655,7 +662,7 @@ public void onShareCode(){
 		List<Identifier>identifierLL=new LinkedList<Identifier>();
 		List<Identifier>identifierL=identifierService.findByMemberId(m.getId());
 		if(x.getIsStore()){
-			List<Identifier> identifierList = identifierService.findByOnCodeShare(m.getOnShareCode(),m.getId());
+			List<Identifier> identifierList = identifierService.findByOnCodeShare(m.getOnShareCode(),m.getId(),null);
 
 
 			if(identifierList.size()==0){

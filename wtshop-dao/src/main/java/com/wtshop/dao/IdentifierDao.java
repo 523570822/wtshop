@@ -50,17 +50,22 @@ public class IdentifierDao extends   BaseDao<Identifier> {
 		}
     }
 
-	public List<Identifier> findByOnCodeShare(String onCodeShare,Long memberId) {
+	public List<Identifier> findByOnCodeShare(String onCodeShare,Long memberId,String status) {
 		if (StringUtils.isEmpty(onCodeShare)) {
 			return null;
 		}
 		try {
 			String sql = "SELECT *, m.store FROM identifier i LEFT JOIN member m ON i.share_code = m.share_code where   i.share_code= UPPER(?) and i.member_id= '"+memberId+"'";
+			if (StringUtils.isEmpty(status)) {
+				sql=sql+" and i.state= 2";
+			}
 			return modelManager.find(sql, onCodeShare);
 		} catch (Exception e) {
 			return null;
 		}
 	}
+
+
 	public List<Identifier> findByOnCodeShareSB(String onCodeShare,Long memberId) {
 		if (StringUtils.isEmpty(onCodeShare)) {
 			return null;

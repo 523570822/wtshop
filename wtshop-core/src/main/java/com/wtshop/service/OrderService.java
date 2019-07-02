@@ -794,7 +794,7 @@ public class OrderService extends BaseService<Order> {
         }
         //特殊商品购买
         if (order.getType() == Order.Type.special.ordinal()) {
-
+            logger.info("特殊商品购买————————————————————————");
            // order.setOnShareCode(member.getOnShareCode());
             //商品返现
             List<Goods> goodList = goodsService.findGoodsByOrderItemId(order.getId());
@@ -816,43 +816,40 @@ public class OrderService extends BaseService<Order> {
 
 
                     }
-
                     goodsService.update(goods);
-
-
                 }
-                Identifier identifier = identifierService.find(order.getIdentifierId());
-
-               if(identifier.getPrice()==null) {
-                   identifier.setPrice(order.getAmount());
-               }else {
-                   identifier.setPrice(order.getAmount().add(identifier.getPrice()));
-               }
-
-
-               //满足 返现条件
-              if(identifier.getPrice().compareTo(identifier.getTotalMoney())!=-1){
-                  identifier.setStatus(3);
-                  Member member2 = memberService.findByShareCode(identifier.getShareCode()).get(0);
-
-                      DepositLog depositLog1 = new DepositLog();
-                      depositLog1.setBalance(member2.getBalance());
-                      depositLog1.setCredit(identifier.getMoney());
-                      depositLog1.setDebit(BigDecimal.ZERO);
-                      depositLog1.setStatus(1);
-                      depositLog1.setMemo("门店返现");
-                      depositLog1.setType(DepositLog.Type.ident.ordinal());
-                      depositLog1.setOrderId(order.getId());
-                      depositLog1.setMemberId(member2.getId());
-                  member2.setBalance(identifier.getMoney().add(member2.getBalance()));
-                      depositLogService.save(depositLog1);
-                      memberService.update(member2);
-
-
-
-               }
-                identifierService.update(identifier);
             }
+            Identifier identifier = identifierService.find(order.getIdentifierId());
+
+            if(identifier.getPrice()==null) {
+                identifier.setPrice(order.getAmount());
+            }else {
+                identifier.setPrice(order.getAmount().add(identifier.getPrice()));
+            }
+
+
+            //满足 返现条件
+            if(identifier.getPrice().compareTo(identifier.getTotalMoney())!=-1){
+                identifier.setStatus(3);
+                Member member2 = memberService.findByShareCode(identifier.getShareCode()).get(0);
+
+                DepositLog depositLog1 = new DepositLog();
+                depositLog1.setBalance(member2.getBalance());
+                depositLog1.setCredit(identifier.getMoney());
+                depositLog1.setDebit(BigDecimal.ZERO);
+                depositLog1.setStatus(1);
+                depositLog1.setMemo("门店返现");
+                depositLog1.setType(DepositLog.Type.ident.ordinal());
+                depositLog1.setOrderId(order.getId());
+                depositLog1.setMemberId(member2.getId());
+                member2.setBalance(identifier.getMoney().add(member2.getBalance()));
+                depositLogService.save(depositLog1);
+                memberService.update(member2);
+
+
+
+            }
+            identifierService.update(identifier);
         }
         //倒拍
         if (order.getType() == Order.Type.daopai.ordinal()) {

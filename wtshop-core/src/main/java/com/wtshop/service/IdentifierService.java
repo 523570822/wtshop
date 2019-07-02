@@ -89,8 +89,8 @@ public class IdentifierService extends BaseService<Identifier> {
     public List<Identifier> findByIdfCode(String idfCode) {
 		return brandDao.findByIdfCode(idfCode);
     }
-    public List<Identifier> findByOnCodeShare(String onCodeShare,Long memberId) {
-		return brandDao.findByOnCodeShare(onCodeShare,memberId);
+    public List<Identifier> findByOnCodeShare(String onCodeShare,Long memberId,String status) {
+		return brandDao.findByOnCodeShare(onCodeShare,memberId,status);
     }  public List<Identifier> findByOnCodeShareSB(String onCodeShare,Long memberId) {
 		return brandDao.findByOnCodeShareSB(onCodeShare,memberId);
     }
