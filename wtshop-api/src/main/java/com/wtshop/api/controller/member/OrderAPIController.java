@@ -54,6 +54,7 @@ private  FightGroupService fightGroupService=enhance(FightGroupService.class);
 	private ReturnsService returnsService = enhance(ReturnsService.class);
 	private GoodsPromotionService goodsPromotionService = enhance(GoodsPromotionService.class);
 	private NodifyGoodsSendService nodifyGoodsSendService = enhance(NodifyGoodsSendService.class);
+	private IdentifierService identifierService =enhance(IdentifierService.class);
 	private Res resZh = I18n.use();
 	
 	/**
@@ -402,7 +403,7 @@ private  FightGroupService fightGroupService=enhance(FightGroupService.class);
 		priceList.add(oldTotalPrice);
 		priceList.add(totalPrice);
 		priceList.add(deliveryPrice);
-		if(!is_promotion){
+		if(!is_promotion&&order.getIdentifierId()==0){
 			priceList.add(miaobiPrice);
 		}
 
@@ -410,7 +411,15 @@ private  FightGroupService fightGroupService=enhance(FightGroupService.class);
 		priceList.add(manjianPrice);
 
         String realMoney = MathUtil.getInt(order.getAmount().toString());
-		OrderFindResult orderFindResult = new OrderFindResult(taxUrl, returnUrl, time, expire, order, shipping, orderItemList, member, receiver, receiveTime, priceList, realMoney, couponMoney, returns);
+	Identifier	identifier=new Identifier();
+        if(order.getIdentifierId()!=null&&order.getIdentifierId()!=0){
+
+			identifier=identifierService.find(order.getIdentifierId());
+			Member ddd = memberService.findByShareCode(identifier.getShareCode()).get(0);
+			ddd.getStore();
+			identifier.put("store",ddd.getStore());
+		}
+		OrderFindResult orderFindResult = new OrderFindResult(taxUrl, returnUrl, time, expire, order, shipping, orderItemList, member, receiver, receiveTime, priceList, realMoney, couponMoney, returns,identifier );
 		renderJson(ApiResult.success(orderFindResult));
 	}
 	public void viewSB() {

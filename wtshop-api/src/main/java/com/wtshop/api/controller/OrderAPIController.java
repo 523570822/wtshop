@@ -292,8 +292,12 @@ public class OrderAPIController extends BaseAPIController {
 		Boolean isPersonal=getParaToBoolean("isPersonal");
 		Long sPecialIds = getParaToLong("sPecialIds",0l);
 		Long identifierId = getParaToLong("identifierId",0l);
+		Order.Type ss = Order.Type.general;
+		if(sPecialIds==0){
 
-
+}else {
+			ss = Order.Type.special;
+		}
 
 		//1是 ，0否  是否開發票
 		Boolean isInvoice=getParaToBoolean("isInvoice");
@@ -341,7 +345,7 @@ public class OrderAPIController extends BaseAPIController {
 		Double rate = goods.getCommissionRate();
 
 
-		Order order = orderService.createBuyNow(Order.Type.general, member, goods, price, Integer.valueOf(quantity+""), manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,null,0,0,rate,sPecialIds,identifierId);
+		Order order = orderService.createBuyNow(ss, member, goods, price, Integer.valueOf(quantity+""), manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,null,0,0,rate,sPecialIds,identifierId);
 
 		renderJson(ApiResult.success(order.getId()));
 	}
@@ -1248,6 +1252,12 @@ if(!isSinglepurchase){
 			renderJson(new ApiResult(101,"请先进行实名认证!"));
 			return;
 		}
+		Order.Type ddd = Order.Type.general;
+if(identifierId==0){
+
+}else{
+	 ddd = Order.Type.special;
+}
 
 		Cart cart = actCache.get("CART:"+member.getId());
 		String cartToken = getPara("cartToken"); //防止购物车重复提交
@@ -1311,7 +1321,7 @@ if(!isSinglepurchase){
 		String taxNumber = getPara("taxNumber"); 		// 單位名稱
 		String companyName = getPara("companyName");   //稅號
 
-		  Order order = orderService.create(Order.Type.general, cart, manjianPrice, receiver, amountMoney, returnMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,identifierId);
+		  Order order = orderService.create(ddd, cart, manjianPrice, receiver, amountMoney, returnMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,identifierId);
 
 		  renderJson(ApiResult.success(order.getId()));
 

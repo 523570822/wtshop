@@ -124,6 +124,9 @@ public class ServiceAPIController extends BaseAPIController {
 		returnsItem.setSpecifications(orderItem.getSpecifications());
 		returnsItem.setAmount(amount);
 		returnsItem.setMemberId(member.getId());
+		returnsItem.setSpecialGoodsId(orderItem.getSpecialGoodsId());
+
+		//存的是goodis
 		returnsItem.setProductId(orderItem.getProductId());
 		returnsItem.setStatus(ReturnsItem.Status.pendingReview.ordinal());
 		List<ReturnsItem> returnsItems = new ArrayList<ReturnsItem>();

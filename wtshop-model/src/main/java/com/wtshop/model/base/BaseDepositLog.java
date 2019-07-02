@@ -89,6 +89,10 @@ public abstract class BaseDepositLog<M extends BaseDepositLog<M>> extends Model<
 		return get("type");
 	}
 
+	/**
+	 *
+	 * @param status
+	 */
 	public void setStatus(Integer status) {
 		set("status", status);
 	}

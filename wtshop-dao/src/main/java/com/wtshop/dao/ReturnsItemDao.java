@@ -102,7 +102,7 @@ public class ReturnsItemDao extends BaseDao<ReturnsItem> {
 			return null;
 		}
 		try {
-			String sql = "SELECT i.quantity,g.image,i.name,i.id ,i.amount,i.product_id FROM returns_item i left join product p on i.product_id = p.id left join goods g on p.goods_id = g.id WHERE return_id = ? ";
+			String sql = "SELECT i.quantity,g.image,i.name,i.id ,i.amount,i.product_id,g.id goods_id,i.special_goods_id FROM returns_item i left join product p on i.product_id = p.id left join goods g on p.goods_id = g.id WHERE return_id = ? ";
 			return modelManager.find(sql, return_id);
 		} catch (Exception e) {
 			return null;

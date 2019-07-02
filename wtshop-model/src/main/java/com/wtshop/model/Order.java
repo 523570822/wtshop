@@ -59,7 +59,7 @@ public class Order extends BaseOrder<Order> {
 		 */
 		group,
 		/**
-		 * 特殊商品
+		 * 特殊商品 8
 		 */
 		special
 	}

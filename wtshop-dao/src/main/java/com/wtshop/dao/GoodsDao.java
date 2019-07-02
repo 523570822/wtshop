@@ -359,7 +359,7 @@ public class GoodsDao extends BaseDao<Goods> {
 
 	public List<Goods> findGoodsByItemId(Long id){
 
-		String sql = " select g.id goods_id,g.market_price,p.specification_values attribute_value10, g.name, g.caption ,g.image ,g.is_vip ,i.id order_itemId, i.quantity ,i.price ,i.is_review from order_item i LEFT JOIN product p ON i.product_id=p.id LEFT JOIN goods g on p.goods_id = g.id WHERE i.order_id= " + id;
+		String sql = " select g.id goods_id,g.market_price,p.specification_values attribute_value10, g.name, g.caption ,g.image ,g.is_vip ,i.id order_itemId, i.quantity ,i.price ,i.is_review,i.special_goods_id from order_item i LEFT JOIN product p ON i.product_id=p.id LEFT JOIN goods g on p.goods_id = g.id WHERE i.order_id= " + id;
 
 		return modelManager.find(sql);
 
@@ -395,7 +395,7 @@ public class GoodsDao extends BaseDao<Goods> {
 
 	public List<Goods> findGoodsByOrderId(Long orderId){
 
-		String sql = "  SELECT g.id , g.name, g.caption ,g.image ,g.is_vip ,o.id order_itemId, o.quantity ,o.price  FROM order_item o LEFT JOIN product p ON o.product_id=p.id LEFT JOIN goods g on p.goods_id = g.id WHERE o.product_id NOT in ( SELECT t.product_id FROM `returns` r  LEFT JOIN returns_item t ON r.id =t.return_id where r.order_id = "+ orderId +" ) AND o.order_id = " +orderId;
+		String sql = "  SELECT g.id , g.name, g.caption ,g.image ,g.is_vip ,o.id order_itemId, o.quantity,o.special_goods_id ,o.price  FROM order_item o LEFT JOIN product p ON o.product_id=p.id LEFT JOIN goods g on p.goods_id = g.id WHERE o.product_id NOT in ( SELECT t.product_id FROM `returns` r  LEFT JOIN returns_item t ON r.id =t.return_id where r.order_id = "+ orderId +" ) AND o.order_id = " +orderId;
 		sql +=" order by o.create_date ";
 		return modelManager.find(sql);
 

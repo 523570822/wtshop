@@ -71,17 +71,15 @@ public class OrderService extends BaseService<Order> {
     private FuDaiService fuDaiService = Enhancer.enhance(FuDaiService.class);
     private MiaobiLogService miaobiLogService = Enhancer.enhance(MiaobiLogService.class);
     private PaymentMethodService paymentMethodService = Enhancer.enhance(PaymentMethodService.class);
-    private StaffMemberDao staffMemberDao = Enhancer.enhance(StaffMemberDao.class);
-    private CommissionService commissionService = Enhancer.enhance(CommissionService.class);
     private CencelService cencelService = Enhancer.enhance(CencelService.class);
     private PromotionDao promotionDao = Enhancer.enhance(PromotionDao.class);
-    private MrmfShopDao mrmfShopDao = Enhancer.enhance(MrmfShopDao.class);
     private PaymentService paymentService = Enhancer.enhance(PaymentService.class);
     private DepositLogService depositLogService = Enhancer.enhance(DepositLogService.class);
     private ExchangeLogService exchangeLogService = Enhancer.enhance(ExchangeLogService.class);
     private AccountService accountService = Enhancer.enhance(AccountService.class);
     private FightGroupService fightGroupService = Enhancer.enhance(FightGroupService.class);
     private GroupBuyService groupBuyService = Enhancer.enhance(GroupBuyService.class);
+    private  IdentifierService identifierService =Enhancer.enhance(IdentifierService.class);
     com.jfinal.log.Logger logger = com.jfinal.log.Logger.getLogger(OrderService.class);
 
     /**
@@ -249,118 +247,7 @@ public class OrderService extends BaseService<Order> {
         }
         order.setStatus(Order.Status.pendingShipment.ordinal());
 
-        //  logger.info("测试团购getFightgroupId   :  " + order.getFightgroupId());
-        //  logger.info("测试团购order.getIsSinglepurchase()   :  " +order.getIsSinglepurchase());
-        //  logger.info("order.getType()  :  " +order.getType());
-        //  logger.info("Order.Type.group.ordinal()  :  " +Order.Type.group.ordinal());
-        //团购
-        if (order.getType() == Order.Type.group.ordinal()) {
-            FightGroup fightGroup = new FightGroup();
-            GroupBuy groupBuy = groupBuyService.find(order.getGroupbuyId());
-            //判断有没有拼团id 并且判断是不是单购
-      /*   if(order.getFightgroupId()==0&&order.getIsSinglepurchase()){
-                //单购
-                fightGroup.setTitle(groupBuy.getTitle());
-                fightGroup.setPrice(groupBuy.getPrice());
-                fightGroup.setUniprice(groupBuy.getUniprice());
 
-                //拼图状态  拼图中
-                fightGroup.setStatus(1);
-                fightGroup.setRule(groupBuy.getRule());
-                fightGroup.setExplain(groupBuy.getExplain());
-                fightGroup.setProductId(groupBuy.getProductId());
-                //已经参团人数
-                fightGroup.setCount(1);
-                fightGroup.setDispatchprice(groupBuy.getDispatchprice());
-                fightGroup.setGroupnum(1);
-                fightGroup.setMemberId(order.getMemberId());
-
-
-
-                fightGroup.setBeginDate(groupBuy.getBeginDate());
-                fightGroup.setEndDate(groupBuy.getEndDate());
-              //  fightGroup.set
-                fightGroup.setTuangouId(order.getGroupbuyId());
-
-                fightGroup = fightGroupService.save(fightGroup);
-                order.setFightgroupId(fightGroup.getId());
-
-            }else*/
-            if (order.getFightgroupId() == 0 && !order.getIsSinglepurchase()) {
-                //自己租的团
-
-                //  fightGroup.
-                fightGroup.setTitle(groupBuy.getTitle());
-                fightGroup.setPrice(groupBuy.getPrice());
-                fightGroup.setUniprice(groupBuy.getUniprice());
-
-                //拼图状态  拼图中
-                fightGroup.setStatus(2);
-                fightGroup.setRule(groupBuy.getRule());
-                fightGroup.setExplain(groupBuy.getExplain());
-                fightGroup.setProductId(groupBuy.getProductId());
-                //已经参团人数
-                fightGroup.setCount(1);
-                fightGroup.setDispatchprice(groupBuy.getDispatchprice());
-                fightGroup.setGroupnum(groupBuy.getGroupnum());
-
-                fightGroup.setMemberId(order.getMemberId());
-
-
-/*
-                Date nowDate = new Date();
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(nowDate);
-                cal.add(Calendar.HOUR, groupBuy.getEndtime());// 24小时制
-                Date time = cal.getTime();
-*/
-
-                fightGroup.setBeginDate(groupBuy.getBeginDate());
-                fightGroup.setEndDate(groupBuy.getEndDate());
-
-                fightGroup.setTuangouId(order.getGroupbuyId());
-
-                fightGroup = fightGroupService.save(fightGroup);
-                order.setFightgroupId(fightGroup.getId());
-
-            } else {
-
-                fightGroup = fightGroupService.find(order.getFightgroupId());
-
-                fightGroup.setCount(fightGroup.getCount() + 1);
-
-
-                if (fightGroup.getCount() >= fightGroup.getGroupnum()) {
-                    fightGroup.setStatus(1);
-                }
-                BigDecimal ddd = order.getPrice().multiply(BigDecimal.valueOf(groupBuy.getGroupRate() == null ? 0 : groupBuy.getGroupRate())).divide(BigDecimal.valueOf(100));
-                if(ddd.compareTo(BigDecimal.ZERO)!=0){
-                    DepositLog depositLog1 = new DepositLog();
-                    depositLog1.setBalance(member1.getBalance());
-                    depositLog1.setCredit(ddd);
-                    depositLog1.setDebit(BigDecimal.ZERO);
-                    depositLog1.setStatus(2);
-                    depositLog1.setMemo("团购上级返现");
-                    depositLog1.setType(DepositLog.Type.tuangou.ordinal());
-                    depositLog1.setOrderId(order.getId());
-                    depositLog1.setMemberId(member1.getId());
-                    member1.setTuangouUnarrived(ddd.add(member1.getTuangouUnarrived()));
-                    depositLogService.save(depositLog1);
-                    memberService.update(member1);
-                }
-
-
-
-                fightGroupService.update(fightGroup);
-                //跟人家拼团
-
-            }
-
-            logger.info("开始调用团购————————————————————————");
-
-
-//			reverseExService.paySuccess(order.getActOrderId());
-        }
 
 
         logger.info("测试支付宝应保存金额   :  " + amount);
@@ -554,11 +441,69 @@ public class OrderService extends BaseService<Order> {
 
                 }
             }
+            double dd = order.getCommissionRate() * order.getPrice().doubleValue() / 100;
+
+            logger.info("佣金金额————————————————————————" + dd);
+            if(dd > 0){
+                logger.info("开始计算佣金————————————————————————");
+                BigDecimal b1 = new BigDecimal(dd);
+                if (member.getCommissionUnarrived() == null) {
+                    member.setCommissionUnarrived(BigDecimal.ZERO);
+                }
+                //member.setCommissionUnarrived(b1.add(member.getCommissionUnarrived()));
+                //判断是否是管家
+                if (StringUtils.isNotEmpty(member.getShareCode())) {
+                    order.setIsCommission(true);
+                    member.getOnShareCode();
+                    order.setIsCommission(true);
+                    //插入佣金变动记录
+                    CommissionLog depositLog = new CommissionLog();
+                    depositLog.setBalance(member.getBalance());
+                    depositLog.setCredit(b1);
+                    depositLog.setDebit(BigDecimal.ZERO);
+                    depositLog.setMemo("佣金回馈自己");
+                    depositLog.setType(CommissionLog.Type.adjustment.ordinal());
+                    /**
+                     * 待定
+                     */
+                    depositLog.setStatus(2);
+                    depositLog.setOrderId(order.getId());
+                    depositLog.setMemberId(member.getId());
+                    member.setCommissionUnarrived(b1.add(member.getCommissionUnarrived()));
+                    commissionDao.save(depositLog);
+
+                    memberService.update(member);
+
+
+                }
+                order.setOnShareCode(member.getOnShareCode());
+
+                CommissionLog depositLog1 = new CommissionLog();
+                depositLog1.setBalance(member1.getBalance());
+                depositLog1.setCredit(b1);
+                depositLog1.setDebit(BigDecimal.ZERO);
+                depositLog1.setStatus(2);
+                depositLog1.setMemo("佣金回馈上级");
+                depositLog1.setType(CommissionLog.Type.adjustment.ordinal());
+                depositLog1.setOrderId(order.getId());
+
+                depositLog1.setMemberId(dds);
+                if (member1.getCommissionUnarrived() == null) {
+                    member1.setCommissionUnarrived(BigDecimal.ZERO);
+                }
+                member1.setCommissionUnarrived(b1.add(member1.getCommissionUnarrived()));
+                memberService.update(member1);
+                commissionDao.save(depositLog1);
+
+            }
+
+
         }
-        double dd = order.getCommissionRate() * order.getPrice().doubleValue() / 100;
+
         // 生成会员激活码，福袋
         //
         if (order.getType() == Order.Type.fudai.ordinal()) {
+
             CommissionLog depositLog1 = new CommissionLog();
             CommissionLog depositLog2 = new CommissionLog();
             logger.info("福袋相关技术————————————————————————");
@@ -731,78 +676,190 @@ public class OrderService extends BaseService<Order> {
           /*  List<Member> mmss = memberService.findMemberByOnShare(member1.getShareCode());*/
 
             //调用推送
-        }
 
-
-
-        if (Order.Type.general.ordinal() == order.getType() && dd > 0) {
-
-
-            logger.info("开始计算佣金————————————————————————");
-            logger.info("佣金金额————————————————————————" + dd);
-            BigDecimal b1 = new BigDecimal(dd);
-            if (member.getCommissionUnarrived() == null) {
-                member.setCommissionUnarrived(BigDecimal.ZERO);
-
-            }
-            //member.setCommissionUnarrived(b1.add(member.getCommissionUnarrived()));
-            //判断是否是管家
-            if (StringUtils.isNotEmpty(member.getShareCode())) {
-                order.setIsCommission(true);
-                member.getOnShareCode();
-                order.setIsCommission(true);
-                //插入佣金变动记录
-                CommissionLog depositLog = new CommissionLog();
-                depositLog.setBalance(member.getBalance());
-                depositLog.setCredit(b1);
-                depositLog.setDebit(BigDecimal.ZERO);
-                depositLog.setMemo("佣金回馈自己");
-                depositLog.setType(CommissionLog.Type.adjustment.ordinal());
-                /**
-                 * 待定
-                 */
-                depositLog.setStatus(2);
-                depositLog.setOrderId(order.getId());
-                depositLog.setMemberId(member.getId());
-                member.setCommissionUnarrived(b1.add(member.getCommissionUnarrived()));
-                commissionDao.save(depositLog);
-
-                memberService.update(member);
-
-
-            }
             order.setOnShareCode(member.getOnShareCode());
+            List<Map<String, Object>> list = fuDaiService.luckDraw(order);
+        }
+        //  logger.info("测试团购getFightgroupId   :  " + order.getFightgroupId());
+        //  logger.info("测试团购order.getIsSinglepurchase()   :  " +order.getIsSinglepurchase());
+        //  logger.info("order.getType()  :  " +order.getType());
+        //  logger.info("Order.Type.group.ordinal()  :  " +Order.Type.group.ordinal());
+        //团购
+        if (order.getType() == Order.Type.group.ordinal()) {
+            FightGroup fightGroup = new FightGroup();
+            GroupBuy groupBuy = groupBuyService.find(order.getGroupbuyId());
+            //判断有没有拼团id 并且判断是不是单购
+      /*   if(order.getFightgroupId()==0&&order.getIsSinglepurchase()){
+                //单购
+                fightGroup.setTitle(groupBuy.getTitle());
+                fightGroup.setPrice(groupBuy.getPrice());
+                fightGroup.setUniprice(groupBuy.getUniprice());
 
-            CommissionLog depositLog1 = new CommissionLog();
-            depositLog1.setBalance(member1.getBalance());
-            depositLog1.setCredit(b1);
-            depositLog1.setDebit(BigDecimal.ZERO);
-            depositLog1.setStatus(2);
-            depositLog1.setMemo("佣金回馈上级");
-            depositLog1.setType(CommissionLog.Type.adjustment.ordinal());
-            depositLog1.setOrderId(order.getId());
+                //拼图状态  拼图中
+                fightGroup.setStatus(1);
+                fightGroup.setRule(groupBuy.getRule());
+                fightGroup.setExplain(groupBuy.getExplain());
+                fightGroup.setProductId(groupBuy.getProductId());
+                //已经参团人数
+                fightGroup.setCount(1);
+                fightGroup.setDispatchprice(groupBuy.getDispatchprice());
+                fightGroup.setGroupnum(1);
+                fightGroup.setMemberId(order.getMemberId());
 
-            depositLog1.setMemberId(dds);
-            if (member1.getCommissionUnarrived() == null) {
-                member1.setCommissionUnarrived(BigDecimal.ZERO);
+
+
+                fightGroup.setBeginDate(groupBuy.getBeginDate());
+                fightGroup.setEndDate(groupBuy.getEndDate());
+              //  fightGroup.set
+                fightGroup.setTuangouId(order.getGroupbuyId());
+
+                fightGroup = fightGroupService.save(fightGroup);
+                order.setFightgroupId(fightGroup.getId());
+
+            }else*/
+            if (order.getFightgroupId() == 0 && !order.getIsSinglepurchase()) {
+                //自己租的团
+
+                //  fightGroup.
+                fightGroup.setTitle(groupBuy.getTitle());
+                fightGroup.setPrice(groupBuy.getPrice());
+                fightGroup.setUniprice(groupBuy.getUniprice());
+
+                //拼图状态  拼图中
+                fightGroup.setStatus(2);
+                fightGroup.setRule(groupBuy.getRule());
+                fightGroup.setExplain(groupBuy.getExplain());
+                fightGroup.setProductId(groupBuy.getProductId());
+                //已经参团人数
+                fightGroup.setCount(1);
+                fightGroup.setDispatchprice(groupBuy.getDispatchprice());
+                fightGroup.setGroupnum(groupBuy.getGroupnum());
+
+                fightGroup.setMemberId(order.getMemberId());
+
+
+/*
+                Date nowDate = new Date();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(nowDate);
+                cal.add(Calendar.HOUR, groupBuy.getEndtime());// 24小时制
+                Date time = cal.getTime();
+*/
+
+                fightGroup.setBeginDate(groupBuy.getBeginDate());
+                fightGroup.setEndDate(groupBuy.getEndDate());
+
+                fightGroup.setTuangouId(order.getGroupbuyId());
+
+                fightGroup = fightGroupService.save(fightGroup);
+                order.setFightgroupId(fightGroup.getId());
+
+            } else {
+
+                fightGroup = fightGroupService.find(order.getFightgroupId());
+
+                fightGroup.setCount(fightGroup.getCount() + 1);
+
+
+                if (fightGroup.getCount() >= fightGroup.getGroupnum()) {
+                    fightGroup.setStatus(1);
+                }
+                BigDecimal ddd = order.getPrice().multiply(BigDecimal.valueOf(groupBuy.getGroupRate() == null ? 0 : groupBuy.getGroupRate())).divide(BigDecimal.valueOf(100));
+                if(ddd.compareTo(BigDecimal.ZERO)!=0){
+                    DepositLog depositLog1 = new DepositLog();
+                    depositLog1.setBalance(member1.getBalance());
+                    depositLog1.setCredit(ddd);
+                    depositLog1.setDebit(BigDecimal.ZERO);
+                    depositLog1.setStatus(2);
+                    depositLog1.setMemo("团购上级返现");
+                    depositLog1.setType(DepositLog.Type.tuangou.ordinal());
+                    depositLog1.setOrderId(order.getId());
+                    depositLog1.setMemberId(member1.getId());
+                    member1.setTuangouUnarrived(ddd.add(member1.getTuangouUnarrived()));
+                    depositLogService.save(depositLog1);
+                    memberService.update(member1);
+                }
+
+
+
+                fightGroupService.update(fightGroup);
+                //跟人家拼团
+
             }
-            member1.setCommissionUnarrived(b1.add(member1.getCommissionUnarrived()));
-            memberService.update(member1);
-            commissionDao.save(depositLog1);
 
+            logger.info("开始调用团购————————————————————————");
+
+
+//			reverseExService.paySuccess(order.getActOrderId());
+        }
+        //特殊商品购买
+        if (order.getType() == Order.Type.special.ordinal()) {
+
+           // order.setOnShareCode(member.getOnShareCode());
+            //商品返现
+            List<Goods> goodList = goodsService.findGoodsByOrderItemId(order.getId());
+            if (goodList != null && goodList.size() > 0) {
+                for (Goods goods : goodList) {
+                  Long  itemid=goods.get("order_itemId");
+                    Product product = productService.find(itemid);
+                    if (goods.getSales() == null) {
+                        goods.setSales(0L);
+                    } else {
+                        if (goods.get("quantity") == null || goods.get("quantity").equals("null")) {
+
+                        } else {
+                            int ff = product.getStock() - Integer.parseInt(goods.get("quantity") + "");
+                            product.setStock(ff);
+                            productService.update(product);
+                            goods.setSales(goods.getSales() + Long.valueOf(goods.get("quantity") + ""));
+                        }
+
+
+                    }
+
+                    goodsService.update(goods);
+
+
+                }
+                Identifier identifier = identifierService.find(order.getIdentifierId());
+
+               if(identifier.getPrice()==null) {
+                   identifier.setPrice(order.getAmount());
+               }else {
+                   identifier.setPrice(order.getAmount().add(identifier.getPrice()));
+               }
+
+
+               //满足 返现条件
+              if(identifier.getPrice().compareTo(identifier.getTotalMoney())!=-1){
+                  identifier.setStatus(3);
+                  Member member2 = memberService.findByShareCode(identifier.getShareCode()).get(0);
+
+                      DepositLog depositLog1 = new DepositLog();
+                      depositLog1.setBalance(member2.getBalance());
+                      depositLog1.setCredit(identifier.getMoney());
+                      depositLog1.setDebit(BigDecimal.ZERO);
+                      depositLog1.setStatus(1);
+                      depositLog1.setMemo("门店返现");
+                      depositLog1.setType(DepositLog.Type.ident.ordinal());
+                      depositLog1.setOrderId(order.getId());
+                      depositLog1.setMemberId(member2.getId());
+                  member2.setBalance(identifier.getMoney().add(member2.getBalance()));
+                      depositLogService.save(depositLog1);
+                      memberService.update(member2);
+
+
+
+               }
+                identifierService.update(identifier);
+            }
         }
         //倒拍
         if (order.getType() == Order.Type.daopai.ordinal()) {
 //			reverseExService.paySuccess(order.getActOrderId());
         }
 
-        //福袋
-        if (order.getType() == Order.Type.fudai.ordinal()) {
-            order.setOnShareCode(member.getOnShareCode());
 
-            List<Map<String, Object>> list = fuDaiService.luckDraw(order);
-            //调用推送
-        }
 
         orderDao.update(order);
 
@@ -1182,6 +1239,7 @@ public class OrderService extends BaseService<Order> {
         OrderGoods orderGoods = new OrderGoods();
         for (Order order : orderList) {
             List<Goods> goods = goodsService.findGoodsByOrderId(order.getId());
+
             if (goods != null && goods.size() > 0) {
                 orderGoods = new OrderGoods(goods, order);
                 if (orderGoods.getOrder() != null) {

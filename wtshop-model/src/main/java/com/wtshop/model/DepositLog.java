@@ -47,7 +47,11 @@ public class DepositLog extends BaseDepositLog<DepositLog> {
 		/**
 		 * 月度奖励 9
 		 */
-		yuedu
+		yuedu,
+		/**
+		 *门店返现
+		 */
+		ident
 
 	}
 	

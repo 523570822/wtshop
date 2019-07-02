@@ -47,8 +47,18 @@ public class OrderFindResult implements Serializable{
 
     private Boolean returns;
 
+    public Identifier getIdentifier() {
+        return identifier;
+    }
 
-    public OrderFindResult(String taxUrl, String returnUrl, Long time, Long expire, Order order, Shipping shippinging, List<OrderItem> orderItemList, Member member, Receiver receiver, String receiveTime, List<PriceResult> priceList, String realMoney, String couponMoney, Boolean returns) {
+    public void setIdentifier(Identifier identifier) {
+        this.identifier = identifier;
+    }
+
+    private Identifier identifier;
+
+
+    public OrderFindResult(String taxUrl, String returnUrl, Long time, Long expire, Order order, Shipping shippinging, List<OrderItem> orderItemList, Member member, Receiver receiver, String receiveTime, List<PriceResult> priceList, String realMoney, String couponMoney, Boolean returns,Identifier identifier) {
         this.taxUrl = taxUrl;
         this.returnUrl = returnUrl;
         this.time = time;
@@ -63,6 +73,7 @@ public class OrderFindResult implements Serializable{
         this.realMoney = realMoney;
         this.couponMoney = couponMoney;
         this.returns = returns;
+        this.identifier = identifier;
     }
 
     public String getReturnUrl() {

@@ -153,4 +153,12 @@ public abstract class BaseReturnsItem<M extends BaseReturnsItem<M>> extends Mode
 		return get("return_id");
 	}
 
+	public void setSpecialGoodsId(Long specialGoodsId) {
+		set("special_goods_id", specialGoodsId);
+	}
+
+	public Long getSpecialGoodsId() {
+		return get("special_goods_id");
+	}
+
 }
