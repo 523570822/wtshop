@@ -808,7 +808,11 @@ public class OrderService extends BaseService<Order> {
                         if (goods.get("quantity") == null || goods.get("quantity").equals("null")) {
 
                         } else {
-                            int ff = product.getStock() - Integer.parseInt(goods.get("quantity") + "");
+                            Integer stock = product.getStock();
+                           Object quantity=  goods.get("quantity");
+                           System.out.println("stock=========="+stock);
+                            System.out.println("quantity=========="+quantity);
+                            int ff = stock - Integer.parseInt(quantity+"");
                             product.setStock(ff);
                             productService.update(product);
                             goods.setSales(goods.getSales() + Long.valueOf(goods.get("quantity") + ""));

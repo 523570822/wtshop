@@ -118,6 +118,30 @@ public class AccountService extends BaseService<Account> {
         }
         return null;
     }
+
+
+    /**
+     * 微信登录 获取token
+     */
+    public Map<String, Object> getAccessXCX_token( ){
+        Prop prop = PropKit.use(CommonAttributes.wtshop_PROPERTIES_PATH);
+        System.out.println("AppID 打印"+prop.get("AppID"));
+        System.out.println("secret：====="+prop.get("SECRET"));
+
+        StringBuilder requestUrl = new StringBuilder("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=")
+                .append(prop.get("XCX_APPID")).append("&secret=").append(prop.get("XCX_SECRET"));
+        try {
+            String results = HttpUtils.get(requestUrl.toString());
+
+            Map<String, Object> resultMap= JSON.parseObject(results, HashMap.class);
+            if(resultMap!=null){
+                return resultMap;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     /**
      * 小程序登录 获取token
      */
