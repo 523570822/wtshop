@@ -801,7 +801,8 @@ public class OrderService extends BaseService<Order> {
             if (goodList != null && goodList.size() > 0) {
                 for (Goods goods : goodList) {
                   Long  itemid=goods.get("order_itemId");
-                    Product product = productService.find(itemid);
+                OrderItem itemids= orderItemDao.find(itemid);
+                    Product product = productService.find(itemids.getProductId());
                     if (goods.getSales() == null) {
                         goods.setSales(0L);
                     } else {
