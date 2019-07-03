@@ -118,8 +118,24 @@ public class AccountService extends BaseService<Account> {
         }
         return null;
     }
+/**
+ * 快递公司列表
+ */
+public Map<String,Object> getall(Map<String,Object> access_token){
 
+    Prop prop = PropKit.use(CommonAttributes.wtshop_PROPERTIES_PATH);
 
+    StringBuilder requestUrl = new StringBuilder("https://api.weixin.qq.com/cgi-bin/express/business/delivery/getall?access_token=")
+            .append(access_token.get("access_token").toString());
+    try {
+        String res = HttpUtils.get(requestUrl.toString());
+       return JSON.parseObject(res, HashMap.class);
+    } catch (Exception e) {
+
+        e.printStackTrace();
+    }
+    return null;
+}
     /**
      * 微信登录 获取token
      */

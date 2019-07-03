@@ -19,13 +19,19 @@ import com.wtshop.model.Member;
 import com.wtshop.model.MiaobiLog;
 import com.wtshop.service.*;
 import com.wtshop.util.ApiResult;
+import com.wtshop.util.MyRequest;
 import com.wtshop.util.RedisUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 @ControllerBind(controllerKey = "/api/login")
 @Before({WapInterceptor.class, ErrorInterceptor.class})
@@ -595,5 +601,139 @@ public class LoginAPIController extends BaseAPIController {
         }
         renderJson(ApiResult.fail("系统错误,请稍后尝试"));
     }
+    public  void getAccessXCX_token(){
 
+        Map<String,Object> ddd=accountService.getall(accountService.getAccessXCX_token());
+        renderJson(ApiResult.success(ddd));
+    }
+
+    public  void alicloudapi()throws  Exception{
+
+
+/*
+        String sn = getPara("sn");
+        String host = "https://wuliu.market.alicloudapi.com";       //【1】请求地址  支持http 和 https 及 WEBSOCKET
+        String path = "/goexpress";                                     //【2】后缀
+        String appcode = "e885d89a08b04f9cb0b9e9be7c0bba73";                             //【3】AppCode  你自己的AppCode 在买家中心查看
+        String no = sn;                                     //【4】参数，具体参照api接口参数
+        String type = "";                                            //【5】参数，具体参照api接口参数
+       // String urlSend = host + path + "?no=" + no + "&type=" + type;   //【6】拼接请求链接
+        String urlSend = host + path;   //【6】拼接请求链接
+        String authorization="APPCODE" + appcode;
+        String ss = MyRequest.sendGet(urlSend, "no=" + no,authorization);
+        System.out.println(ss);
+
+        renderJson(ApiResult.success( JSONObject.parseObject(ss)));
+*/
+
+        String host = "https://wuliu.market.alicloudapi.com";       //【1】请求地址  支持http 和 https 及 WEBSOCKET
+        String path = "/kdi";                                     //【2】后缀
+        String appcode = "e885d89a08b04f9cb0b9e9be7c0bba73";                             //【3】AppCode  你自己的AppCode 在买家中心查看
+      //  String sn = getPara("sn");                   //【4】参数，具体参照api接口参数
+        String sn ="4600617028567"   ;       //【4】参数，具体参照api接口参数
+        String type = "zto";                                            //【5】参数，具体参照api接口参数
+        String urlSend = host + path + "?no=" + sn ;   //【6】拼接请求链接
+       // String urlSend = host + path + "?no=" + sn + "&type=" + type;   //【6】拼接请求链接
+        /*【1】 ~ 【6】 需要修改为对应的 可以参考产品详情 */
+        URL url = new URL(urlSend);
+        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+        httpURLConnection.setRequestProperty("Authorization", "APPCODE " + appcode);//格式Authorization:APPCODE (中间是英文空格)
+        int httpCode = httpURLConnection.getResponseCode();
+        String json = read(httpURLConnection.getInputStream());
+        System.out.println("/* 获取服务器响应状态码 200 正常；400 权限错误 ； 403 次数用完； */ ");
+        System.out.println(httpCode);
+        System.out.println("/* 获取返回的json   */ ");
+        System.out.print(json);
+        System.out.println(JSONObject.parseObject(json));
+
+    }
+
+    /*
+       读取返回结果
+    */
+    private static String read(InputStream is) throws IOException {
+        StringBuffer sb = new StringBuffer();
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        String line = null;
+        while ((line = br.readLine()) != null) {
+            line = new String(line.getBytes(), "utf-8");
+            sb.append(line);
+        }
+        br.close();
+        return sb.toString();
+    }
+
+/*    public  void kdquerytools(){
+        String text = getPara("text");
+        String method = getPara("method");
+
+        StringBuilder requestUrl = new StringBuilder("https://m.kuaidi100.com/apicenter/kdquerytools.do?text=")
+                .append(text).append("&method=").append(method);
+        String res = HttpUtils.get(requestUrl.toString());
+        renderJson(res);
+    }
+    public  void ext(){
+        String platform = getPara("platform");
+        String pos = getPara("pos");
+        String method = getPara("method");
+
+        StringBuilder requestUrl = new StringBuilder("https://m.kuaidi100.com/assets/ext?platform=")
+                .append(platform).append("&method=").append(method).append("&pos=").append(pos);
+        String res = HttpUtils.get(requestUrl.toString());
+        renderJson(res);
+    }
+
+    public  void company(){
+
+        String number = getPara("number");
+        String method = getPara("method");
+
+        StringBuilder requestUrl = new StringBuilder("https://m.kuaidi100.com/assets/ext?number=").append(number).append("&method=").append(method);
+        String res = HttpUtils.get(requestUrl.toString());
+        renderJson(res);
+    }
+    public  void query(){
+        String postid = getPara("postid");
+        String id = getPara("id");
+        String valicode = getPara("valicode");
+        String temp = getPara("temp");
+        String type = getPara("type");
+        String phone = getPara("platform");
+        Map<String,String> map=new HashMap<>();
+        map.put("postid",postid);
+        map.put("id",id);
+        map.put("valicode",valicode);
+        map.put("temp",temp);
+        map.put("type",type);
+        map.put("phone",phone);
+
+       StringBuilder requestUrl1 = new StringBuilder("https://m.kuaidi100.com/query?postid=").append(postid).append("&id=").append(id).append("&valicode=").append(valicode).append("&temp=").append(temp).append("&type=").append(type).append("&phone=").append(phone);
+     //  StringBuilder requestUrl = new StringBuilder("https://m.kuaidi100.com/query");
+      //  Object dd = JSONObject.toJSON(map);
+
+     //   String res =HttpUtils.post(requestUrl.toString(),dd.toString());
+      String res = HttpUtils.get(requestUrl1.toString());
+System.out.println(res);
+        renderJson(res);
+    }*/
+public static void main(String[] args) throws  Exception{
+    String host = "https://wuliu.market.alicloudapi.com";       //【1】请求地址  支持http 和 https 及 WEBSOCKET
+    String path = "/kdi";                                     //【2】后缀
+    String appcode = "e885d89a08b04f9cb0b9e9be7c0bba73";                             //【3】AppCode  你自己的AppCode 在买家中心查看
+    //  String sn = getPara("sn");                   //【4】参数，具体参照api接口参数
+    String sn ="4600617028567"   ;       //【4】参数，具体参照api接口参数
+   // String type = "YD";                                            //【5】参数，具体参照api接口参数
+   // String urlSend = host + path + "?no=" + sn ;   //【6】拼接请求链接
+     String urlSend = host + path + "?no=" + sn ;   //【6】拼接请求链接
+    /*【1】 ~ 【6】 需要修改为对应的 可以参考产品详情 */
+    URL url = new URL(urlSend);
+    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+    httpURLConnection.setRequestProperty("Authorization", "APPCODE " + appcode);//格式Authorization:APPCODE (中间是英文空格)
+    int httpCode = httpURLConnection.getResponseCode();
+    String json = read(httpURLConnection.getInputStream());
+    System.out.println("/* 获取服务器响应状态码 200 正常；400 权限错误 ； 403 次数用完； */ ");
+    System.out.println(httpCode);
+    System.out.println("/* 获取返回的json   */ ");
+    System.out.print(json);
+}
 }

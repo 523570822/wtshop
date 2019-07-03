@@ -131,12 +131,6 @@ public class DepositLogService extends BaseService<DepositLog> {
 	 */
 	public Page<DepositLog> findPage(Member member, Pageable pageable ,Integer type) {
 		Page<DepositLog> page = depositLogDao.findPage(member, pageable, type);
-		for(DepositLog depositLog : page.getList()){
-			if(depositLog.getOperator() != null){
-				depositLog.setMemo(depositLog.getOperator());
-			}
-
-		}
 		return page;
 	}
 

@@ -574,7 +574,7 @@ public void onShareCode(){
 			return;
 		}
 		List<Identifier> ddd = identifierService.findByOnCodeShare(onShareCode, m.getId(),"1");
-		if(ddd.size()>0){
+		if(ddd!=null&&ddd.size()>0){
 			renderJson(ApiResult.fail("门店使用中"));
 			return;
 		}

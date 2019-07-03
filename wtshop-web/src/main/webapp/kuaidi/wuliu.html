@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>单号查询结果 - 快递100</title>
+    <meta name="Keywords" content="快递单号查询结果" />
+    <meta name="Description" content="快递100，单号查询结果页面。包含快递包裹目前所在地、签收时间、派送人员等所有流转环节的信息。" />
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="white" />
+    <meta itemprop="name" content="查快递，寄快递，上快递100" />
+
+
+    <link rel="stylesheet" href="css/smart/mbase_v6.css?version=201906281000" />
+    <link rel="stylesheet" href="css/smart/query_result.css?version=201907021600" />
+</head>
+
+<body>
+
+
+
+<div class="common-header">
+    <div class="common-back hide" onclick="goBack();"></div>
+    <div class="common-title">任性猫100</div>
+  <!--  <div class="common-menu" onclick="tglMenu()"><span></span></div>-->
+</div>
+
+<div class="container" id="main">
+    <div class="main">
+
+        <div class="head">
+            <div class="flex input">
+                <input type="text" placeholder="请输入快递单号" v-model.trim="num" @focus="toggleHistory(true)"
+                       @blur="toggleHistory(false)" ref="input" @keyup.enter="query">
+                <div class="clear" v-show="num" @click="num=''" v-cloak></div>
+                <div class="scan" v-show="!num" @click="scan" v-if="scanable" v-cloak></div>
+                <div class="search" v-show="!scanable || num" v-cloak @click="query"></div>
+                <div class="search-list" v-cloak v-show="showHistory && historyList.length">
+                    <ul>
+                        <li v-for="item in historyList" @click="historyQuery(item.kuaidiNum,item.kuaidiCom)">
+                            {{item.kuaidiNum}}<small>{{item.comName}}</small></li>
+                    </ul>
+                    <div class="last"><span>&nbsp;</span><span class="close" @click="showHistory = false">关闭</span></div>
+                </div>
+            </div>
+        </div>
+       <!-- <div class="warning">
+            <a href="https://m.kuaidi100.com/article/info.jsp?_id=1554171067981"><strong>公告</strong>
+                近期诈骗事件多发，谨防假冒[任性猫100]链接诈骗</a>
+        </div>-->
+        <!--<div class="flex cominfo">
+            <div class="logo"
+                 :style="{backgroundImage: 'url(https://cdn.kuaidi100.com/images/all/56/'+(com || 'other') + '.png)'}"></div>
+            <div class="text">
+                <div class="name" v-cloak>{{cominfo.name}}<a :href="'tel:'+cominfo.tel" class="tel"></a></div>
+                <div class="select-wrap">
+                    <small>公司有误</small>
+                    <select v-model="selectCom" v-show="autos.length">
+                        <option v-for="item in autos" :key="item.comCode" :value="item.comCode">{{item.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="redpack" role-slot="m_result_redpacket"></div>
+        </div>-->
+        <section class="result-box" v-cloak>
+            <div class="result-success" v-show="lists.length">
+                <div class="flex result-top" id="resultTop">
+                    <time :class="{'up': desc, 'down': !desc}" @click="desc = !desc">时间</time>
+                    <span>地点和跟踪进度</span>
+                </div>
+                <ul class="result-list" :class="{sortdown: !desc,sortup: desc}">
+                    <li v-for="(item,index) in lists" :key="index"
+                        :class="{last: index == 0 && desc || index == lists.length - 1 && !desc}">
+                        <div class="time">
+                            <div>{{item.ftime | date}}</div>
+                            <div>{{item.ftime | time}}</div>
+                        </div>
+                        <div class="dot" :class="{gift: item.type == 'gift'}"></div>
+                        <div class="text" v-html="$options.filters.context(item.context)" v-if="item.type != 'gift'"></div>
+                        <div class="text" v-html="$options.filters.context(item.context)" v-else @click="goDispatchCoupon"></div>
+                    </li>
+                </ul>
+                <div class="more" v-show="alllists.length > 3 && !showAll">
+                    <span class="more-text" @click="showAll = true">点击查看更多</span>
+                </div>
+                <div class="feedback">快递有问题？可拨打<a :href="'tel:'+cominfo.tel">{{cominfo.name}}</a>客服电话</div>
+            </div>
+            <div class="result-fail m-placeholder" v-show="errors.type">
+                <img class="img" :src="'https://cdn.kuaidi100.com/images/m/placeholders/'+(errors.type || 'empty')+'.png'" alt="">
+                <p>{{errors.title}}</p>
+                <p>{{errors.message}}</p>
+                <p v-show="cominfo.name && cominfo.tel">如需帮助，请联系{{cominfo.name}}客服电话<a
+                        :href="'tel:' + cominfo.tel">{{cominfo.tel}}</a></p>
+            </div>
+        </section>
+        <div role-slot="m_result_banner"></div>
+        <div class="global-dialog" v-cloak v-show="checkCode.show" style="z-index: 35;">
+            <div class="check-dialog">
+                <div class="close" @click="closeCheckCode"></div>
+                <div class="content">
+                    为保护顺丰客户隐私安全,请输入快递预留的收/寄件人联系方式的后四位进行验证。
+                </div>
+                <div class="num">
+                    <div class="input-wrap">
+                        <input type="tel" v-model.trim="checkCode.value" ref="checkCode">
+                    </div>
+                    <span :class="{active:checkCode.value[i-1]}" v-for="i in 4">{{checkCode.value[i-1]}}</span>
+                </div>
+                <div class="btn" :class="{disabled:checkCode.value.length < 4}" @click="doCheckCode">验证</div>
+            </div>
+        </div>
+        <div class="loading" v-show="loading">
+            <div class="loading-box">
+                <p><img class="img-loading" src="https://cdn.kuaidi100.com/images/smart/order/loading.gif" /></p>
+                <p id="loadingText">奋力加载中</p>
+            </div>
+        </div>
+        <div class="download-fixed" :style="{position: lists.length > 3 ? 'absolute':'fixed'}" v-cloak
+             v-if="!loading && fromApp">
+            <div class="btn" @click="download">{{alllists.length < 3 ? '下载APP,物流状态及时跟踪': '打开APP，查看更多详情'}}</div>
+        </div>
+    </div>
+</div>
+<script>
+    var _hmt = _hmt || [];(function () {var hm = document.createElement("script");hm.src = "//hm.baidu.com/hm.js?22ea01af58ba2be0fec7c11b25e88e6c";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm, s);})();
+</script>
+
+<script type="text/javascript" src="../resources/admin/js/jquery.js"></script>
+<script src="js/app_base.js?version=201905221100"></script>
+<script>
+    $(function(){
+        var courierFlag = getSession("courier_flag");
+        if(!courierFlag) {
+            $("#t-courier").append('<div class="bubble">点这里，给优质快递员下单</div>')
+            $("#t-courier").click(function(event) {
+                setSession("courier_flag",1 )
+            });
+        }
+    })
+</script>
+<script>
+    var allpos = ['m_result_banner', 'm_result_redpacket'];
+    scanable = true;
+</script>
+<script src="js/vue.js"></script>
+<script src="js/result.js"></script>
+<script src="js/a_show_new.js"></script>
+<script>
+    jumpQuickApp();
+    showDownload("nav", "resultNav", "快递100 APP，物流状态及时跟踪");
+</script>
+
+</body>
+
+</html>
