@@ -838,9 +838,10 @@ public class OrderService extends BaseService<Order> {
                 depositLog1.setCredit(identifier.getMoney());
                 depositLog1.setDebit(BigDecimal.ZERO);
                 depositLog1.setStatus(1);
-                depositLog1.setMemo("门店返现");
+                depositLog1.setMemo("门店合作收益");
                 depositLog1.setType(DepositLog.Type.ident.ordinal());
                 depositLog1.setOrderId(order.getId());
+                depositLog1.setOperator(""+member.getNickname()+"  "+member.getPhone());
                 depositLog1.setMemberId(member2.getId());
                 member2.setBalance(identifier.getMoney().add(member2.getBalance()));
                 depositLogService.save(depositLog1);
