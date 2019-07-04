@@ -100,9 +100,17 @@ $().ready(function() {
                     <a href="javascript:;" class="sort" name="logo">邀请码</a>
                 </th>
                 <th>
-                    <a href="javascript:;" class="sort" name="logo">用户id</a>
+                    <a href="javascript:;" class="sort" name="logo">用户</a>
                 </th>
-
+                <th>
+                    <a href="javascript:;" class="sort" name="logo">满金额</a>
+                </th>
+                <th>
+                    <a href="javascript:;" class="sort" name="logo">反金额</a>
+                </th>
+                <th>
+                    <a href="javascript:;" class="sort" name="logo">消费金额</a>
+                </th>
                 <th>
                     <a href="javascript:;" class="sort" name="isShow">开始时间</a>
                 </th>
@@ -134,7 +142,17 @@ $().ready(function() {
 						${brand.member_id}
                     </td>
                     <td>
-						${brand.create_date}
+						${brand.total_money}
+                    </td>
+                    <td>
+						${brand.money}
+                    </td>
+
+                    <td>
+						${brand.price}
+                    </td>
+                    <td>
+						${brand.start_date}
                     </td>
                     <td>
 						${brand.end_date}
@@ -146,7 +164,13 @@ $().ready(function() {
 
 
 
-					[#else]
+					[#elseif brand.status==3]
+
+                        <span class="blue">[已完成]</span>
+
+
+
+						[#else]
                         <span class="green">[已启用]</span>
 					[/#if]
                     </td>
