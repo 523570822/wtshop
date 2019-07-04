@@ -40,6 +40,8 @@ git clone https://github.com/523570822/wtshop.git  //克隆远程仓库 ，改�
 cd wtshop //更新的目录 跟随git项目目录
 
 git branch -a// 列出所有远程分支
+git branch -vv //查看所有别名指向
+git config --lis
   git remote -v   //查看远程主机名称及连接 origin
   //要关联一个远程库，使用命令git remote add gitHub https://github.com/523570822/wtshop.git； git remote add origin http://192.168.1.222:3000/root/wtshop.git
 

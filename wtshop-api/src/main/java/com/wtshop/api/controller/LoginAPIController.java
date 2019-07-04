@@ -609,43 +609,30 @@ public class LoginAPIController extends BaseAPIController {
 
     public  void alicloudapi()throws  Exception{
 
-
-/*
-        String sn = getPara("sn");
-        String host = "https://wuliu.market.alicloudapi.com";       //【1】请求地址  支持http 和 https 及 WEBSOCKET
-        String path = "/goexpress";                                     //【2】后缀
-        String appcode = "e885d89a08b04f9cb0b9e9be7c0bba73";                             //【3】AppCode  你自己的AppCode 在买家中心查看
-        String no = sn;                                     //【4】参数，具体参照api接口参数
-        String type = "";                                            //【5】参数，具体参照api接口参数
-       // String urlSend = host + path + "?no=" + no + "&type=" + type;   //【6】拼接请求链接
-        String urlSend = host + path;   //【6】拼接请求链接
-        String authorization="APPCODE" + appcode;
-        String ss = MyRequest.sendGet(urlSend, "no=" + no,authorization);
-        System.out.println(ss);
-
-        renderJson(ApiResult.success( JSONObject.parseObject(ss)));
-*/
-
         String host = "https://wuliu.market.alicloudapi.com";       //【1】请求地址  支持http 和 https 及 WEBSOCKET
         String path = "/kdi";                                     //【2】后缀
         String appcode = "e885d89a08b04f9cb0b9e9be7c0bba73";                             //【3】AppCode  你自己的AppCode 在买家中心查看
-      //  String sn = getPara("sn");                   //【4】参数，具体参照api接口参数
+        //  String sn = getPara("sn");                   //【4】参数，具体参照api接口参数
         String sn ="4600617028567"   ;       //【4】参数，具体参照api接口参数
-        String type = "zto";                                            //【5】参数，具体参照api接口参数
+        // String type = "YD";                                            //【5】参数，具体参照api接口参数
+        // String urlSend = host + path + "?no=" + sn ;   //【6】拼接请求链接
         String urlSend = host + path + "?no=" + sn ;   //【6】拼接请求链接
-       // String urlSend = host + path + "?no=" + sn + "&type=" + type;   //【6】拼接请求链接
         /*【1】 ~ 【6】 需要修改为对应的 可以参考产品详情 */
-        URL url = new URL(urlSend);
-        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-        httpURLConnection.setRequestProperty("Authorization", "APPCODE " + appcode);//格式Authorization:APPCODE (中间是英文空格)
-        int httpCode = httpURLConnection.getResponseCode();
-        String json = read(httpURLConnection.getInputStream());
-        System.out.println("/* 获取服务器响应状态码 200 正常；400 权限错误 ； 403 次数用完； */ ");
-        System.out.println(httpCode);
-        System.out.println("/* 获取返回的json   */ ");
-        System.out.print(json);
-        System.out.println(JSONObject.parseObject(json));
+        Object ddd = MyRequest.sendGet(host + path, "no=" + sn, "APPCODE " + appcode);
+        System.out.print(ddd);
+ //       URL url = new URL(urlSend);
+//        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+//        httpURLConnection.setRequestProperty("Authorization", "APPCODE " + appcode);//格式Authorization:APPCODE (中间是英文空格)
+//        httpURLConnection.setRequestProperty("Accept-Charset", "utf-8");
+//        httpURLConnection.setRequestProperty("contentType", "utf-8");
+//        int httpCode = httpURLConnection.getResponseCode();
+//        String json = read(httpURLConnection.getInputStream());
+//        System.out.println("/* 获取服务器响应状态码 200 正常；400 权限错误 ； 403 次数用完； */ ");
+//        System.out.println(httpCode);
+//        System.out.println("/* 获取返回的json   */ ");
+//        System.out.print(json);
 
+        renderJson(JSONObject.parse(ddd.toString()));
     }
 
     /*
@@ -726,14 +713,16 @@ public static void main(String[] args) throws  Exception{
    // String urlSend = host + path + "?no=" + sn ;   //【6】拼接请求链接
      String urlSend = host + path + "?no=" + sn ;   //【6】拼接请求链接
     /*【1】 ~ 【6】 需要修改为对应的 可以参考产品详情 */
-    URL url = new URL(urlSend);
-    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-    httpURLConnection.setRequestProperty("Authorization", "APPCODE " + appcode);//格式Authorization:APPCODE (中间是英文空格)
-    int httpCode = httpURLConnection.getResponseCode();
-    String json = read(httpURLConnection.getInputStream());
-    System.out.println("/* 获取服务器响应状态码 200 正常；400 权限错误 ； 403 次数用完； */ ");
-    System.out.println(httpCode);
-    System.out.println("/* 获取返回的json   */ ");
-    System.out.print(json);
+    Object ddd = MyRequest.sendGet(host + path, "no=" + sn, "APPCODE " + appcode);
+//    MyRequest.sendGet( host + path,sn,"APPCODE " + appcode);
+//    URL url = new URL(urlSend);
+//    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+//    httpURLConnection.setRequestProperty("Authorization", "APPCODE " + appcode);//格式Authorization:APPCODE (中间是英文空格)
+//    int httpCode = httpURLConnection.getResponseCode();
+//    String json = read(httpURLConnection.getInputStream());
+//    System.out.println("/* 获取服务器响应状态码 200 正常；400 权限错误 ； 403 次数用完； */ ");
+//    System.out.println(httpCode);
+//    System.out.println("/* 获取返回的json   */ ");
+    System.out.print(ddd);
 }
 }

@@ -27,10 +27,12 @@ public class MyRequest {
             // 打开和URL之间的连接
             URLConnection connection = realUrl.openConnection();
             // 设置通用的请求属性
-        //    connection.setRequestProperty("accept", "*/*");
-         //   connection.setRequestProperty("connection", "Keep-Alive");
-         //   connection.setRequestProperty("user-agent",
-        //            "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            connection.setRequestProperty("accept", "*/*");
+            connection.setRequestProperty("connection", "Keep-Alive");
+           connection.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            connection.setRequestProperty("Accept-Charset", "utf-8");
+            connection.setRequestProperty("contentType", "utf-8");
+
             if(Authorization!=null){
                 connection.setRequestProperty("Authorization", Authorization);
             }
@@ -47,10 +49,13 @@ public class MyRequest {
             }
             // 定义 BufferedReader输入流来读取URL的响应
             InputStream ddd = connection.getInputStream();
-            in = new BufferedReader(new InputStreamReader(ddd));
+
+            in = new BufferedReader(new InputStreamReader(ddd, "utf-8"));
             String line;
 
             while ((line = in.readLine()) != null) {
+            //    new String(e.getBytes("iso-8859-1"),"utf-8")
+             //line = new String(line.getBytes(), "UTF-8");
                 result += line;
             }
         } catch (Exception e) {
