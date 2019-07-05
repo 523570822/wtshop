@@ -483,7 +483,7 @@ public class AccountService extends BaseService<Account> {
         model.setPayeeType("ALIPAY_USERID");//固定值
         model.setPayeeAccount(openid);//转账收款账户
         model.setAmount(String.format("%.2f", amount));
-        model.setRemark("任性猫支付宝提现");
+        model.setRemark("安吃支付宝提现");
 
         try {
             String transfer = transfer(model);

@@ -139,7 +139,7 @@ public class PasswordAPIController extends BaseAPIController {
 		String smsCode = SMSUtils.randomSMSCode(4);
 		Map<String, String> params = new HashMap<>();
 		params.put("code", smsCode);
-		params.put("product", "任性猫");
+		params.put("product", "安吃");
 		ApiResult result = SMSUtils.send(username, prop.get("sms.verifyCodeTemplate"), params);
 		if(result.getCode() == Code.SUCCESS){
 			sm.setex("PONHE:"+username,120,"1");

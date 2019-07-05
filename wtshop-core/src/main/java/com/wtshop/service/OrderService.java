@@ -2080,7 +2080,7 @@ public class OrderService extends BaseService<Order> {
                         //微信退款
                         Double wechatReturnPrice = order.getWeixinPaid().setScale(2, ROUND_HALF_DOWN).doubleValue();
                         Integer wechatReturnPriceIntValue = Integer.parseInt(String.format("%.0f", wechatReturnPrice * 100));
-                        Map<String, String> map = accountService.BackToWeChat(orderNo, totalPrice, wechatReturnPriceIntValue, "任性猫退款");
+                        Map<String, String> map = accountService.BackToWeChat(orderNo, totalPrice, wechatReturnPriceIntValue, "安吃退款");
                         if (map == null || !"SUCCESS".equals(map.get("result_code"))) {
 
                             //  renderJson(ApiResult.fail("余额不足"));
@@ -2148,7 +2148,7 @@ public class OrderService extends BaseService<Order> {
                         //微信退款
                         Double wechatReturnPrice = order.getWeixinPaid().setScale(2, ROUND_HALF_DOWN).doubleValue();
                         Integer wechatReturnPriceIntValue = Integer.parseInt(String.format("%.0f", wechatReturnPrice * 100));
-                        Map<String, String> map = accountService.BackToWeChat(orderNo, totalPrice, wechatReturnPriceIntValue, "任性猫退款");
+                        Map<String, String> map = accountService.BackToWeChat(orderNo, totalPrice, wechatReturnPriceIntValue, "安吃退款");
                         if (map == null || !"SUCCESS".equals(map.get("result_code"))) {
                             throw new AppRuntimeException(Code.FAIL, "微信退款失败");
                         }
