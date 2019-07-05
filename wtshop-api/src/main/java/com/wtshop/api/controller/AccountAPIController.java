@@ -126,7 +126,7 @@ public class AccountAPIController extends BaseAPIController {
 	 */
 	public void register(){
 		String username = getPara("phone");
-        String smsCode = getPara("smsCode");
+      //  String smsCode = getPara("smsCode");
         String password = getPara("password");
 		String pwdconfirm = getPara("pwdconfirm");
 		String onShareCode = getPara("onShareCode");
@@ -159,20 +159,20 @@ public class AccountAPIController extends BaseAPIController {
 			return;
 		}
 
-		if(StringUtils.isEmpty(smsCode)){
+	/*	if(StringUtils.isEmpty(smsCode)){
 			renderJson(ApiResult.fail("验证码不能为空!"));
 			return;
-		}
+		}*/
 		
 		//检查手机号码有效性
         if (!SMSUtils.isMobileNo(username)) {
 			renderJson(ApiResult.fail("请检查手机号是否正确!"));
             return;
         }
-		if (!Code.isDevMode && !smsService.smsExists(username, smsCode, Setting.SmsType.memberRegister)) {
+	/*	if (!Code.isDevMode && !smsService.smsExists(username, smsCode, Setting.SmsType.memberRegister)) {
 			renderJson(ApiResult.fail("验证码输入错误!"));
 			return;
-		}
+		}*/
 
 //		if(!"1234".equals(smsCode)){
 //			renderJson(ApiResult.fail("验证码输入错误!"));
@@ -212,7 +212,7 @@ public class AccountAPIController extends BaseAPIController {
 		actCache.set("ORDERMMESSAGR_SWITCH:" + member.getId(),true);
 		actCache.set("STAFFMESSAGR_SWITCH:" + member.getId(),true);
 		actCache.set("SOUND:" + member.getId(),"default");
-		smsService.delete(username, smsCode);
+	//	smsService.delete(username, smsCode);
 		LoginResponse response = new LoginResponse();
 		response.setToken(TokenManager.getMe().generateToken(member));
 		setSessionAttr(Member.PRINCIPAL_ATTRIBUTE_NAME, TokenManager.getMe().validate(response.getToken()));
