@@ -36,7 +36,6 @@ pwd   // 查看文件夹路径
 /root/learngit   //显示的文件夹路径
 git clone https://github.com/523570822/wtshop.git  //克隆远程仓库 ，改成自己的地址连接
 
-
 cd wtshop //更新的目录 跟随git项目目录
 
 git branch -a// 列出所有远程分支
@@ -50,7 +49,6 @@ git checkout  -b rxmteacher  remotes/origin/teacher_rx  //远程分支   //切�
  cd wtshop   //进入项目目录
  
  git pull origin    --force ;//强制更新本地仓库
- 
  
  mvn -X install -Dmaven.test.skip=true ; //通过maven自动编译代码
 rsync -rtlvz   /root/learngit/wtshop/wtshop-web/target/wtshop-web/*  /var/lib/tomcat/webapps/news  ;   简化后 拷贝编译后的代码到指定tomcat服务器中sudo systemctl restart tomcat  启动Tomcat
