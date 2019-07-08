@@ -8,6 +8,7 @@ sudo rm -rf /root/learngit/wtshop/wtshop-web/target/*
 sudo rm -rf /mrmf/tomcat_shops/webapps/ROOT/*
 cd /root/learngit/wtshop
 echo "拉取git上代码"
+
 git pull origin   --force
 sleep 5
 echo "通过maven自动编译代码"
