@@ -21,5 +21,5 @@ chmod 777 /usr/share/tomcat/webapps/wtshop/upload
 chmod 777 /var/lib/tomcat/webapps/wtshop/WEB-INF/classes/*
 echo "开启tomcat"
 #systemctl start tomcat
-service
+service tomcat start
 #tail -f /mrmf/tomcat_shops/logs/catalina.out

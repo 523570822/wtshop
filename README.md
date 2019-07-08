@@ -6,8 +6,6 @@ https://www.cnblogs.com/qianzf/p/6986962.html
 1.tomcat version
 2.sudo yum install tomcat
 3.sudo yum install tomcat-webapps tomcat-admin-webapps 
-4.
-   yum install tomcat-admin-webapps
 3.git --version
 4.yum install -y git
 5.mvn -version
@@ -19,14 +17,14 @@ https://www.cnblogs.com/qianzf/p/6986962.html
 8.安装redis（https://www.cnblogs.com/fanlinglong/p/6635828.html）
     1.yum install epel-release
     2.yum install redis
-    3. /etc/redis.conf  bind 127.0.0.1 #requirepass foobared 
+    3. /etc/redis.conf  bind 127.0.0.1 #requirepass helloeveryone 
     3.service redis start  
    systemctl start redis
    
    
 9 
 
-  通过  service tomcat start 启动
+  通过  service tomcat start (systemctl start tomcat)启动
     修改80端口  需要 更改防火墙iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
    systemctl start service
 第一次：
