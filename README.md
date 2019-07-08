@@ -3,9 +3,12 @@
 
 0.yum install -y java-1.8.0-openjdk*
 https://www.cnblogs.com/qianzf/p/6986962.html
-1.tomcat version
-2.sudo yum install tomcat
-3.sudo yum install tomcat-webapps tomcat-admin-webapps 
+
+1.mkdir /mrmf
+2.拷贝Tomcat到指定目录
+#1.tomcat version
+#2.sudo yum install tomcat
+#3.sudo yum install tomcat-webapps tomcat-admin-webapps 
 3.git --version
 4.yum install -y git
 5.mvn -version

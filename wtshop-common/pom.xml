@@ -100,11 +100,11 @@
 	    <version>1.60</version>
 	</dependency>
 	<!-- 二维码 end -->
-    <dependency>
+<!--    <dependency>
 		<groupId>mysql</groupId>
 		<artifactId>mysql-connector-java</artifactId>
 		<version>5.1.38</version>
-	</dependency>
+	</dependency>-->
 	<dependency>
 		<groupId>com.alibaba</groupId>
 		<artifactId>druid</artifactId>
