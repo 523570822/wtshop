@@ -339,6 +339,8 @@
 											[@shiro.hasPermission name="admin:specialCoupon"]
                                                 <li><a href="../specialCoupon/list.jhtml" target="iframe">${message("admin.main.specialCoupon")}</a></li>
 												[/@shiro.hasPermission]
+
+
 		                                </ul>
 
 		                            </div>
