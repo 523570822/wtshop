@@ -405,9 +405,9 @@
 											[@shiro.hasPermission name="admin:promotion"]
 												<li><a href="../promotion/list.jhtml" target="iframe">${message("admin.main.promotion")}</a></li>
 											[/@shiro.hasPermission]
-			[@shiro.hasPermission name="admin:fullreduction"]
+											[@shiro.hasPermission name="admin:fullreduction"]
 												<li><a href="../fullReduction/list.jhtml" target="iframe">${message("admin.main.fullreduction")}</a></li>
-			[/@shiro.hasPermission]
+											[/@shiro.hasPermission]
 
 												[@shiro.hasPermission name="admin:activity"]
 												<li><a href="../activity/list.jhtml" target="iframe">${message("admin.main.activity")}</a></li>
