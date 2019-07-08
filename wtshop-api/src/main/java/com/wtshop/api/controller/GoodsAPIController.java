@@ -597,7 +597,7 @@ public void onShareCode(){
 
 
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DATE, 30);
+		cal.add(Calendar.DATE, 60);
 
 		Date date = cal.getTime();
 

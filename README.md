@@ -36,9 +36,7 @@ pwd   // 查看文件夹路径
 /root/learngit   //显示的文件夹路径
 git clone https://github.com/523570822/wtshop.git  //克隆远程仓库 ，改成自己的地址连接
 
-
 cd wtshop //更新的目录 跟随git项目目录
-
 git branch -a// 列出所有远程分支
 git branch -vv //查看所有别名指向
 git config --lis
