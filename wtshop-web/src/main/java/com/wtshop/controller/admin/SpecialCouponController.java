@@ -12,6 +12,7 @@ import com.wtshop.model.Brand.Type;
 import com.wtshop.model.Goods;
 import com.wtshop.model.Identifier;
 import com.wtshop.model.Member;
+import com.wtshop.model.SpecialCoupon;
 import com.wtshop.service.GoodsService;
 import com.wtshop.service.IdentifierService;
 import com.wtshop.service.MemberService;
@@ -19,6 +20,7 @@ import com.wtshop.service.SpecialCouponService;
 import com.wtshop.util.ShareCodeUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static com.wtshop.api.controller.BaseAPIController.convertToLong;
@@ -48,7 +50,8 @@ public class SpecialCouponController extends BaseController {
 	public void save(){
 
 		Integer id = getParaToInt("number");
-		Identifier identifier=identifierService.findByLast();
+		Long money = getParaToLong("money");
+		SpecialCoupon identifier=identifierService.findByLast();
 		Long i=0l;
 		String title="1";
 		if(identifier==null){
@@ -59,11 +62,11 @@ public class SpecialCouponController extends BaseController {
 			title=(Integer.parseInt(identifier.getTitle())+1)+"";
 		}
 		for (Long j=0l;j<id;j++){
-			String code = ShareCodeUtils.idToCode(i);
-			Identifier identifier1= new Identifier();
+			String code = ShareCodeUtils.idToCode(i,7);
+			SpecialCoupon identifier1= new SpecialCoupon();
 			identifier1.setCode(code);
 			identifier1.setStatus(0);
-
+			identifier1.setMoney(BigDecimal.valueOf(money));
 			identifier1.setTitle(title);
 				System.out.println("开始计数"+i+"验证码"+code);
 			identifierService.save(identifier1);
@@ -91,7 +94,7 @@ public class SpecialCouponController extends BaseController {
 	 * 更新
 	 */
 	public void update() {
-		Identifier brand = getModel(Identifier.class);
+		SpecialCoupon brand = getModel(SpecialCoupon.class);
 
 		Member member = memberService.findByPhone(brand.getCode());
 		if(member==null){
@@ -122,7 +125,7 @@ public class SpecialCouponController extends BaseController {
 
 		String titleE = getPara("titleE");
 
-		String sql=" from identifier i  where 1=1 ";
+		String sql=" from special_coupon i  where 1=1 ";
 		if(StringUtils.isNotEmpty(titleB)){
 			sql=sql+" and   i.title>="+titleB;
 		}
@@ -167,7 +170,7 @@ public class SpecialCouponController extends BaseController {
 	 */
 	public void disabled() {
 		Long id = getParaToLong("id");
-		Identifier activity = identifierService.find(id);
+		SpecialCoupon activity = identifierService.find(id);
 		activity.setStatus(0);
 		identifierService.update(activity);
 		redirect("/admin/specialCoupon/list.jhtml");
@@ -179,7 +182,7 @@ public class SpecialCouponController extends BaseController {
 	 */
 	public void publish() {
 		Long id = getParaToLong("id");
-		Identifier activity = identifierService.find(id);
+		SpecialCoupon activity = identifierService.find(id);
 
 
 		activity.setStatus(1);
@@ -192,7 +195,7 @@ public class SpecialCouponController extends BaseController {
 
 		String titleE = getPara("titleE");
 
-		String sql=" from identifier i  where 1=1 ";
+		String sql=" from special_coupon i  where 1=1 ";
 if(StringUtils.isNotEmpty(titleB)){
 	sql=sql+" and   i.title>="+titleB;
 }
@@ -210,11 +213,11 @@ if(StringUtils.isNotEmpty(titleE)){
 			Boolean isEcel=true;
 
 
-		Page<Identifier> identifier = identifierService.findPage(sql, pageable);
+		Page<SpecialCoupon> identifier = identifierService.findPage(sql, pageable);
 
-		List<Identifier> fff = identifier.getList();
-		String[] header={"批次","邀请码","状态","创建时间"};
-		String[] columns={"title","code","status","create_date"};
+		List<SpecialCoupon> fff = identifier.getList();
+		String[] header={"批次","邀请码","优惠金额","状态","创建时间"};
+		String[] columns={"title","code","money","status","create_date"};
 		Render poirender = PoiRender.me(fff).fileName("code"+titleB+"-"+""+titleE+".xls").headers(header).sheetName("识别码").columns(columns);
 		render(poirender);
 

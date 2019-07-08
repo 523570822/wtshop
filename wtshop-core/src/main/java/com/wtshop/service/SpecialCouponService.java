@@ -5,8 +5,9 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Pageable;
 import com.wtshop.dao.IdentifierDao;
-import com.wtshop.dao.SpecualCouponDao;
+import com.wtshop.dao.SpecialCouponDao;
 import com.wtshop.model.Identifier;
+import com.wtshop.model.SpecialCoupon;
 import com.wtshop.util.PinYinUtil;
 import com.wtshop.util.StringUtils;
 
@@ -20,13 +21,13 @@ import java.util.Map;
  * 
  * 
  */
-public class SpecialCouponService extends BaseService<Identifier> {
+public class SpecialCouponService extends BaseService<SpecialCoupon> {
 
 	public SpecialCouponService() {
-		super(Identifier.class);
+		super(SpecialCoupon.class);
 	}
 	
-	private SpecualCouponDao brandDao = Enhancer.enhance(SpecualCouponDao.class);
+	private SpecialCouponDao brandDao = Enhancer.enhance(SpecialCouponDao.class);
 
 
 
@@ -46,11 +47,11 @@ public class SpecialCouponService extends BaseService<Identifier> {
 		Map<String, List> stringListMap = PinYinUtil.groupByUserName(brandSort);
 		return stringListMap;
 	}
-	public Identifier save(Identifier brand) {
+	public SpecialCoupon save(SpecialCoupon brand) {
 		return super.save(brand);
 	}
 
-	public Identifier update(Identifier brand) {
+	public SpecialCoupon update(SpecialCoupon brand) {
 		return super.update(brand);
 	}
 	public int update(String sql) {
@@ -69,28 +70,28 @@ public class SpecialCouponService extends BaseService<Identifier> {
 		super.delete(ids);
 	}
 
-	public void delete(Identifier brand) {
+	public void delete(SpecialCoupon brand) {
 		super.delete(brand);
 	}
 	/**
 	 * 获取最后一条记录
 	 */
-	public Identifier findBySql(){
+	public SpecialCoupon findBySql(){
 		return  brandDao.findBySql("SELECT MAX(id),* FROM identifier");
 	}
-	public Page<Identifier> findPage(String sql, Pageable pageable){
+	public Page<SpecialCoupon> findPage(String sql, Pageable pageable){
 		return brandDao.findPage(sql,pageable);
 	}
 
-    public List<Identifier> findByIdfCode(String idfCode) {
+    public List<SpecialCoupon> findByIdfCode(String idfCode) {
 		return brandDao.findByIdfCode(idfCode);
     }
-    public List<Identifier> findByOnCodeShare(String onCodeShare,Long memberId,String status) {
+    public List<SpecialCoupon> findByOnCodeShare(String onCodeShare,Long memberId,String status) {
 		return brandDao.findByOnCodeShare(onCodeShare,memberId,status);
-    }  public List<Identifier> findByOnCodeShareSB(String onCodeShare,Long memberId) {
+    }  public List<SpecialCoupon> findByOnCodeShareSB(String onCodeShare,Long memberId) {
 		return brandDao.findByOnCodeShareSB(onCodeShare,memberId);
     }
-    public List<Identifier> findByMemberId(Long memberId) {
+    public List<SpecialCoupon> findByMemberId(Long memberId) {
 		return brandDao.findByMemberId(memberId);
     }
 }

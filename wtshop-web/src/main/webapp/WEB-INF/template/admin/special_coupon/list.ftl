@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<title>${message("admin.coupon.list")} - Powered By ${setting.siteAuthor}</title>
+<title>${message("admin.brand.list")} - Powered By ${setting.siteAuthor}</title>
 <meta name="author" content="${setting.siteAuthor}" />
 <meta name="copyright" content="${setting.siteCopyright}" />
 <link href="${base}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />
@@ -15,13 +15,20 @@
 $().ready(function() {
 
 	[@flash_message /]
+    $('#excelList').click(function () {
+
+        var  titleB=$('#titleB').val();
+        var  titleE=$('#titleE').val();
+        location.href='getExcel.jhtml?titleB='+titleB+'&titleE='+titleE;
+
+    })
 
 });
 </script>
 </head>
 <body>
 	<div class="breadcrumb">
-		<a href="${base}/admin/common/index.jhtml">${message("admin.breadcrumb.home")}</a> &raquo; ${message("admin.coupon.list")} <span>(${message("admin.page.total", page.totalRow)})</span>
+		<a href="${base}/admin/common/index.jhtml">${message("admin.breadcrumb.home")}</a> &raquo; ${message("admin.brand.list")} <span>(${message("admin.page.total", page.totalRow)})</span>
 	</div>
 	<form id="listForm" action="list.jhtml" method="post">
 		<div class="bar">
@@ -40,10 +47,10 @@ $().ready(function() {
 						${message("admin.page.pageSize")}<span class="arrow">&nbsp;</span>
 					</a>
 					<ul>
-						<li[#if page.pageSize == 10] class="current"[/#if] val="10">10</li>
-						<li[#if page.pageSize == 20] class="current"[/#if] val="20">20</li>
-						<li[#if page.pageSize == 50] class="current"[/#if] val="50">50</li>
-						<li[#if page.pageSize == 100] class="current"[/#if] val="100">100</li>
+						<li[#if pageable.pageSize == 10] class="current"[/#if] val="10">10</li>
+						<li[#if pageable.pageSize == 20] class="current"[/#if] val="20">20</li>
+						<li[#if pageable.pageSize == 50] class="current"[/#if] val="50">50</li>
+						<li[#if pageable.pageSize == 100] class="current"[/#if] val="100">100</li>
 					</ul>
 				</div>
 			</div>
@@ -54,9 +61,29 @@ $().ready(function() {
 					<button type="submit">&nbsp;</button>
 				</div>
 				<ul>
-					<li[#if pageable.searchProperty == "name"] class="current"[/#if] val="name">${message("Coupon.name")}</li>
+					<li[#if pageable.searchProperty == "title"] class="current"[/#if] val="title">批次</li>
+					<li[#if pageable.searchProperty == "code"] class="current"[/#if] val="code">识别码</li>
 				</ul>
 			</div>
+		生成批次：
+            <input type="text"
+                   id="titleB" name="titleB" class="text"  value="${titleB}"
+                   maxlength="12"
+                   onkeyup="value=value.replace(/[^\d]/g,'')"
+                          onblur="value=value.replace(/[^\d]/g,'')"
+                   ng-model="schedule.round"
+                   placeholder="请输入数字">
+		-
+
+            <input type="text"
+                   id="titleE" name="titleE"  class="text"  value="${titleE}"
+                   maxlength="12"
+                   onkeyup="value=value.replace(/[^\d]/g,'')"
+                   onblur="value=value.replace(/[^\d]/g,'')"
+            ng-model="schedule.round"
+            placeholder="请输入数字">
+            <input type="submit" class="button" value="${message("admin.common.submit")}" />
+            <input type="button" value="${message("admin.caiwu.expect")}" class="button" id="excelList" />
 		</div>
 		<table id="listTable" class="list">
 			<tr>
@@ -64,85 +91,92 @@ $().ready(function() {
 					<input type="checkbox" id="selectAll" />
 				</th>
 				<th>
-					<a href="javascript:;" class="sort" name="name">${message("Coupon.name")}</a>
+					<a href="javascript:;" class="sort" name="name">生产批次</a>
 				</th>
 				<th>
-					<a href="javascript:;" class="sort" name="prefix">优惠券剩余数量</a>
+					<a href="javascript:;" class="sort" name="logo">识别码</a>
 				</th>
                 <th>
-                    <a href="javascript:;" class="sort" name="product_category_id">优惠种类</a>
+                    <a href="javascript:;" class="sort" name="logo">邀请码</a>
                 </th>
                 <th>
-                    <a href="javascript:;" class="sort" name="product_product_id">优惠商品</a>
+                    <a href="javascript:;" class="sort" name="logo">用户</a>
                 </th>
-				<th>
-					<a href="javascript:;" class="sort" name="begin_date">${message("Coupon.beginDate")}</a>
-				</th>
-				<th>
-					<a href="javascript:;" class="sort" name="end_date">${message("Coupon.endDate")}</a>
-				</th>
-				<th>
-					<a href="javascript:;" class="sort" name="is_enabled">${message("Coupon.isEnabled")}</a>
-				</th>
+                <th>
+                    <a href="javascript:;" class="sort" name="logo">优惠金额</a>
+                </th>
+                <th>
+                    <a href="javascript:;" class="sort" name="logo">消费金额</a>
+                </th>
+                <th>
+                    <a href="javascript:;" class="sort" name="isShow">激活时间</a>
+                </th>
+                <th>
+                    <a href="javascript:;" class="sort" name="isShow">使用时间</a>
+                </th>
+                <th>
+                    <a href="javascript:;" class="sort" name="isShow">状态</a>
+                </th>
 				<th>
 					<span>${message("admin.common.action")}</span>
 				</th>
 			</tr>
-			[#list page.list as coupon]
+			[#list page.list as brand]
 				<tr>
 					<td>
-						<input type="checkbox" name="ids" value="${coupon.id}" />
+						<input type="checkbox" name="ids" value="${brand.id}" />
 					</td>
 					<td>
-						${coupon.name}
+						${brand.title}
 					</td>
 					<td>
-						${coupon.count}
+						${brand.code}
 					</td>
                     <td>
-						[#if coupon.productCategoryId??]
-							[#if coupon.productCategoryId==242]
-                                通用
-							[#else]
-							${coupon.productCategory.name}
-							[/#if]
-						[#else]
-                            -
-						[/#if]
-
+						${brand.share_code}
                     </td>
                     <td>
-						[#if coupon.productId??]
-							[#if coupon.productId==242]
-                                通用
-							[#else]
-							${coupon.product.goods.name}
-							[/#if]
-						[#else]
-                            -
-						[/#if]
+						${brand.member_id}
+                    </td>
+                    <td>
+						${brand.money}
+                    </td>
 
+                    <td>
+						${brand.price}
+                    </td>
+                    <td>
+						${brand.start_date}
+                    </td>
+                    <td>
+						${brand.end_date}
+                    </td>
+                    <td>
+					[#if brand.status==0||brand.status==null]
+
+                        <span class="red">[未使用]</span>
+
+
+
+					[#elseif brand.status==3]
+
+                        <span class="blue">[已完成]</span>
+
+
+
+						[#else]
+                        <span class="green">[已启用]</span>
+					[/#if]
                     </td>
 					<td>
-						[#if coupon.beginDate??]
-							<span title="${coupon.beginDate?string("yyyy-MM-dd HH:mm:ss")}">${coupon.beginDate}</span>
-						[#else]
-							-
-						[/#if]
-					</td>
-					<td>
-						[#if coupon.endDate??]
-							<span title="${coupon.endDate?string("yyyy-MM-dd HH:mm:ss")}">${coupon.endDate}</span>
-						[#else]
-							-
-						[/#if]
-					</td>
-					<td>
-						<span class="${coupon.isEnabled?string("true", "false")}Icon">&nbsp;</span>
-					</td>
-					<td>
-						<a href="generate.jhtml?id=${coupon.id}">[${message("admin.coupon.generate")}]</a>
-						<a href="edit.jhtml?id=${coupon.id}">[${message("admin.common.edit")}]</a>
+			[#--			<a href="edit.jhtml?id=${brand.id}">[${message("admin.common.edit")}]</a>
+						--][#--<a href="${base}${brand.path}" target="_blank">[${message("admin.common.view")}]</a>--][#--
+
+					[#if brand.status==0||brand.status==null]
+  <a href="publish.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("LoginPlugin.isEnabled")}]</a>
+						 [#else ]
+ <a href="disabled.jhtml?id=${brand.id}" class="status" data="${brand.id}">][${message("admin.member.disabled")}]</a>
+						 [/#if]--]
 					</td>
 				</tr>
 			[/#list]

@@ -75,7 +75,43 @@ public class ShareCodeUtils {
 
         return result;
     }
+    /**
+     * ID转换为邀请码
+     *
+     * @param id
+     * @return
+     */
+    public static String idToCode(Long id,int code_len) {
+        char[] buf = new char[BIN_LEN];
+        int charPos = BIN_LEN;
 
+        // 当id除以数组长度结果大于0，则进行取模操作，并以取模的值作为数组的坐标获得对应的字符
+        while (id / BIN_LEN > 0) {
+            int index = (int) (id % BIN_LEN);
+            buf[--charPos] = BASE[index];
+            id /= BIN_LEN;
+        }
+
+        buf[--charPos] = BASE[(int) (id % BIN_LEN)];
+        // 将字符数组转化为字符串
+        String result = new String(buf, charPos, BIN_LEN - charPos);
+
+        // 长度不足指定长度则随机补全
+        int len = result.length();
+        if (len < code_len) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(SUFFIX_CHAR);
+            Random random = new Random();
+            // 去除SUFFIX_CHAR本身占位之后需要补齐的位数
+            for (int i = 0; i < code_len - len - 1; i++) {
+                sb.append(BASE[random.nextInt(BIN_LEN)]);
+            }
+
+            result += sb.toString();
+        }
+
+        return result;
+    }
     /**
      * 邀请码解析出ID<br/>
      * 基本操作思路恰好与idToCode反向操作。
