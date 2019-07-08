@@ -138,6 +138,7 @@ public class AccountAPIController extends BaseAPIController {
 			if((StringUtils.isNotEmpty(onShareCode)&&(me==null||me.size()==0))&&(!"VA3TYG".equals(onShareCode))){
 
 				renderJson(ApiResult.fail("邀请码不存在!"));
+
 				return;
 			}else{
 
