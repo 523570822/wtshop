@@ -36,12 +36,13 @@ import static com.wtshop.api.controller.BaseAPIController.convertToLong;
  */
 @ControllerBind(controllerKey = "/admin/identifier")
 public class IdentifierController extends BaseController {
+
 	private IdentifierService identifierService = enhance(IdentifierService.class);
 	private GoodsService goodsService = enhance(GoodsService.class);
 	private MemberService memberService = enhance(MemberService.class);
 
 	/**
-	 * 添加
+	 * 添加123123
 	 */
 	public void add() {
 		setAttr("types", Type.values());
