@@ -733,14 +733,7 @@ public void onShareCode(){
 
 	public void storeSpecialCouponList() {
 		Member m=memberService.getCurrent();
-		Member x=new Member();
-		if(m.getOnShareCode()!=null){
-			x=memberService.findByShareCode(m.getOnShareCode()).get(0);
-		}
-
-		List<Identifier>identifierL=identifierService.findByMemberId(m.getId());
-
-
+		List<SpecialCoupon>identifierL=specialCouponService.findByMemberId(m.getId());
 		renderJson(ApiResult.success(identifierL));
 	}
 	/**
