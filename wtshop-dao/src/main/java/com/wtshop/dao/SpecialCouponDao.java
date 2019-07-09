@@ -74,7 +74,7 @@ public class SpecialCouponDao extends   BaseDao<SpecialCoupon> {
 	}
 	public List<SpecialCoupon> findByMemberId(Long memberId) {
 		try {
-			String sql = "SELECT i.*, m.store FROM special_coupon i WHERE i.member_id = ? ORDER BY i.end_date DESC";
+			String sql = "SELECT i.* FROM special_coupon i WHERE i.member_id = ? ORDER BY i.end_date DESC";
 			return modelManager.find(sql, memberId);
 		} catch (Exception e) {
 			return null;
