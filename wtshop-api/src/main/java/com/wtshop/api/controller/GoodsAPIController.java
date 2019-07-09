@@ -55,11 +55,10 @@ public class GoodsAPIController extends BaseAPIController {
 	private ReceiverService receiverService = enhance(ReceiverService.class);
 	private AreaDescribeService areaDescribeService = enhance(AreaDescribeService.class);
 	private MiaobiLogService miaobiLogService = enhance(MiaobiLogService.class);
-	private MiaoBiGoodsService miaoBiGoodsService = enhance(MiaoBiGoodsService.class);
-	private SpecificationService specificationService = enhance(SpecificationService.class);
 	private SpecialGoodsService specialGoodsService = enhance(SpecialGoodsService.class);
 	private IdentifierService identifierService = enhance(IdentifierService.class);
 	private FullReductionService fullReductionService =enhance(FullReductionService.class);
+	private SpecialCouponService specialCouponService=enhance(SpecialCouponService.class);
 
 	/**
 	 * 列表
@@ -611,8 +610,55 @@ public void onShareCode(){
 		map.put("type",1);
 		renderJson(ApiResult.success(map,"绑定成功"));
 	}
+
+	/**
+	 * 绑定代金券
+	 * idfCode
+	 */
+	public void bindingSpecialCoupon(){
+
+		String idSCCode = getPara("idSCCode","").toUpperCase();
+
+		Member m=memberService.getCurrent();
+
+
+		List<SpecialCoupon>	specialCouponList=specialCouponService.findByIdfCode(idSCCode);
+		SpecialCoupon specialCoupon=new SpecialCoupon() ;
+		if(specialCouponList.size()>0){
+			if(specialCouponList.get(0).getStatus()!=0){
+				renderJson(ApiResult.fail("识别码已失效!"));
+				return;
+			}else{
+				specialCoupon=specialCouponList.get(0);
+			}
+
+		}else{
+			renderJson(ApiResult.fail("识别码不存在!"));
+			return;
+		}
+		Map<String,Object>  map=  new HashMap<>();
+
+
+		specialCoupon.setStatus(1);
+		specialCoupon.setMemberId(m.getId());
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, 60);
+
+		Date date = cal.getTime();
+
+		Date date1 =new Date();
+		specialCoupon.setEndDate(date);
+		specialCoupon.setStartDate(date1);
+		memberService.update(m);
+		specialCouponService.update(specialCoupon);
+
+		map.put("title","恭喜绑定 成功");
+		map.put("type",1);
+		renderJson(ApiResult.success(map,"绑定成功"));
+	}
 	/**
 	 * 绑定门店
+	 * 验证识别码邀请码接口
 	 * 填写onShareCode邀请码和idfCode识别码
 	 */
 	public void bindingStoreY(){
@@ -649,6 +695,8 @@ public void onShareCode(){
 		Map<String,Object>  map=  new HashMap<>();
 		renderJson(ApiResult.success(map,"验证成功"));
 	}
+
+
 	/**
 	 * 门店列表接口
 	 */
@@ -677,6 +725,23 @@ public void onShareCode(){
 		}
 		identifierLL.addAll(identifierL);
 		renderJson(ApiResult.success(identifierLL));
+	}
+
+	/**
+	 * 门店列表接口
+	 */
+
+	public void storeSpecialCouponList() {
+		Member m=memberService.getCurrent();
+		Member x=new Member();
+		if(m.getOnShareCode()!=null){
+			x=memberService.findByShareCode(m.getOnShareCode()).get(0);
+		}
+
+		List<Identifier>identifierL=identifierService.findByMemberId(m.getId());
+
+
+		renderJson(ApiResult.success(identifierL));
 	}
 	/**
 	 * 续约记录门店列表接口
