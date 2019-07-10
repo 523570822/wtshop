@@ -363,7 +363,7 @@ public class OrderAPIController extends BaseAPIController {
 		}
 		Double price =0d;
 
-	 price = MathUtil.multiply(goods.getPrice(), 1);
+	 price = MathUtil.multiply(goods.getPrice(), quantity);
 
 
 		String[] values = StringUtils.split(RedisUtil.getString("ORDERPARAM:" + member.getId()), ",");

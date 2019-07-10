@@ -887,7 +887,7 @@ public class OrderService extends BaseService<Order> {
                     goodsService.update(goods);
                 }
             }
-            SpecialCoupon specialCoupon = specialCouponService.find(order.getIdentifierId());
+            SpecialCoupon specialCoupon = specialCouponService.find(order.getSpecialcoupId());
 
             if(specialCoupon.getPrice()==null) {
                 specialCoupon.setPrice(order.getAmount());
