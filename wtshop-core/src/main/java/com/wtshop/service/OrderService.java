@@ -1837,7 +1837,7 @@ public class OrderService extends BaseService<Order> {
      */
 
     public Order createBuyNow(Order.Type type, Member member, Goods goods, Double price, int quantity, Double manjianPrice, Receiver receiver, Double amountMoney, Double deliveryMoney, Double
-            miaobiMoney, String memo, Double couponYunfei, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName, Boolean isSinglepurchase, long fightGroupId, long tuanGouId, Double rate,Long sPecialIds,Long identifierId) {
+            miaobiMoney, String memo, Double couponYunfei, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName, Boolean isSinglepurchase, long fightGroupId, long tuanGouId, Double rate,Long sPecialIds,Long identifierId,Double specialCouponPrice,Long sPecialCoupId) {
 
 
         JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
@@ -1875,6 +1875,8 @@ public class OrderService extends BaseService<Order> {
         order.setShippedQuantity(0);
         order.setReturnedQuantity(0);
         order.setIsDelete(false);
+        order.setSpecialcoupId(sPecialCoupId);
+        order.setSpecialCouponPrice(BigDecimal.valueOf(specialCouponPrice));
 
         order.setConsignee(receiver.getConsignee());
         order.setAreaName(receiver.getAreaName());

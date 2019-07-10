@@ -612,7 +612,7 @@ public void onShareCode(){
 	}
 
 	/**
-	 * 绑定代金券
+	 * 绑定代金卡
 	 * idfCode
 	 */
 	public void bindingSpecialCoupon(){
