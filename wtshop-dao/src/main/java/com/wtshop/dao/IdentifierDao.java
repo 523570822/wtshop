@@ -80,7 +80,7 @@ public class IdentifierDao extends   BaseDao<Identifier> {
 	}
 	public List<Identifier> findByMemberId(Long memberId) {
 		try {
-			String sql = "SELECT * FROM ( SELECT i.*, m.store FROM identifier i LEFT JOIN member m ON i.share_code = m.share_code WHERE i.member_id = ? ORDER BY i.end_date DESC ) j GROUP BY j.share_code\n";
+			String sql = "SELECT * FROM ( SELECT i.*, m.store FROM identifier i LEFT JOIN member m ON i.share_code = m.share_code WHERE i.member_id = ? ORDER BY i.`status`  ) j GROUP BY j.share_code";
 			return modelManager.find(sql, memberId);
 		} catch (Exception e) {
 			return null;
