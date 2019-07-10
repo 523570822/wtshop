@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>任性猫App下载</title>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0, user-scalable=no, width=device-width"
+          name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <meta name="description" content="This is  a ..">
+    <link rel="stylesheet" href="share.css"/>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+</head>
+<body class="download-background">
+<div>
+    <div>
+        <div id="content_tip_div" style="display: block;">
+            <div class="download-pannel">
+                <div id="content_62_x" class="download-close">
+                    <img src="images/icon_close.png">
+                </div>
+                <div class="download-logo">
+                    <img src="images/logo_80.png">
+                </div>
+                <div class="download-text">
+                    <p>打开任性猫APP购物</p>
+                </div>
+                <div id="open_app" class="download-action">
+                    <p>立即打开</p>
+                </div>
+            </div>
+        </div>
+        <div class="download-top">
+            <div>
+                <p>App 下载</p>
+                <div class='download-center'>
+                    <img src="images/logo.png">
+                    <p>任性猫商城App下载</p>
+                    <div class="line"></div>
+                    <p>请选择适合您手机系统的App</p>
+                </div>
+            </div>
+            <div class="download-app">
+                <div class="download-item">
+                    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=cn.rxmao.shop"><img class="download-img"
+                                                                                          src="images/Android.png"></a>
+                </div>
+                <div class="download-item">
+                    <a href="https://itunes.apple.com/us/app/%E4%BB%BB%E6%80%A7%E7%8C%AB/id1258409372?l=zh&ls=1&mt=8"><img
+                            class="download-img" src="images/iOS.png"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="mask">
+    <div><img src="images/jiantou.png" alt=""></div>
+    <div>
+        <h4>1.点击右上角打开菜单</h4>
+        <h4>2.选择使用浏览器打开</h4>
+    </div>
+</div>
+<script>
+    $(function () {
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null)return unescape(r[2]);
+            return null;
+        }
+
+        function checkQuery(key, url) {
+
+            let host = GetQueryString(key);
+            let params = ''
+            if (host == 'auction') {
+                host = 'BackShopTabbar'
+            } else if (host == 'package') {
+                host = 'LuckyBag'
+            } else if (host == 'goods') {
+                host = 'ShopCartGoodDetail'
+                params = '?goodId=' + GetQueryString('params') + '&type=null';
+            } else if (host == 'primary') {     //团购
+                host = 'primary'
+                params = '?goodId=' + GetQueryString('params') + '&tuanGouId='+GetQueryString('tuanGouId') +'&qishu='+GetQueryString('qishu') +'&type=null';
+            }else if (host == 'GroupPropleList') {     //团购详情
+                host = 'GroupPropleList'
+                params = '?tuanGouID=' + GetQueryString('tuanGouID') + '&fightGroupId='+GetQueryString('fightGroupId') +'';
+            }else if (host == 'RXMTeShuGoodsDetaile') {     //特殊商品详情
+                host = 'RXMTeShuGoodsDetaile'
+                params = '?goodId=' + GetQueryString('params') + '&RXMTeShuGoodsId='+GetQueryString('RXMTeShuGoodsId') +'';
+            }
+
+
+         //   http://shop.rxmao.cn/rxm/downLoad/index.html?page=RXMTeShuGoodsDetaile&params=%ld&RXMTeShuGoodsId=%@
+            if (host != null) {
+                url = url + host + params
+            }
+            return url
+        }
+
+        function isNotBrowser() {
+            var u = navigator.userAgent
+            var ua = u.toLowerCase();
+            if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+                return true;
+            } else if (ua.match(/WeiBo/i) == "weibo") {
+                return true;
+            } else if (ua.match(/\sQQ/i) !== null) {
+                return true;
+            } else {
+                openApp()
+                return false;
+            }
+        }
+
+        function openApp() {
+            var scheme = 'rxm://'
+            var key = 'page'
+            var location_url = checkQuery(key, scheme);
+            window.event.returnValue=false
+            window.location.href = location_url;//android app协议
+            window.setTimeout(function () {
+                window.event.returnValue=false
+                var userAgent = global.navigator.userAgent;
+                if (/Android/i.test(userAgent)) {
+                    window.location.href = "http://a.app.qq.com/o/simple.jsp?pkgname=com.example.a17251.rxmappmall";
+                } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+                    window.location.href = "https://itunes.apple.com/us/app/%E4%BB%BB%E6%80%A7%E7%8C%AB/id1258409372?l=zh&ls=1&mt=8";
+                }
+            }, 1000)
+        }
+
+        if (isNotBrowser()) {
+            $(".mask").css("display", "block");
+        }
+        $(".mask").click(function () {
+            $(".mask").css("display", "none");
+        });
+        $("#content_tip_div").css("display", localStorage.tipHidden ? "none" : "block");
+        $("#content_62_x").click(function () {
+            localStorage.tipHidden = true
+            $("#content_tip_div").css("display", localStorage.tipHidden ? "none" : "block");
+        });
+        $("#open_app").click(function () {
+            openApp()
+        });
+    })
+</script>
+</body>
+</html>
+
