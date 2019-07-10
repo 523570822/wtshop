@@ -14,8 +14,10 @@ import com.jfinal.weixin.sdk.kit.PaymentKit;
 import com.wtshop.CommonAttributes;
 import com.wtshop.api.interceptor.ErrorInterceptor;
 import com.wtshop.model.Order;
+import com.wtshop.model.SpecialCoupon;
 import com.wtshop.service.OrderService;
 import com.wtshop.service.ReverseAuctionService;
+import com.wtshop.service.SpecialCouponService;
 import com.wtshop.service.UserPayService;
 import com.wtshop.util.AliPayUtil;
 import com.wtshop.util.ApiResult;
@@ -42,6 +44,7 @@ public class UserPayAPIController extends BaseAPIController {
     private OrderService orderService = enhance(OrderService.class);
     private UserPayService userPayService = enhance(UserPayService.class);
     private ReverseAuctionService reverseAuctionService = enhance(ReverseAuctionService.class);
+    private SpecialCouponService specialCouponService = enhance(SpecialCouponService.class);
 
     /**
      * 支付商品
@@ -57,6 +60,25 @@ public class UserPayAPIController extends BaseAPIController {
         if (expire != null && !expire.after(date)) {
             renderJson(ApiResult.fail("订单已过期,请重新下单购买"));
             return;
+        }
+
+        if ( order.getSpecialcoupId()!=null&&order.getSpecialcoupId()!=0) {
+            SpecialCoupon sPecialCoupon = specialCouponService.find(order.getSpecialcoupId());
+
+            if(sPecialCoupon.getMemberId().equals(order.getMemberId())&&sPecialCoupon.getStatus()==1){
+                //判断代金券金额是否可用
+                if(order.getPrice().doubleValue()>sPecialCoupon.getMoney().doubleValue()){
+
+
+                }else {
+                    renderJson(ApiResult.fail(10,"订单金额不够满减"));
+                    return;
+                }
+
+            }else {
+                renderJson(ApiResult.fail(9,"代金卡异常"));
+                return;
+            }
         }
 
         //微信

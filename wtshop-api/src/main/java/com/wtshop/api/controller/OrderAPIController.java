@@ -331,8 +331,12 @@ public class OrderAPIController extends BaseAPIController {
 
 
 		Order.Type ss = Order.Type.general;
-		if(sPecialIds==0){
+		if(identifierId==0){
+			if(sPecialCoupId==0){
 
+			}else {
+				ss = Order.Type.coupon;
+			}
 		}else {
 				ss = Order.Type.special;
 		}
@@ -1408,6 +1412,11 @@ if(identifierId==0){
 		Long id = getParaToLong("id");
 		Order order = orderService.find(id);
 		Member member = memberService.getCurrent();
+		if(StringUtils.isEmpty(member.getOnShareCode())){
+			renderJson(ApiResult.fail(7,"请填写邀请码"));
+			return;
+		}
+
 		if(StringUtils.isEmpty(member.getOnShareCode())){
 			renderJson(ApiResult.fail(7,"请填写邀请码"));
 			return;

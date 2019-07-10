@@ -8,6 +8,7 @@ import com.wtshop.model.GroupRemind;
 import com.wtshop.service.IdentifierService;
 import com.wtshop.service.InformationService;
 import com.wtshop.service.OrderService;
+import com.wtshop.service.SpecialCouponService;
 import com.wtshop.util.RedisUtil;
 
 
@@ -24,6 +25,7 @@ public class DoTimeCronManager implements Runnable {
     private GroupRemindDao groupRemindDao = Enhancer.enhance(GroupRemindDao.class);
     private InformationService informationService = Enhancer.enhance(InformationService.class);
     private IdentifierService identifierService=Enhancer.enhance(IdentifierService.class);
+    private SpecialCouponService specialCouponService=Enhancer.enhance(SpecialCouponService.class);
     Logger logger = Logger.getLogger(DoTimeCronManager.class);
 
     public void run() {
@@ -61,5 +63,6 @@ public class DoTimeCronManager implements Runnable {
          * 更新识别码过期
          */
         identifierService.update("UPDATE identifier i set i.status=2 where i.end_date  <NOW()  ");
+        specialCouponService.update("UPDATE special_coupon i set i.status=2 where i.end_date  <NOW()  ");
    }
 }

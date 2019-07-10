@@ -80,6 +80,7 @@ public class OrderService extends BaseService<Order> {
     private FightGroupService fightGroupService = Enhancer.enhance(FightGroupService.class);
     private GroupBuyService groupBuyService = Enhancer.enhance(GroupBuyService.class);
     private  IdentifierService identifierService =Enhancer.enhance(IdentifierService.class);
+    private  SpecialCouponService specialCouponService =Enhancer.enhance(SpecialCouponService.class);
     com.jfinal.log.Logger logger = com.jfinal.log.Logger.getLogger(OrderService.class);
 
     /**
@@ -796,7 +797,6 @@ public class OrderService extends BaseService<Order> {
         if (order.getType() == Order.Type.special.ordinal()) {
             logger.info("特殊商品购买————————————————————————");
            // order.setOnShareCode(member.getOnShareCode());
-            //商品返现
             List<Goods> goodList = goodsService.findGoodsByOrderItemId(order.getId());
             if (goodList != null && goodList.size() > 0) {
                 for (Goods goods : goodList) {
@@ -856,6 +856,48 @@ public class OrderService extends BaseService<Order> {
 
             }
             identifierService.update(identifier);
+        }
+        if (order.getType() == Order.Type.coupon.ordinal()) {
+            logger.info("特殊商品代金券购买————————————————————————");
+            // order.setOnShareCode(member.getOnShareCode());
+            List<Goods> goodList = goodsService.findGoodsByOrderItemId(order.getId());
+            if (goodList != null && goodList.size() > 0) {
+                for (Goods goods : goodList) {
+                    Long  itemid=goods.get("order_itemId");
+                    OrderItem itemids= orderItemDao.find(itemid);
+                    Product product = productService.find(itemids.getProductId());
+                    if (goods.getSales() == null) {
+                        goods.setSales(0L);
+                    } else {
+                        if (goods.get("quantity") == null || goods.get("quantity").equals("null")) {
+
+                        } else {
+                            Integer stock = product.getStock();
+                            Object quantity=  goods.get("quantity");
+                          //  System.out.println("stock=========="+stock);
+                          //  System.out.println("quantity=========="+quantity);
+                            int ff = stock - Integer.parseInt(quantity+"");
+                            product.setStock(ff);
+                            productService.update(product);
+                            goods.setSales(goods.getSales() + Long.valueOf(goods.get("quantity") + ""));
+                        }
+
+
+                    }
+                    goodsService.update(goods);
+                }
+            }
+            SpecialCoupon specialCoupon = specialCouponService.find(order.getIdentifierId());
+
+            if(specialCoupon.getPrice()==null) {
+                specialCoupon.setPrice(order.getAmount());
+            }else {
+                specialCoupon.setPrice(order.getAmount().add(specialCoupon.getPrice()));
+            }
+
+            //满足 返现条件
+            specialCoupon.setStatus(3);
+            specialCouponService.update(specialCoupon);
         }
         //倒拍
         if (order.getType() == Order.Type.daopai.ordinal()) {

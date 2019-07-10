@@ -403,6 +403,9 @@ private  FightGroupService fightGroupService=enhance(FightGroupService.class);
 		priceList.add(oldTotalPrice);
 		priceList.add(totalPrice);
 		priceList.add(deliveryPrice);
+		if(!is_promotion&&(order.getIdentifierId()==null||order.getIdentifierId()==0)&&(order.getSpecialcoupId()==null||order.getSpecialcoupId()==0)){
+			priceList.add(miaobiPrice);
+		}
 		if(!is_promotion&&(order.getIdentifierId()==null||order.getIdentifierId()==0)){
 			priceList.add(miaobiPrice);
 		}
