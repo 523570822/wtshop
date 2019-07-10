@@ -383,6 +383,10 @@ private  FightGroupService fightGroupService=enhance(FightGroupService.class);
 		PriceResult newDeliveryPrice = new PriceResult("运费优惠金额","-¥ "+  MathUtil.getInt( order.getFreight().toString()));
 
 		PriceResult totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(order.getPrice().toString()));
+
+		if(order.getSpecialCouponPrice()==null){
+			order.setSpecialCouponPrice(BigDecimal.ZERO);
+		}
 		PriceResult	specialcouponPrice = new PriceResult("代金卡","-¥ "+MathUtil.getInt(order.getSpecialCouponPrice().toString()));
 		PriceResult miaobiPrice = new PriceResult("喵币","-¥ "+ MathUtil.getInt(order.getMiaobiPaid().toString()));
 		if(order.getType() == Order.Type.miaobi.ordinal()){
