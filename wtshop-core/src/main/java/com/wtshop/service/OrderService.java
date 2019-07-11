@@ -1685,7 +1685,7 @@ public class OrderService extends BaseService<Order> {
      * @return 订单
      */
 
-    public Order create(Order.Type type, Cart cart, Double manjianPrice, Receiver receiver, Double amountMoney, Double returnMoney, Double deliveryMoney, Double miaobiMoney, String memo, Double couponYunfei, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName,Long identifierId) {
+    public Order create(Order.Type type, Cart cart, Double manjianPrice, Receiver receiver, Double amountMoney, Double returnMoney, Double deliveryMoney, Double miaobiMoney, String memo, Double couponYunfei, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName,Long identifierId,Long sPecialCoupId,Double specialCouponPrice) {
         Assert.notNull(type);
         Assert.notNull(cart);
         Assert.notNull(cart.getMember());
@@ -1736,6 +1736,8 @@ public class OrderService extends BaseService<Order> {
         order.setReturnCopyPaid(new BigDecimal(returnMoney));
         order.setShippedQuantity(0);
         order.setReturnedQuantity(0);
+        order.setSpecialcoupId(sPecialCoupId);
+        order.setSpecialCouponPrice(BigDecimal.valueOf(specialCouponPrice));
         order.setIsDelete(false);
         if (cart.getIsDelivery()) {
             order.setConsignee(receiver.getConsignee());

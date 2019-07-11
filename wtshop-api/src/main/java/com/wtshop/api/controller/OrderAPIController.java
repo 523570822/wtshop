@@ -112,6 +112,19 @@ public class OrderAPIController extends BaseAPIController {
 		Product product = productService.find(productId);
 		Goods goods = goodsService.findGoodsByPro(productId);
 
+		Cart cart = cartService.getCurrent();
+
+
+
+		//product.setAllocatedStock();
+				if (  quantity > product.getAvailableStock()) {
+					renderJson(ApiResult.fail(resZh.format("shop.cart.productLowStock")));
+					return;
+				}
+
+
+
+
 		if (!product.getIsMarketable()) {
 			renderJson(ApiResult.fail(resZh.format("shop.cart.productNotMarketable")));
 			return;
@@ -713,10 +726,15 @@ if(!isSinglepurchase){
 		Member member = memberService.getCurrent();
 		//product 的数组
 		String[] values = StringUtils.split(getPara("cartTokens"), ",");
-
+		Long sPecialCoupId = getParaToLong("sPecialCoupId",0l);
 
 		Boolean isSPecialIds = getParaToBoolean("isSPecialIds",false);
 		Identifier identifier=new Identifier();
+
+		Long[] skuids = values == null ? null : convertToLong(values);
+		/**
+		 * 判断是否是特殊商品
+		 */
 		if(isSPecialIds){
 			List<Identifier> dddd = identifierService.findByMemberId(member.getId());
 			if(dddd.size()==0){
@@ -734,27 +752,12 @@ if(!isSinglepurchase){
 					break;
 				}
 			}
-
-
-		}else{
-			if(member==null ||StringUtils.isEmpty(member.getOnShareCode())){
-				renderJson(ApiResult.fail(7,"请绑定邀请码"));
-				return;
-			}
-		}
-
-		Long[] skuids = values == null ? null : convertToLong(values);
-		/**
-		 * 判断是否是特殊商品
-		 */
-		if(isSPecialIds){
-
 			Boolean isUseMiao =false;
 			Boolean isReturnInsurans = false;
 			List<CartItem> cartItemList = cartItemService.findList(skuids);
 			Cart cart = cartService.getCurrent();
 
-		//	List<Product> products = productService.findList(skuids);
+			//	List<Product> products = productService.findList(skuids);
 			//更新购物车信息
 			List<CartItem> cartItems = cart.getCartItems();
 			if ((CollectionUtils.isNotEmpty(cartItems))) {
@@ -817,21 +820,13 @@ if(!isSinglepurchase){
 
 			//筛选商品可用的优惠券
 			//查询符合商品分类的优惠券
-			List<Coupon> codeList = couponService.findCodeList(member.getId(), price, categoryList);
-			if (productList != null && productList.size() == 1) {
-				//查询符合专属商品的优惠券
-				List<Coupon> codeLists = couponService.findCodeLists(member.getId(), price, productList);
-				if (codeLists != null && codeLists.size() > 0) {
-					for (Coupon coupon : codeLists) {
-						codeList.add(coupon);
-					}
-				}
-			}
+			List<Coupon> codeList =null;
+
 
 
 			//获取默认的收货地址
 			Receiver defaultReceiver = receiverService.findDefault(member);
-		//	System.out.println("goodsList.size():" + goodsList.size());
+			//	System.out.println("goodsList.size():" + goodsList.size());
 			Goods goods = areaService.findMaxLong(goodsList);
 
 			//商品配送
@@ -872,7 +867,7 @@ if(!isSinglepurchase){
 
 
 			//我的喵币个数
-			Double myMiaoBi = member.getPoint().doubleValue();
+			//Double myMiaoBi = member.getPoint().doubleValue();
 			//可用喵币
 			Double useMiaoBi = 0d;
 			//抵扣金额
@@ -892,78 +887,66 @@ if(!isSinglepurchase){
 			Cache actCache = Redis.use();
 			actCache.set("CART:" + member.getId(), cart);
 
-			PriceResult returnPrice = null;
-			PriceResult miaobiPrice = null;
+
 			String realPrice = null;
 			String favoritePrice = null;
 			Double realPriced = 0d;
-			Double favoreatePriced = 0d;
 			Double miaobi = 0d;
 			Double returns = 0d;
 
-			if (isUseMiao) {
-				if (isReturnInsurans) {
-					returnPrice = new PriceResult("退货保险", "¥ " + MathUtil.getInt(returnMoney.toString()));
-					realPriced = MathUtil.add(price, delivery.getPrice());
-					realPriced = MathUtil.add(realPriced, returnMoney);
-					realPrice = MathUtil.getInt(realPriced.toString());
 
-					miaobiPrice = new PriceResult("喵币", "-¥ " + MathUtil.getInt(miaoBiPrice.toString()));
-					favoreatePriced = MathUtil.add(miaoBiPrice, deliver);
-					favoritePrice = MathUtil.getInt(favoreatePriced.toString());
-					returns = returnMoney;
-				} else {
-					returnPrice = new PriceResult("退货保险", "¥ " + 0);
-					realPriced = MathUtil.add(price, delivery.getPrice());
-					realPrice = MathUtil.getInt(realPriced.toString());
+			realPriced = MathUtil.add(price, delivery.getPrice());
+			realPrice = MathUtil.getInt(realPriced.toString());
+			favoritePrice = MathUtil.getInt(deliver.toString());
+			returns = 0d;
 
-					miaobiPrice = new PriceResult("喵币", "-¥ " + MathUtil.getInt(miaoBiPrice.toString()));
-					favoreatePriced = MathUtil.add(miaoBiPrice, deliver);
-					favoritePrice = MathUtil.getInt(favoreatePriced.toString());
-					returns = 0d;
-				}
-				miaobi = miaoBiPrice;
-			} else {
-				if (isReturnInsurans) {
-					returnPrice = new PriceResult("退货保险", "¥ " + MathUtil.getInt(returnMoney.toString()));
-					realPriced = MathUtil.add(price, delivery.getPrice());
-					realPriced = MathUtil.add(realPriced, returnMoney);
-					realPrice = MathUtil.getInt(realPriced.toString());
+			miaobi = 0d;
 
-					miaobiPrice = new PriceResult("喵币", "-¥ " + 0);
-					favoritePrice = MathUtil.getInt(deliver.toString());
-					returns = returnMoney;
-				} else {
-					returnPrice = new PriceResult("退货保险", "¥ " + 0);
-					realPriced = MathUtil.add(price, delivery.getPrice());
-					realPrice = MathUtil.getInt(realPriced.toString());
-
-					miaobiPrice = new PriceResult("喵币", "-¥ " + 0);
-					favoritePrice = MathUtil.getInt(deliver.toString());
-					returns = 0d;
-				}
-				miaobi = 0d;
-			}
 			PriceResult manjianPrice = null;
-			Promotion promotion = promotionService.find(5L);
-			Double prom = cartService.findPriceByCartItem(cartItems1);
+
 			Double manJianPrices = 0d;
-			if (prom >= promotion.getTotalMoney().doubleValue()) {
-				manjianPrice = new PriceResult(promotion.getTitle(), "-¥ " + MathUtil.getInt(promotion.getMoney().toString()));
-				favoritePrice = MathUtil.getInt(new BigDecimal(favoritePrice).add(promotion.getMoney()).toString());
-				manJianPrices = promotion.getMoney().doubleValue();
-			}
+
+			PriceResult	specialcouponPrice = null;
 			PriceResult totalPrice = new PriceResult("商品总金额", "¥ " + MathUtil.getInt(price.toString()));
 			PriceResult oldTotalPrice = new PriceResult("商品优惠前总金额", "¥ " + MathUtil.getInt(oldPrice.toString()));
 			PriceResult deliveryPrice = new PriceResult("运费", "¥ " + MathUtil.getInt(delivery.getPrice().toString()));
+			Double specialCouponPrice=0d;
+			if(sPecialCoupId!=0){
+				SpecialCoupon sPecialCoupon = specialCouponService.find(sPecialCoupId);
+				if(sPecialCoupon.getMemberId().equals(member.getId())&&sPecialCoupon.getStatus()==1){
+					//判断代金券金额是否可用
+					if(price>sPecialCoupon.getMoney().doubleValue()){
+						specialCouponPrice=sPecialCoupon.getMoney().doubleValue();
+						specialcouponPrice = new PriceResult("代金卡","-¥ "+MathUtil.getInt(specialCouponPrice.toString()));
+					}else {
+						renderJson(ApiResult.fail(10,"订单金额不够满减"));
+						return;
+					}
+
+				}else {
+					renderJson(ApiResult.fail(9,"代金卡异常"));
+					return;
+				}
+			}
+
 			List<PriceResult> priceList = new ArrayList<>();
+
+			//旧购物车金额
 			priceList.add(oldTotalPrice);
+			//新购物车金额
 			priceList.add(totalPrice);
+			//运费
 			priceList.add(deliveryPrice);
+			//优惠运费
 			priceList.add(newDeliveryPrice);
+			//代金卡
+			priceList.add(specialcouponPrice);
 			priceList.add(manjianPrice);
+			//优惠运费金额
 			Double couponYunfei = MathUtil.subtract(delivery.getPrice(), deliver);
-			Double amountpaid = MathUtil.subtract(realPrice, favoritePrice);
+
+
+			Double amountpaid =  MathUtil.subtract(MathUtil.subtract(realPrice, favoritePrice),specialCouponPrice);
 			if (amountpaid < 0) {
 				miaobi = miaobi + amountpaid;
 				useMiaoBi = new BigDecimal(miaobi).multiply(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -972,7 +955,7 @@ if(!isSinglepurchase){
 			}
 			miaoBiDesc = "共" + MathUtil.getInt(member.getPoint().toString()) + "喵币,可用" + MathUtil.getInt(useMiaoBi.toString()) + "喵币,抵扣¥" + MathUtil.getInt(miaoBiPrice.toString());
 
-			Double[] param = {deliver, miaobi, returns, amountpaid, couponYunfei, manJianPrices};
+			Double[] param = {deliver, miaobi, returns, amountpaid, couponYunfei, manJianPrices,specialCouponPrice};
 			Double yunfei = delivery.getPrice();
 			Boolean is_useMiaobi =false;
 			Boolean is_promotion =false;
@@ -980,6 +963,14 @@ if(!isSinglepurchase){
 			OrderDetailsResult orderDetailsResult = new OrderDetailsResult(taxUrl, couponYunfei, skuids, yunfei, member, cart.getToken(), defaultReceiver, codeList, goodsList,
 					receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, isReturnInsurance, returns, returnCopy, priceList, amountpaid.toString(), favoritePrice, param, is_promotion,identifier);
 			renderJson(ApiResult.success(orderDetailsResult));
+
+
+
+
+
+
+
+
 
 
 
@@ -1294,6 +1285,10 @@ if(!isSinglepurchase){
 		Cache actCache = Redis.use();
 		Member member = memberService.getCurrent();
 		Long identifierId = getParaToLong("identifierId",0l);
+
+		//代金券id
+		Long sPecialCoupId = getParaToLong("sPecialCoupId",0l);
+
 		//是否实名认证
 		Certificates certificates = certificatesService.queryByMemberId(member.getId());
 		if(certificates != null && certificates.getState() != 1){
@@ -1301,12 +1296,15 @@ if(!isSinglepurchase){
 			return;
 		}
 		Order.Type ddd = Order.Type.general;
-if(identifierId==0){
+		if(identifierId==0){
+			if(sPecialCoupId==0){
 
-}else{
-	 ddd = Order.Type.special;
-}
-
+			}else {
+				ddd = Order.Type.coupon;
+			}
+		}else {
+			ddd = Order.Type.special;
+		}
 		Cart cart = actCache.get("CART:"+member.getId());
 		String cartToken = getPara("cartToken"); //防止购物车重复提交
 		Long receiverId = getParaToLong("receiverIds"); //收货人
@@ -1332,6 +1330,12 @@ if(identifierId==0){
 
 		//满减金额
 		Double manjianPrice = skuids[5];
+		Double specialCouponPrice=0d;
+		if(skuids.length<7){
+
+		}else {
+			specialCouponPrice= skuids[6];
+		}
 
 
 		Receiver receiver = null;
@@ -1369,7 +1373,7 @@ if(identifierId==0){
 		String taxNumber = getPara("taxNumber"); 		// 單位名稱
 		String companyName = getPara("companyName");   //稅號
 
-		  Order order = orderService.create(ddd, cart, manjianPrice, receiver, amountMoney, returnMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,identifierId);
+		  Order order = orderService.create(ddd, cart, manjianPrice, receiver, amountMoney, returnMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,identifierId,sPecialCoupId,specialCouponPrice);
 
 		  renderJson(ApiResult.success(order.getId()));
 
