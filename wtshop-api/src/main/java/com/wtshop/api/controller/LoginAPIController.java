@@ -131,7 +131,11 @@ public class LoginAPIController extends BaseAPIController {
         //String nickname = com.wtshop.util.StringUtils.filterEmoji(user.get("nickname").toString()) ;
         /*   String openid = user.get("unionid").toString();*/
         String openid = access_token.get("openid").toString();
-        String unionid = access_token.get("unionid").toString();
+        String unionid = "";
+        if(access_token.get("unionid")!=null){
+           unionid = access_token.get("unionid").toString();
+        }
+       // String unionid = access_token.get("unionid").toString();
         int codes = 9000; //不需要绑定手机号
         Member member = null;
         //获取微信社交绑定的openId
