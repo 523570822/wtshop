@@ -124,44 +124,44 @@ $().ready(function() {
 	// 表单验证
 	$inputForm.validate({
 		rules: {
-			"promotion.name": "required",
-			"promotion.title": "required",
-			"promotion.image": {
-				pattern: /^(http:\/\/|https:\/\/|\/).*$/i
-			},
-			"promotion.minimum_price": {
+			"fullReduction.name": "required",
+			"fullReduction.title": "required",
+			"fullReduction.money": {
+                required:true,
+
 				min: 0,
 				decimal: {
 					integer: 12,
 					fraction: ${setting.priceScale}
 				}
 			},
-			"promotion.maximum_price": {
-				min: 0,
+			"fullReduction.total_money": {
+                required:true,
+			    min: 0,
 				decimal: {
 					integer: 12,
 					fraction: ${setting.priceScale}
 				},
 				compare: "#minimumPrice"
 			},
-			"promotion.minimum_quantity": "digits",
-			"promotion.maximum_quantity": {
+			"fullReduction.minimum_quantity": "digits",
+			"fullReduction.maximum_quantity": {
 				digits: true,
 				compare: "#minimumQuantity"
 			},
-			"promotion.price_expression": {
+			"fullReduction.price_expression": {
 				remote: {
 					url: "checkPriceExpression.jhtml",
 					cache: false
 				}
 			},
-			"promotion.point_expression": {
+			"fullReduction.point_expression": {
 				remote: {
 					url: "checkPointExpression.jhtml",
 					cache: false
 				}
 			},
-			"promotion.orders": "digits"
+			"fullReduction.orders": "digits"
 		}
 	});
 
@@ -176,9 +176,6 @@ $().ready(function() {
 		<ul id="tab" class="tab">
 			<li>
 				<input type="button" value="${message("admin.promotion.base")}" />
-			</li>
-			<li>
-				<input type="button" value="${message("Promotion.introduction")}" />
 			</li>
 		</ul>
 		<table class="input tabContent">

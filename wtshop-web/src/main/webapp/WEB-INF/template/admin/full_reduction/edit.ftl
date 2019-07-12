@@ -124,19 +124,19 @@ $().ready(function() {
 	// 表单验证
 	$inputForm.validate({
 		rules: {
-			"promotion.name": "required",
-			"promotion.title": "required",
-			"promotion.image": {
+			"fullReduction.name": "required",
+			"fullReduction.title": "required",
+			"fullReduction.image": {
 				pattern: /^(http:\/\/|https:\/\/|\/).*$/i
 			},
-			"promotion.minimum_price": {
+			"fullReduction.total_money": {
 				min: 0,
 				decimal: {
 					integer: 12,
 					fraction: ${setting.priceScale}
 				}
 			},
-			"promotion.maximum_price": {
+			"fullReduction.money": {
 				min: 0,
 				decimal: {
 					integer: 12,
@@ -144,24 +144,24 @@ $().ready(function() {
 				},
 				compare: "#minimumPrice"
 			},
-			"promotion.minimum_quantity": "digits",
-			"promotion.maximum_quantity": {
+			"fullReduction.minimum_quantity": "digits",
+			"fullReduction.maximum_quantity": {
 				digits: true,
 				compare: "#minimumQuantity"
 			},
-			"promotion.price_expression": {
+			"fullReduction.price_expression": {
 				remote: {
 					url: "checkPriceExpression.jhtml",
 					cache: false
 				}
 			},
-			"promotion.point_expression": {
+			"fullReduction.point_expression": {
 				remote: {
 					url: "checkPointExpression.jhtml",
 					cache: false
 				}
 			},
-			"promotion.orders": "digits"
+			"fullReduction.orders": "digits"
 		}
 	});
 
@@ -173,14 +173,14 @@ $().ready(function() {
 		<a href="${base}/admin/common/index.jhtml">${message("admin.breadcrumb.home")}</a> &raquo; ${message("admin.promotion.edit")}
 	</div>
 	<form id="inputForm" action="update.jhtml" method="post">
-		<input type="hidden" name="promotion.id" value="${promotion.id}" />
+		<input type="hidden" name="fullReduction.id" value="${fullReduction.id}" />
 		<ul id="tab" class="tab">
 			<li>
 				<input type="button" value="${message("admin.promotion.base")}" />
 			</li>
-			<li>
+		[#--	<li>
 				<input type="button" value="${message("Promotion.introduction")}" />
-			</li>
+			</li>--]
 		</ul>
 		<table class="input tabContent">
 			<tr>
@@ -188,7 +188,7 @@ $().ready(function() {
 					<span class="requiredField">*</span>${message("Promotion.name")}:
 				</th>
 				<td>
-					<input type="text" name="promotion.name" class="text" value="${promotion.name}" maxlength="200" />
+					<input type="text" name="fullReduction.name" class="text" value="${fullReduction.name}" maxlength="200" />
 				</td>
 			</tr>
 			<tr>
@@ -196,7 +196,7 @@ $().ready(function() {
 					<span class="requiredField">*</span>${message("Promotion.title")}:
 				</th>
 				<td>
-					<input type="text" name="promotion.title" class="text" value="${promotion.title}" maxlength="200" />
+					<input type="text" name="fullReduction.title" class="text" value="${fullReduction.title}" maxlength="200" />
 				</td>
 			</tr>
             <tr>
@@ -204,7 +204,7 @@ $().ready(function() {
                     <span class="requiredField">*</span>${message("Promotion.total_money")}:
                 </th>
                 <td>
-                    <input type="text" name="promotion.total_money" class="text" maxlength="200"  value="${promotion.total_money}" />
+                    <input type="text" name="fullReduction.total_money" class="text" maxlength="200"  value="${fullReduction.total_money}" />
                 </td>
             </tr>
 
@@ -213,39 +213,9 @@ $().ready(function() {
                     <span class="requiredField">*</span>${message("Promotion.money")}:
                 </th>
                 <td>
-                    <input type="text" name="promotion.money" class="text" maxlength="200" value="${promotion.money}"/>
+                    <input type="text" name="fullReduction.money" class="text" maxlength="200" value="${fullReduction.money}"/>
                 </td>
             </tr>
-			<tr>
-				<th>
-					${message("Promotion.image")}:
-				</th>
-				<td>
-					<span class="fieldSet">
-						<input type="text" name="promotion.image" class="text" value="${promotion.image}" maxlength="200" />
-						<a href="javascript:;" id="filePicker" class="button">${message("admin.upload.filePicker")}</a>
-						[#if promotion.image?has_content]
-							<a href="${fileServer}${promotion.image}" target="_blank">${message("admin.common.view")}</a>
-						[/#if]
-					</span>
-				</td>
-			</tr>
-			<tr>
-				<th>
-					${message("Promotion.beginDate")}:
-				</th>
-				<td>
-					<input type="text" id="beginDate" name="promotion.begin_date" class="text Wdate" value="[#if promotion.beginDate??]${promotion.beginDate?string("yyyy-MM-dd HH:mm:ss")}[/#if]" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss', maxDate: '#F{$dp.$D(\'endDate\')}'});" />
-				</td>
-			</tr>
-			<tr>
-				<th>
-					${message("Promotion.endDate")}:
-				</th>
-				<td>
-					<input type="text" id="endDate" name="promotion.end_date" class="text Wdate" value="[#if promotion.endDate??]${promotion.endDate?string("yyyy-MM-dd HH:mm:ss")}[/#if]" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss', minDate: '#F{$dp.$D(\'beginDate\')}'});" />
-				</td>
-			</tr>
 			[#--<tr>--]
 				[#--<th>--]
 					[#--${message("Promotion.minimumPrice")}:--]
