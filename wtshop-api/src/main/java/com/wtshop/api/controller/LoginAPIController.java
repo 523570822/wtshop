@@ -148,6 +148,7 @@ public class LoginAPIController extends BaseAPIController {
         }
 
         if (member == null) {
+
             codes = 9001;
             member = new Member();
             member.setIsDelete(false);
@@ -170,8 +171,8 @@ public class LoginAPIController extends BaseAPIController {
             account1.setType(0);
             account1.setNickname(nickname);
             account1.setMemberId(member.getId());
-            accountService.save(account1);
-            CodeResult codeResult = new CodeResult(codes,"", accountId,"",openid,unionid);
+            Account dd = accountService.save(account1);
+            CodeResult codeResult = new CodeResult(codes,"", dd.getId(),"",openid,unionid);
             renderJson(ApiResult.success(codeResult, "登录成功"));
             return;
 
