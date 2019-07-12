@@ -89,8 +89,8 @@ public class AccountService extends BaseService<Account> {
     /**
      * 根据openId 获取用户信息
      */
-    public Account findByAccount(String openId ,Integer type){
-        return accountDao.findByAccount(openId, type);
+    public Account findByAccount(String openId ,String unionid ,Integer type){
+        return accountDao.findByAccount(openId,unionid, type);
     }
 
 

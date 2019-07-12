@@ -18,14 +18,16 @@ public class AccountDao extends BaseDao<Account>{
     /**
      * 获取用户信息
      */
-    public Account findByAccount(String openId, Integer type){
+    public Account findByAccount(String openId,String unionid, Integer type){
 
         String sql = " select * from account where 1 = 1 ";
-        if(StringUtils.isNotBlank(openId)){
-
+        if(StringUtils.isNotBlank(unionid)){
+            sql += " AND ( account = '"+ openId + "' or  unionid = '"+ unionid + "') ";
+        }else{
             sql += " AND account = '"+ openId + "'";
+        }
 
-        }if(type != null){
+        if(type != null){
 
             sql += " AND type = "+ type;
 

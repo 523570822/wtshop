@@ -266,6 +266,7 @@ public class AccountAPIController extends BaseAPIController {
 	public void weiXinAccount(){
 		Member member = memberService.getCurrent();
 		String code = getPara("code");
+		String unionid = getPara("unionid");
 		Map<String, Object> access_token = accountService.getAccess_token(code);
 
 		Set<String> key = access_token.keySet();
@@ -287,7 +288,7 @@ public class AccountAPIController extends BaseAPIController {
 		}
 		String nickname = com.wtshop.util.StringUtils.filterEmoji(user.get("nickname").toString()) ;
 		String openid = user.get("openid").toString();
-		Account accounts = accountService.findByAccount(openid, 0);
+		Account accounts = accountService.findByAccount(openid, unionid,0);
 		if(accounts != null){
 			accountService.delete(accounts);
 		}
@@ -314,11 +315,12 @@ public class AccountAPIController extends BaseAPIController {
 	public void sinaCode(){
 		Member member = memberService.getCurrent();
 		String uid = getPara("uid");
+		String unionid = getPara("unionid");
 		String access_token = getPara("access_token");
 		Map<String, Object> user = accountService.getSina_UserInfo(access_token, uid);
 		String nickname = com.wtshop.util.StringUtils.filterEmoji(user.get("name").toString()) ;
 
-		Account accounts = accountService.findByAccount(uid, 2);
+		Account accounts = accountService.findByAccount(uid, unionid,2);
 		if(accounts != null){
 			accountService.delete(accounts);
 		}
@@ -347,12 +349,13 @@ public class AccountAPIController extends BaseAPIController {
         String openId = getPara("openId");
         //验证 先去member表里查
 		String appId = getPara("appId");
+		String unionid = getPara("unionid");
 		Member member = memberService.getCurrent();
         String access_token = getPara("access_token");
         Map<String, Object> user = accountService.getqq_UserInfo(access_token, openId, appId);
 		String nickname = com.wtshop.util.StringUtils.filterEmoji(user.get("nickname").toString()) ;
 
-		Account accounts = accountService.findByAccount(openId, 1);
+		Account accounts = accountService.findByAccount(openId, unionid,1);
 		if(accounts != null){
 			accountService.delete(accounts);
 		}
@@ -387,6 +390,7 @@ public class AccountAPIController extends BaseAPIController {
 	public void aLiAccount(){
 		Member member = memberService.getCurrent();
 		String code = getPara("code");
+		String unionid = getPara("unionid");
 		Map<String, String> map = accountService.getAliPay_accessToken(code);
 		if(map != null){
 
@@ -395,7 +399,7 @@ public class AccountAPIController extends BaseAPIController {
 			String username = accountService.getAliPau_userInfo(payAccessToken);
 			String nickname = com.wtshop.util.StringUtils.filterEmoji(username) ;
 
-			Account accounts = accountService.findByAccount(uid, 3);
+			Account accounts = accountService.findByAccount(uid, unionid,3);
 			if(accounts != null){
 				accountService.delete(accounts);
 			}

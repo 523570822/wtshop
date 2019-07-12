@@ -141,14 +141,36 @@ public class LoginAPIController extends BaseAPIController {
         //获取微信社交绑定的openId
         Long accountId = 0L;
    //   Account  account=accountService.findByUnionid(unionid,0);
-        Account account = accountService.findByAccount(openid, 4);
+        Account account = accountService.findByAccount(openid,unionid, 4);
         if(account != null){
+            accountId = account.getId();
             member = memberService.find(account.getMemberId());
         }
 
         if (member == null) {
             codes = 9001;
-            accountId = account.getId();
+            member = new Member();
+            member.setIsDelete(false);
+            member.setOpenId(openid);
+
+            member.setNickname(nickname);
+            member.setAmount(BigDecimal.ZERO);
+            member.setBalance(BigDecimal.ZERO);
+            member.setPrestore(BigDecimal.ZERO);
+            member.setCommission(BigDecimal.ZERO);
+            member.setRecharge(BigDecimal.ZERO);
+            member.setLoginDate(new Date());
+            member.setLoginIp(request.getRemoteAddr());
+            member.setMemberRankId(1L);
+            member.setIsEnabled(true);
+            memberService.save(member);
+            Account account1 = new Account();
+            account1.setAccount(openid);
+            account1.setUnionid(unionid);
+            account1.setType(0);
+            account1.setNickname(nickname);
+            account1.setMemberId(member.getId());
+            accountService.save(account1);
             CodeResult codeResult = new CodeResult(codes,"", accountId,"",openid,unionid);
             renderJson(ApiResult.success(codeResult, "登录成功"));
             return;
@@ -157,7 +179,6 @@ public class LoginAPIController extends BaseAPIController {
             //本身没有绑定手机号
             if(member.getPhone() == null){
                 codes = 9001;
-                accountId = account.getId();
             }
             member.setLoginIp(request.getRemoteAddr());
             member.setLoginDate(new Date());
@@ -200,7 +221,7 @@ public class LoginAPIController extends BaseAPIController {
         Member member = null;
         //获取微信社交绑定的openId
         Long accountId = 0L;
-        Account account = accountService.findByAccount(openid, 0);
+        Account account = accountService.findByAccount(openid,unionid, 0);
         if(account != null){
             member = memberService.find(account.getMemberId());
         }
@@ -260,6 +281,7 @@ public class LoginAPIController extends BaseAPIController {
 
     public void qqcodeSubmit() {
         String openId = getPara("openId");
+        String unionid = getPara("unionid");
         //验证 先去member表里查
         String appId = getPara("appId");
         String access_token = getPara("access_token");
@@ -267,7 +289,7 @@ public class LoginAPIController extends BaseAPIController {
         String nickname = com.wtshop.util.StringUtils.filterEmoji(user.get("nickname").toString()) ;
         Member member = null;
         //获取社交绑定的openId
-        Account account = accountService.findByAccount(openId, 1);
+        Account account = accountService.findByAccount(openId, unionid,1);
         Long accountId = 0L;
         if(account != null) {
             member = memberService.find(account.getMemberId());
@@ -327,6 +349,7 @@ public class LoginAPIController extends BaseAPIController {
 
     public void weiboSubmit() {
         String openId = getPara("openId");
+        String unionid = getPara("unionid");
         String access_token = getPara("access_token");
         Map<String, Object> user = accountService.getSina_UserInfo(access_token, openId);
         String nickname = com.wtshop.util.StringUtils.filterEmoji(user.get("name").toString()) ;
@@ -334,7 +357,7 @@ public class LoginAPIController extends BaseAPIController {
         //验证 先去member表里查
         Member member = null;
         //获取社交绑定的openId
-        Account account = accountService.findByAccount(openId, 2);
+        Account account = accountService.findByAccount(openId, unionid,2);
         Long accountId = 0L;
         if(account != null) {
             member = memberService.find(account.getMemberId());
@@ -488,7 +511,7 @@ public class LoginAPIController extends BaseAPIController {
         }
         Member member = memberService.findByPhone(phone);
 
-        Account account = accountService.findByAccount(openidXCX,null);
+        Account account = accountService.findByAccount(openidXCX,unionid,null);
         if(account != null){
 
             account.setAccount(openidXCX);
