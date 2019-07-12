@@ -287,7 +287,7 @@ public class GoodsService extends BaseService<Goods> {
         orderLogDao.save(orderLog);
 
 
-        if (Setting.StockAllocationTime.order.equals(redisSetting.get("stockAllocationTime")) || (Setting.StockAllocationTime.payment.equals(redisSetting.get("stockAllocationTime")) && (order.getAmountPaid().compareTo(BigDecimal.ZERO) > 0 || order.getExchangePoint() > 0 || order.getAmountPayable().compareTo(BigDecimal.ZERO) <= 0))) {
+        if (Setting.StockAllocationTime.order.name().equals(redisSetting.get("stockAllocationTime")) || (Setting.StockAllocationTime.payment.name().equals(redisSetting.get("stockAllocationTime")) && (order.getAmountPaid().compareTo(BigDecimal.ZERO) > 0 || order.getExchangePoint() > 0 || order.getAmountPayable().compareTo(BigDecimal.ZERO) <= 0))) {
             allocateStock(order);
         }
 

@@ -112,10 +112,6 @@ public class OrderAPIController extends BaseAPIController {
 		Product product = productService.find(productId);
 		Goods goods = goodsService.findGoodsByPro(productId);
 
-		Cart cart = cartService.getCurrent();
-
-
-
 		//product.setAllocatedStock();
 				if (  quantity > product.getAvailableStock()) {
 					renderJson(ApiResult.fail(resZh.format("shop.cart.productLowStock")));
@@ -135,7 +131,7 @@ public class OrderAPIController extends BaseAPIController {
 		if(sPecialIds!=0){
 			isUseMiao=false;
 		}
-
+	//	product.setAllocatedStock();
 
 		//获取商品价格
 		Double price = MathUtil.multiply(product.getPrice(), quantity);

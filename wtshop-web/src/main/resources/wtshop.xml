@@ -96,6 +96,7 @@
 	<setting name="returnCopy" value="" />
 	<setting name="returnCopyUrl" value="http://shop.rxmao.cn/rxm/goods/backOrChangeGoods.html" />
 	<setting name="isUseMiaoBi" value="true" />
+	<setting name="stockAllocationTime" value="order" />
 	<setting name="miaoBiLimit" value="0.1" />
 	<setting name="scale" value="10" />
 	<setting name="isSendMiaoBi" value="true" />

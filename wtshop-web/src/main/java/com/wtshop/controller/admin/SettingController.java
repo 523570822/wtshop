@@ -128,8 +128,19 @@ public class SettingController extends BaseController {
 	public void update() {
 		UploadFile watermarkImageFile = getFile("watermarkImageFile");
 		Setting setting = getBean(Setting.class);
+
+/*		String dsb = (getPara("stockAllocationTime", "order")).toString();
+		if(dsb.equals("order")){
+			setting.setStockAllocationTime(StockAllocationTime.order);
+		}else if(dsb.equals("order")){
+			setting.setStockAllocationTime(StockAllocationTime.order);
+		}else if(dsb.equals("order")){
+			setting.setStockAllocationTime(StockAllocationTime.order);
+		}
+	//	setting.setStockAllocationTime();*/
 		setting.setIsSiteEnabled(getParaToBoolean("isSiteEnabled", false));
 		setting.setIsShowMarketPrice(getParaToBoolean("isShowMarketPrice", false));
+
 		setting.setIsRegisterEnabled(getParaToBoolean("isRegisterEnabled", false));
 		setting.setIsDuplicateEmail(getParaToBoolean("isDuplicateEmail", false));
 		setting.setIsEmailLogin(getParaToBoolean("isEmailLogin", false));
@@ -176,7 +187,7 @@ public class SettingController extends BaseController {
 		redisSetting.put("shareSending",setting.getShareSending());
 		redisSetting.put("housekeeperSending",setting.getHousekeeperSending());
 		redisSetting.put("hour",setting.getHour());
-		RedisUtil.setString("redisSetting",redisSetting.toJSONString());
+
 		RedisUtil.setString("freeMoney",setting.getFreeMoney()+"");
 
 
@@ -196,10 +207,11 @@ public class SettingController extends BaseController {
 		ConsultationAuthority consultationAuthority = StrKit.notBlank(consultationAuthorityName) ? ConsultationAuthority.valueOf(consultationAuthorityName) : null;
 		setting.setConsultationAuthority(consultationAuthority);
 		
-		String stockAllocationTimeName = getPara("stockAllocationTime", null);
-		StockAllocationTime stockAllocationTime = StrKit.notBlank(stockAllocationTimeName) ? StockAllocationTime.valueOf(stockAllocationTimeName) : null;
+		String stockAllocationTimeName = getPara("stockAllocationTime", "order");
+		StockAllocationTime stockAllocationTime = StrKit.notBlank(stockAllocationTimeName) ? StockAllocationTime.valueOf(stockAllocationTimeName) : StockAllocationTime.order;
 		setting.setStockAllocationTime(stockAllocationTime);
-		
+		redisSetting.put("stockAllocationTime",setting.getStockAllocationTime());
+		RedisUtil.setString("redisSetting",redisSetting.toJSONString());
 		// 验证码类型
 		String[] captchaTypeNames = getParaValues("captchaTypes");
 		if (!ObjectUtils.isEmpty(captchaTypeNames)) {

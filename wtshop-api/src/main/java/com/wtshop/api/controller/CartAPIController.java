@@ -286,7 +286,7 @@ public class CartAPIController extends BaseAPIController {
 		CartGoodsResult cartGoodsResult = null;
 		CartGoodsResult cartListResult1 = null;
 		if(goodsList != null && goodsList.size() > 0){
-		//	cartGoodsResult = new CartGoodsResult(message, goodsList,1);
+			//cartGoodsResult = new CartGoodsResult(message, goodsList,1);
 		}
 		if(promGoodsList != null && promGoodsList.size() > 0){
 		//	cartListResult1 = new CartGoodsResult(promMessage, promGoodsList, 5);
