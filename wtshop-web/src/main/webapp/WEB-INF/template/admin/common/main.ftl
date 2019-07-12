@@ -353,10 +353,12 @@
 						[@shiro.hasPermission name = permission]
 							<div class="panel panel-default">
 		                        <div class="panel-heading">
+
 		                            <a href="#contentGroup" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
 		                                <i class="glyphicon glyphicon-leaf"></i> ${message("admin.main.contentGroup")}
 		                            </a>
 		                        </div>
+
 		                        <div class="accordion-body collapse" id="contentGroup">
 		                            <div class="panel-body">
 		                                 <ul class="nav nav-pills nav-stacked">
@@ -364,10 +366,12 @@
 
 											[@shiro.hasPermission name="admin:adPosition"]
 												<li><a href="../ad_position/list.jhtml" target="iframe">${message("admin.main.adPosition")}</a></li>
+
 											[/@shiro.hasPermission]
 
 											[@shiro.hasPermission name="admin:ad"]
 												<li><a href="../ad/list.jhtml" target="iframe">${message("admin.main.ad")}</a></li>
+											 <li><a href="../targetPath/list.jhtml" target="iframe">目标路径管理</a></li>
 											[/@shiro.hasPermission]
 
 											 [@shiro.hasPermission name="admin:newGoods"]
@@ -794,7 +798,7 @@
                                         <ul class="nav nav-pills nav-stacked">
 											[@shiro.hasPermission name="admin:deliveryCenter"]
                                                 <li><a href="../delivery_center/list.jhtml" target="iframe">${message("admin.main.deliveryCenter")}</a></li>
-                                                <li><a href="../targetPath/list.jhtml" target="iframe">测试</a></li>
+
 											[/@shiro.hasPermission]
 
 											[@shiro.hasPermission name="admin:deliveryTemplate"]
