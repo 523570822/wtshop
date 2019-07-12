@@ -612,8 +612,8 @@ public class LoginAPIController extends BaseAPIController {
         String host = "https://wuliu.market.alicloudapi.com";       //【1】请求地址  支持http 和 https 及 WEBSOCKET
         String path = "/kdi";                                     //【2】后缀
         String appcode = "e885d89a08b04f9cb0b9e9be7c0bba73";                             //【3】AppCode  你自己的AppCode 在买家中心查看
-        //  String sn = getPara("sn");                   //【4】参数，具体参照api接口参数
-        String sn ="4600617028567"   ;       //【4】参数，具体参照api接口参数
+        String sn = getPara("sn");                   //【4】参数，具体参照api接口参数
+       // String sn ="4600617028567"   ;       //【4】参数，具体参照api接口参数
         // String type = "YD";                                            //【5】参数，具体参照api接口参数
         // String urlSend = host + path + "?no=" + sn ;   //【6】拼接请求链接
         String urlSend = host + path + "?no=" + sn ;   //【6】拼接请求链接
