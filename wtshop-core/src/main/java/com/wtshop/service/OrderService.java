@@ -2403,6 +2403,8 @@ public class OrderService extends BaseService<Order> {
         order.setExpire(null);
         undoUseCouponCode(order);
 //		undoExchangePoint(order);
+
+
         releaseAllocatedStock(order);
         super.update(order);
 
@@ -2417,7 +2419,6 @@ public class OrderService extends BaseService<Order> {
         orderLog.setType(OrderLog.Type.cancel.ordinal());
         orderLog.setOrderId(order.getId());
         orderLogDao.save(orderLog);
-
         mailService.sendCancelOrderMail(order);
         smsService.sendCancelOrderSms(order);
     }
@@ -2531,7 +2532,7 @@ public class OrderService extends BaseService<Order> {
         }
 
         Setting setting = SystemUtils.getSetting();
-        if (Setting.StockAllocationTime.ship.equals(setting.getStockAllocationTime())) {
+        if (Setting.StockAllocationTime.ship.name().equals(setting.getStockAllocationTime())) {
             allocateStock(order);
         }
 

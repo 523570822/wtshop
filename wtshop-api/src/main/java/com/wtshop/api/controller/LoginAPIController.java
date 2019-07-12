@@ -164,13 +164,13 @@ public class LoginAPIController extends BaseAPIController {
             member.setLoginIp(request.getRemoteAddr());
             member.setMemberRankId(1L);
             member.setIsEnabled(true);
-            memberService.save(member);
+            Member dddd = memberService.save(member);
             Account account1 = new Account();
             account1.setAccount(openid);
             account1.setUnionid(unionid);
             account1.setType(0);
             account1.setNickname(nickname);
-            account1.setMemberId(member.getId());
+            account1.setMemberId(dddd.getId());
             Account dd = accountService.save(account1);
             CodeResult codeResult = new CodeResult(codes,"", dd.getId(),"",openid,unionid);
             renderJson(ApiResult.success(codeResult, "登录成功"));
