@@ -709,7 +709,7 @@ public void onShareCode(){
 		}
 		List<Identifier>identifierLL=new LinkedList<Identifier>();
 		List<Identifier>identifierL=identifierService.findByMemberId(m.getId());
-		if(x.getIsStore()){
+		if(x.getIsStore()!=null&&x.getIsStore()){
 			List<Identifier> identifierList = identifierService.findByOnCodeShare(m.getOnShareCode(),m.getId(),null);
 
 

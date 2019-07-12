@@ -800,7 +800,7 @@ $().ready(function() {
                 <td>
                     <input type="radio" id="adminId0" checked name="adminId" value="${i}">
                     <label for="adminId0">总店</label>
-                [#list 1..50 as i]
+                [#list 1..80 as i]
 				[#if i%20==0]</br>[/#if]
                     <input type="radio" id="adminId${i}" name="adminId" value="${i}">
              		 <label for="adminId${i}">店铺${i}</label>
