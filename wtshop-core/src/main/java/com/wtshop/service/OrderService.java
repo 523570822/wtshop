@@ -1846,7 +1846,7 @@ public class OrderService extends BaseService<Order> {
         orderLogDao.save(orderLog);
 
 
-        if ( (Setting.StockAllocationTime.payment.name().equals(redisSetting.get("stockAllocationTime")) && (order.getAmountPaid().compareTo(BigDecimal.ZERO) > 0 || order.getExchangePoint() > 0 || order.getAmountPayable().compareTo(BigDecimal.ZERO) <= 0))) {
+        if ( Setting.StockAllocationTime.order.name().equals(redisSetting.get("stockAllocationTime")) || (Setting.StockAllocationTime.payment.name().equals(redisSetting.get("stockAllocationTime")) && (order.getAmountPaid().compareTo(BigDecimal.ZERO) > 0 || order.getExchangePoint() > 0 || order.getAmountPayable().compareTo(BigDecimal.ZERO) <= 0))) {
             allocateStock(order);
         }
 
@@ -2896,6 +2896,7 @@ public class OrderService extends BaseService<Order> {
             }
         }
         order.setIsAllocatedStock(true);
+        update(order);
     }
 
     /**
