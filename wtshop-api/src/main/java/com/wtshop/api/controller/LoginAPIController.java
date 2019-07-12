@@ -147,31 +147,8 @@ public class LoginAPIController extends BaseAPIController {
         }
 
         if (member == null) {
-/*            member = new Member();
-            member.setIsDelete(false);
-            member.setOpenId(openid);
-            member.setNickname(nickname);
-            member.setAmount(BigDecimal.ZERO);
-            member.setBalance(BigDecimal.ZERO);
-            member.setPrestore(BigDecimal.ZERO);
-            member.setCommission(BigDecimal.ZERO);
-            member.setRecharge(BigDecimal.ZERO);
-            member.setLoginDate(new Date());
-            member.setLoginIp(request.getRemoteAddr());
-            member.setMemberRankId(1L);
-            member.setIsEnabled(true);
-            member.setAvatar(img);
-            memberService.save(member);
-
-            Account account1 = new Account();
-            account1.setUnionid(unionid);
-            account1.setOpenidXcx(openid);
-            account1.setType(0);
-            account1.setNickname(nickname);
-            account1.setMemberId(member.getId());
-            accountService.save(account1);
-            accountId = account1.getId();*/
             codes = 9001;
+            accountId = account.getId();
             CodeResult codeResult = new CodeResult(codes,"", accountId,"",openid,unionid);
             renderJson(ApiResult.success(codeResult, "登录成功"));
             return;
