@@ -144,6 +144,7 @@ function checkParam() {
 					</select>
 				</td>
 			</tr>
+
             <tr>
                 <th>
 				${message("Ad.toUrl")}:
@@ -174,7 +175,7 @@ function checkParam() {
                 </td>
             </tr>
 
-            <tr>
+            <tr  id="tiaoZhuanCanShu">
                 <th>
                     </span>${message("Ad.param")}:
                 </th>
@@ -190,6 +191,17 @@ function checkParam() {
                 </td>
             </tr>
 
+            <tr id="lianJieDiZhi">
+                <th>
+                    路径地址:
+                </th>
+                <td>
+                    <input type="text"
+                           id="url" name="ad.url" class="text"   value="${ad.url}"  title="相对路径地址"
+
+                           placeholder="相对路径地址">
+                </td>
+            </tr>
 			<tr[#if ad.type != "text"] class="hidden"[/#if]>
 				<th>
 					${message("Article.content")}:

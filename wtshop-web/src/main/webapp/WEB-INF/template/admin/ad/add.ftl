@@ -25,7 +25,7 @@ $().ready(function() {
 	var $filePicker = $("#filePicker");
 	
 	[@flash_message /]
-    checkParam();//首次验证跳转
+
     sublevel();
 
 
@@ -69,7 +69,7 @@ function sublevel() {
     console.info(num);
     $("#param").val("")
     if(num==1||num==2){
-
+        $("#tiaoZhuanCanShu").show();
 
         //清空下拉内容
         $.post("${base}/admin/goodsTheme/levelState.jhtml",{urlType:num},function (data) {
@@ -93,21 +93,14 @@ function sublevel() {
         })
 
     }else {
+        $("#tiaoZhuanCanShu").hide();
         $("#subTitleId").empty();
         $("#subTitleId").hide();
     }
-    checkParam();
-}
-function checkParam() {
-    var num = $("#targetTitleId").find("option:selected").attr("data");
-    if(num==3 ||num==10 ){
-        $("#param").attr("readonly",false);
-    }else {
-        $("#param").attr("readonly",true);
 
-    }
 
 }
+
 </script>
 </head>
 <body>
@@ -157,9 +150,9 @@ function checkParam() {
                 </td>
             </tr>
 
-            <tr>
+            <tr id="tiaoZhuanCanShu">
                 <th>
-                   </span>${message("Ad.param")}:
+                 ${message("Ad.param")}:
                 </th>
                 <td>
                     <input type="text"
