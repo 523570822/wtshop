@@ -23,7 +23,7 @@
 </head>
 <body>
 <div class="breadcrumb">
-    <a href="${base}/admin/common/index.jhtml">${message("admin.breadcrumb.home")}</a> &raquo; ${message("Fudai.manager")}
+    <a href="${base}/admin/common/index.jhtml">${message("admin.breadcrumb.home")}</a> &raquo;特殊商品管理
     <span>(${message("admin.page.total", page.totalRow)})</span>
 </div>
 <form id="listForm" action="list.jhtml" method="post">
@@ -80,6 +80,9 @@
             <th>
                 <span>商品id</span>
             </th>
+            <th>
+                <span>商品名称</span>
+            </th>
            [#-- <th>
                 <span>${message("Fudai.price")}</span>
             </th>
@@ -109,6 +112,9 @@
                 </td>
                 <td>
                     <span title="${fuDai.title}">${fuDai.goods_id}</span>
+                </td>
+                <td>
+                    <span title="${fuDai.title}">${fuDai.product.goods.name}</span>
                 </td>
               [#--  <td>
                 ${fuDai.price}

@@ -60,7 +60,7 @@ public class SpecialGoodsController extends BaseController {
     //去修改页面
     public void toEdit() {
         Long fuDaiId = getParaToLong("id");
-        setAttr("fuDai", fuDaiService.find(fuDaiId));
+        setAttr("specialGoods", fuDaiService.find(fuDaiId));
         render("/admin/specialGoods/edit.ftl");
     }
 
@@ -69,7 +69,8 @@ public class SpecialGoodsController extends BaseController {
         // 图片
         List<UploadFile> uploadFiles = getFiles();
         SpecialGoods fuDai = getModel(SpecialGoods.class);
-        Long productId = getParaToLong("productId");
+        Long goodsId = getParaToLong("goodsId");
+        fuDai.setGoodsId(goodsId);
         fuDaiService.update(fuDai);
         redirect("/admin/specialGoods/list.jhtml");
     }

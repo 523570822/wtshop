@@ -32,7 +32,7 @@
                     type: 2,
                     skin: 'layui-layer-rim', //加上边框
                     area: ['870px', '540px'], //宽高
-                    content: "../reverseAuction/choose.jhtml?flag=2",
+                    content: "../reverseAuction/choose.jhtml?flag=6",
                     shadeClose:true,
                 });
             });
@@ -124,8 +124,8 @@
     <a href="${base}/admin/common/index.jhtml"></a> &raquo; ${message("Fudai.edit.llst")}
 </div>
 <form id="inputForm" action="edit.jhtml" method="post"  enctype="multipart/form-data" >
-    <input name="fuDai.id" value="${fuDai.id}" type="hidden"/>
-    <input value="${fuDai.status}" name="fuDai.status" type="hidden"/>
+    <input name="specialGoods.id" value="${specialGoods.id}" type="hidden"/>
+    <input value="${specialGoods.status}" name="specialGoods.status" type="hidden"/>
     <ul id="tab" class="tab">
         <li>
             <input type="button" value="${message("admin.coupon.base")}"   class="current" />
@@ -137,7 +137,7 @@
                 <span class="requiredField">*</span>${message("Ad.title")}:
             </th>
             <td>
-                <input type="text" name="fuDai.title" class="text" maxlength="200" value="${fuDai.title}" />
+                <input type="text" name="specialGoods.title" class="text" maxlength="200" value="${specialGoods.title}" />
             </td>
         </tr>
         <tr>
@@ -145,25 +145,25 @@
                 <span class="requiredField">*</span>${message("Fudai.primary.goods")}:
             </th>
             <td>
-                <input type="hidden" name="productId" id="product_id" class="text" maxlength="200" value="${fuDai.fudaiProduct.product_id}"/>
-                <input type="text" class="text" maxlength="200" id="product_name" title=${message("fudai.phone.title")}   value="${fuDai.fudaiProduct.product.goods.name}" />
+                <input type="hidden" name="goodsId" id="goods_id" class="text" maxlength="200"       value="${specialGoods.goodsId}" />
+                <input type="text" class="text" maxlength="200" id="goods_name" title=${message("fudai.phone.title")}   value="${specialGoods.product.goods.name}" />
                 <input type="button" value="${message("fudai.select")}" class="button" id="addProduct"/>
             </td>
         </tr>
-        <tr>
+        [#--<tr>
             <th>
                 <span class="requiredField"></span>特殊商品说明
             </th>
             <td>
-                <textarea rows="" cols="" name="fuDai.explain" style="width: 300px;height:200px " maxlength="400" title="${message("Fudai.message.list")}" >${fuDai.explain}</textarea>
+                <textarea rows="" cols="" name="specialGoods.explain" style="width: 300px;height:200px " maxlength="400" title="${message("Fudai.message.list")}" >${specialGoods.goodsId}</textarea>
             </td>
-        </tr>
+        </tr>--]
         <tr>
             <th>
             ${message("admin.common.order")}:
             </th>
             <td>
-                <input type="text" name="fuDai.orders" class="text" maxlength="9" value="${fuDai.orders}" />
+                <input type="text" name="specialGoods.orders" class="text" maxlength="9" value="${specialGoods.orders}" />
             </td>
         </tr>
         <tr>
