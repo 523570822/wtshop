@@ -222,7 +222,7 @@ public class MemberController extends BaseController {
 		} else {
 			member.setPassword(DigestUtils.md5Hex(member.getPassword()));
 		}
-		if (pMember.getIsLocked() && !member.getIsLocked()) {
+		if (pMember.getIsLocked()!=null&&pMember.getIsLocked() && !member.getIsLocked()) {
 			member.setLoginFailureCount(0);
 			member.setLockedDate(null);
 		} else {
