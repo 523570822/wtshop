@@ -553,7 +553,10 @@ public void onShareCode(){
 			renderJson(ApiResult.fail("邀请码不存在!"));
 			return;
 		}
-
+		if(ss==null){
+			renderJson(ApiResult.fail("请选择满返规则"));
+			return;
+		}
 
 
 		List<Identifier>	identifierL=identifierService.findByIdfCode(idfCode);
