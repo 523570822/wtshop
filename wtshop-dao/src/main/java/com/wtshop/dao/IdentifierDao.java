@@ -57,7 +57,7 @@ public class IdentifierDao extends   BaseDao<Identifier> {
 		try {
 			String sql = "SELECT *, m.store FROM identifier i LEFT JOIN member m ON i.share_code = m.share_code where   i.share_code= UPPER(?) and i.member_id= '"+memberId+"'";
 			if (StringUtils.isNotEmpty(status)) {
-				sql=sql+" and i.state= "+status;
+				sql=sql+" and i.status= "+status;
 			}
 			return modelManager.find(sql, onCodeShare);
 		} catch (Exception e) {

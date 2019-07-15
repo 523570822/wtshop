@@ -482,6 +482,12 @@ public void onShareCode(){
 		renderJson(ApiResult.fail("邀请码不存在!"));
 		return;
 	}
+
+	List<Identifier> ddd = identifierService.findByOnCodeShare(onShareCode, m.getId(),"1");
+	if(ddd!=null&&ddd.size()>0){
+		renderJson(ApiResult.fail("门店使用中"));
+		return;
+	}
 	if(m.getOnShareCode()==null||"null".equals(m.getOnShareCode())||"".equals(m.getOnShareCode().trim())){
 
 	}else{
@@ -685,8 +691,8 @@ public void onShareCode(){
 	 * 填写onShareCode邀请码和idfCode识别码
 	 */
 	public void bindingStoreY(){
-		String onShareCode = getPara("onShareCode","").toUpperCase();
-		String idfCode = getPara("idfCode","").toUpperCase();
+		String onShareCode = getPara("onShareCode","").toUpperCase().trim();
+		String idfCode = getPara("idfCode","").toUpperCase().trim();
 		Long fullReId = getParaToLong("fullReId");
 
 		FullReduction ss = fullReductionService.find(fullReId);
@@ -708,6 +714,11 @@ public void onShareCode(){
 
 		}else{
 			renderJson(ApiResult.fail("识别码不存在!"));
+			return;
+		}
+		List<Identifier> ddd = identifierService.findByOnCodeShare(onShareCode, m.getId(),"1");
+		if(ddd!=null&&ddd.size()>0){
+			renderJson(ApiResult.fail("门店使用中"));
 			return;
 		}
 		if(me.get(0).getStore()==null||"".equals(me.get(0).getStore().trim())){
