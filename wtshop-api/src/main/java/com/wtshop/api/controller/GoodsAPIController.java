@@ -473,7 +473,7 @@ public class GoodsAPIController extends BaseAPIController {
  * 填写邀请码
  */
 public void onShareCode(){
-	String onShareCode = getPara("onShareCode");
+	String onShareCode = getPara("onShareCode","");
 	String str = new String(onShareCode);
 	onShareCode=str.toUpperCase();
 	Member m=memberService.getCurrent();
@@ -482,7 +482,7 @@ public void onShareCode(){
 		renderJson(ApiResult.fail("邀请码不存在!"));
 		return;
 	}
-	if(m.getOnShareCode()==null||"".equals(m.getOnShareCode().trim())){
+	if(m.getOnShareCode()==null||"null".equals(m.getOnShareCode())||"".equals(m.getOnShareCode().trim())){
 		renderJson(ApiResult.fail("不能重复绑定"));
 		return;
 	}

@@ -938,8 +938,10 @@ public class OrderService extends BaseService<Order> {
         List<Order> orders = orderDao.updateExperce(member);
         if (orders != null && orders.size() > 0) {
             for (Order order : orders) {
+
                 order.setStatus(Order.Status.canceled.ordinal());
                 order.setExpire(null);
+                releaseAllocatedStock(order);
                 super.update(order);
             }
         }

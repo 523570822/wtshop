@@ -591,6 +591,7 @@ public Page<TeamManagement> getTeamManagementListFind(String onShareCode,Pageabl
 			String userId = RedisUtil.getString(request.getHeader("token"));
 			if (userId == null ){
 				throw new AppRuntimeException(422, "请先登录");
+			//	return null;
 			}
 			return memberDao.find(Long.valueOf(userId));
 		}else{
