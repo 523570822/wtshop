@@ -582,7 +582,25 @@ public void onShareCode(){
 		Map<String,Object>  map=  new HashMap<>();
 
 		if(m.getOnShareCode()==null||"".equals(m.getOnShareCode().trim())){
+
+			Boolean bool1 = memberService.findSpByPhone(me.get(0).getPhone());
 			String shareCode = ShareCodeUtils.idToCode(m.getId());
+			if(bool1){
+				map.put("shareCode",shareCode);
+				m.setShareCode(shareCode);
+				m.setHousekeeperId(2l);
+			}else{
+				List<Member> member2 =memberService.findByShareCode(me.get(0).getOnShareCode());
+				Boolean bool2 = memberService.findSpByPhone(member2.get(0).getPhone());
+				if(bool2){
+					map.put("shareCode",shareCode);
+					m.setShareCode(shareCode);
+					m.setHousekeeperId(2l);
+				}
+			}
+
+
+		//	String shareCode = ShareCodeUtils.idToCode(m.getId());
 		//	map.put("shareCode",shareCode);
 		//	m.setShareCode(shareCode);
 		//	m.setHousekeeperId(2l);
