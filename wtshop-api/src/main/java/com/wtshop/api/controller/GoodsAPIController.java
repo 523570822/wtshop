@@ -483,6 +483,8 @@ public void onShareCode(){
 		return;
 	}
 	if(m.getOnShareCode()==null||"null".equals(m.getOnShareCode())||"".equals(m.getOnShareCode().trim())){
+
+	}else{
 		renderJson(ApiResult.fail("不能重复绑定"));
 		return;
 	}
