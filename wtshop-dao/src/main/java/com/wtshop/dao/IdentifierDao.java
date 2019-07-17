@@ -94,4 +94,21 @@ public class IdentifierDao extends   BaseDao<Identifier> {
 			return 0;
 		}
 	}
+
+	public List<Identifier> findByDay(String s, String i) {
+		try {
+			String sql = "SELECT i.* FROM identifier i where i=1    ";
+			if(StringUtils.isNotEmpty(s)){
+				sql=sql+" and i.status="+s ;
+			}
+			if(StringUtils.isNotEmpty(i)){
+				sql=sql+" and DATEDIFF(i.end_date,NOW())="+i ;
+			}
+
+
+			return modelManager.find(sql);
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }

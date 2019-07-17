@@ -79,8 +79,8 @@ public class IdentifierService extends BaseService<Identifier> {
 	/**
 	 * 获取最后一条记录
 	 */
-	public Identifier findBySql(){
-		return  brandDao.findBySql("SELECT MAX(id),* FROM identifier");
+	public Identifier findBySql(String sql){
+		return  brandDao.findBySql( sql);
 	}
 	public Page<Identifier> findPage(String sql, Pageable pageable){
 		return brandDao.findPage(sql,pageable);
@@ -96,5 +96,9 @@ public class IdentifierService extends BaseService<Identifier> {
     }
     public List<Identifier> findByMemberId(Long memberId) {
 		return brandDao.findByMemberId(memberId);
+    }
+
+    public  List<Identifier> findByDay(String s, String s1) {
+		return brandDao.findByDay(s,s1);
     }
 }
