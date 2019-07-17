@@ -216,7 +216,7 @@ public class OrderAPIController extends BaseAPIController {
 			SpecialCoupon sPecialCoupon = specialCouponService.find(sPecialCoupId);
 			if(sPecialCoupon.getMemberId().equals(member.getId())&&sPecialCoupon.getStatus()==1){
 				//判断代金券金额是否可用
-						if(price>sPecialCoupon.getMoney().doubleValue()){
+						if(price>=sPecialCoupon.getMoney().doubleValue()){
 							specialCouponPrice=sPecialCoupon.getMoney().doubleValue();
 
 						}else {
@@ -911,7 +911,7 @@ if(!isSinglepurchase){
 				SpecialCoupon sPecialCoupon = specialCouponService.find(sPecialCoupId);
 				if(sPecialCoupon.getMemberId().equals(member.getId())&&sPecialCoupon.getStatus()==1){
 					//判断代金券金额是否可用
-					if(price>sPecialCoupon.getMoney().doubleValue()){
+					if(price>=sPecialCoupon.getMoney().doubleValue()){
 						specialCouponPrice=sPecialCoupon.getMoney().doubleValue();
 						specialcouponPrice = new PriceResult("代金卡","-¥ "+MathUtil.getInt(specialCouponPrice.toString()));
 					}else {

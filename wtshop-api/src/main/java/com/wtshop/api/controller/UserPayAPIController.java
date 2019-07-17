@@ -67,7 +67,7 @@ public class UserPayAPIController extends BaseAPIController {
 
             if(sPecialCoupon.getMemberId().equals(order.getMemberId())&&sPecialCoupon.getStatus()==1){
                 //判断代金券金额是否可用
-                if(order.getPrice().doubleValue()>sPecialCoupon.getMoney().doubleValue()){
+                if(order.getPrice().doubleValue()>=sPecialCoupon.getMoney().doubleValue()){
 
 
                 }else {
