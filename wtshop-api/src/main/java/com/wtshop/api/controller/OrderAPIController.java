@@ -233,7 +233,7 @@ public class OrderAPIController extends BaseAPIController {
 		PriceResult specialcouponPrice = null;
 		String realPrice = null;
 		String favoritePrice = "0";
-		Double realPriced = MathUtil.add(price, delivery.getPrice());
+		Double realPriced = MathUtil.subtract(MathUtil.add(price, delivery.getPrice()),couponYunfei);
 		Double favoreatePriced = 0d;
 		Double miaobi = 0d;
 		Double returns = 0d;
