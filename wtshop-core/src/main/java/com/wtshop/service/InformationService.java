@@ -1,7 +1,5 @@
 package com.wtshop.service;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
-import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Enhancer;
 import com.jfinal.plugin.activerecord.Page;
@@ -15,7 +13,6 @@ import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
 import com.wtshop.util.JPush;
 import com.wtshop.util.RedisUtil;
-import com.wtshop.util.SystemUtils;
 import freemarker.log.Logger;
 
 import java.util.List;

@@ -76,8 +76,8 @@ public class SpecialCouponService extends BaseService<SpecialCoupon> {
 	/**
 	 * 获取最后一条记录
 	 */
-	public SpecialCoupon findBySql(){
-		return  brandDao.findBySql("SELECT MAX(id),* FROM identifier");
+	public SpecialCoupon findBySql(String sql){
+		return  brandDao.findBySql(sql);
 	}
 	public Page<SpecialCoupon> findPage(String sql, Pageable pageable){
 		return brandDao.findPage(sql,pageable);
@@ -94,4 +94,8 @@ public class SpecialCouponService extends BaseService<SpecialCoupon> {
     public List<SpecialCoupon> findByMemberId(Long memberId) {
 		return brandDao.findByMemberId(memberId);
     }
+
+	public List<SpecialCoupon> findByDay(String s, String i) {
+		return brandDao.findByDay(s,i);
+	}
 }

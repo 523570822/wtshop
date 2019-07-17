@@ -62,7 +62,7 @@ public class DoTimeCronManager implements Runnable {
         /**
          * 更新识别码过期
          */
-        identifierService.update("UPDATE identifier i set i.status=2 where i.end_date  <NOW()  ");
-        specialCouponService.update("UPDATE special_coupon i set i.status=2 where i.end_date  <NOW()  ");
+        identifierService.update("UPDATE identifier i set i.status=2 where i.end_date  <NOW() and i.`status`=1 ");
+        specialCouponService.update("UPDATE special_coupon i set i.status=2 where i.end_date  <NOW() and i.`status`=1 ");
    }
 }

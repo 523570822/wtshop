@@ -152,6 +152,7 @@ public class OrderAPIController extends BaseAPIController {
 		String receiveTime = "";
 		if(defaultReceiver != null){
 			AreaDescribe areaDescribe = areaDescribeService.findByAreaId(goods.getAreaId());
+
 			//判断本级地区是否填写
 			if(areaDescribe != null && areaDescribe.getReceivingBegintime() != null){
 				receiveTime = areaDescribe.getReceivingBegintime();
