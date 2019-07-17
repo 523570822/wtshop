@@ -137,7 +137,7 @@ public class PasswordAPIController extends BaseAPIController {
 			return;
 		}
 		String smsCode = SMSUtils.randomSMSCode(4);
-		Map<String, String> params = new HashMap<>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("code", smsCode);
 		params.put("product", "任性猫");
 		ApiResult result = SMSUtils.send(username, prop.get("sms.verifyCodeTemplate"), params);

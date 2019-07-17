@@ -75,7 +75,7 @@ public class MobileAPIController extends BaseAPIController {
 		Cache sm = Redis.use();
 		String mobile = getPara("mobiles");
 		String smsCode = SMSUtils.randomSMSCode(4);
-		Map<String, String> params = new HashMap<>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("code", smsCode);
 		params.put("product", "任性猫");
 		if(sm.get("PONHE:"+mobile) != null){

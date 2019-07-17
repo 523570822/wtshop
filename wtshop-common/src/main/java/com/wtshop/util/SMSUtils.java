@@ -23,7 +23,7 @@ import com.wtshop.CommonAttributes;
  */
 public class SMSUtils {
 
-    public static ApiResult send(String phone, String templateId, Map<String, String> params) {
+    public static ApiResult send(String phone, String templateId, Map<String, Object> params) {
         ApiResult apiResult = ApiResult.success();
         ArrayList phones = new ArrayList();
         phones.add(phone);
@@ -31,7 +31,7 @@ public class SMSUtils {
         return apiResult;
     }
 
-    public static Object send(List<String> phones, String templateId, Map<String, String> params) {
+    public static Object send(List<String> phones, String templateId, Map<String, Object> params) {
         ApiResult apiResult = ApiResult.success();
         Prop prop = PropKit.use(CommonAttributes.wtshop_PROPERTIES_PATH);
         String url = prop.get("sms.url");
