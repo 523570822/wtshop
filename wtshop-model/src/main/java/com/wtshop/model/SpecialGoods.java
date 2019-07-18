@@ -9,17 +9,17 @@ import com.wtshop.util.ObjectUtils;
 @SuppressWarnings("serial")
 public class SpecialGoods extends BaseSpecialGoods<SpecialGoods> {
 	public static final SpecialGoods dao = new SpecialGoods().dao();
-	private Product product;
+	private Goods goods;
 
-	public Product getProduct() {
-		if(ObjectUtils.isEmpty(product)){
-			product = Product.dao.findById(getGoodsId());
+	public Goods getGoods() {
+		if(ObjectUtils.isEmpty(goods)){
+			goods = Goods.dao.findById(getGoodsId());
 
 		}
-		return product;
+		return goods;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setGoods(Goods goods) {
+		this.goods = goods;
 	}
 }

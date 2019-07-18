@@ -83,6 +83,9 @@
             <th>
                 <span>商品名称</span>
             </th>
+            <th>
+                <span>门店号</span>
+            </th>
            [#-- <th>
                 <span>${message("Fudai.price")}</span>
             </th>
@@ -105,7 +108,7 @@
         [#list page.list as fuDai]
             <tr>
                 <td width="50px">
-                    <input type="checkbox" name="ids" value="${fuDai.id}"/>[#--${fuDai.id}--]
+                    <input type="checkbox" name="ids" value="${fuDai.id}"/>${fuDai.id}
                 </td>
                 <td>
                     <span title="${fuDai.title}">${abbreviate(fuDai.title, 50, "...")}</span>
@@ -114,7 +117,10 @@
                     <span title="${fuDai.title}">${fuDai.goods_id}</span>
                 </td>
                 <td>
-                    <span title="${fuDai.title}">${fuDai.product.goods.name}</span>
+                    <span title="${fuDai.title}">${fuDai.goods.name}</span>
+                </td>
+                <td>
+                    <span title="${fuDai.title}">${fuDai.goods.admin_id}</span>
                 </td>
               [#--  <td>
                 ${fuDai.price}

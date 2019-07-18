@@ -120,7 +120,7 @@ public class CommonAPIController extends BaseAPIController {
                     ad.put("goodsId",s.getGoodsId());
                 }else{
                     //参数有问题不显示
-                    adList.remove(ad);
+                //    adList.remove(ad);
                 }
             }
         }

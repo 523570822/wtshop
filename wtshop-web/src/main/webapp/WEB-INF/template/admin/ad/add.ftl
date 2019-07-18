@@ -92,7 +92,13 @@ function sublevel() {
             }
         })
 
-    }else {
+    }else if(num==3){
+        $("#tiaoZhuanCanShu").show();
+        $("#subTitleId").empty();
+        $("#subTitleId").hide();
+	}
+
+    else {
         $("#tiaoZhuanCanShu").hide();
         $("#subTitleId").empty();
         $("#subTitleId").hide();
@@ -130,16 +136,30 @@ function sublevel() {
 				</td>
 			</tr>
 
+
             <tr>
                 <th>
-				${message("Ad.toUrl")}:
+					${message("Ad.adPosition")}:
+                </th>
+                <td>
+                    <select name="adPositionId">
+						[#list adPositions as adPosition]
+                            <option value="${adPosition.id}">${adPosition.name} [${adPosition.width} × ${adPosition.height}]</option>
+						[/#list]
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+					${message("Ad.toUrl")}:
                 </th>
                 <td>
                     <select id="targetTitleId" name="ad.target_id" onchange="sublevel()">
 						[#list targetTitleTree as targetTitle]
 							[#if targetTitle.level_state==1]
                                 <option value="${targetTitle.id}" data="${targetTitle.urltype}" [#if targetTitle.id==1]selected[/#if]>
-								${targetTitle.title}
+									${targetTitle.title}
                                 </option>
 							[/#if]
 						[/#list]
@@ -149,10 +169,9 @@ function sublevel() {
                     </select>
                 </td>
             </tr>
-
             <tr id="tiaoZhuanCanShu">
                 <th>
-                 ${message("Ad.param")}:
+					${message("Ad.param")}:
                 </th>
                 <td>
                     <input type="text"
@@ -165,18 +184,6 @@ function sublevel() {
                 </td>
             </tr>
 
-			<tr>
-				<th>
-					${message("Ad.adPosition")}:
-				</th>
-				<td>
-					<select name="adPositionId">
-						[#list adPositions as adPosition]
-							<option value="${adPosition.id}">${adPosition.name} [${adPosition.width} × ${adPosition.height}]</option>
-						[/#list]
-					</select>
-				</td>
-			</tr>
 			<tr>
 				<th>
 					${message("Article.content")}:
