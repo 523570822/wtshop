@@ -119,6 +119,7 @@ public class CommonAPIController extends BaseAPIController {
                 if(s!=null){
                     ad.put("goodsId",s.getGoodsId());
                 }else{
+                    ad.put("goodsId",null);
                     //参数有问题不显示
                 //    adList.remove(ad);
                 }
