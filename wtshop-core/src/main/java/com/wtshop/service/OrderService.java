@@ -28,6 +28,7 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static java.math.BigDecimal.ROUND_HALF_DOWN;
@@ -877,14 +878,21 @@ public class OrderService extends BaseService<Order> {
 
             }else{
                 Cache sm = Redis.use();
-                double price=identifier.getTotalMoney().doubleValue()-(identifier.getPrice().doubleValue());
+              //  double price=identifier.getTotalMoney().doubleValue()-(identifier.getPrice().doubleValue());
+                BigDecimal price = identifier.getTotalMoney().subtract(identifier.getPrice());
                 String name=identifier.getMember().getStore();
                 Date day = identifier.getEndDate();
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("name", name );
                 params.put("price",price);
                 params.put("money",money);
-                params.put("day",day.getTime());
+
+
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分");
+                String dateString = formatter.format(day.getTime());
+                params.put("day",dateString);
+
+
                 String mobile=member.getPhone();
                 //检查手机号码有效性
                 if (!SMSUtils.isMobileNo(mobile)) {

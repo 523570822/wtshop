@@ -19,6 +19,7 @@ import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
 import com.wtshop.util.SMSUtils;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,8 +107,8 @@ public class CouponPromptManager implements ITask {
         Cache sm = Redis.use();
         for (Identifier specialCoupon:specialCouponList) {
            String mobile=specialCoupon.member.getPhone();
-           String price=specialCoupon.getTotalMoney().multiply(specialCoupon.getPrice()).toString() ;
-           String name=specialCoupon.member.getStore();
+            BigDecimal price = specialCoupon.getTotalMoney().multiply(specialCoupon.getPrice());;
+            String name=specialCoupon.member.getStore();
             String sound = "default";
             Object o = actCache.get("SOUND:" + specialCoupon.getMemberId());
             if (o != null) {
