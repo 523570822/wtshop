@@ -17,7 +17,7 @@ public class Identifier extends BaseIdentifier<Identifier> {
 	 */
 	public Member getMember() {
 		if (ObjectUtils.isEmpty(member)) {
-			member = Member.dao.findFirst("select * from member m where m.share_code="+getShareCode()+"");
+			member = Member.dao.findFirst("select * from member m where m.share_code='"+getShareCode()+"'");
 		}
 		return member;
 	}
