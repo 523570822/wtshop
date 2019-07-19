@@ -902,7 +902,7 @@ public class OrderService extends BaseService<Order> {
                 ApiResult result = SMSUtils.send(mobile,"SMS_171115973", params);
                 //ApiResult result = SMSUtils.send("", "", params);
                 if(result.resultSuccess()) {
-                    sm.setex("PONHE:"+mobile,120,"1");
+                  //  sm.setex("PONHE:"+mobile,120,"1");
                     Sms sms = new Sms();
                     sms.setMobile(mobile);
                     sms.setSmsCode("您的"+name+"钜惠卡本单消费"+money+"元,待消费金额为"+price+"元有效期至"+day+"，请及时使用哦~");
