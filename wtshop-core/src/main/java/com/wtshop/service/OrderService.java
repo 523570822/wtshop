@@ -864,7 +864,7 @@ public class OrderService extends BaseService<Order> {
                 ApiResult result = SMSUtils.send(mobile,"SMS_171116042", params);
                 //ApiResult result = SMSUtils.send("", "", params);
                 if(result.resultSuccess()) {
-                    sm.setex("PONHE:"+mobile,120,"1");
+                  //  sm.setex("PONHE:"+mobile,120,"1");
                     Sms sms = new Sms();
                     sms.setMobile(mobile);
                     sms.setSmsCode("您的"+name+"钜惠卡已完成消费金额的累计，可以到线下门店兑换优惠啦");
@@ -877,7 +877,7 @@ public class OrderService extends BaseService<Order> {
 
 
             }else{
-                Cache sm = Redis.use();
+               // Cache sm = Redis.use();
               //  double price=identifier.getTotalMoney().doubleValue()-(identifier.getPrice().doubleValue());
                 BigDecimal price = identifier.getTotalMoney().subtract(identifier.getPrice());
                 String name=identifier.getMember().getStore();
@@ -888,7 +888,7 @@ public class OrderService extends BaseService<Order> {
                 params.put("money",money);
 
 
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分");
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日");
                 String dateString = formatter.format(day.getTime());
                 params.put("day",dateString);
 
@@ -899,7 +899,7 @@ public class OrderService extends BaseService<Order> {
                     logger.error("请检查用户"+identifier.getMemberId()+"手机号是否正确!——————————————————————");
                     //    renderJson(ApiResult.fail("请检查手机号是否正确!"));
                 }
-                ApiResult result = SMSUtils.send(mobile,"SMS_171115973", params);
+                ApiResult result = SMSUtils.send(mobile,"SMS_171111400", params);
                 //ApiResult result = SMSUtils.send("", "", params);
                 if(result.resultSuccess()) {
                   //  sm.setex("PONHE:"+mobile,120,"1");

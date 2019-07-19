@@ -86,7 +86,7 @@ public class CouponPromptManager implements ITask {
                 ApiResult result = SMSUtils.send(mobile,"SMS_170840857", params);
                 //ApiResult result = SMSUtils.send("", "", params);
                 if(result.resultSuccess()) {
-                    sm.setex("PONHE:"+mobile,120,"1");
+                   // sm.setex("PONHE:"+mobile,120,"1");
                     Sms sms = new Sms();
                     sms.setMobile(mobile);
                     sms.setSmsCode("您的"+price+"元代金卡还有"+day+"天就要过期了，请及时使用哦~");
@@ -137,7 +137,7 @@ public class CouponPromptManager implements ITask {
               ApiResult result = SMSUtils.send(mobile,"SMS_170835788", params);
                 //ApiResult result = SMSUtils.send("", "", params);
                 if(result.resultSuccess()) {
-                    sm.setex("PONHE:"+mobile,120,"1");
+             //       sm.setex("PONHE:"+mobile,120,"1");
                     Sms sms = new Sms();
                     sms.setMobile(mobile);
                     sms.setSmsCode("您的"+name+"钜惠卡当前待消费金额为"+price+"元,还有"+day+"天就要过期了，请及时使用哦~");
