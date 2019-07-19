@@ -851,9 +851,7 @@ public class OrderService extends BaseService<Order> {
                 depositLogService.save(depositLog1);
                 memberService.update(member2);
                 Cache sm = Redis.use();
-                String price=identifier.getTotalMoney().multiply(identifier.getPrice()).toString() ;
                 String name=identifier.getMember().getStore();
-                Date day = identifier.getEndDate();
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("name", name );
                 String mobile=member.getPhone();
@@ -879,14 +877,14 @@ public class OrderService extends BaseService<Order> {
 
             }else{
                 Cache sm = Redis.use();
-                String price=identifier.getTotalMoney().multiply(identifier.getPrice()).toString() ;
+                double price=identifier.getTotalMoney().doubleValue()-(identifier.getPrice().doubleValue());
                 String name=identifier.getMember().getStore();
                 Date day = identifier.getEndDate();
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("name", name );
                 params.put("price",price);
                 params.put("money",money);
-                params.put("day",day);
+                params.put("day",day.getTime());
                 String mobile=member.getPhone();
                 //检查手机号码有效性
                 if (!SMSUtils.isMobileNo(mobile)) {
