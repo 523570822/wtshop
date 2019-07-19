@@ -1,13 +1,12 @@
 package com.wtshop.util;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
+import com.jfinal.plugin.redis.Cache;
+import com.jfinal.plugin.redis.Redis;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.request.AlibabaAliqinFcSmsNumSendRequest;
@@ -33,11 +32,15 @@ public class SMSUtils {
 
     public static Object send(List<String> phones, String templateId, Map<String, Object> params) {
         ApiResult apiResult = ApiResult.success();
-        Prop prop = PropKit.use(CommonAttributes.wtshop_PROPERTIES_PATH);
-        String url = prop.get("sms.url");
-        String appkey = prop.get("sms.appkey");
-        String secret = prop.get("sms.secret");
-        String sign = prop.get("sms.signName");
+          Prop prop = PropKit.use(CommonAttributes.wtshop_PROPERTIES_PATH);
+     String url = prop.get("sms.url","http://gw.api.taobao.com/router/rest");
+        String appkey = prop.get("sms.appkey","23420217");
+        String secret = prop.get("sms.secret","3be7ee1de30c2e63ad465317d394fa32");
+        String sign = prop.get("sms.signName","任性猫");
+     /*   String url = "http://gw.api.taobao.com/router/rest";
+        String appkey ="23420217";
+        String secret = "3be7ee1de30c2e63ad465317d394fa32";
+        String sign ="任性猫";*/
         DefaultTaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
         AlibabaAliqinFcSmsNumSendRequest req = new AlibabaAliqinFcSmsNumSendRequest();
         req.setSmsType("normal");
@@ -126,4 +129,17 @@ public class SMSUtils {
         return retStr;
     }
 
+    public static void main(String[] args) {
+        Cache sm = Redis.use();
+
+        Map<String, Object> params = new HashMap<String, Object>();
+     //   params.put("name", 123 );
+        params.put("price",123);
+     //   params.put("money",123);
+        params.put("date","2017-02-02");
+
+
+        ApiResult result = SMSUtils.send("15620512895","SMS_170840857", params);
+        System.out.println(result.toString());
+    }
 }

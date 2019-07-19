@@ -117,7 +117,7 @@ public class CouponPromptManager implements ITask {
             String appid = RedisUtil.getString(key);
             if (appid != null) {
                 logger.info("开始调用极光推送方法——————————————————————; appid=" + appid);
-                JPush.sendPushById(appid, "钜惠卡通知消息", "钜惠活动提醒", "您的"+name+"钜惠卡当前待消费金额为"+price+"元代金卡还有"+day+"天就要过期了，请及时使用哦~", sound, null);
+                JPush.sendPushById(appid, "钜惠卡通知消息", "钜惠活动提醒", "您的"+name+"钜惠卡当前待消费金额为"+price+"元,还有"+day+"天就要过期了，请及时使用哦~", sound, null);
                 logger.info("成功调用极光推送方法——————————————————————");
             }
 
@@ -139,10 +139,10 @@ public class CouponPromptManager implements ITask {
                     sm.setex("PONHE:"+mobile,120,"1");
                     Sms sms = new Sms();
                     sms.setMobile(mobile);
-                    sms.setSmsCode("您的"+name+"钜惠卡当前待消费金额为"+price+"元代金卡还有"+day+"天就要过期了，请及时使用哦~");
+                    sms.setSmsCode("您的"+name+"钜惠卡当前待消费金额为"+price+"元,还有"+day+"天就要过期了，请及时使用哦~");
                     sms.setSmsType(Setting.SmsType.other.ordinal());
                     smsService.saveOrUpdate(sms);
-                    logger.info("短信发送成功！【您的"+name+"钜惠卡当前待消费金额为"+price+"元代金卡还有"+day+"天就要过期了，请及时使用哦~】");
+                    logger.info("短信发送成功！【您的"+name+"钜惠卡当前待消费金额为"+price+"元,还有"+day+"天就要过期了，请及时使用哦~】");
                 }else {
                     logger.info("您发送的过于频繁,请稍后再试!");
                 }

@@ -147,12 +147,13 @@ git rm --cached -r  "target"
   
   
   如果重启服务器server1需要启动
-  cd /mrmf/apache-tomcat-8.0.30/bin 下的打
+  下的打
   ./startup.sh
   
 正式环境 重启db1 后需重启redis 
- cd  /root/mrmf/redis3.0.1/src
+ cd  mrmf/redis-3.2.1/src
   进入src目录下，执行
               ./redis-server ../redis_shop.conf（ cd  /root/work/redis/src
                                                   进入src目录下，执行./redis-server & (带上&是在后台启动)
-                                                                      ./redis-server ../redis_shop.conf）
+                                                                      ./redis-server ../redis_shop.conf）                                                               
+  ./redis-server ../redis.conf

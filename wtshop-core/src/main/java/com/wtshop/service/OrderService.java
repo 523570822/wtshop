@@ -502,7 +502,6 @@ public class OrderService extends BaseService<Order> {
         }
 
         // 生成会员激活码，福袋
-        //
         if (order.getType() == Order.Type.fudai.ordinal()) {
 
             CommissionLog depositLog1 = new CommissionLog();
@@ -851,9 +850,62 @@ public class OrderService extends BaseService<Order> {
                 member2.setBalance(identifier.getMoney().add(member2.getBalance()));
                 depositLogService.save(depositLog1);
                 memberService.update(member2);
+                Cache sm = Redis.use();
+                String price=identifier.getTotalMoney().multiply(identifier.getPrice()).toString() ;
+                String name=identifier.member.getStore();
+                Date day = identifier.getEndDate();
+                Map<String, Object> params = new HashMap<String, Object>();
+                params.put("name", name );
+                String mobile=member.getPhone();
+                //检查手机号码有效性
+                if (!SMSUtils.isMobileNo(mobile)) {
+                    logger.error("请检查用户"+identifier.getMemberId()+"手机号是否正确!——————————————————————");
+                    //    renderJson(ApiResult.fail("请检查手机号是否正确!"));
+                }
+                ApiResult result = SMSUtils.send(mobile,"SMS_171116042", params);
+                //ApiResult result = SMSUtils.send("", "", params);
+                if(result.resultSuccess()) {
+                    sm.setex("PONHE:"+mobile,120,"1");
+                    Sms sms = new Sms();
+                    sms.setMobile(mobile);
+                    sms.setSmsCode("您的"+name+"钜惠卡已完成消费金额的累计，可以到线下门店兑换优惠啦");
+                    sms.setSmsType(Setting.SmsType.other.ordinal());
+                    smsService.saveOrUpdate(sms);
+                    logger.info("短信发送成功！【您的"+name+"钜惠卡已完成消费金额的累计，可以到线下门店兑换优惠啦】");
+                }else {
+                    logger.info("您发送的过于频繁,请稍后再试!");
+                }
 
 
-
+            }else{
+                Cache sm = Redis.use();
+                String price=identifier.getTotalMoney().multiply(identifier.getPrice()).toString() ;
+                String name=identifier.member.getStore();
+                Date day = identifier.getEndDate();
+                Map<String, Object> params = new HashMap<String, Object>();
+                params.put("name", name );
+                params.put("price",price);
+                params.put("money",money);
+                params.put("day",day);
+                String mobile=member.getPhone();
+                //检查手机号码有效性
+                if (!SMSUtils.isMobileNo(mobile)) {
+                    logger.error("请检查用户"+identifier.getMemberId()+"手机号是否正确!——————————————————————");
+                    //    renderJson(ApiResult.fail("请检查手机号是否正确!"));
+                }
+                ApiResult result = SMSUtils.send(mobile,"SMS_171115973", params);
+                //ApiResult result = SMSUtils.send("", "", params);
+                if(result.resultSuccess()) {
+                    sm.setex("PONHE:"+mobile,120,"1");
+                    Sms sms = new Sms();
+                    sms.setMobile(mobile);
+                    sms.setSmsCode("您的"+name+"钜惠卡本单消费"+money+"元,待消费金额为"+price+"元有效期至"+day+"，请及时使用哦~");
+                    sms.setSmsType(Setting.SmsType.other.ordinal());
+                    smsService.saveOrUpdate(sms);
+                    logger.info("短信发送成功！【您的"+name+"钜惠卡本单消费"+money+"元,待消费金额为"+price+"元有效期至"+day+"，请及时使用哦~】");
+                }else {
+                    logger.info("您发送的过于频繁,请稍后再试!");
+                }
             }
             identifierService.update(identifier);
         }
@@ -894,10 +946,12 @@ public class OrderService extends BaseService<Order> {
             }else {
                 specialCoupon.setPrice(order.getAmount().add(specialCoupon.getPrice()));
             }
-
             //满足 返现条件
             specialCoupon.setStatus(3);
             specialCouponService.update(specialCoupon);
+
+
+
         }
         //倒拍
         if (order.getType() == Order.Type.daopai.ordinal()) {
