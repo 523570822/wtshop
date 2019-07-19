@@ -852,7 +852,7 @@ public class OrderService extends BaseService<Order> {
                 memberService.update(member2);
                 Cache sm = Redis.use();
                 String price=identifier.getTotalMoney().multiply(identifier.getPrice()).toString() ;
-                String name=identifier.member.getStore();
+                String name=identifier.getMember().getStore();
                 Date day = identifier.getEndDate();
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("name", name );
@@ -880,7 +880,7 @@ public class OrderService extends BaseService<Order> {
             }else{
                 Cache sm = Redis.use();
                 String price=identifier.getTotalMoney().multiply(identifier.getPrice()).toString() ;
-                String name=identifier.member.getStore();
+                String name=identifier.getMember().getStore();
                 Date day = identifier.getEndDate();
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("name", name );
