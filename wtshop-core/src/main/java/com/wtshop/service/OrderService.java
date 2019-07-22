@@ -954,6 +954,7 @@ public class OrderService extends BaseService<Order> {
             }
             //满足 返现条件
             specialCoupon.setStatus(3);
+            specialCoupon.setShareCode(order.getSn());
             specialCouponService.update(specialCoupon);
 
 

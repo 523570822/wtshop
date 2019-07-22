@@ -88,13 +88,13 @@
 	<setting name="freeMoney" value="200" />
 	<setting name="commomPayTime" value="15" />
 	<setting name="certifiedCopy" value="true" />
-	<setting name="certifiedCopyUrl" value="http://shop.rxmao.cn/rxm/goods/guarantee.html" />
+	<setting name="certifiedCopyUrl" value="https://shop.rxmao.cn/rxm/goods/guarantee.html" />
 	<setting name="shoppingCopy" value="true" />
-	<setting name="shoppingCopyUrl" value="http://shop.rxmao.cn/rxm/goods/userPayMustKnow.html" />
+	<setting name="shoppingCopyUrl" value="https://shop.rxmao.cn/rxm/goods/userPayMustKnow.html" />
 	<setting name="isReturnInsurance" value="true" />
 	<setting name="returnMoney" value="10" />
 	<setting name="returnCopy" value="" />
-	<setting name="returnCopyUrl" value="http://shop.rxmao.cn/rxm/goods/backOrChangeGoods.html" />
+	<setting name="returnCopyUrl" value="https://shop.rxmao.cn/rxm/goods/backOrChangeGoods.html" />
 	<setting name="isUseMiaoBi" value="true" />
 	<setting name="stockAllocationTime" value="order" />
 	<setting name="miaoBiLimit" value="0.1" />
@@ -103,14 +103,14 @@
 	<setting name="sendMiaoBiLimit" value="1" />
 	<setting name="staffCommission" value="0.07" />
 	<setting name="organCommission" value="0.05" />
-	<setting name="taxExplainUrl" value="http://shop.rxmao.cn/rxm/goods/tax.html" />
+	<setting name="taxExplainUrl" value="https://shop.rxmao.cn/rxm/goods/tax.html" />
 	<setting name="taxExplain" value="" />
 	<setting name="isRegisterSending" value="true" />
 	<setting name="registerSending" value="200" />
 	<setting name="vipSending" value="200" />
 	<setting name="shareSending" value="200" />
 	<setting name="housekeeperSending" value="200" />
-	<setting name="registerPoint" value="http://shop.rxmao.cn/rxm/goods/register.html" />
+	<setting name="registerPoint" value="https://shop.rxmao.cn/rxm/goods/register.html" />
 	<setting name="registerAgreement" value="&lt;p&gt;尊敬的用户欢迎您注册成为本网站会员。请用户仔细阅读以下全部内容。如用户不同意本服务条款任意内容，请不要注册或使用本网站服务。如用户通过本网站注册程序，即表示用户与本网站已达成协议，自愿接受本服务条款的所有内容。此后，用户不得以未阅读本服务条款内容作任何形式的抗辩。&lt;/p&gt;
 &lt;p&gt;一、本站服务条款的确认和接纳&lt;br /&gt;本网站涉及的各项服务的所有权和运作权归本网站所有。本网站所提供的服务必须按照其发布的服务条款和操作规则严格执行。本服务条款的效力范围及于本网站的一切产品和服务，用户在享受本网站的任何服务时，应当受本服务条款的约束。&lt;/p&gt;
 &lt;p&gt;二、服务简介&lt;br /&gt;本网站运用自己的操作系统通过国际互联网络为用户提供各项服务。用户必须:  1. 提供设备，如个人电脑、手机或其他上网设备。 2. 个人上网和支付与此服务有关的费用。&lt;/p&gt;

@@ -96,9 +96,9 @@ $().ready(function() {
 				<th>
 					<a href="javascript:;" class="sort" name="logo">识别码</a>
 				</th>
-                <th>
-                    <a href="javascript:;" class="sort" name="logo">邀请码</a>
-                </th>
+             [#--   <th>
+                    <a href="javascript:;"  name="logo">邀请码</a>
+                </th>--]
                 <th>
                     <a href="javascript:;" class="sort" name="logo">用户</a>
                 </th>
@@ -132,9 +132,9 @@ $().ready(function() {
 					<td>
 						${brand.code}
 					</td>
-                    <td>
+                  [#--  <td>
 						${brand.share_code}
-                    </td>
+                    </td>--]
                     <td>
 						${brand.member_id}
                     </td>
@@ -168,7 +168,20 @@ $().ready(function() {
                         <span class="green">[已启用]</span>
 					[/#if]
                     </td>
-					<td>
+
+                    <td>
+					[#if brand.status==2||brand.status==0]
+                        <a href="disabled.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("admin.member.disabled")}]</a>
+					[#--  <a href="publish.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("LoginPlugin.isEnabled")}]</a>--]
+					[#else ]
+
+					[/#if]
+						[#if brand.status==3||brand.status==1]
+					 <a href="publish.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("LoginPlugin.isEnabled")}]</a>
+						[#else ]
+
+						[/#if]
+
 			[#--			<a href="edit.jhtml?id=${brand.id}">[${message("admin.common.edit")}]</a>
 						--][#--<a href="${base}${brand.path}" target="_blank">[${message("admin.common.view")}]</a>--][#--
 

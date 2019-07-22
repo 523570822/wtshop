@@ -175,9 +175,9 @@ public class IdentifierController extends BaseController {
 	public void disabled() {
 		Long id = getParaToLong("id");
 		Identifier activity = identifierService.find(id);
-		activity.setStatus(0);
+		activity.setStatus(3);
 		identifierService.update(activity);
-		redirect("/admin/special/list.jhtml");
+		redirect("/admin/identifier/list.jhtml");
 	}
 
 

@@ -175,14 +175,17 @@ $().ready(function() {
 					[/#if]
                     </td>
 					<td>
-			[#--			<a href="edit.jhtml?id=${brand.id}">[${message("admin.common.edit")}]</a>
-						--][#--<a href="${base}${brand.path}" target="_blank">[${message("admin.common.view")}]</a>--][#--
-
-					[#if brand.status==0||brand.status==null]
-  <a href="publish.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("LoginPlugin.isEnabled")}]</a>
+					[#if brand.status==2||brand.status==0]
+                        <a href="disabled.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("admin.member.disabled")}]</a>
+[#--  <a href="publish.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("LoginPlugin.isEnabled")}]</a>--]
 						 [#else ]
- <a href="disabled.jhtml?id=${brand.id}" class="status" data="${brand.id}">][${message("admin.member.disabled")}]</a>
-						 [/#if]--]
+
+						 [/#if]
+						[#if brand.status==3||brand.status==1]
+					 <a href="publish.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("LoginPlugin.isEnabled")}]</a>
+						[#else ]
+
+						[/#if]
 					</td>
 				</tr>
 			[/#list]
