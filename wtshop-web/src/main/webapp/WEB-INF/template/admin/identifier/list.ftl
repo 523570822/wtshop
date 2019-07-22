@@ -175,13 +175,13 @@ $().ready(function() {
 					[/#if]
                     </td>
 					<td>
-					[#if brand.status==2||brand.status==0]
+					[#if brand.status==2||brand.status==0||brand.status==1]
                         <a href="disabled.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("admin.member.disabled")}]</a>
 [#--  <a href="publish.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("LoginPlugin.isEnabled")}]</a>--]
 						 [#else ]
 
 						 [/#if]
-						[#if brand.status==3||brand.status==1]
+						[#if brand.status==3]
 					 <a href="publish.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("LoginPlugin.isEnabled")}]</a>
 						[#else ]
 
