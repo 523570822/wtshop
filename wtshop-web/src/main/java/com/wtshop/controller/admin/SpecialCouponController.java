@@ -171,7 +171,7 @@ public class SpecialCouponController extends BaseController {
 	public void disabled() {
 		Long id = getParaToLong("id");
 		SpecialCoupon activity = identifierService.find(id);
-		activity.setStatus(0);
+		activity.setStatus(3);
 		identifierService.update(activity);
 		redirect("/admin/specialCoupon/list.jhtml");
 	}
