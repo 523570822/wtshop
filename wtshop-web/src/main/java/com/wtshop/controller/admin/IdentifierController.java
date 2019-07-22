@@ -191,7 +191,7 @@ public class IdentifierController extends BaseController {
 
 		activity.setStatus(1);
 		identifierService.update(activity);
-		redirect("/admin/special/list.jhtml");
+		redirect("/admin/identifier/list.jhtml");
 	}
 	//导出
 	public  void   getExcel(){
