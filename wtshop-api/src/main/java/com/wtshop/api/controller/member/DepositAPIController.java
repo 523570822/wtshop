@@ -12,6 +12,7 @@ import com.wtshop.api.common.result.member.DepositLogResult;
 import com.wtshop.api.controller.BaseAPIController;
 import com.wtshop.api.interceptor.ErrorInterceptor;
 import com.wtshop.api.interceptor.TokenInterceptor;
+import com.wtshop.constants.Code;
 import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.*;
 import com.wtshop.service.*;
@@ -167,7 +168,13 @@ public class DepositAPIController extends BaseAPIController {
 	@Before(Tx.class)
 	public void exchange(){
 		try {
+
 			String price = getPara("price");
+			if (Code.isDevMode){
+				price = "0.01";
+				renderJson(ApiResult.fail("测试服务器不允许提现!"));
+				return;
+			}
 			Integer type = getParaToInt("type");
 			//提现方式 余额1 /佣金 2
 			Integer balanceType = getParaToInt("balanceType",1);
