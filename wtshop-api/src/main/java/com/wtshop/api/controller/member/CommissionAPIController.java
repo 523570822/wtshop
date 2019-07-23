@@ -13,6 +13,7 @@ import com.wtshop.api.common.result.member.DepositLogResult;
 import com.wtshop.api.controller.BaseAPIController;
 import com.wtshop.api.interceptor.ErrorInterceptor;
 import com.wtshop.api.interceptor.TokenInterceptor;
+import com.wtshop.constants.Code;
 import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.*;
 import com.wtshop.service.*;
@@ -165,9 +166,14 @@ public class CommissionAPIController extends BaseAPIController {
 	 */
 	@Before(Tx.class)
 	public void exchange(){
+
+
 		try {
 			String price = getPara("price");
 			Integer type = getParaToInt("type");
+			if (Code.isDevMode){
+				price = "0.01";
+			}
 			//提现方式 余额1 /佣金 2
 			Integer balanceType = getParaToInt("balanceType",2);
 			String ip = IpUtil.getIpAddr(getRequest());
