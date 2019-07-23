@@ -173,6 +173,8 @@ public class CommissionAPIController extends BaseAPIController {
 			Integer type = getParaToInt("type");
 			if (Code.isDevMode){
 				price = "0.01";
+				renderJson(ApiResult.fail("提现金额异常，请联系管理员!"));
+				return;
 			}
 			//提现方式 余额1 /佣金 2
 			Integer balanceType = getParaToInt("balanceType",2);
