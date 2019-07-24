@@ -364,6 +364,9 @@ public class CartAPIController extends BaseAPIController {
 				message = "满"+ MathUtil.getInt(freeMoney.toString())+"元减免运费";
 				messageList.add (new CartGoodsResult(message, 1, "去凑单"));
 			}else {
+
+				message = "满"+ MathUtil.getInt(freeMoney.toString())+"元减免运费";
+				messageList.add (new CartGoodsResult(message, 1, "去凑单"));
 				subtract = 0d;
 			}
 
