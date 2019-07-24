@@ -293,6 +293,7 @@ private  FightGroupService fightGroupService=enhance(FightGroupService.class);
 	}
 
 	/**
+	 * 订单详情接口
 	 * 查看
 	 * {"msg":"","code":1,"data":{"key":false,"order":{"address":"中南海1号","amount":70.000000,"amount_paid":0.000000,"area_id":null,"area_name":"北京市昌平区","complete_date":null,"consignee":"史强","coupon_code_id":null,"coupon_discount":0.000000,"create_date":"2017-05-24 14:42:25","exchange_point":0,"expire":"2017-05-25 14:42:25","fee":0.000000,"freight":0.000000,"id":82,"invoice_content":null,"invoice_title":null,"is_allocated_stock":false,"is_exchange_point":false,"is_use_coupon_code":false,"lock_expire":"2017-05-24 14:43:25","lock_key":"b16f3025929c413e27fb4fd39a4f46ee","member_id":18,"memo":"","modify_date":"2017-05-24 14:42:25","offset_amount":0.000000,"payment_method_id":1,"payment_method_name":"网上支付","payment_method_type":0,"phone":"13581856711","price":70.000000,"promotion_discount":0.000000,"promotion_names":"[]","quantity":1,"refund_amount":0.000000,"returned_quantity":0,"reward_point":10,"shipped_quantity":0,"shipping_method_id":1,"shipping_method_name":"普通快递","sn":"20170524404","status":0,"tax":0.000000,"type":0,"version":0,"weight":1000,"zip_code":"100000"}}}
 	 */
@@ -375,18 +376,20 @@ private  FightGroupService fightGroupService=enhance(FightGroupService.class);
 			}
 
 		}
+		if(order.getSpecialCouponPrice()==null){
+			order.setSpecialCouponPrice(BigDecimal.ZERO);
+		}
 		Double oldPrice = orderService.getOldPrice(order);
 		PriceResult oldTotalPrice = new PriceResult("商品优惠前总金额","¥ "+ MathUtil.getInt(oldPrice.toString()));
 		PriceResult deliveryPrice = new PriceResult("运费","¥ "+ MathUtil.getInt( order.getFee().toString()));
-		String couponMoney = MathUtil.getInt(order.getFreight().add(order.getMiaobiPaid()).add(new BigDecimal(oldPrice).subtract(order.getPrice())).toString());
+		// 运费优惠金额+ 喵币抵扣金额+代金卡金额-老支付金额
+		String couponMoney = MathUtil.getInt(order.getFreight().add(order.getMiaobiPaid().add(order.getSpecialCouponPrice())).add(new BigDecimal(oldPrice).subtract(order.getPrice())).toString());
 
 		PriceResult newDeliveryPrice = new PriceResult("运费优惠金额","-¥ "+  MathUtil.getInt( order.getFreight().toString()));
 
 		PriceResult totalPrice = new PriceResult("商品总金额","¥ "+ MathUtil.getInt(order.getPrice().toString()));
 
-		if(order.getSpecialCouponPrice()==null){
-			order.setSpecialCouponPrice(BigDecimal.ZERO);
-		}
+
 		PriceResult	specialcouponPrice = new PriceResult("代金卡","-¥ "+MathUtil.getInt(order.getSpecialCouponPrice().toString()));
 		PriceResult miaobiPrice = new PriceResult("喵币","-¥ "+ MathUtil.getInt(order.getMiaobiPaid().toString()));
 		if(order.getType() == Order.Type.miaobi.ordinal()){
