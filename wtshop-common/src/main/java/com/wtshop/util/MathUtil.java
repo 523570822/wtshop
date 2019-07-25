@@ -149,9 +149,7 @@ public final strictfp class MathUtil {
 		return pattern.matcher(object.toString()).matches();
 	}
 
-	public static final void main(String[] args) {
-		System.out.println(add(1.001, 2.10));
-	}
+
 	
 	/***
 	 * 计算百分率

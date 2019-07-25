@@ -880,12 +880,14 @@ public class OrderService extends BaseService<Order> {
                // Cache sm = Redis.use();
               //  double price=identifier.getTotalMoney().doubleValue()-(identifier.getPrice().doubleValue());
                 BigDecimal price = identifier.getTotalMoney().subtract(identifier.getPrice());
+                String sprice = MathUtil.getInt(price.toString());
+                String smoney = MathUtil.getInt(money);
                 String name=identifier.getMember().getStore();
                 Date day = identifier.getEndDate();
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("name", name );
-                params.put("price",price);
-                params.put("money",money);
+                params.put("price",sprice);
+                params.put("money",smoney);
 
 
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日");
@@ -899,13 +901,13 @@ public class OrderService extends BaseService<Order> {
                     logger.error("请检查用户"+identifier.getMemberId()+"手机号是否正确!——————————————————————");
                     //    renderJson(ApiResult.fail("请检查手机号是否正确!"));
                 }
-                ApiResult result = SMSUtils.send(mobile,"SMS_171111400", params);
+                ApiResult result = SMSUtils.send(mobile,"SMS_171188377", params);
                 //ApiResult result = SMSUtils.send("", "", params);
                 if(result.resultSuccess()) {
                   //  sm.setex("PONHE:"+mobile,120,"1");
                     Sms sms = new Sms();
                     sms.setMobile(mobile);
-                    sms.setSmsCode("您的"+name+"钜惠卡本单消费"+money+"元,待消费金额为"+price+"元有效期至"+day+"，请及时使用哦~");
+                    sms.setSmsCode("您的"+name+"钜惠卡本单消费"+money+"元,待消费金额为"+sprice+"元有效期至"+day+"，请及时使用哦~");
                     sms.setSmsType(Setting.SmsType.other.ordinal());
                     smsService.saveOrUpdate(sms);
                     logger.info("短信发送成功！【您的"+name+"钜惠卡本单消费"+money+"元,待消费金额为"+price+"元有效期至"+day+"，请及时使用哦~】");
