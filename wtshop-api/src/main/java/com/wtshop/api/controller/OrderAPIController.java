@@ -334,7 +334,13 @@ public class OrderAPIController extends BaseAPIController {
 
 		//特殊商品
 		Long sPecialIds = getParaToLong("sPecialIds",0l);
-		Long identifierId = getParaToLong("identifierId",0l);
+
+		String identifierIdString = getPara("identifierId","0");
+		if("undefined".equals(identifierIdString)){
+			identifierIdString="0";
+		}
+		Long identifierId =Long.parseLong(identifierIdString);
+				//Long identifierId = getParaToLong("identifierId",0l);
 
 		//代金券id
 		Long sPecialCoupId = getParaToLong("sPecialCoupId",0l);
