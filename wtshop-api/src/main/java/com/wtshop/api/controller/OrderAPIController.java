@@ -337,7 +337,7 @@ public class OrderAPIController extends BaseAPIController {
 
 		String identifierIdString = getPara("identifierId","0");
 		if("undefined".equals(identifierIdString)){
-			renderJson(new ApiResult(102,"请选择门店!"));
+			renderJson(new ApiResult(0,"请选择门店!"));
 			return;
 		}
 		Long identifierId =Long.parseLong(identifierIdString);
@@ -1288,7 +1288,16 @@ if(!isSinglepurchase){
 	public void create() {
 		Cache actCache = Redis.use();
 		Member member = memberService.getCurrent();
-		Long identifierId = getParaToLong("identifierId",0l);
+
+		String identifierIdString = getPara("identifierId","0");
+		if("undefined".equals(identifierIdString)){
+			renderJson(new ApiResult(0,"请选择门店!"));
+			return;
+		}
+		Long identifierId =Long.parseLong(identifierIdString);
+
+
+	//	Long identifierId = getParaToLong("identifierId",0l);
 
 		//代金券id
 		Long sPecialCoupId = getParaToLong("sPecialCoupId",0l);
