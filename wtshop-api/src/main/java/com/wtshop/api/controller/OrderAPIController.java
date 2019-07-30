@@ -337,7 +337,8 @@ public class OrderAPIController extends BaseAPIController {
 
 		String identifierIdString = getPara("identifierId","0");
 		if("undefined".equals(identifierIdString)){
-			identifierIdString="0";
+			renderJson(new ApiResult(102,"请选择门店!"));
+			return;
 		}
 		Long identifierId =Long.parseLong(identifierIdString);
 				//Long identifierId = getParaToLong("identifierId",0l);
