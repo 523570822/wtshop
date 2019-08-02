@@ -123,7 +123,7 @@ public class IdentifierController extends BaseController {
 		Date begin= getParaToDate("beginDate", null);
 		Date end = getParaToDate("endDate", null);
 		if (begin == null) {
-			begin = DateUtils.addMonths(new Date(), -12);
+			begin =new Date();
 		}
 
 		if (end == null) {
