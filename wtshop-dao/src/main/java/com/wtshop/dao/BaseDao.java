@@ -356,9 +356,9 @@ public class BaseDao <M extends Model<M>> {
 			}
 		} else if (StrKit.isBlank(ordersSQL)) {
 			if (compareClass()) {
-				ordersSQL = " ORDER BY " + OrderEntity.ORDER_NAME +" ASC ";
+				ordersSQL = " ORDER BY i." + OrderEntity.ORDER_NAME +" ASC ";
 			} else {
-				ordersSQL = " ORDER BY " + CREATE_DATE + " DESC ";
+				ordersSQL = " ORDER BY i." + CREATE_DATE + " DESC ";
 			}
 		}
 		sqlExceptSelect += ordersSQL;

@@ -10,6 +10,7 @@
 <link href="${base}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="${base}/resources/admin/js/jquery.js"></script>
 <script type="text/javascript" src="${base}/resources/admin/js/common.js"></script>
+    <script type="text/javascript" src="${base}/resources/admin/datePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${base}/resources/admin/js/list.js"></script>
 <script type="text/javascript">
 $().ready(function() {
@@ -67,23 +68,10 @@ $().ready(function() {
 
 				</ul>--]
 			</div>
-		生成批次：
-            <input type="text"
-                   id="titleB" name="titleB" class="text"  value="${titleB}"
-                   maxlength="12"
-                   onkeyup="value=value.replace(/[^\d]/g,'')"
-                          onblur="value=value.replace(/[^\d]/g,'')"
-                   ng-model="schedule.round"
-                   placeholder="请输入数字">
-		-
-
-            <input type="text"
-                   id="titleE" name="titleE"  class="text"  value="${titleE}"
-                   maxlength="12"
-                   onkeyup="value=value.replace(/[^\d]/g,'')"
-                   onblur="value=value.replace(/[^\d]/g,'')"
-            ng-model="schedule.round"
-            placeholder="请输入数字">
+			${message("admin.memberStatistic.beginDate")}:
+            <input type="text" id="beginDate" name="beginDate" class="text Wdate" value="${beginDate?string("yyyy-MM-dd")}" style="width: 120px;" onfocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')}'});" />
+			${message("admin.memberStatistic.endDate")}:
+            <input type="text" id="endDate" name="endDate" class="text Wdate" value="${endDate?string("yyyy-MM-dd")}" style="width: 120px;" onfocus="WdatePicker({minDate: '#F{$dp.$D(\'beginDate\')}'});" />
             <input type="submit" class="button" value="${message("admin.common.submit")}" />
             <input type="button" value="${message("admin.caiwu.expect")}" class="button" id="excelList" />
 		</div>
@@ -92,38 +80,42 @@ $().ready(function() {
 				<th class="check">
 					<input type="checkbox" id="selectAll" />
 				</th>
-				<th>
+			[#--	<th>
 					<a href="javascript:;" class="sort" name="name">生产批次</a>
-				</th>
+				</th>--]
 				<th>
-					<a href="javascript:;" class="sort" name="logo">识别码</a>
+					<a href="javascript:;" class="sort" name="code">识别码</a>
 				</th>
                 <th>
-                    <a href="javascript:;" class="sort" name="logo">邀请码</a>
+                    <a href="javascript:;" class="sort" name="i.share_code">邀请码</a>
                 </th>
                 <th>
-                    <a href="javascript:;" class="sort" name="logo">姓名</a>
+                    <a href="javascript:;" class="sort" name="m.nickname">姓名</a>
                 </th>
                 <th>
-                    <a href="javascript:;" class="sort" name="logo">电话</a>
+                    <a href="javascript:;" class="sort" name="m.phone">电话</a>
                 </th>
                 <th>
                     <a href="javascript:;" class="sort" name="status">状态</a>
                 </th>
                 <th>
-                    <a href="javascript:;" class="sort" name="logo">满金额</a>
+                    <a href="javascript:;" class="sort" name="i.total_money">满金额</a>
                 </th>
                 <th>
-                    <a href="javascript:;" class="sort" name="logo">反金额</a>
+                    <a href="javascript:;" class="sort" name="i.money">反金额</a>
                 </th>
                 <th>
-                    <a href="javascript:;" class="sort" name="logo">消费金额</a>
+                    <a href="javascript:;" class="sort" name="i.price">消费金额</a>
                 </th>
                 <th>
-                    <a href="javascript:;" class="sort" name="isShow">开始时间</a>
+                    <a href="javascript:;" class="sort" name="i.start_date">开始时间</a>
+                </th>
+
+                <th>
+                    <a href="javascript:;" class="sort" name="i.end_date">截止时间</a>
                 </th>
                 <th>
-                    <a href="javascript:;" class="sort" name="isShow">结束时间</a>
+                    <a href="javascript:;" class="sort" name="i.complete_date">完成时间</a>
                 </th>
 
 				<th>
@@ -135,9 +127,9 @@ $().ready(function() {
 					<td>
 						<input type="checkbox" name="ids" value="${brand.id}" />
 					</td>
-					<td>
+					[#--<td>
 						${brand.title}
-					</td>
+					</td>--]
 					<td>
 						${brand.code}
 					</td>
@@ -191,6 +183,8 @@ $().ready(function() {
                     </td>
                     <td>
 						${brand.end_date}
+                    </td> <td>
+						${brand.complete_date}
                     </td>
 
 					<td>

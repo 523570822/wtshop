@@ -1,11 +1,11 @@
 package com.wtshop.controller.admin;
 
 
-import com.jfinal.ext.render.chart.funshion.PieChart;
+
 import com.jfinal.ext.render.excel.PoiRender;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.kit.LogKit;
-import com.jfinal.kit.StrKit;
+
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.render.Render;
 import com.wtshop.Message;
@@ -15,15 +15,10 @@ import com.wtshop.model.Brand.Type;
 import com.wtshop.service.GoodsService;
 import com.wtshop.service.IdentifierService;
 import com.wtshop.service.MemberService;
-import com.wtshop.service.SpecialPersonnelService;
+
 import com.wtshop.util.ShareCodeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -125,23 +120,34 @@ public class IdentifierController extends BaseController {
 	 * 列表
 	 */
 	public void list() {
-		String titleB = getPara("titleB");
+		Date begin= getParaToDate("beginDate", null);
+		Date end = getParaToDate("endDate", null);
+		if (begin == null) {
+			begin = DateUtils.addMonths(new Date(), -12);
+		}
 
-		String titleE = getPara("titleE");
+		if (end == null) {
+			end = new Date();
+		}
+		String beginDate = com.wtshop.util.DateUtils.formatDate(begin);
+		String	endDate=	com.wtshop.util.DateUtils.formatDate(end);
 		String blurry = getPara("blurry");
+
 		String select="select i.* ";
 		String sql=" from identifier i LEFT JOIN member m on i.member_id=m.id  where 1=1 ";
-		if(StringUtils.isNotEmpty(titleB)){
-			sql=sql+" and   i.title>="+titleB;
+		if(beginDate!=null){
+			sql=sql+" and   i.start_date>='"+beginDate+"'";
 		}
-		if(StringUtils.isNotEmpty(titleE)){
-			sql=sql+" and   i.title<="+titleE;
+		if(endDate!=null){
+			sql=sql+" and   i.start_date<='"+endDate+"'";
 		}
 
 
 		if(StringUtils.isNotEmpty(blurry)){
+
+			blurry=blurry.trim();
 			sql=sql+"and ( ";
-			sql=sql+"  m.phone like '%"+blurry+"%' or m.nickname LIKE '%\"+blurry+\"%' or i.share_code LIKE '%\"+blurry+\"%' or i.`code` like '%\"+blurry+\"%' or i.title like '%\"+blurry+\"%' " ;
+			sql=sql+"  m.phone like '%"+blurry+"%' or m.nickname LIKE '%"+blurry+"%' or i.share_code LIKE '%"+blurry+"%' or i.`code` like '%"+blurry+"%' or i.title like '%"+blurry+"%' " ;
 			if("现场兑换".contains(blurry)){
 				sql=sql+"  or  i.`status`=5 " ;
 			}
@@ -161,13 +167,13 @@ public class IdentifierController extends BaseController {
 			sql=sql+" ) ";
 		}
 		Pageable pageable = getBean(Pageable.class);
-		pageable.setOrderDirection("desc");
-		pageable.setOrderProperty("i.status");
+		//pageable.setOrderDirection("desc");
+		//pageable.setOrderProperty("i.status");
 		setAttr("page", identifierService.findPages(select,sql,pageable));
 		LogKit.info(">" + pageable.getPageNumber());
 		setAttr("pageable", pageable);
-		setAttr("titleB", titleB);
-		setAttr("titleB", titleB);
+		setAttr("beginDate", begin);
+		setAttr("endDate", end);
 		setAttr("blurry", blurry);
 		render("/admin/identifier/list.ftl");
 	}

@@ -129,4 +129,12 @@ public abstract class BaseIdentifier<M extends BaseIdentifier<M>> extends Model<
 		return get("money");
 	}
 
+	public void setCompleteDate(java.util.Date completeDate) {
+		set("complete_date", completeDate);
+	}
+
+	public java.util.Date getCompleteDate() {
+		return get("complete_date");
+	}
+
 }

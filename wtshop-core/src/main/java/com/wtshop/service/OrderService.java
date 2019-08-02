@@ -837,7 +837,7 @@ public class OrderService extends BaseService<Order> {
             if(identifier.getPrice().compareTo(identifier.getTotalMoney())!=-1){
                 identifier.setStatus(3);
                 Member member2 = memberService.findByShareCode(identifier.getShareCode()).get(0);
-
+                identifier.setCompleteDate(new Date());
                 DepositLog depositLog1 = new DepositLog();
                 depositLog1.setBalance(member2.getBalance());
                 depositLog1.setCredit(identifier.getMoney());
