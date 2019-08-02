@@ -72,7 +72,8 @@ $().ready( function() {
 	
 	// 刷新
 	$refreshButton.click( function() {
-		location.reload(true);
+	//	location.reload(false);
+		location.replace();
 		return false;
 	});
 	//代发货
