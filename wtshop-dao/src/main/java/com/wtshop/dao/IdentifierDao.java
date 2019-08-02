@@ -111,4 +111,7 @@ public class IdentifierDao extends   BaseDao<Identifier> {
 			return null;
 		}
 	}
+	public Page<Identifier> findPages(String select,String sql, Pageable pageable){
+		return super.findPages(select,sql,pageable);
+	}
 }

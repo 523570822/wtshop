@@ -56,14 +56,16 @@ $().ready(function() {
 			</div>
 			<div id="searchPropertyMenu" class="dropdownMenu">
 				<div class="search">
-					<span class="arrow">&nbsp;</span>
-					<input type="text" id="searchValue" name="pageable.searchValue" value="${pageable.searchValue}" maxlength="200" />
+					[#--<span class="arrow">&nbsp;</span>--]
+					<input type="text" id="blurry" name="blurry" value="${blurry}" maxlength="200" />
 					<button type="submit">&nbsp;</button>
 				</div>
-				<ul>
+				[#--<ul>
+                    <li[#if pageable.searchProperty == "phone"] class="current"[/#if] val="code">识别码</li>
 					<li[#if pageable.searchProperty == "title"] class="current"[/#if] val="title">批次</li>
 					<li[#if pageable.searchProperty == "code"] class="current"[/#if] val="code">识别码</li>
-				</ul>
+
+				</ul>--]
 			</div>
 		生成批次：
             <input type="text"
@@ -100,7 +102,13 @@ $().ready(function() {
                     <a href="javascript:;" class="sort" name="logo">邀请码</a>
                 </th>
                 <th>
-                    <a href="javascript:;" class="sort" name="logo">用户</a>
+                    <a href="javascript:;" class="sort" name="logo">姓名</a>
+                </th>
+                <th>
+                    <a href="javascript:;" class="sort" name="logo">电话</a>
+                </th>
+                <th>
+                    <a href="javascript:;" class="sort" name="status">状态</a>
                 </th>
                 <th>
                     <a href="javascript:;" class="sort" name="logo">满金额</a>
@@ -117,9 +125,7 @@ $().ready(function() {
                 <th>
                     <a href="javascript:;" class="sort" name="isShow">结束时间</a>
                 </th>
-                <th>
-                    <a href="javascript:;" class="sort" name="isShow">状态</a>
-                </th>
+
 				<th>
 					<span>${message("admin.common.action")}</span>
 				</th>
@@ -139,7 +145,36 @@ $().ready(function() {
 						${brand.share_code}
                     </td>
                     <td>
-						${brand.member_id}
+						${brand.member.nickname}
+                    </td>
+                    <td>
+						${brand.member.phone}
+                    </td>
+                    <td>
+					[#if brand.status==0||brand.status==null]
+
+                        <span class="red">[未使用]</span>
+
+
+
+					[#elseif brand.status==3]
+
+                        <span class="blue">[未邮寄]</span>
+
+					[#elseif brand.status==4]
+
+                        <span class="gray">[已邮寄]</span>
+
+					[#elseif brand.status==5]
+
+                        <span class="gray">[现场兑换]</span>
+
+					[#elseif brand.status==1]
+                        <span class="green">[已启用]</span>
+					[#elseif brand.status==2]
+                        <span class="green">[已失效]</span>
+					[/#if]
+
                     </td>
                     <td>
 						${brand.total_money}
@@ -157,32 +192,19 @@ $().ready(function() {
                     <td>
 						${brand.end_date}
                     </td>
-                    <td>
-					[#if brand.status==0||brand.status==null]
 
-                        <span class="red">[未使用]</span>
-
-
-
-					[#elseif brand.status==3]
-
-                        <span class="blue">[已完成]</span>
-
-
-
-						[#else]
-                        <span class="green">[已启用]</span>
-					[/#if]
-                    </td>
 					<td>
 					[#if brand.status==2||brand.status==0||brand.status==1]
-                        <a href="disabled.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("admin.member.disabled")}]</a>
+                    <a href="disabled.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("admin.member.disabled")}]</a>
 [#--  <a href="publish.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("LoginPlugin.isEnabled")}]</a>--]
 						 [#else ]
 
 						 [/#if]
 						[#if brand.status==3]
 					 <a href="publish.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("LoginPlugin.isEnabled")}]</a>
+							 <a href="disabled.jhtml?id=${brand.id}&&status=4" class="status" data="${brand.id}">[已邮寄]</a>
+							 <a href="disabled.jhtml?id=${brand.id}&&status=5" class="status" data="${brand.id}">[现场兑换]</a>
+
 						[#else ]
 
 						[/#if]

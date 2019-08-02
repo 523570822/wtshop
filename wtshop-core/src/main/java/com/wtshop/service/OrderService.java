@@ -852,7 +852,7 @@ public class OrderService extends BaseService<Order> {
                 depositLogService.save(depositLog1);
                 memberService.update(member2);
                 Cache sm = Redis.use();
-                String name=identifier.getMember().getStore();
+                String name=identifier.getOnMember().getStore();
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("name", name );
                 String mobile=member.getPhone();
@@ -882,7 +882,7 @@ public class OrderService extends BaseService<Order> {
                 BigDecimal price = identifier.getTotalMoney().subtract(identifier.getPrice());
                 String sprice = MathUtil.getInt(price.toString());
                 String smoney = MathUtil.getInt(money);
-                String name=identifier.getMember().getStore();
+                String name=identifier.getOnMember().getStore();
                 Date day = identifier.getEndDate();
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("name", name );

@@ -764,6 +764,7 @@ public class GoodsController extends BaseController {
 
     /**
      * 列表
+     *
      */
     public void list() {
         String typeName = getPara("type");

@@ -128,20 +128,47 @@ public class IdentifierController extends BaseController {
 		String titleB = getPara("titleB");
 
 		String titleE = getPara("titleE");
-
-		String sql=" from identifier i  where 1=1 ";
+		String blurry = getPara("blurry");
+		String select="select i.* ";
+		String sql=" from identifier i LEFT JOIN member m on i.member_id=m.id  where 1=1 ";
 		if(StringUtils.isNotEmpty(titleB)){
 			sql=sql+" and   i.title>="+titleB;
 		}
 		if(StringUtils.isNotEmpty(titleE)){
 			sql=sql+" and   i.title<="+titleE;
 		}
+
+
+		if(StringUtils.isNotEmpty(blurry)){
+			sql=sql+"and ( ";
+			sql=sql+"  m.phone like '%"+blurry+"%' or m.nickname LIKE '%\"+blurry+\"%' or i.share_code LIKE '%\"+blurry+\"%' or i.`code` like '%\"+blurry+\"%' or i.title like '%\"+blurry+\"%' " ;
+			if("现场兑换".contains(blurry)){
+				sql=sql+"  or  i.`status`=5 " ;
+			}
+			if("已邮寄".contains(blurry)){
+				sql=sql+"  or  i.`status`=4 " ;
+			}
+			if("已启用".contains(blurry)){
+				sql=sql+"  or  i.`status`=1 " ;
+			}
+			if("未邮寄".contains(blurry)){
+				sql=sql+"  or  i.`status`=3 " ;
+			}
+			if("未使用".contains(blurry)){
+				sql=sql+"  or  i.`status`=0 " ;
+			}
+
+			sql=sql+" ) ";
+		}
 		Pageable pageable = getBean(Pageable.class);
-		setAttr("page", identifierService.findPage(sql,pageable));
+		pageable.setOrderDirection("desc");
+		pageable.setOrderProperty("i.status");
+		setAttr("page", identifierService.findPages(select,sql,pageable));
 		LogKit.info(">" + pageable.getPageNumber());
 		setAttr("pageable", pageable);
 		setAttr("titleB", titleB);
-		setAttr("titleE", titleE);
+		setAttr("titleB", titleB);
+		setAttr("blurry", blurry);
 		render("/admin/identifier/list.ftl");
 	}
 
@@ -174,8 +201,9 @@ public class IdentifierController extends BaseController {
 	 */
 	public void disabled() {
 		Long id = getParaToLong("id");
+		Integer status = getParaToInt("status",3);
 		Identifier activity = identifierService.find(id);
-		activity.setStatus(3);
+		activity.setStatus(status);
 		identifierService.update(activity);
 		redirect("/admin/identifier/list.jhtml");
 	}
@@ -187,9 +215,11 @@ public class IdentifierController extends BaseController {
 	public void publish() {
 		Long id = getParaToLong("id");
 		Identifier activity = identifierService.find(id);
-
-
-		activity.setStatus(1);
+if(activity.getShareCode()==null||"".equals(activity.getShareCode())){
+	activity.setStatus(0);
+}else {
+	activity.setStatus(1);
+}
 		identifierService.update(activity);
 		redirect("/admin/identifier/list.jhtml");
 	}

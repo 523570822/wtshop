@@ -85,7 +85,9 @@ public class IdentifierService extends BaseService<Identifier> {
 	public Page<Identifier> findPage(String sql, Pageable pageable){
 		return brandDao.findPage(sql,pageable);
 	}
-
+	public Page<Identifier> findPages(String select,String sql, Pageable pageable){
+		return brandDao.findPages(select,sql,pageable);
+	}
     public List<Identifier> findByIdfCode(String idfCode) {
 		return brandDao.findByIdfCode(idfCode);
     }

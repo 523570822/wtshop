@@ -9,6 +9,31 @@ import com.wtshop.util.ObjectUtils;
 @SuppressWarnings("serial")
 public class Identifier extends BaseIdentifier<Identifier> {
 	public static final Identifier dao = new Identifier().dao();
+	public Member onMember;
+	/**
+	 * 获取会员
+	 *
+	 * @return 会员
+	 */
+	public Member getOnMember() {
+		if (ObjectUtils.isEmpty(onMember)) {
+			//	System.out.println("打印222222222222222222222222"+"select * from member m where m.share_code='"+getShareCode()+"'");
+
+			onMember = Member.dao.findFirst("select * from member m where m.share_code='"+getShareCode()+"'");
+			//		System.out.println(member.toString());
+		}
+		return onMember;
+	}
+
+	/**
+	 * 设置会员
+	 *
+	 * @param onMember
+	 *            会员
+	 */
+	public void setOnMember(Member onMember) {
+		this.onMember = onMember;
+	}
 	public Member member;
 	/**
 	 * 获取会员
@@ -19,7 +44,7 @@ public class Identifier extends BaseIdentifier<Identifier> {
 		if (ObjectUtils.isEmpty(member)) {
 		//	System.out.println("打印222222222222222222222222"+"select * from member m where m.share_code='"+getShareCode()+"'");
 
-			member = Member.dao.findFirst("select * from member m where m.share_code='"+getShareCode()+"'");
+			member = Member.dao.findById(getMemberId());
 	//		System.out.println(member.toString());
 		}
 		return member;
