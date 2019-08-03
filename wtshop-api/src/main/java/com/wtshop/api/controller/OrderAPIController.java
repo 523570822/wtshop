@@ -81,7 +81,7 @@ public class OrderAPIController extends BaseAPIController {
 		Long sPecialCoupId = getParaToLong("sPecialCoupId",0l);
 
 		Identifier identifier=new Identifier();
-		if(sPecialIds!=0){
+/*		if(sPecialIds!=0){
 			List<Identifier> dddd = identifierService.findByMemberId(member.getId());
 			if(dddd.size()==0){
 				//if(member==null ||StringUtils.isEmpty(member.getOnShareCode())){
@@ -100,12 +100,12 @@ public class OrderAPIController extends BaseAPIController {
 			}
 
 
-		}else{
+		}else{*/
 			if(member==null ||StringUtils.isEmpty(member.getOnShareCode())){
 				renderJson(ApiResult.fail(7,"请绑定邀请码"));
 				return;
 			}
-		}
+		/*}*/
 
 
 		Long quantity = getParaToLong("quantity",1L);
@@ -741,12 +741,12 @@ if(!isSinglepurchase){
 		 */
 		if(isSPecialIds){
 			List<Identifier> dddd = identifierService.findByMemberId(member.getId());
-			if(dddd.size()==0){
+	/*		if(dddd.size()==0){
 				//if(member==null ||StringUtils.isEmpty(member.getOnShareCode())){
 				renderJson(ApiResult.fail(8,"请绑定识别码"));
 				return;
 				//}
-			}
+			}*/
 
 			for (Identifier identifier1:dddd) {
 				if(identifier1.getStatus()==1){
