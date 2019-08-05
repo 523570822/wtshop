@@ -505,7 +505,11 @@ public void onShareCode(){
 			m.setHousekeeperId(2l);
 		}else{
 			List<Member> member2 =memberService.findByShareCode(me.get(0).getOnShareCode());
-			Boolean bool2 = memberService.findSpByPhone(member2.get(0).getPhone());
+			Boolean bool2 =false;
+			if(member2!=null&&member2.get(0).getPhone()!=null){
+				bool2= memberService.findSpByPhone(member2.get(0).getPhone());
+			}
+
 			if(bool2){
 				map.put("shareCode",shareCode);
 				m.setShareCode(shareCode);

@@ -181,6 +181,7 @@ public class IdentifierController extends BaseController {
 	/**
 	 * 删除
 	 */
+
 	public void delete() {
 
 		String[] values = StringUtils.split(getPara("ids"), ",");
