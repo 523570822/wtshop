@@ -21,6 +21,7 @@ import com.wtshop.util.ShareCodeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import static com.wtshop.api.controller.BaseAPIController.convertToLong;
@@ -122,20 +123,68 @@ public class SpecialCouponController extends BaseController {
 	 */
 	public void list() {
 		String titleB = getPara("titleB");
-
 		String titleE = getPara("titleE");
 
-		String sql=" from special_coupon i  where 1=1 ";
+
+		Date begin= getParaToDate("beginDate", null);
+		Date end = getParaToDate("endDate", null);
+		if (begin == null) {
+			begin =new Date();
+		}
+
+		if (end == null) {
+			end = new Date();
+		}
+		String beginDate = com.wtshop.util.DateUtils.formatDate(begin);
+		String	endDate=	com.wtshop.util.DateUtils.formatDate(end);
+		//模糊
+		String blurry = getPara("blurry");
+
+		String select="select i.* ";
+		String sql=" from special_coupon i LEFT JOIN member m on i.member_id=m.id  where 1=1 ";
+		if(beginDate!=null){
+			sql=sql+" and   i.start_date>='"+beginDate+"'";
+		}
+		if(endDate!=null){
+			sql=sql+" and   i.start_date<='"+endDate+"'";
+		}
+
+
 		if(StringUtils.isNotEmpty(titleB)){
 			sql=sql+" and   i.title>="+titleB;
 		}
 		if(StringUtils.isNotEmpty(titleE)){
 			sql=sql+" and   i.title<="+titleE;
 		}
+
+		if(StringUtils.isNotEmpty(blurry)){
+			blurry=blurry.trim();
+			sql=sql+"and ( ";
+			sql=sql+"  m.phone like '%"+blurry+"%' or m.nickname LIKE '%"+blurry+"%'  or i.`code` like '%"+blurry+"%' or i.title like '%"+blurry+"%' " ;
+			if("现场兑换".contains(blurry)){
+				sql=sql+"  or  i.`status`=5 " ;
+			}
+			if("已邮寄".contains(blurry)){
+				sql=sql+"  or  i.`status`=4 " ;
+			}
+			if("已启用".contains(blurry)){
+				sql=sql+"  or  i.`status`=1 " ;
+			}
+			if("已完成".contains(blurry)){
+				sql=sql+"  or  i.`status`=3 " ;
+			}
+			if("未使用".contains(blurry)){
+				sql=sql+"  or  i.`status`=0 " ;
+			}
+			sql=sql+" ) ";
+		}
 		Pageable pageable = getBean(Pageable.class);
-		setAttr("page", identifierService.findPage(sql,pageable));
+		setAttr("page", identifierService.findPages(select,sql,pageable));
 		LogKit.info(">" + pageable.getPageNumber());
 		setAttr("pageable", pageable);
+		setAttr("beginDate", begin);
+		setAttr("endDate", end);
+		setAttr("blurry", blurry);
 		setAttr("titleB", titleB);
 		setAttr("titleE", titleE);
 		render("/admin/special_coupon/list.ftl");

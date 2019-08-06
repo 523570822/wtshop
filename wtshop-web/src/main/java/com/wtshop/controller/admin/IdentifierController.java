@@ -131,6 +131,7 @@ public class IdentifierController extends BaseController {
 		}
 		String beginDate = com.wtshop.util.DateUtils.formatDate(begin);
 		String	endDate=	com.wtshop.util.DateUtils.formatDate(end);
+//模糊
 		String blurry = getPara("blurry");
 
 		String select="select i.* ";

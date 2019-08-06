@@ -1,7 +1,9 @@
 package com.wtshop.dao;
 
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.wtshop.Pageable;
 import com.wtshop.model.Identifier;
 import com.wtshop.model.SpecialCoupon;
 import org.apache.commons.lang3.StringUtils;
@@ -105,4 +107,7 @@ public class SpecialCouponDao extends   BaseDao<SpecialCoupon> {
 			return null;
 		}
     }
+	public Page<SpecialCoupon> findPages(String select, String sql, Pageable pageable){
+		return super.findPages(select,sql,pageable);
+	}
 }
