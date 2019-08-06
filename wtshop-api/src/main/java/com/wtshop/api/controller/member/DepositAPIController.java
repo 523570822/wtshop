@@ -256,6 +256,7 @@ public class DepositAPIController extends BaseAPIController {
 			}
 
 		} catch (Exception e) {
+			System.out.println(e);
 			e.printStackTrace();
 			renderJson(ApiResult.fail("提现失败!"));
 		}

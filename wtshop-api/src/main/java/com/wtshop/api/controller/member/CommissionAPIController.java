@@ -269,6 +269,7 @@ public class CommissionAPIController extends BaseAPIController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println(e);
 			renderJson(ApiResult.fail("提现失败!"));
 		}
 	}
