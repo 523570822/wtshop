@@ -211,6 +211,7 @@ public class DepositAPIController extends BaseAPIController {
 							str_no = "B" + UUIDUtils.getLongUUID();
 						}
 						Map<String, String> map = accountService.CashToWeChat(str_no, weiXinInfo.getAccount(), money, "任性猫提现", ip);
+						System.out.println(map);
 						logger.info("任性猫提现[微信] {}", map);
 						if (map != null) {
 							if (StringUtils.isNotEmpty(map.get("err_code"))) {
