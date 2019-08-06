@@ -92,7 +92,7 @@ function sublevel() {
             }
         })
 
-    }else if(num==3){
+    }else if(num==3||num==10){
         $("#tiaoZhuanCanShu").show();
         $("#subTitleId").empty();
         $("#subTitleId").hide();
