@@ -183,10 +183,21 @@ public class LoginAPIController extends BaseAPIController {
             return;
 
         }else {
+            if(account == null){
+                Account account1 = new Account();
+                account1.setAccount(openid);
+                account1.setUnionid(unionid);
+                account1.setType(0);
+                account1.setNickname(nickname);
+                account1.setMemberId(member.getId());
+                accountService.save(account1);
+
+            }
             //本身没有绑定手机号
             if(member.getPhone() == null){
                 codes = 9001;
             }
+
             member.setLoginIp(request.getRemoteAddr());
             member.setLoginDate(new Date());
             memberService.update(member);
@@ -269,6 +280,17 @@ public class LoginAPIController extends BaseAPIController {
             codes = 9001;
             accountId = account1.getId();
         }else {
+            if(account == null){
+                Account account1 = new Account();
+                account1.setAccount(openid);
+                account1.setUnionid(unionid);
+                account1.setType(0);
+                account1.setNickname(nickname);
+                account1.setMemberId(member.getId());
+                accountService.save(account1);
+
+            }
+
             //本身没有绑定手机号
             if(member.getPhone() == null){
                 codes = 9001;
