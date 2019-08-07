@@ -143,10 +143,10 @@ public class SpecialCouponController extends BaseController {
 		String select="select i.* ";
 		String sql=" from special_coupon i LEFT JOIN member m on i.member_id=m.id  where 1=1 ";
 		if(beginDate!=null){
-			sql=sql+" and   i.start_date>='"+beginDate+"'";
+			sql=sql+" and   i.create_date>='"+beginDate+"'";
 		}
 		if(endDate!=null){
-			sql=sql+" and   i.start_date<='"+endDate+"'";
+			sql=sql+" and   i.create_date<='"+endDate+"'";
 		}
 
 
@@ -179,7 +179,8 @@ public class SpecialCouponController extends BaseController {
 			sql=sql+" ) ";
 		}
 		Pageable pageable = getBean(Pageable.class);
-		setAttr("page", identifierService.findPages(select,sql,pageable));
+		Object gg = identifierService.findPages(select, sql, pageable);
+		setAttr("page",gg );
 		LogKit.info(">" + pageable.getPageNumber());
 		setAttr("pageable", pageable);
 		setAttr("beginDate", begin);

@@ -142,9 +142,15 @@ public class LoginAPIController extends BaseAPIController {
         Long accountId = 0L;
    //   Account  account=accountService.findByUnionid(unionid,0);
         Account account = accountService.findByAccount(openid,unionid, 4);
+
         if(account != null){
             accountId = account.getId();
             member = memberService.find(account.getMemberId());
+        }else{
+            Account account1 = accountService.findByAccount(openid,unionid, 0);
+            if(account1 != null){
+                member = memberService.find(account1.getMemberId());
+            }
         }
 
         if (member == null) {
@@ -200,6 +206,9 @@ public class LoginAPIController extends BaseAPIController {
         renderJson(ApiResult.success(codeResult, "登录成功"));
     }
 
+
+
+    //app微信登陆
     public void codeSubmit() {
         String code = getPara("code");
         HttpServletRequest request = getRequest();
@@ -225,6 +234,11 @@ public class LoginAPIController extends BaseAPIController {
         Account account = accountService.findByAccount(openid,unionid, 0);
         if(account != null){
             member = memberService.find(account.getMemberId());
+        }else{
+            Account account1 = accountService.findByAccount(openid,unionid, 4);
+            if(account1 != null){
+                member = memberService.find(account1.getMemberId());
+            }
         }
 
         if (member == null) {

@@ -137,10 +137,10 @@ public class IdentifierController extends BaseController {
 		String select="select i.* ";
 		String sql=" from identifier i LEFT JOIN member m on i.member_id=m.id  where 1=1 ";
 		if(beginDate!=null){
-			sql=sql+" and   i.start_date>='"+beginDate+"'";
+			sql=sql+" and   i.create_date>='"+beginDate+"'";
 		}
 		if(endDate!=null){
-			sql=sql+" and   i.start_date<='"+endDate+"'";
+			sql=sql+" and   i.create_date<='"+endDate+"'";
 		}
 
 
