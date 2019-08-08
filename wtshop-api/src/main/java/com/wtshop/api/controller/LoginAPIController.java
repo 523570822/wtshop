@@ -125,13 +125,7 @@ public class LoginAPIController extends BaseAPIController {
         }
         String ss = com.wtshop.util.StringUtils.getEncoding(nickname);
         System.out.println("nickname编码"+ss);
-      //   nickname = com.wtshop.util.StringUtils.filterEmoji(user.get("nickname").toString()) ;
-         nickname=new String(nickname.getBytes(),"GBK");
-         ss = com.wtshop.util.StringUtils.getEncoding(nickname);
-        System.out.println("nickname编码"+ss);
-        nickname=new String(nickname.getBytes("GBK"),"UTF-8");
-        ss = com.wtshop.util.StringUtils.getEncoding(nickname);
-        System.out.println("nickname编码"+ss);
+
         /*   String openid = user.get("unionid").toString();*/
         String openid = access_token.get("openid").toString();
         String unionid = "";

@@ -157,3 +157,7 @@ git rm --cached -r  "target"
                                                   进入src目录下，执行./redis-server & (带上&是在后台启动)
                                                                       ./redis-server ../redis_shop.conf）                                                               
   ./redis-server ../redis.conf
+
+
+
+

@@ -288,10 +288,10 @@ public class AccountAPIController extends BaseAPIController {
 		}
 		String nickname = com.wtshop.util.StringUtils.filterEmoji(user.get("nickname").toString()) ;
 		String openid = user.get("openid").toString();
-		Object unionid1 = user.get("openid");
+		Object unionid1 = user.get("unionid");
 		String unionid=null;
 		if(unionid1!=null){
-			unionid=user.get("openid").toString();
+			unionid=user.get("unionid").toString();
 		}
 		Account accounts = accountService.findByAccount(openid, unionid,0);
 		if(accounts != null){
