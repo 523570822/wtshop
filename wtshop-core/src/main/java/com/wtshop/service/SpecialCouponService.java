@@ -94,6 +94,9 @@ public class SpecialCouponService extends BaseService<SpecialCoupon> {
     public List<SpecialCoupon> findByMemberId(Long memberId) {
 		return brandDao.findByMemberId(memberId);
     }
+    public List<SpecialCoupon> findBySpecialCids(String specialCId) {
+		return brandDao.findBySpecialCids(specialCId);
+    }
 
 	public List<SpecialCoupon> findByDay(String s, String i) {
 		return brandDao.findByDay(s,i);
@@ -102,4 +105,5 @@ public class SpecialCouponService extends BaseService<SpecialCoupon> {
     public Object findPages(String select, String sql, Pageable pageable) {
 		return brandDao.findPages(select,sql,pageable);
     }
+
 }

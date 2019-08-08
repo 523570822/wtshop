@@ -93,7 +93,7 @@ public class SpecialCouponDao extends   BaseDao<SpecialCoupon> {
 
     public List<SpecialCoupon> findByDay(String s, String i) {
 		try {
-			String sql = "SELECT i.* FROM special_coupon i where i=1    ";
+			String sql = "SELECT i.* FROM special_coupon i where 1=1    ";
 			if(StringUtils.isNotEmpty(s)){
 				sql=sql+" and i.status="+s ;
 			}
@@ -109,5 +109,20 @@ public class SpecialCouponDao extends   BaseDao<SpecialCoupon> {
     }
 	public Page<SpecialCoupon> findPages(String select, String sql, Pageable pageable){
 		return super.findPages(select,sql,pageable);
+	}
+
+	public List<SpecialCoupon> findBySpecialCids(String specialCId) {
+		try {
+			String sql = "SELECT i.* FROM special_coupon i where 1=1    ";
+
+			if(StringUtils.isNotEmpty(specialCId)){
+				sql=sql+" and i.id in ("+specialCId+")" ;
+			}
+
+
+			return modelManager.find(sql);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }

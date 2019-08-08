@@ -65,7 +65,7 @@ public class OrderAPIController extends BaseAPIController {
 
 
 	/**
-	 * 立即购买 调用接口
+	 * 立即购买接口
 	 */
 	@Before(Tx.class)
 	public void buyNow() {
@@ -78,18 +78,11 @@ public class OrderAPIController extends BaseAPIController {
 		//获取商品和数量
 		Long productId = getParaToLong("productId");
 		Long sPecialIds = getParaToLong("sPecialIds",0l);
-		Long sPecialCoupId = getParaToLong("sPecialCoupId",0l);
+		String  sPecialCoupId = getPara("sPecialCoupId","0");
 
 		Identifier identifier=new Identifier();
-/*		if(sPecialIds!=0){
+	if(sPecialIds!=0){
 			List<Identifier> dddd = identifierService.findByMemberId(member.getId());
-			if(dddd.size()==0){
-				//if(member==null ||StringUtils.isEmpty(member.getOnShareCode())){
-					renderJson(ApiResult.fail(8,"请绑定识别码"));
-					return;
-				//}
-			}
-
 			for (Identifier identifier1:dddd) {
 				if(identifier1.getStatus()==1){
 					List<Member> m = memberService.findByShareCode(identifier1.getShareCode());
@@ -100,12 +93,7 @@ public class OrderAPIController extends BaseAPIController {
 			}
 
 
-		}else{*/
-			if(member==null ||StringUtils.isEmpty(member.getOnShareCode())){
-				renderJson(ApiResult.fail(7,"请绑定邀请码"));
-				return;
-			}
-		/*}*/
+		}
 
 
 		Long quantity = getParaToLong("quantity",1L);
@@ -213,25 +201,30 @@ public class OrderAPIController extends BaseAPIController {
 			}
 
 		}
-		if(sPecialCoupId!=0){
-			SpecialCoupon sPecialCoupon = specialCouponService.find(sPecialCoupId);
-			if(sPecialCoupon.getMemberId().equals(member.getId())&&sPecialCoupon.getStatus()==1){
-				//判断代金券金额是否可用
-						if(price>=sPecialCoupon.getMoney().doubleValue()){
-							specialCouponPrice=sPecialCoupon.getMoney().doubleValue();
+		//代金卡信息暂存到sPecialResultList
+		List<PriceResult> sPecialResultList = new ArrayList<>();
+		if(!sPecialCoupId.equals(0)){
+			List<SpecialCoupon> sPecialCouponList = specialCouponService.findBySpecialCids(sPecialCoupId);
+			if(sPecialCouponList!=null){
+				for (SpecialCoupon sPecialCoupon:sPecialCouponList){
+					if(sPecialCoupon.getMemberId().equals(member.getId())&&sPecialCoupon.getStatus()==1){
 
-						}else {
-							renderJson(ApiResult.fail(10,"订单金额不够满减"));
-							return;
-						}
+						specialCouponPrice=specialCouponPrice+sPecialCoupon.getMoney().doubleValue();
 
-			}else {
-				renderJson(ApiResult.fail(9,"代金卡异常"));
-				return;
+
+					}else {
+						renderJson(ApiResult.fail(9,"代金卡异常"));
+						return;
+					}
+					PriceResult specialcouponPrice = new PriceResult("代金卡("+sPecialCoupon.getCode()+")", "-¥ " + MathUtil.getInt(sPecialCoupon.getMoney().toString()));
+					sPecialResultList.add(specialcouponPrice);
+				}
 			}
+
+
+
 		}
 		PriceResult miaobiPrice = null;
-		PriceResult specialcouponPrice = null;
 		String realPrice = null;
 		String favoritePrice = "0";
 		Double realPriced = MathUtil.subtract(MathUtil.add(price, delivery.getPrice()),couponYunfei);
@@ -240,7 +233,7 @@ public class OrderAPIController extends BaseAPIController {
 		Double returns = 0d;
 
 		// 代金券提示及优惠增加
-		specialcouponPrice = new PriceResult("代金卡","-¥ "+MathUtil.getInt(specialCouponPrice.toString()));
+	//	specialcouponPrice = new PriceResult("代金卡","-¥ "+MathUtil.getInt(specialCouponPrice.toString()));
 		favoreatePriced = MathUtil.add(specialCouponPrice,couponYunfei);
 
 		if(isUseMiao){
@@ -280,8 +273,8 @@ public class OrderAPIController extends BaseAPIController {
 			priceList.add(miaobiPrice);
 		}
 		//是否显示代金券
-		if(specialCouponPrice>0){
-			priceList.add(specialcouponPrice);
+		if(sPecialResultList.size()>0){
+			priceList.addAll(sPecialResultList);
 		}
 		priceList.add(newDeliveryPrice);
 		priceList.add(manjianPrice);
@@ -293,8 +286,11 @@ public class OrderAPIController extends BaseAPIController {
 		//支付金额
 		//Double amountpaid = MathUtil.subtract(MathUtil.subtract(realPriced ,couponYunfei),miaoBiPrice);
 		Double amountpaid = MathUtil.subtract(MathUtil.subtract(realPriced ,miaoBiPrice),specialCouponPrice);
+		if(amountpaid<0){
+			amountpaid=0d;
+		}
 		//优惠总额
-		favoritePrice = MathUtil.getInt(new BigDecimal(favoritePrice).add(new BigDecimal(marketPrice)).subtract(new BigDecimal(price)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		String couponPrice = MathUtil.getInt(new BigDecimal(marketPrice).add(new BigDecimal(delivery.getPrice())).subtract(new BigDecimal(amountpaid)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 
 		if(amountpaid < 0){
 			miaobi = miaobi + amountpaid;
@@ -313,8 +309,11 @@ public class OrderAPIController extends BaseAPIController {
 
 		goods.put("special_id",sPecialIds);
 		List<String> specifications = product.getSpecifications();
+
+
 		OrderBuyNowResult orderBuyNowResult = new OrderBuyNowResult(taxUrl, yunfei, member, defaultReceiver, goods, Integer.valueOf(quantity+""), receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, priceList,
-			realPrice, favoritePrice, param, is_promotion, amountpaid,specifications,identifier);
+			realPrice, couponPrice, param, is_promotion, amountpaid,specifications,identifier);
+
 		RedisUtil.setString("ORDERPARAM:"+member.getId(), params);
 		renderJson(ApiResult.success(orderBuyNowResult));
 
@@ -344,17 +343,19 @@ public class OrderAPIController extends BaseAPIController {
 				//Long identifierId = getParaToLong("identifierId",0l);
 
 		//代金券id
-		Long sPecialCoupId = getParaToLong("sPecialCoupId",0l);
+		String  sPecialCoupId = getPara("sPecialCoupId","0");
 
 
 		Order.Type ss = Order.Type.general;
-		if(identifierId==0){
-			if(sPecialCoupId==0){
 
-			}else {
+		if(!"0".equals(sPecialIds)) {
+			ss = Order.Type.particular;
+		}
+
+		if(!"0".equals(sPecialCoupId)) {
 				ss = Order.Type.coupon;
 			}
-		}else {
+		if(identifierId!=0){
 				ss = Order.Type.special;
 		}
 
@@ -711,7 +712,7 @@ if(!isSinglepurchase){
 
 
 		Order order = orderService.createBuyNow(Order.Type.group, member, goods, price, 1, manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney
-				, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,isSinglepurchase,fightGroupId,tuanGouId,rate,0l,0l,0d,0l);
+				, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,isSinglepurchase,fightGroupId,tuanGouId,rate,0l,0l,0d,"");
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("order",order.getId()+"");
@@ -730,7 +731,7 @@ if(!isSinglepurchase){
 		Member member = memberService.getCurrent();
 		//product 的数组
 		String[] values = StringUtils.split(getPara("cartTokens"), ",");
-		Long sPecialCoupId = getParaToLong("sPecialCoupId",0l);
+		String sPecialCoupId = getPara("sPecialCoupId","0");
 
 		Boolean isSPecialIds = getParaToBoolean("isSPecialIds",false);
 		Identifier identifier=new Identifier();
@@ -859,9 +860,13 @@ if(!isSinglepurchase){
 			Boolean is_freeMoney = redisSetting.getBoolean("isFreeMoney") || price >= redisSetting.getDouble("freeMoney") ? true : false;
 			//运费优惠金额
 			Double deliver = 0d;
+
+			Double couponYunfei =0d;
 			PriceResult newDeliveryPrice = new PriceResult("运费优惠金额", "-¥ " + 0);
 			if (is_freeMoney) {
 				deliver = delivery.getPrice();
+					//运费
+				couponYunfei = delivery.getPrice();
 				newDeliveryPrice = new PriceResult("运费优惠金额", "-¥ " + MathUtil.getInt(delivery.getPrice().toString()));
 			}
 			//包税 计算税金
@@ -915,22 +920,28 @@ if(!isSinglepurchase){
 			PriceResult oldTotalPrice = new PriceResult("商品优惠前总金额", "¥ " + MathUtil.getInt(oldPrice.toString()));
 			PriceResult deliveryPrice = new PriceResult("运费", "¥ " + MathUtil.getInt(delivery.getPrice().toString()));
 			Double specialCouponPrice=0d;
-			if(sPecialCoupId!=0){
-				SpecialCoupon sPecialCoupon = specialCouponService.find(sPecialCoupId);
-				if(sPecialCoupon.getMemberId().equals(member.getId())&&sPecialCoupon.getStatus()==1){
-					//判断代金券金额是否可用
-					if(price>=sPecialCoupon.getMoney().doubleValue()){
-						specialCouponPrice=sPecialCoupon.getMoney().doubleValue();
-						specialcouponPrice = new PriceResult("代金卡","-¥ "+MathUtil.getInt(specialCouponPrice.toString()));
-					}else {
-						renderJson(ApiResult.fail(10,"订单金额不够满减"));
-						return;
-					}
+			//代金卡信息暂存到sPecialResultList
+			List<PriceResult> sPecialResultList = new ArrayList<>();
+			if(!sPecialCoupId.equals(0)){
+				List<SpecialCoupon> sPecialCouponList = specialCouponService.findBySpecialCids(sPecialCoupId);
+				if(sPecialCouponList!=null){
+					for (SpecialCoupon sPecialCoupon:sPecialCouponList){
+						if(sPecialCoupon.getMemberId().equals(member.getId())&&sPecialCoupon.getStatus()==1){
 
-				}else {
-					renderJson(ApiResult.fail(9,"代金卡异常"));
-					return;
+							specialCouponPrice=specialCouponPrice+sPecialCoupon.getMoney().doubleValue();
+
+
+						}else {
+							renderJson(ApiResult.fail(9,"代金卡异常"));
+							return;
+						}
+						PriceResult specialcouponPrice1 = new PriceResult("代金卡("+sPecialCoupon.getCode()+")", "-¥ " + MathUtil.getInt(sPecialCoupon.getMoney().toString()));
+						sPecialResultList.add(specialcouponPrice1);
+					}
 				}
+
+
+
 			}
 
 			List<PriceResult> priceList = new ArrayList<>();
@@ -944,10 +955,14 @@ if(!isSinglepurchase){
 			//优惠运费
 			priceList.add(newDeliveryPrice);
 			//代金卡
+			//是否显示代金券
+			if(sPecialResultList.size()>0){
+				priceList.addAll(sPecialResultList);
+			}
 			priceList.add(specialcouponPrice);
 			priceList.add(manjianPrice);
 			//优惠运费金额
-			Double couponYunfei = MathUtil.subtract(delivery.getPrice(), deliver);
+		//	Double couponYunfei = MathUtil.subtract(delivery.getPrice(), deliver);
 
 
 			Double amountpaid =  MathUtil.subtract(MathUtil.subtract(realPrice, favoritePrice),specialCouponPrice);
@@ -958,14 +973,16 @@ if(!isSinglepurchase){
 				amountpaid = 0d;
 			}
 			miaoBiDesc = "共" + MathUtil.getInt(member.getPoint().toString()) + "喵币,可用" + MathUtil.getInt(useMiaoBi.toString()) + "喵币,抵扣¥" + MathUtil.getInt(miaoBiPrice.toString());
+			//优惠总额
+			String couponPrice = MathUtil.getInt(new BigDecimal(oldPrice).add(new BigDecimal(delivery.getPrice())).subtract(new BigDecimal(amountpaid)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 
-			Double[] param = {deliver, miaobi, returns, amountpaid, couponYunfei, manJianPrices,specialCouponPrice};
+				Double[] param = {deliver, miaobi, returns, amountpaid, couponYunfei, manJianPrices,specialCouponPrice};
 			Double yunfei = delivery.getPrice();
 			Boolean is_useMiaobi =false;
 			Boolean is_promotion =false;
-			favoritePrice = MathUtil.getInt(new BigDecimal(favoritePrice).add(new BigDecimal(oldPrice)).subtract(new BigDecimal(price)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		//	favoritePrice = MathUtil.getInt(new BigDecimal(favoritePrice).add(new BigDecimal(oldPrice)).subtract(new BigDecimal(price)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			OrderDetailsResult orderDetailsResult = new OrderDetailsResult(taxUrl, couponYunfei, skuids, yunfei, member, cart.getToken(), defaultReceiver, codeList, goodsList,
-					receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, isReturnInsurance, returns, returnCopy, priceList, amountpaid.toString(), favoritePrice, param, is_promotion,identifier);
+					receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, isReturnInsurance, returns, returnCopy, priceList, amountpaid.toString(), couponPrice, param, is_promotion,identifier);
 			renderJson(ApiResult.success(orderDetailsResult));
 
 
@@ -1294,13 +1311,14 @@ if(!isSinglepurchase){
 			renderJson(new ApiResult(0,"请选择门店!"));
 			return;
 		}
+		Boolean isSPecialIds = getParaToBoolean("isSPecialIds",false);
 		Long identifierId =Long.parseLong(identifierIdString);
 
 
 	//	Long identifierId = getParaToLong("identifierId",0l);
 
 		//代金券id
-		Long sPecialCoupId = getParaToLong("sPecialCoupId",0l);
+		String  sPecialCoupId = getPara("sPecialCoupId","0");
 
 		//是否实名认证
 		Certificates certificates = certificatesService.queryByMemberId(member.getId());
@@ -1308,14 +1326,23 @@ if(!isSinglepurchase){
 			renderJson(new ApiResult(101,"请先进行实名认证!"));
 			return;
 		}
-		Order.Type ddd = Order.Type.general;
-		if(identifierId==0){
-			if(sPecialCoupId==0){
 
-			}else {
-				ddd = Order.Type.coupon;
-			}
-		}else {
+
+		Order.Type ddd = Order.Type.general;
+
+		if(isSPecialIds){
+
+			ddd = Order.Type.particular;
+		}
+
+
+		if(!sPecialCoupId.equals("0")){
+
+			ddd = Order.Type.coupon;
+		}
+
+		if(identifierId!=0){
+
 			ddd = Order.Type.special;
 		}
 		Cart cart = actCache.get("CART:"+member.getId());
@@ -1343,6 +1370,7 @@ if(!isSinglepurchase){
 
 		//满减金额
 		Double manjianPrice = skuids[5];
+
 		Double specialCouponPrice=0d;
 		if(skuids.length<7){
 

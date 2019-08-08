@@ -1,4 +1,4 @@
-package com.wtshop.model.base;
+package com.wtshop.model;
 
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.IBean;

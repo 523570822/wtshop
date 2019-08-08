@@ -59,13 +59,17 @@ public class Order extends BaseOrder<Order> {
 		 */
 		group,
 		/**
-		 *钜惠卡 8
+		 * 特殊订单钜惠卡 8
 		 */
 		special,
 		/**
-		 * 代金卡9
+		 *  特殊订单代金卡9
 		 */
-		coupon
+		coupon,
+		/**
+		 * 特殊订单
+		 */
+		particular
 
 
 	}

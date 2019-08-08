@@ -12,6 +12,7 @@ import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.weixin.sdk.kit.PaymentKit;
 import com.wtshop.CommonAttributes;
+import com.wtshop.api.common.result.PriceResult;
 import com.wtshop.api.interceptor.ErrorInterceptor;
 import com.wtshop.model.Order;
 import com.wtshop.model.SpecialCoupon;
@@ -19,18 +20,12 @@ import com.wtshop.service.OrderService;
 import com.wtshop.service.ReverseAuctionService;
 import com.wtshop.service.SpecialCouponService;
 import com.wtshop.service.UserPayService;
-import com.wtshop.util.AliPayUtil;
-import com.wtshop.util.ApiResult;
-import com.wtshop.util.IpUtil;
-import com.wtshop.util.XMLUtil;
+import com.wtshop.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by sq on 2017/7/28.
@@ -62,8 +57,18 @@ public class UserPayAPIController extends BaseAPIController {
             return;
         }
 
-        if ( order.getSpecialcoupId()!=null&&order.getSpecialcoupId()!=0) {
-            SpecialCoupon sPecialCoupon = specialCouponService.find(order.getSpecialcoupId());
+        if ( order.getSpecialcoupId()!=null&&!order.getSpecialcoupId().equals("0")) {
+            List<SpecialCoupon> sPecialCouponList = specialCouponService.findBySpecialCids(order.getSpecialcoupId());
+            for (SpecialCoupon sPecialCoupon:sPecialCouponList){
+                if(sPecialCoupon.getMemberId().equals(order.getMemberId())&&sPecialCoupon.getStatus()==1){
+
+                }else {
+                    renderJson(ApiResult.fail(9,"代金卡异常"));
+                    return;
+                }
+
+            }
+           /* SpecialCoupon sPecialCoupon = specialCouponService.find(order.getSpecialcoupId());
 
             if(sPecialCoupon.getMemberId().equals(order.getMemberId())&&sPecialCoupon.getStatus()==1){
                 //判断代金券金额是否可用
@@ -78,7 +83,7 @@ public class UserPayAPIController extends BaseAPIController {
             }else {
                 renderJson(ApiResult.fail(9,"代金卡异常"));
                 return;
-            }
+            }*/
         }
 
         //微信

@@ -947,7 +947,7 @@ public class OrderService extends BaseService<Order> {
                     goodsService.update(goods);
                 }
             }
-            SpecialCoupon specialCoupon = specialCouponService.find(order.getSpecialcoupId());
+          /*  SpecialCoupon specialCoupon = specialCouponService.find(order.getSpecialcoupId());
 
             if(specialCoupon.getPrice()==null) {
                 specialCoupon.setPrice(order.getAmount());
@@ -957,9 +957,23 @@ public class OrderService extends BaseService<Order> {
             //满足 返现条件
             specialCoupon.setStatus(3);
             specialCoupon.setShareCode(order.getSn());
-            specialCouponService.update(specialCoupon);
+            specialCouponService.update(specialCoupon);*/
+
+            if(!order.getSpecialcoupId().equals(0)){
+                List<SpecialCoupon> sPecialCouponList = specialCouponService.findBySpecialCids(order.getSpecialcoupId());
+                if(sPecialCouponList!=null){
+                    for (SpecialCoupon sPecialCoupon:sPecialCouponList){
+                        sPecialCoupon.setPrice(order.getAmount());
+                        sPecialCoupon.setStatus(3);
+                        sPecialCoupon.setOrderId(order.getId());
+                        sPecialCoupon.setOrderNo(order.getOrderNo());
+                        specialCouponService.update(sPecialCoupon);
+                    }
+                }
 
 
+
+            }
 
         }
         //倒拍
@@ -1750,7 +1764,7 @@ public class OrderService extends BaseService<Order> {
      * @return 订单
      */
 
-    public Order create(Order.Type type, Cart cart, Double manjianPrice, Receiver receiver, Double amountMoney, Double returnMoney, Double deliveryMoney, Double miaobiMoney, String memo, Double couponYunfei, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName,Long identifierId,Long sPecialCoupId,Double specialCouponPrice) {
+    public Order create(Order.Type type, Cart cart, Double manjianPrice, Receiver receiver, Double amountMoney, Double returnMoney, Double deliveryMoney, Double miaobiMoney, String memo, Double couponYunfei, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName,Long identifierId,String sPecialCoupId,Double specialCouponPrice) {
         Assert.notNull(type);
         Assert.notNull(cart);
         Assert.notNull(cart.getMember());
@@ -1782,8 +1796,8 @@ public class OrderService extends BaseService<Order> {
         order.setSn(snDao.generate(Sn.Type.order));
         order.setType(type.ordinal());
         order.setPrice(cart.getPrice());
-        order.setFee(new BigDecimal(couponYunfei));
-        order.setFreight(new BigDecimal(deliveryMoney));
+        order.setFee(new BigDecimal(deliveryMoney));
+        order.setFreight(new BigDecimal(couponYunfei));
         order.setMiaobiPaid(new BigDecimal(miaobiMoney));
         order.setWeixinPaid(BigDecimal.ZERO);
         order.setAliPaid(BigDecimal.ZERO);
@@ -1946,7 +1960,7 @@ public class OrderService extends BaseService<Order> {
      */
 
     public Order createBuyNow(Order.Type type, Member member, Goods goods, Double price, int quantity, Double manjianPrice, Receiver receiver, Double amountMoney, Double deliveryMoney, Double
-            miaobiMoney, String memo, Double couponYunfei, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName, Boolean isSinglepurchase, long fightGroupId, long tuanGouId, Double rate,Long sPecialIds,Long identifierId,Double specialCouponPrice,Long sPecialCoupId) {
+            miaobiMoney, String memo, Double couponYunfei, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName, Boolean isSinglepurchase, long fightGroupId, long tuanGouId, Double rate,Long sPecialIds,Long identifierId,Double specialCouponPrice,String sPecialCoupId) {
 
 
         JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));

@@ -545,11 +545,11 @@ public abstract class BaseOrder<M extends BaseOrder<M>> extends Model<M> impleme
 		return get("identifier_id");
 	}
 
-	public void setSpecialcoupId(Long specialcoupId) {
+	public void setSpecialcoupId(String specialcoupId) {
 		set("sPecialCoup_Id", specialcoupId);
 	}
 
-	public Long getSpecialcoupId() {
+	public String getSpecialcoupId() {
 		return get("sPecialCoup_Id");
 	}
 
