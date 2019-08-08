@@ -119,14 +119,15 @@ $().ready(function() {
                     <a href="javascript:;" class="sort" name="price">消费金额</a>
                 </th>
                 <th>
+                    <a href="javascript:;" class="sort" name="status">状态</a>
+                </th>
+                <th>
                     <a href="javascript:;" class="sort" name="start_date">激活时间</a>
                 </th>
                 <th>
                     <a href="javascript:;" class="sort" name="end_date">使用时间</a>
                 </th>
-                <th>
-                    <a href="javascript:;" class="sort" name="status">状态</a>
-                </th>
+
 				<th>
 					<span>${message("admin.common.action")}</span>
 				</th>
@@ -159,12 +160,6 @@ $().ready(function() {
 						${brand.price}
                     </td>
                     <td>
-						${brand.start_date}
-                    </td>
-                    <td>
-						${brand.end_date}
-                    </td>
-                    <td>
 					[#if brand.status==0||brand.status==null]
 
                         <span class="red">[未使用]</span>
@@ -177,10 +172,17 @@ $().ready(function() {
 
 
 
-						[#else]
+					[#else]
                         <span class="green">[已启用]</span>
 					[/#if]
                     </td>
+                    <td>
+						${brand.start_date}
+                    </td>
+                    <td>
+						${brand.end_date}
+                    </td>
+
 
                     <td>
 					[#if brand.status==2||brand.status==0||brand.status==1]
