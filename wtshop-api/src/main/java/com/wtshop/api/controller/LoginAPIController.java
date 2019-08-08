@@ -126,7 +126,7 @@ public class LoginAPIController extends BaseAPIController {
         String ss = com.wtshop.util.StringUtils.getEncoding(nickname);
         System.out.println("nickname编码"+ss);
       //   nickname = com.wtshop.util.StringUtils.filterEmoji(user.get("nickname").toString()) ;
-        nickname=new String(nickname.getBytes(),"GBK");
+         nickname=new String(nickname.getBytes(),"GBK");
          ss = com.wtshop.util.StringUtils.getEncoding(nickname);
         System.out.println("nickname编码"+ss);
         nickname=new String(nickname.getBytes("GBK"),"UTF-8");
@@ -143,16 +143,17 @@ public class LoginAPIController extends BaseAPIController {
         Member member = null;
         //获取微信社交绑定的openId
         Long accountId = 0L;
+        Account account2=null;
    //   Account  account=accountService.findByUnionid(unionid,0);
-        Account account = accountService.findByAccount(openid,unionid, 4);
+        Account   account = accountService.findByAccount(openid,unionid, 4);
 
         if(account != null){
             accountId = account.getId();
             member = memberService.find(account.getMemberId());
         }else{
-            Account account1 = accountService.findByAccount(openid,unionid, 0);
-            if(account1 != null){
-                member = memberService.find(account1.getMemberId());
+            account2 = accountService.findByAccount(openid,unionid, 0);
+            if(account2 != null){
+                member = memberService.find(account2.getMemberId());
             }
         }
 
@@ -194,6 +195,12 @@ public class LoginAPIController extends BaseAPIController {
                 account1.setNickname(nickname);
                 account1.setMemberId(member.getId());
                 accountService.save(account1);
+
+            }else{
+                if(account.getUnionid()==null){
+                    account.setUnionid(unionid);
+                    accountService.update(account);
+                }
 
             }
             //本身没有绑定手机号
@@ -286,12 +293,13 @@ public class LoginAPIController extends BaseAPIController {
             accountId = account1.getId();
         }else {
             if(account == null){
-                account.setAccount(openid);
-                account.setUnionid(unionid);
-                account.setType(0);
-                account.setNickname(nickname);
-                account.setMemberId(member.getId());
-                accountService.update(account);
+                Account account1 = new Account();
+                account1.setAccount(openid);
+                account1.setUnionid(unionid);
+                account1.setType(0);
+                account1.setNickname(nickname);
+                account1.setMemberId(member.getId());
+                accountService.save(account1);
 
             }
 
