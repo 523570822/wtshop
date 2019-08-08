@@ -24,14 +24,9 @@ import com.wtshop.util.RedisUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import javax.servlet.http.HttpServletRequest;
+import java.io.*;
 import java.math.BigDecimal;
 import java.util.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 @ControllerBind(controllerKey = "/api/login")
 @Before({WapInterceptor.class, ErrorInterceptor.class})
@@ -105,7 +100,7 @@ public class LoginAPIController extends BaseAPIController {
         }
 
     }
-    public void codeXCXSubmit() {
+    public void codeXCXSubmit() throws UnsupportedEncodingException {
         String code = getPara("code");
         String img = getPara("img","");
         String nickname = getPara("name","");
@@ -128,7 +123,15 @@ public class LoginAPIController extends BaseAPIController {
             String s = it.next();
             System.out.println(s+":"+user.get(s));//这里的s就是map中的key，map.get(s)就是key对应的value。
         }
-        //String nickname = com.wtshop.util.StringUtils.filterEmoji(user.get("nickname").toString()) ;
+        String ss = com.wtshop.util.StringUtils.getEncoding(nickname);
+        System.out.println("nickname编码"+ss);
+      //   nickname = com.wtshop.util.StringUtils.filterEmoji(user.get("nickname").toString()) ;
+         nickname=new String(nickname.getBytes(),"GBK");
+         ss = com.wtshop.util.StringUtils.getEncoding(nickname);
+        System.out.println("nickname编码"+ss);
+        nickname=new String(nickname.getBytes("GBK"),"UTF-8");
+        ss = com.wtshop.util.StringUtils.getEncoding(nickname);
+        System.out.println("nickname编码"+ss);
         /*   String openid = user.get("unionid").toString();*/
         String openid = access_token.get("openid").toString();
         String unionid = "";
@@ -236,6 +239,8 @@ public class LoginAPIController extends BaseAPIController {
             System.out.println(s+":"+user.get(s));//这里的s就是map中的key，map.get(s)就是key对应的value。
         }
         String nickname = com.wtshop.util.StringUtils.filterEmoji(user.get("nickname").toString()) ;
+
+
         String openid = user.get("openid").toString();
         String unionid = user.get("unionid").toString();
         int codes = 9000; //不需要绑定手机号
@@ -475,10 +480,19 @@ public class LoginAPIController extends BaseAPIController {
         String passWord = getPara("passWord");
         String code = getPara("code");
         String passWordMD = DigestUtils.md5Hex(passWord);
-        if (!smsService.smsExists(phone, code, Setting.SmsType.memberRegister)) {
-            renderJson(ApiResult.fail("验证码输入错误!"));
-            return;
-        }
+
+ /*       if("15620000000".equals(phone)){
+
+        }else{*/
+            if(!smsService.smsExists(phone, code, Setting.SmsType.memberRegister)) {
+                renderJson(ApiResult.fail("验证码输入错误!"));
+                return;
+            }
+     //   }
+
+
+
+
         Account account = accountService.find(accountId);
         if(account != null){
             Member member = memberService.find(account.getMemberId());

@@ -296,6 +296,7 @@ public class AccountAPIController extends BaseAPIController {
 		if(userInfo != null ){
 			userInfo.setNickname(nickname);
 			userInfo.setAccount(openid);
+			userInfo.setUnionid(unionid);
 			accountService.update(userInfo);
 		}else {
 			Account account = new Account();
@@ -303,6 +304,7 @@ public class AccountAPIController extends BaseAPIController {
 			account.setNickname(nickname);
 			account.setType(0);
 			account.setAccount(openid);
+			account.setUnionid(unionid);
 			accountService.save(account);
 		}
 		renderJson(ApiResult.success(nickname));
