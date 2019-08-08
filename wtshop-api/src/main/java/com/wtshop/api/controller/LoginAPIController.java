@@ -126,7 +126,7 @@ public class LoginAPIController extends BaseAPIController {
         String ss = com.wtshop.util.StringUtils.getEncoding(nickname);
         System.out.println("nickname编码"+ss);
       //   nickname = com.wtshop.util.StringUtils.filterEmoji(user.get("nickname").toString()) ;
-         nickname=new String(nickname.getBytes(),"GBK");
+        nickname=new String(nickname.getBytes(),"GBK");
          ss = com.wtshop.util.StringUtils.getEncoding(nickname);
         System.out.println("nickname编码"+ss);
         nickname=new String(nickname.getBytes("GBK"),"UTF-8");
@@ -286,13 +286,12 @@ public class LoginAPIController extends BaseAPIController {
             accountId = account1.getId();
         }else {
             if(account == null){
-                Account account1 = new Account();
-                account1.setAccount(openid);
-                account1.setUnionid(unionid);
-                account1.setType(0);
-                account1.setNickname(nickname);
-                account1.setMemberId(member.getId());
-                accountService.save(account1);
+                account.setAccount(openid);
+                account.setUnionid(unionid);
+                account.setType(0);
+                account.setNickname(nickname);
+                account.setMemberId(member.getId());
+                accountService.update(account);
 
             }
 

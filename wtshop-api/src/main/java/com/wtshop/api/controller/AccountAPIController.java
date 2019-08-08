@@ -266,7 +266,7 @@ public class AccountAPIController extends BaseAPIController {
 	public void weiXinAccount(){
 		Member member = memberService.getCurrent();
 		String code = getPara("code");
-		String unionid = getPara("unionid");
+
 		Map<String, Object> access_token = accountService.getAccess_token(code);
 
 		Set<String> key = access_token.keySet();
@@ -288,6 +288,11 @@ public class AccountAPIController extends BaseAPIController {
 		}
 		String nickname = com.wtshop.util.StringUtils.filterEmoji(user.get("nickname").toString()) ;
 		String openid = user.get("openid").toString();
+		Object unionid1 = user.get("openid");
+		String unionid=null;
+		if(unionid1!=null){
+			unionid=user.get("openid").toString();
+		}
 		Account accounts = accountService.findByAccount(openid, unionid,0);
 		if(accounts != null){
 			accountService.delete(accounts);
