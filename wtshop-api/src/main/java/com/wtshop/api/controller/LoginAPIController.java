@@ -191,7 +191,7 @@ public class LoginAPIController extends BaseAPIController {
                 Account account1 = new Account();
                 account1.setAccount(openid);
                 account1.setUnionid(unionid);
-                account1.setType(0);
+                account1.setType(4);
                 account1.setNickname(nickname);
                 account1.setMemberId(member.getId());
                 accountService.save(account1);
@@ -300,6 +300,12 @@ public class LoginAPIController extends BaseAPIController {
                 account1.setNickname(nickname);
                 account1.setMemberId(member.getId());
                 accountService.save(account1);
+
+            }else{
+                if(account.getUnionid()==null){
+                    account.setUnionid(unionid);
+                    accountService.update(account);
+                }
 
             }
 
