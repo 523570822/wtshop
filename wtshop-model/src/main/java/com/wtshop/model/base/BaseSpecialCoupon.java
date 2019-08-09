@@ -145,4 +145,12 @@ public abstract class BaseSpecialCoupon<M extends BaseSpecialCoupon<M>> extends 
 		return get("order_no");
 	}
 
+	public void setCompleteDate(java.util.Date completeDate) {
+		set("complete_date", completeDate);
+	}
+
+	public java.util.Date getCompleteDate() {
+		return get("complete_date");
+	}
+
 }

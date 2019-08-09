@@ -19,6 +19,7 @@ import com.wtshop.service.MemberService;
 import com.wtshop.service.SpecialCouponService;
 import com.wtshop.util.ShareCodeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -136,7 +137,9 @@ public class SpecialCouponController extends BaseController {
 			end = new Date();
 		}
 		String beginDate = com.wtshop.util.DateUtils.formatDate(begin);
-		String	endDate=	com.wtshop.util.DateUtils.formatDate(end);
+		Date ddd= DateUtils.addDays(end,1);
+		String	 endDate=	com.wtshop.util.DateUtils.formatDate(ddd);
+
 		//模糊
 		String blurry = getPara("blurry");
 

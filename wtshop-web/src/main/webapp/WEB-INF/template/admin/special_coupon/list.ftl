@@ -180,7 +180,14 @@ $().ready(function() {
 						${brand.start_date}
                     </td>
                     <td>
-						${brand.end_date}
+
+						[#if brand.complete_date==null]
+							${brand.end_date}
+
+						[#else]
+							${brand.complete_date}
+						[/#if]
+
                     </td>
 
 

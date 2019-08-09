@@ -967,6 +967,7 @@ public class OrderService extends BaseService<Order> {
                         sPecialCoupon.setStatus(3);
                         sPecialCoupon.setOrderId(order.getId());
                         sPecialCoupon.setOrderNo(order.getOrderNo());
+                        sPecialCoupon.setCompleteDate(new Date());
                         specialCouponService.update(sPecialCoupon);
                     }
                 }

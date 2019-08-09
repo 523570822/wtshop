@@ -130,7 +130,8 @@ public class IdentifierController extends BaseController {
 			end = new Date();
 		}
 		String beginDate = com.wtshop.util.DateUtils.formatDate(begin);
-		String	endDate=	com.wtshop.util.DateUtils.formatDate(end);
+		Date ddd=DateUtils.addDays(end,1);
+		String	 endDate=	com.wtshop.util.DateUtils.formatDate(ddd);
 //模糊
 		String blurry = getPara("blurry");
 
