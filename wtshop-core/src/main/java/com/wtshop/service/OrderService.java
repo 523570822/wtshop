@@ -20,7 +20,7 @@ import com.wtshop.entity.OrderGoods;
 import com.wtshop.exception.AppRuntimeException;
 import com.wtshop.model.*;
 import com.wtshop.util.*;
-import freemarker.log.Logger;
+import com.jfinal.log.Logger;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;

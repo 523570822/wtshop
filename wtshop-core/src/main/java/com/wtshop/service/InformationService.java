@@ -2,6 +2,7 @@ package com.wtshop.service;
 
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Enhancer;
+import com.jfinal.log.Logger;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
@@ -13,7 +14,7 @@ import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
 import com.wtshop.util.JPush;
 import com.wtshop.util.RedisUtil;
-import freemarker.log.Logger;
+
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class InformationService extends BaseService<Information> {
 
     private InformationDao informationDao = Enhancer.enhance(InformationDao.class);
     private MemberFavoriteGoodsDao memberFavoriteGoodsDao = Enhancer.enhance(MemberFavoriteGoodsDao.class);
-
+    final Logger logger = Logger.getLogger("InformationService");
 
     /**
      * 删除消息
@@ -99,7 +100,7 @@ public class InformationService extends BaseService<Information> {
      */
 
     public void paySuccessMessage(Order order) {
-        final Logger logger = Logger.getLogger("paySuccessMessage");
+
         //添加消息记录表
         Information information = new Information();
         information.setContent("订单(" + order.getSn() + ")已完成付款");

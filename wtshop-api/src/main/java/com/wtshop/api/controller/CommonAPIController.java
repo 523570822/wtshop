@@ -20,7 +20,7 @@ import com.wtshop.service.SpecialGoodsService;
 import com.wtshop.util.ApiResult;
 import com.wtshop.util.ObjectUtils;
 import com.wtshop.util.RedisUtil;
-import freemarker.log.Logger;
+import com.jfinal.log.Logger;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;

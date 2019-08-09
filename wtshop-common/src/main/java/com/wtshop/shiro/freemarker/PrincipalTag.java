@@ -2,7 +2,7 @@ package com.wtshop.shiro.freemarker;
 
 
 import freemarker.core.Environment;
-import freemarker.log.Logger;
+import com.jfinal.log.Logger;
 import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModelException;

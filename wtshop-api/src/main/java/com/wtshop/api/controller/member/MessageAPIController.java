@@ -20,7 +20,7 @@ import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.Information;
 import com.wtshop.model.Member;
 import com.wtshop.util.RedisUtil;
-import freemarker.log.Logger;
+import com.jfinal.log.Logger;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
