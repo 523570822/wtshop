@@ -24,7 +24,6 @@ $().ready(function() {
 
     });
     var sss="${isCreate}";
-  //  $("input[name='isCreate']:checked").val(1);
    initradio('isCreate',sss);
 
 
