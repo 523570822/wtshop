@@ -221,10 +221,7 @@ $().ready( function() {
 		removeCookie("listQuery", {path: ""});
 	}
 
- //   var  ddsdas=$("input[name='isCreate']:checked").val();
-/*	var sss="${isCreate}";
-    console.info(sss);
-    console.info("dddddd");*/
+
 
 });
 function initradio(rName,rValue){
