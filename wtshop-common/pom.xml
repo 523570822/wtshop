@@ -18,12 +18,12 @@
 <!--	<repository>
 			<id>nexus-aliyun</id>
 			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
-		</repository>-->
+		</repository>
 
 <repository>
 			<id>CN</id>
 			<url>http://maven.oschina.net/content/groups/public/</url>
-		</repository>
+		</repository>-->
 
 <repository>
 			<id>wangtiansoft</id>
