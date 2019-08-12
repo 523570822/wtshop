@@ -32,17 +32,11 @@
 	</repositories>
   
   <dependencies>
-   <!-- <dependency>
+    <dependency>
      	<groupId>com.jfinal</groupId>
 		<artifactId>jfinal</artifactId>
 		<version>3.1</version>
-    </dependency>-->
-	  <!-- https://mvnrepository.com/artifact/com.jfinal/jfinal -->
-	  <dependency>
-		  <groupId>com.jfinal</groupId>
-		  <artifactId>jfinal</artifactId>
-		  <version>3.8</version>
-	  </dependency>
+    </dependency>
 
 	  <dependency>
 		  <groupId>com.jfinal</groupId>
