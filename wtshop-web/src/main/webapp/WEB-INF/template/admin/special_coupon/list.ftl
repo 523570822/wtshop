@@ -22,7 +22,11 @@ $().ready(function() {
         var  titleE=$('#titleE').val();
         location.href='getExcel.jhtml?titleB='+titleB+'&titleE='+titleE;
 
-    })
+    });
+    var sss="${isCreate}";
+  //  $("input[name='isCreate']:checked").val(1);
+   initradio('isCreate',sss);
+
 
 });
 </script>
@@ -85,6 +89,8 @@ $().ready(function() {
                    onblur="value=value.replace(/[^\d]/g,'')"
             ng-model="schedule.round"
             placeholder="请输入数字">
+            <br/>
+            <input type="radio"  name="isCreate" checked value="0" />(创建时间)/<input type="radio"  name="isCreate" value="1" />(使用时间) &nbsp;&nbsp;&nbsp;
 			${message("admin.memberStatistic.beginDate")}:
             <input type="text" id="beginDate" name="beginDate" class="text Wdate" value="${beginDate?string("yyyy-MM-dd")}" style="width: 120px;" onfocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')}'});" />
 			${message("admin.memberStatistic.endDate")}:
@@ -121,6 +127,10 @@ $().ready(function() {
                 <th>
                     <a href="javascript:;" class="sort" name="status">状态</a>
                 </th>
+                <th>
+                    <a href="javascript:;" class="sort" name="create_date">创建时间</a>
+                </th>
+
                 <th>
                     <a href="javascript:;" class="sort" name="start_date">激活时间</a>
                 </th>
@@ -175,6 +185,9 @@ $().ready(function() {
 					[#else]
                         <span class="green">[已启用]</span>
 					[/#if]
+                    </td>
+                    <td>
+						${brand.create_date}
                     </td>
                     <td>
 						${brand.start_date}

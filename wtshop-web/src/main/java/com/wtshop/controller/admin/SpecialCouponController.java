@@ -125,10 +125,18 @@ public class SpecialCouponController extends BaseController {
 	public void list() {
 		String titleB = getPara("titleB");
 		String titleE = getPara("titleE");
+		int isCreate = getParaToInt("isCreate",0);
 
+		String date;
 
 		Date begin= getParaToDate("beginDate", null);
 		Date end = getParaToDate("endDate", null);
+if(isCreate==0){
+	date="i.create_date";
+}else {
+	date="i.complete_date";
+}
+
 		if (begin == null) {
 			begin =new Date();
 		}
@@ -146,10 +154,10 @@ public class SpecialCouponController extends BaseController {
 		String select="select i.* ";
 		String sql=" from special_coupon i LEFT JOIN member m on i.member_id=m.id  where 1=1 ";
 		if(beginDate!=null){
-			sql=sql+" and   i.create_date>='"+beginDate+"'";
+			sql=sql+" and   "+date+">='"+beginDate+"'";
 		}
 		if(endDate!=null){
-			sql=sql+" and   i.create_date<='"+endDate+"'";
+			sql=sql+" and  "+date+" <='"+endDate+"'";
 		}
 
 
@@ -187,6 +195,7 @@ public class SpecialCouponController extends BaseController {
 		LogKit.info(">" + pageable.getPageNumber());
 		setAttr("pageable", pageable);
 		setAttr("beginDate", begin);
+		setAttr("isCreate", isCreate);
 		setAttr("endDate", end);
 		setAttr("blurry", blurry);
 		setAttr("titleB", titleB);

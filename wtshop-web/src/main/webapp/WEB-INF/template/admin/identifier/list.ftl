@@ -68,6 +68,7 @@ $().ready(function() {
 
 				</ul>--]
 			</div>
+
 			${message("admin.memberStatistic.beginDate")}:
             <input type="text" id="beginDate" name="beginDate" class="text Wdate" value="${beginDate?string("yyyy-MM-dd")}" style="width: 120px;" onfocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')}'});" />
 			${message("admin.memberStatistic.endDate")}:

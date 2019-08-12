@@ -72,8 +72,8 @@ $().ready( function() {
 	
 	// 刷新
 	$refreshButton.click( function() {
-	//	location.reload(false);
-		location.replace();
+		location.reload(false);
+		//location.replace();
 		return false;
 	});
 	//代发货
@@ -221,4 +221,18 @@ $().ready( function() {
 		removeCookie("listQuery", {path: ""});
 	}
 
+ //   var  ddsdas=$("input[name='isCreate']:checked").val();
+/*	var sss="${isCreate}";
+    console.info(sss);
+    console.info("dddddd");*/
+
 });
+function initradio(rName,rValue){
+    var rObj = document.getElementsByName(rName);
+
+    for(var i = 0;i < rObj.length;i++){
+        if(rObj[i].value == rValue){
+            rObj[i].checked =  'checked';
+        }
+    }
+}
