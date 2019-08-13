@@ -4,7 +4,7 @@ import com.jfinal.ext.route.ControllerBind;
 import com.wtshop.Pageable;
 import com.wtshop.model.AdPosition;
 import com.wtshop.service.AdPositionService;
-
+import freemarker.log.Logger;
 /**
  * Controller - 广告位
  * 
@@ -56,6 +56,8 @@ public class AdPositionController extends BaseController {
 	 * 列表
 	 */
 	public void list() {
+		final Logger logger = Logger.getLogger("AdPositionController.list");
+		logger.info("测试支付宝应保存金额   :  " );
 		Pageable pageable = getBean(Pageable.class);
 		setAttr("pageable", pageable);
 		setAttr("page", adPositionService.findPage(pageable));
