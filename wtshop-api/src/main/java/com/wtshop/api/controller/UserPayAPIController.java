@@ -46,7 +46,10 @@ public class UserPayAPIController extends BaseAPIController {
      */
     @Before(Tx.class)
     public void userPay() {
+
         Long id = getParaToLong("id");
+
+
         Integer type = getParaToInt("type");
         String money = getPara("money");
         Order order = orderService.find(id);
