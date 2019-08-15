@@ -149,8 +149,8 @@ public class UserPayService {
         parameterMap.put("mch_id", prop.get("MCH_ID")); // 商户号
         parameterMap.put("nonce_str", RandomUtils.randomUpperWords(32)); // 随机字符串
         parameterMap.put("body", "小程序支付"); // 商品描述
-      //  parameterMap.put("out_trade_no", "RXM" + order.getSn()); // 商户订单号
-        parameterMap.put("out_trade_no", "RXM" + "20190814454803"); // 商户订单号
+        parameterMap.put("out_trade_no", "RXM" + order.getSn()); // 商户订单号
+        //parameterMap.put("out_trade_no", "RXM" + "20190814454803"); // 商户订单号
         parameterMap.put("total_fee", String.format("%.0f", money * 100));// 订单总金额
         parameterMap.put("spbill_create_ip", ip); // 终端IP
         parameterMap.put("notify_url", prop.get("notify_url")); // 通知地址
