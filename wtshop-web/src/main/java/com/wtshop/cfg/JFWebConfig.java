@@ -68,6 +68,10 @@ public class JFWebConfig extends JFinalConfig {
         loadPropertyFile("wtshop.properties");
 
         Code.isDevMode = getPropertyToBoolean("devMode", false);
+
+        Boolean devMode = getPropertyToBoolean("devMode",false);
+     //  devMode=false;
+     //   constants.setDevMode(devMode);
         constants.setDevMode(getPropertyToBoolean("devMode", false));
         constants.setEncoding("UTF-8");
         constants.setI18nDefaultBaseName("i18n");
@@ -151,7 +155,7 @@ public class JFWebConfig extends JFinalConfig {
         arp.setContainerFactory(new CaseInsensitiveContainerFactory());
 
         // 显示SQL
-        arp.setShowSql(true);
+        arp.setShowSql(getPropertyToBoolean("showSql",true));
 
         //  工作流Activiti插件
 //        ActivitiPlugin ap = new ActivitiPlugin();

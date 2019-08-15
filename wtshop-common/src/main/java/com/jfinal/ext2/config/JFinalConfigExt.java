@@ -288,7 +288,7 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 	
 	/**
 	 * DruidPlugin
-	 * @param prop ： property
+	 * @param ds ： property
 	 * @return
 	 */
 	private DruidEncryptPlugin getDruidPlugin(String ds) {

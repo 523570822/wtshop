@@ -469,12 +469,17 @@
 	    <artifactId>logback-core</artifactId>
 	    <version>1.1.7</version>
 	</dependency>
-<!--	  <dependency>
+ <dependency>
 		  <groupId>org.slf4j</groupId>
 		  <artifactId>slf4j-log4j12</artifactId>
 		  <version>1.7.21</version>
-	  </dependency>-->
-      <dependency>
+	  </dependency>
+	  <dependency>
+		  <groupId>com.googlecode.log4jdbc</groupId>
+		  <artifactId>log4jdbc</artifactId>
+		  <version>1.2</version>
+	  </dependency>
+	  <dependency>
           <groupId>com.taobao</groupId>
           <artifactId>taobao-sdk</artifactId>
           <version>1.0</version>
