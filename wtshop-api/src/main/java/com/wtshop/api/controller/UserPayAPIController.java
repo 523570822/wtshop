@@ -96,6 +96,10 @@ public class UserPayAPIController extends BaseAPIController {
                 ip = "127.0.0.1";
             }
             Map<String, String> map = userPayService.getPrepayId(order, ip, true);
+            if(map==null){
+                renderJson(ApiResult.fail("订单异常"));
+                return;
+            }
             renderJson(ApiResult.success(map));
         } else if(4== type) {
             String ip = IpUtil.getIpAddr(getRequest());
@@ -103,6 +107,10 @@ public class UserPayAPIController extends BaseAPIController {
                 ip = "127.0.0.1";
             }
             Map<String, String> map = userPayService.getPrepayIdXCX(order, ip, true);
+            if(map==null){
+                renderJson(ApiResult.fail("订单异常"));
+                return;
+            }
             renderJson(ApiResult.success(map));
         }else if (2 == type) {  //支付宝
             Map<String, String> map = userPayService.aliPayOrder(order, true);

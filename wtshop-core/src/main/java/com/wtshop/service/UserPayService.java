@@ -114,7 +114,10 @@ public class UserPayService {
         Map<String, String> result = PaymentKit.xmlToMap(xmlResult);
 
         String prepay_id = result.get("prepay_id");
-
+        if("FAIL".equals(result.get("result_code")) ){
+            _logger.error("统一下单异常:订单号{}",orderSn+","+result.get("err_code_des"));
+            return null;
+        }
         Map<String, String> packageParams = new HashMap<>();
         packageParams.put("appid", prop.get("AppID"));
         packageParams.put("timestamp", System.currentTimeMillis() / 1000 + "");
@@ -146,7 +149,8 @@ public class UserPayService {
         parameterMap.put("mch_id", prop.get("MCH_ID")); // 商户号
         parameterMap.put("nonce_str", RandomUtils.randomUpperWords(32)); // 随机字符串
         parameterMap.put("body", "小程序支付"); // 商品描述
-        parameterMap.put("out_trade_no", "RXM" + order.getSn()); // 商户订单号
+      //  parameterMap.put("out_trade_no", "RXM" + order.getSn()); // 商户订单号
+        parameterMap.put("out_trade_no", "RXM" + "20190814454803"); // 商户订单号
         parameterMap.put("total_fee", String.format("%.0f", money * 100));// 订单总金额
         parameterMap.put("spbill_create_ip", ip); // 终端IP
         parameterMap.put("notify_url", prop.get("notify_url")); // 通知地址
@@ -161,6 +165,7 @@ public class UserPayService {
     //    System.out.println(parameterMap.toString());
        String sign = PaymentKit.createSign(params, prop.get("API_KEY"));
 
+
        // String sign=qianMing(params);
         params.put("sign", sign);
         // 统一下单
@@ -170,6 +175,10 @@ public class UserPayService {
         Map<String, String> result = PaymentKit.xmlToMap(xmlResult);
 
         String prepay_id = result.get("prepay_id");
+        if("FAIL".equals(result.get("result_code")) ){
+            _logger.error("统一下单异常:订单号{}","RXM" + order.getSn()+","+result.get("err_code_des"));
+            return null;
+        }
 
         Map<String, String> packageParams = new HashMap<>();
         packageParams.put("appId", prop.get("XCX_APPID"));
