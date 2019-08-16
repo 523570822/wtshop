@@ -603,7 +603,7 @@ public class OrderController extends BaseController {
 
 			//Page<Order> oo = orderService.findPage(type, status, member, null, isPendingReceive, isPendingRefunds, null, null, isAllocatedStock, hasExpired, pageable);
 			Boolean isEcel=false;
-			Page<Order> oo = orderService.findGoodsPage(isEcel,adminId,com.wtshop.util.DateUtils.formatDate(beginDate),com.wtshop.util.DateUtils.formatDate(endDate1),type, status, member, null, isPendingReceive, isPendingRefunds, null, null, isAllocatedStock, hasExpired, pageable);
+			Page<Order> oo = orderService.findGoodsPage(isEcel,adminId,com.wtshop.util.DateUtils.formatDate(beginDate),com.wtshop.util.DateUtils.formatDate(endDate),type, status, member, null, isPendingReceive, isPendingRefunds, null, null, isAllocatedStock, hasExpired, pageable);
 
 
 			setAttr("page",oo );
