@@ -19,11 +19,13 @@ import com.wtshop.api.interceptor.ErrorInterceptor;
 import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.Information;
 import com.wtshop.model.Member;
+import com.wtshop.util.IpUtil;
 import com.wtshop.util.RedisUtil;
 import freemarker.log.Logger;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -36,7 +38,7 @@ import java.util.List;
 @ControllerBind(controllerKey = "/api/member/message")
 @Before({WapInterceptor.class, ErrorInterceptor.class})
 public class MessageAPIController extends BaseAPIController {
-
+	com.jfinal.log.Logger logger = com.jfinal.log.Logger.getLogger(MessageAPIController.class);
 	/** 每页记录数 */
 	private static final int PAGE_SIZE = 10;
 
@@ -140,8 +142,12 @@ public class MessageAPIController extends BaseAPIController {
 	 * 获取appid接口
 	 * 添加推送消息
 	 */
-	public void addAppid(){
+	public void addAppid() throws IOException {
+
+		logger.debug("开始调用获取appid接口");
 		Member member = memberService.getCurrent();
+		String ip = IpUtil.getIpAddress(getRequest());
+		logger.debug("访问ip为："+ip+"");
 		String appid = getPara("appid");
 		if( member==null||member.getId()==null){
 			renderJson(ApiResult.fail("没有登录"));
