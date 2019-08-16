@@ -657,7 +657,7 @@ public void onShareCode(){
 
 		List<SpecialCoupon>	specialCouponList=specialCouponService.findByIdfCode(idSCCode);
 		SpecialCoupon specialCoupon=new SpecialCoupon() ;
-		if(specialCouponList.size()>0){
+		if(specialCouponList!=null&&specialCouponList.size()>0){
 			if(specialCouponList.get(0).getStatus()!=0){
 				renderJson(ApiResult.fail("识别码已失效!"));
 				return;

@@ -28,6 +28,49 @@ $().ready(function() {
 
 
 });
+
+// 删除
+function disabled(id,status) {
+
+    console.info(status);
+    var data={
+        id:id,
+        status:status
+    }
+    $.dialog({
+        type: "warn",
+        content: "确定修改状态",
+        ok: message("admin.dialog.ok"),
+        cancel: message("admin.dialog.cancel"),
+        onOk: function() {
+            $.ajax({
+                url: "disabled.jhtml",
+                type: "POST",
+                data:data ,
+                dataType: "json",
+                cache: false,
+                success: function(message) {
+
+                    console.info("ssss");
+                    console.info(message);
+                    $.message(message);
+                    if (message.type == "success"||message.code*1==1) {
+                        //	$checkedIds.closest("tr").remove();
+
+                        setTimeout(function() {
+                            location.reload(true);
+                        }, 1000);
+
+                    }
+                    //    $deleteButton.addClass("disabled");
+                    //   $selectAll.prop("checked", false);
+                    //  $checkedIds.prop("checked", false);
+                }
+            });
+        }
+    });
+    return false;
+};
 </script>
 </head>
 <body>
@@ -205,13 +248,14 @@ $().ready(function() {
 
                     <td>
 					[#if brand.status==2||brand.status==0||brand.status==1]
-                        <a href="disabled.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("admin.member.disabled")}]</a>
-					[#--  <a href="publish.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("LoginPlugin.isEnabled")}]</a>--]
+               [#--         <a href="disabled.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("admin.member.disabled")}]</a>--]
+					 <a href="javascript:;" class="status" onclick="disabled(${brand.id},3)"">[${message("admin.member.disabled")}]</a>
 					[#else ]
 
 					[/#if]
 						[#if brand.status==3]
-					 <a href="publish.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("LoginPlugin.isEnabled")}]</a>
+					[#-- <a href="publish.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("LoginPlugin.isEnabled")}]</a>--]
+							<a href="javascript:;" class="status" onclick="disabled(${brand.id},1)"">[${message("LoginPlugin.isEnabled")}]</a>
 						[#else ]
 
 						[/#if]

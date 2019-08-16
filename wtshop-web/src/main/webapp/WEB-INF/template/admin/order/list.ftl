@@ -383,10 +383,15 @@ $().ready(function() {
 					</td>
 					<td>
 						${message("Order.Status." + order.statusName)}
+						[#if order.isDelete == true]
+						[#else ]
+							<span class="red">（删）</span>
+						[/#if]
 						[#if order.hasExpired()]
 							<span class="silver">(${message("admin.order.hasExpired")})</span>
 						[/#if]
 					</td>
+
                     <td>
 						[#if order.type == "0"]
                             <span>${message("Order.Type." + order.typeName)}</span>

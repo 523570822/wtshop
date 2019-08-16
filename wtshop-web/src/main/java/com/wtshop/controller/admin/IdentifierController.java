@@ -212,9 +212,19 @@ public class IdentifierController extends BaseController {
 		Long id = getParaToLong("id");
 		Integer status = getParaToInt("status",3);
 		Identifier activity = identifierService.find(id);
-		activity.setStatus(status);
+if(status==1){
+		if(activity.getShareCode()==null||"".equals(activity.getShareCode())){
+			activity.setStatus(0);
+		}else {
+			activity.setStatus(status);
+		}
+}else {
+	activity.setStatus(status);
+}
+
 		identifierService.update(activity);
-		redirect("/admin/identifier/list.jhtml");
+		renderJson(SUCCESS_MESSAGE);
+	//	redirect("/admin/identifier/list.jhtml");
 	}
 
 

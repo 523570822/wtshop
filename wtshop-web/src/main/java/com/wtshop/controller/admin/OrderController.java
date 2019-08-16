@@ -572,17 +572,19 @@ public class OrderController extends BaseController {
 		Boolean hasExpired = getParaToBoolean("hasExpired");
 		Pageable pageable = getBean(Pageable.class);
 		Date beginDate = getParaToDate("beginDate", null);
-		Date endDate = getParaToDate("endDate", null);
+		Date endDate1 = getParaToDate("endDate", null);
 		if (beginDate == null) {
 			beginDate = DateUtils.addMonths(new Date(), -1);
 		}
 
-		if (endDate == null) {
-			endDate = new Date();
+		if (endDate1 == null) {
+			endDate1 = new Date();
 		}
+		Date endDate= DateUtils.addDays(endDate1,1);
+
 		setAttr("adminId", adminId);
 		setAttr("beginDate", beginDate);
-		setAttr("endDate", endDate);
+		setAttr("endDate", endDate1);
 		setAttr("types", Order.Type.values());
 		setAttr("statuses", Order.Status.values());
 		setAttr("type", type);
@@ -601,7 +603,7 @@ public class OrderController extends BaseController {
 
 			//Page<Order> oo = orderService.findPage(type, status, member, null, isPendingReceive, isPendingRefunds, null, null, isAllocatedStock, hasExpired, pageable);
 			Boolean isEcel=false;
-			Page<Order> oo = orderService.findGoodsPage(isEcel,adminId,com.wtshop.util.DateUtils.formatDate(beginDate),com.wtshop.util.DateUtils.formatDate(endDate),type, status, member, null, isPendingReceive, isPendingRefunds, null, null, isAllocatedStock, hasExpired, pageable);
+			Page<Order> oo = orderService.findGoodsPage(isEcel,adminId,com.wtshop.util.DateUtils.formatDate(beginDate),com.wtshop.util.DateUtils.formatDate(endDate1),type, status, member, null, isPendingReceive, isPendingRefunds, null, null, isAllocatedStock, hasExpired, pageable);
 
 
 			setAttr("page",oo );

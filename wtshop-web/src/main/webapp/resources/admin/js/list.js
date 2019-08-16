@@ -69,7 +69,7 @@ $().ready( function() {
 		});
 		return false;
 	});
-	
+
 	// 刷新
 	$refreshButton.click( function() {
 		location.reload(false);
@@ -233,3 +233,42 @@ function initradio(rName,rValue){
         }
     }
 }
+// 删除
+function disabled123(id,status) {
+    console.info(id);
+    console.info(status);
+
+    /*       $.dialog({
+               type: "warn",
+               content: message("admin.dialog.deleteConfirm"),
+               ok: message("admin.dialog.ok"),
+               cancel: message("admin.dialog.cancel"),
+               onOk: function() {
+                   $.ajax({
+                       url: "delete.jhtml",
+                       type: "POST",
+                       data: $checkedIds.serialize(),
+                       dataType: "json",
+                       cache: false,
+                       success: function(message) {
+
+                           console.info("ssss");
+                           console.info(message);
+                           $.message(message);
+                           if (message.type == "success"||message.code*1==1) {
+                               //	$checkedIds.closest("tr").remove();
+
+                               setTimeout(function() {
+                                   location.reload(true);
+                               }, 1000);
+
+                           }
+                           $deleteButton.addClass("disabled");
+                           $selectAll.prop("checked", false);
+                           $checkedIds.prop("checked", false);
+                       }
+                   });
+               }
+           });
+           return false;*/
+};

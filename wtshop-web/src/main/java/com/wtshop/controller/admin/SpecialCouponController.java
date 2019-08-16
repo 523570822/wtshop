@@ -232,10 +232,21 @@ if(isCreate==0){
 	 */
 	public void disabled() {
 		Long id = getParaToLong("id");
+		Integer status = getParaToInt("status",3);
 		SpecialCoupon activity = identifierService.find(id);
-		activity.setStatus(3);
+
+		if(status==1){
+			if(activity.getShareCode()==null||"".equals(activity.getShareCode())){
+				activity.setStatus(0);
+			}else {
+				activity.setStatus(status);
+			}
+		}else {
+			activity.setStatus(status);
+		}
 		identifierService.update(activity);
-		redirect("/admin/specialCoupon/list.jhtml");
+		renderJson(SUCCESS_MESSAGE);
+	//	redirect("/admin/specialCoupon/list.jhtml");
 	}
 
 
