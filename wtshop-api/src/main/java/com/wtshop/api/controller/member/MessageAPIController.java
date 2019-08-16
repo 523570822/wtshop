@@ -144,10 +144,10 @@ public class MessageAPIController extends BaseAPIController {
 	 */
 	public void addAppid() throws IOException {
 
-		logger.debug("开始调用获取appid接口");
+		logger.info("开始调用获取appid接口");
 		Member member = memberService.getCurrent();
 		String ip = IpUtil.getIpAddress(getRequest());
-		logger.debug("访问ip为："+ip+"");
+		logger.info("访问ip为："+ip+"");
 		String appid = getPara("appid");
 		if( member==null||member.getId()==null){
 			renderJson(ApiResult.fail("没有登录"));
