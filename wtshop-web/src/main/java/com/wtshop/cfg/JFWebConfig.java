@@ -70,7 +70,7 @@ public class JFWebConfig extends JFinalConfig {
         Code.isDevMode = getPropertyToBoolean("devMode", false);
 
         Boolean devMode = getPropertyToBoolean("devMode",false);
-     //  devMode=false;
+       devMode=true;
      //   constants.setDevMode(devMode);
         constants.setDevMode(devMode);
         constants.setEncoding("UTF-8");
