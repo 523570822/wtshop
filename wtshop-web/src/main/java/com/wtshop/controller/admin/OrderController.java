@@ -29,7 +29,7 @@ import org.apache.commons.lang3.time.DateUtils;
  * 
  */
 @ControllerBind(controllerKey = "/admin/order")
-public class OrderController extends BaseController {
+	public class OrderController extends BaseController {
 
 	private AdminService adminService = enhance(AdminService.class);
 	private AreaService areaService = enhance(AreaService.class);
