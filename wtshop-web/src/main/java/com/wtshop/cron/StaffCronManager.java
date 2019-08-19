@@ -38,7 +38,7 @@ public class StaffCronManager implements ITask{
     public void stop() {
     }
     public void run() {
-        logger.info("开始执行定时任务!!!!!!!!");
+        logger.info("开始执行佣金分配的定时任务!!!!!!!!");
         Prop prop = PropKit.use(CommonAttributes.wtshop_PROPERTIES_PATH);
         if (!prop.getBoolean("commission.enable")){
             logger.info("当前服务配置为关闭分佣");
