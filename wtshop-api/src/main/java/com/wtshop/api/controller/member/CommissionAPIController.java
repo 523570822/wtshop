@@ -222,6 +222,13 @@ public class CommissionAPIController extends BaseAPIController {
 						logger.info("任性猫提现[微信] {}", map);
 						if (map != null) {
 							if (StringUtils.isNotEmpty(map.get("err_code"))) {
+
+
+								if("AMOUNT_LIMIT".equals(map.get("err_code"))){
+									renderJson(ApiResult.fail("余额低于1元不可提现"));
+									return;
+								}
+//余额低于1元不可提现
 								renderJson(ApiResult.fail("系统错误,请稍后尝试!"));
 								return;
 							}else if (map.get("result_code").equalsIgnoreCase("SUCCESS")){
