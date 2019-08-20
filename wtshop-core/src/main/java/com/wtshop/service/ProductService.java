@@ -62,7 +62,7 @@ public class ProductService extends BaseService<Product> {
 	}
 
 	/**
-	 * 根据福袋号获取商品 fudaiproductId
+	 * 根据帮抢号获取商品 fudaiproductId
 	 */
 	public Product findProductByFudaiId(Long id){
 		return productDao.findProductByFudaiId(id);

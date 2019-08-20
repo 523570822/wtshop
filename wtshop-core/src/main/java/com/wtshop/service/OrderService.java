@@ -502,12 +502,12 @@ public class OrderService extends BaseService<Order> {
 
         }
 
-        // 生成会员激活码，福袋
+        // 生成会员激活码，帮抢
         if (order.getType() == Order.Type.fudai.ordinal()) {
 
             CommissionLog depositLog1 = new CommissionLog();
             CommissionLog depositLog2 = new CommissionLog();
-            logger.info("福袋相关技术————————————————————————");
+            logger.info("帮抢相关技术————————————————————————");
             if (StringUtils.isEmpty(member.getShareCode()) || member.getShareCode() == null) {
                 logger.info("生成邀请码————————————————————————");
                 // 生成邀请码
@@ -535,7 +535,7 @@ public class OrderService extends BaseService<Order> {
                 depositLog1.setBalance(member1.getBalance());
                 depositLog1.setDebit(BigDecimal.ZERO);
                 depositLog1.setStatus(1);
-                depositLog1.setMemo("福袋上级返现");
+                depositLog1.setMemo("帮抢上级返现");
                 depositLog1.setType(CommissionLog.Type.fudan.ordinal());
 
                 depositLog1.setOrderId(order.getId());
@@ -647,7 +647,7 @@ public class OrderService extends BaseService<Order> {
                 depositLog1.setDebit(BigDecimal.ZERO);
                 depositLog1.setCredit(BigDecimal.valueOf(100l));
                 depositLog1.setStatus(1);
-                depositLog1.setMemo("福袋上级返现(复购)");
+                depositLog1.setMemo("帮抢上级返现(复购)");
                 depositLog1.setType(CommissionLog.Type.fudan.ordinal());
                 depositLog1.setOrderId(order.getId());
                 depositLog1.setMemberId(member1.getId());
@@ -656,7 +656,7 @@ public class OrderService extends BaseService<Order> {
                     depositLog2.setDebit(BigDecimal.ZERO);
                     depositLog2.setStatus(1);
                     depositLog2.setCredit(BigDecimal.valueOf(100l));
-                    depositLog2.setMemo("福袋自购返现");
+                    depositLog2.setMemo("帮抢自购返现");
                     depositLog2.setType(CommissionLog.Type.fudan.ordinal());
                     depositLog2.setOrderId(order.getId());
                     depositLog2.setMemberId(member.getId());
@@ -1027,7 +1027,7 @@ public class OrderService extends BaseService<Order> {
 
 
     /**
-     * 创建福袋订单
+     * 创建帮抢订单
      */
     @Before(Tx.class)
     public Order createFudai(Order.Type type, FuDai fuDai, Receiver receiver, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName) {
@@ -1051,7 +1051,7 @@ public class OrderService extends BaseService<Order> {
         order.setPaymentMethodId(1L);
         order.setPrice(new BigDecimal(fuDai.getPrice()));
         order.setFee(BigDecimal.ZERO);
-        order.setFreight(BigDecimal.ZERO); //福袋运费是0
+        order.setFreight(BigDecimal.ZERO); //帮抢运费是0
         order.setPromotionDiscount(BigDecimal.ZERO);
         order.setMiaobiPaid(BigDecimal.ZERO);
         order.setReturnCopyPaid(BigDecimal.ZERO);
@@ -1180,7 +1180,7 @@ public class OrderService extends BaseService<Order> {
         order.setPaymentMethodId(1L);
         order.setPrice(new BigDecimal(fuDai.getPrice()));
         order.setFee(BigDecimal.ZERO);
-        order.setFreight(BigDecimal.ZERO); //福袋运费是0
+        order.setFreight(BigDecimal.ZERO); //帮抢运费是0
         order.setPromotionDiscount(BigDecimal.ZERO);
         order.setMiaobiPaid(BigDecimal.ZERO);
         order.setReturnCopyPaid(BigDecimal.ZERO);
@@ -2397,7 +2397,7 @@ public class OrderService extends BaseService<Order> {
                         //微信退款
                         Double wechatReturnPrice = order.getWeixinPaid().setScale(2, ROUND_HALF_DOWN).doubleValue();
                         Integer wechatReturnPriceIntValue = Integer.parseInt(String.format("%.0f", wechatReturnPrice * 100));
-                        Map<String, String> map = accountService.BackToWeChat(orderNo, totalPrice, wechatReturnPriceIntValue, "任性猫退款");
+                        Map<String, String> map = accountService.BackToWeChat(orderNo, totalPrice, wechatReturnPriceIntValue, "鲜特退款");
                         if (map == null || !"SUCCESS".equals(map.get("result_code"))) {
 
                             //  renderJson(ApiResult.fail("余额不足"));
@@ -2465,7 +2465,7 @@ public class OrderService extends BaseService<Order> {
                         //微信退款
                         Double wechatReturnPrice = order.getWeixinPaid().setScale(2, ROUND_HALF_DOWN).doubleValue();
                         Integer wechatReturnPriceIntValue = Integer.parseInt(String.format("%.0f", wechatReturnPrice * 100));
-                        Map<String, String> map = accountService.BackToWeChat(orderNo, totalPrice, wechatReturnPriceIntValue, "任性猫退款");
+                        Map<String, String> map = accountService.BackToWeChat(orderNo, totalPrice, wechatReturnPriceIntValue, "鲜特退款");
                         if (map == null || !"SUCCESS".equals(map.get("result_code"))) {
                             throw new AppRuntimeException(Code.FAIL, "微信退款失败");
                         }
@@ -3138,7 +3138,7 @@ public class OrderService extends BaseService<Order> {
     }
 
     /**
-     * 获取自己购买福袋
+     * 获取自己购买帮抢
      * @param id
      * @return
      */

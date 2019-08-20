@@ -57,7 +57,7 @@ public class GroupBuyAPIController extends BaseAPIController {
 
 
     /**
-     * 福袋主页
+     * 帮抢主页
      */
     public void list() {
         Integer pageNumber = getParaToInt("pageNumbers");
@@ -71,7 +71,7 @@ public class GroupBuyAPIController extends BaseAPIController {
     }
 
     /**
-     * 福袋主页
+     * 帮抢主页
      */
     public void listRe() {
 
@@ -318,7 +318,7 @@ Boolean isfight=true;
     }
 
 
-    //福袋购买记录
+    //帮抢购买记录
     public void payRecord() {
         Integer pageNumber = getParaToInt("pageNumber", 1);
         Pageable pageable = new Pageable(pageNumber, 10);
@@ -331,7 +331,7 @@ Boolean isfight=true;
         renderJson(fuDaiService.rankList(pageable));
     }
 
-    //福袋说明
+    //帮抢说明
     public void explain() {
         String url = "http://shop.rxmao.cn/rxm/goods/fuDai.html";
         renderJson(ApiResult.success(url));

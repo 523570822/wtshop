@@ -108,7 +108,7 @@ public class FightGroupService extends BaseService<FightGroup> {
 
 
 
-    //福袋抽取副产品
+    //帮抢抽取副产品
     public List<Map<String, Object>> luckDraw(Order order) {
         long fudaiId = Long.parseLong(order.getActOrderId());
         List<Long> fudaiIdList = fuDaiProductService.lotteryProduct(fudaiId, order.getMemberId(), order.getId());
@@ -133,7 +133,7 @@ public class FightGroupService extends BaseService<FightGroup> {
 
     }
 
-    //福袋获奖记录
+    //帮抢获奖记录
     public Page winRecord(Pageable pageable) {
         Member member = memberService.getCurrent();
 
@@ -144,7 +144,7 @@ public class FightGroupService extends BaseService<FightGroup> {
         String sql = "";
         if (list != null && list.size() > 0) {
             for (Record record : list) {
-                //获取福袋信息
+                //获取帮抢信息
                 GroupBuy fuDai = fuDaiDao.find(Long.parseLong(record.get("actOrderId")));
                 sql = "SELECT thumbnail,price FROM order_item WHERE order_id=" + record.get("id");
                 List<Record> items = Db.find(sql);

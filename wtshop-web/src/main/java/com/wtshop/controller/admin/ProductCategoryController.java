@@ -108,7 +108,7 @@ public class ProductCategoryController extends BaseController {
 		productCategory.remove("tree_path", "grade", "children", "goods", "parameters", "attributes", "specifications");
 		productCategoryService.update(productCategory);
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("list.jhtml");
+		redirect("/admin/product_category/list.jhtml");
 	}
 
 	/**

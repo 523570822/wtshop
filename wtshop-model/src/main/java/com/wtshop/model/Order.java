@@ -37,7 +37,7 @@ public class Order extends BaseOrder<Order> {
 		/** 兑换订单 */
 		exchange,
 
-		/** 福袋订单*/
+		/** 帮抢订单*/
 		fudai,
 
 		/** 倒拍*/

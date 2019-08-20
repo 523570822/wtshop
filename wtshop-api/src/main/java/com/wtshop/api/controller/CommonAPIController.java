@@ -106,7 +106,7 @@ public class CommonAPIController extends BaseAPIController {
         renderJson(ApiResult.success(indexResult));
     }
     /**
-     * 福袋主页
+     * 帮抢主页
      */
     public void specialGoods() {
         Integer pageNumber = getParaToInt("pageNumber", 1);

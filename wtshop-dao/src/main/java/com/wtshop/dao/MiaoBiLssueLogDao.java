@@ -18,7 +18,7 @@ public class MiaoBiLssueLogDao extends BaseDao<MiaobiLssuelog>{
     }
 
     /**
-     * 获取当前正在使用的福袋
+     * 获取当前正在使用的帮抢
      */
     public Page<MiaobiLssuelog> findPages(Pageable pageable ,boolean status,long id ){
 
@@ -36,7 +36,7 @@ public class MiaoBiLssueLogDao extends BaseDao<MiaobiLssuelog>{
     }
 
     /**
-     * 获取当前正在使用的福袋
+     * 获取当前正在使用的帮抢
      */
     public Page<MiaobiLssuelog> findPages(Pageable pageable ,boolean status){
 
@@ -52,7 +52,7 @@ public class MiaoBiLssueLogDao extends BaseDao<MiaobiLssuelog>{
 
         return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
     }    /**
-     * 获取当前正在使用的福袋
+     * 获取当前正在使用的帮抢
      */
     public List<MiaobiLssuelog> findListRe(){
 

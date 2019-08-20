@@ -162,7 +162,7 @@ from order_item pt  WHERE pt.
 
 #查询财务订单导出--开始
 #sql("getCaiwuListExcel")
-SELECT case o.type  WHEN 0 THEN '普通订单' WHEN 1 THEN '兑换订单' WHEN 2 THEN '福袋订单' WHEN 3 THEN '倒拍订单' WHEN 4 THEN '喵币商品订单' WHEN 5 THEN '满减订单'  WHEN 6 THEN 'vip置换订单' END type ,
+SELECT case o.type  WHEN 0 THEN '普通订单' WHEN 1 THEN '兑换订单' WHEN 2 THEN '帮抢订单' WHEN 3 THEN '倒拍订单' WHEN 4 THEN '喵币商品订单' WHEN 5 THEN '满减订单'  WHEN 6 THEN 'vip置换订单' END type ,
 o.sn,o.create_date,m.`nickname` name ,case o.`status`  WHEN 5 THEN '已完成'   end status ,
 pt.`name` goodsName,pt.quantity,pt.price,o.miaobi_paid,o.amount_paid,o.amount,o.fee,o.freight,o.id,o.weiXin_paid,o.aLi_paid,o.order_no from
 order_item pt LEFT JOIN `order` o  on o.id=pt.order_id LEFT JOIN member m on m.id=o.member_id WHERE o.status in( 5, 9 ,3 ,4) #@getVIPAddAllSQL()
@@ -181,7 +181,7 @@ LEFT JOIN member m on m.id=pt.member_id  WHERE r.`type` = 6 AND r.category = 2  
 
 #查询退货管理--开始
 #sql("caiWuReturnGoodsExcel")
-SELECT case o.type  WHEN 0 THEN '普通订单' WHEN 1 THEN '兑换订单' WHEN 2 THEN '福袋订单' WHEN 3 THEN '倒拍订单' WHEN 4 THEN '喵币商品订单' WHEN 5 THEN '满减订单' END type,
+SELECT case o.type  WHEN 0 THEN '普通订单' WHEN 1 THEN '兑换订单' WHEN 2 THEN '帮抢订单' WHEN 3 THEN '倒拍订单' WHEN 4 THEN '喵币商品订单' WHEN 5 THEN '满减订单' END type,
  o.sn , r.sn return_sn ,r.modify_date, m.nickname,  r.`type` return_type   ,pt.`name` goodsName,  pt.quantity, pt.amount   FROM `returns` r   LEFT JOIN returns_item pt on r.id=pt.return_id  LEFT JOIN `order` o on o.id=r.order_id
 LEFT JOIN member m on m.id=pt.member_id  WHERE r.`type` = 6 AND r.category = 2 #@getVIPAddAllSQL()
 #end

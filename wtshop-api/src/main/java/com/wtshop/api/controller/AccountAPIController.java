@@ -100,7 +100,7 @@ public class AccountAPIController extends BaseAPIController {
         String smsCode = SMSUtils.randomSMSCode(4);
 		Map<String, Object> params = new HashMap<>();
 		params.put("code", smsCode);
-		params.put("product", "任性猫");
+		params.put("product", "鲜特");
 		ApiResult result = SMSUtils.send(username, prop.get("sms.verifyCodeTemplate"), params);
 		if(result.resultSuccess()) {
 			sm.setex("PONHE:"+username,120,"1");

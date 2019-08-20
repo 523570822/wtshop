@@ -565,7 +565,7 @@ public Map<String,Object> getall(Map<String,Object> access_token){
         model.setPayeeType("ALIPAY_USERID");//固定值
         model.setPayeeAccount(openid);//转账收款账户
         model.setAmount(String.format("%.2f", amount));
-        model.setRemark("任性猫支付宝提现");
+        model.setRemark("鲜特支付宝提现");
 
         try {
             String transfer = transfer(model);

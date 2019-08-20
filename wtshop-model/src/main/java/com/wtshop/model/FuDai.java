@@ -16,9 +16,9 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class FuDai extends BaseFuDai<FuDai> {
     public static final FuDai dao = new FuDai().dao();
-    //福袋主产品
+    //帮抢主产品
     private FudaiProduct fudaiProduct;
-    //  福袋状态    0/已发布,1/未发布
+    //  帮抢状态    0/已发布,1/未发布
     public final static int State_Active = 0;
     public final static int State_UnActive = 1;
 

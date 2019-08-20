@@ -44,7 +44,7 @@ public class FuDaiAPIController extends BaseAPIController {
 
 
     /**
-     * 福袋主页
+     * 帮抢主页
      */
     public void fudai() {
         List<FuDai> list = fuDaiService.findLists();
@@ -52,7 +52,7 @@ public class FuDaiAPIController extends BaseAPIController {
     }
 
     /**
-     * 主福袋信息
+     * 主帮抢信息
      */
     public void primary() {
         Long fuDaiId = getParaToLong("fuDaiId");
@@ -137,7 +137,7 @@ public class FuDaiAPIController extends BaseAPIController {
     }
 
 
-    //福袋购买记录
+    //帮抢购买记录
     public void payRecord() {
         Integer pageNumber = getParaToInt("pageNumber", 1);
         Pageable pageable = new Pageable(pageNumber, 10);
@@ -150,7 +150,7 @@ public class FuDaiAPIController extends BaseAPIController {
         renderJson(fuDaiService.rankList(pageable));
     }
 
-    //福袋说明
+    //帮抢说明
     public void explain() {
         String url = "http://shop.rxmao.cn/rxm/goods/fuDai.html";
         renderJson(ApiResult.success(url));
@@ -185,7 +185,7 @@ public class FuDaiAPIController extends BaseAPIController {
         miaobiLog.setCredit(BigDecimal.valueOf(sendMiaoBi));
         miaobiLog.setDebit(BigDecimal.ZERO);
         miaobiLog.setType(0);
-        miaobiLog.setMemo("购买福袋赠送");
+        miaobiLog.setMemo("购买帮抢赠送");
         miaobiLog.setBalance(m.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
         //更新用户喵币
         m.setPoint(m.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
@@ -206,7 +206,7 @@ public class FuDaiAPIController extends BaseAPIController {
 
 
         item.put("type",1);
-        item.put("miaobilId",redisSetting.getDouble("housekeeperSending"));//福袋赠送喵币
+        item.put("miaobilId",redisSetting.getDouble("housekeeperSending"));//帮抢赠送喵币
 
         renderJson(ApiResult.success(item));
     }

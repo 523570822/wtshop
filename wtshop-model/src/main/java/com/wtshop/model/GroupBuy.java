@@ -9,7 +9,7 @@ import com.wtshop.util.ObjectUtils;
 @SuppressWarnings("serial")
 public class GroupBuy extends BaseGroupBuy<GroupBuy> {
 	public static final GroupBuy dao = new GroupBuy().dao();
-	//  福袋状态    0/已发布,1/未发布
+	//  帮抢状态    0/已发布,1/未发布
 	public final static boolean State_Active = true;
 	public final static boolean State_UnActive = false;
 

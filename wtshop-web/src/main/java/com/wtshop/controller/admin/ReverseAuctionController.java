@@ -284,7 +284,7 @@ public class ReverseAuctionController extends BaseController {
     }
 
     /**
-     * 福袋商品选择
+     * 帮抢商品选择
      */
     public void chooseGoods() {
         String flag = getPara("flag");

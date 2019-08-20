@@ -20,7 +20,7 @@ public class GroupBuyDao extends BaseDao<GroupBuy>{
     }
 
     /**
-     * 获取当前正在使用的福袋
+     * 获取当前正在使用的帮抢
      */
     public Page<GroupBuy> findPages(Pageable pageable ,boolean status,long id ){
 
@@ -38,7 +38,7 @@ public class GroupBuyDao extends BaseDao<GroupBuy>{
     }
 
     /**
-     * 获取当前正在使用的福袋
+     * 获取当前正在使用的帮抢
      */
     public Page<GroupBuy> findPages(Pageable pageable ,boolean status){
 
@@ -54,7 +54,7 @@ public class GroupBuyDao extends BaseDao<GroupBuy>{
 
         return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
     }    /**
-     * 获取当前正在使用的福袋
+     * 获取当前正在使用的帮抢
      */
     public List<GroupBuy> findListRe(long id){
 

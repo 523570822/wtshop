@@ -77,7 +77,7 @@ public class MobileAPIController extends BaseAPIController {
 		String smsCode = SMSUtils.randomSMSCode(4);
 		Map<String, Object> params = new HashMap<>();
 		params.put("code", smsCode);
-		params.put("product", "任性猫");
+		params.put("product", "鲜特");
 		if(sm.get("PONHE:"+mobile) != null){
 			renderJson(ApiResult.fail("您的操作过于频繁,请稍后再试!"));
 			return;

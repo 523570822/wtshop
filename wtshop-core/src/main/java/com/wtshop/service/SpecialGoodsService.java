@@ -76,7 +76,7 @@ public class SpecialGoodsService extends BaseService<SpecialGoods> {
     }
 
     /**
-     * 获取当前正在使用的福袋
+     * 获取当前正在使用的帮抢
      */
     public List<SpecialGoods> findLists() {
         List<SpecialGoods> dddd = fuDaiDao.findLists();
@@ -88,7 +88,7 @@ public class SpecialGoodsService extends BaseService<SpecialGoods> {
     }
 
 
-    //福袋抽取副产品
+    //帮抢抽取副产品
     public List<Map<String, Object>> luckDraw(Order order) {
         long fudaiId = Long.parseLong(order.getActOrderId());
         List<Long> fudaiIdList = fuDaiProductService.lotteryProduct(fudaiId, order.getMemberId(), order.getId());
@@ -113,7 +113,7 @@ public class SpecialGoodsService extends BaseService<SpecialGoods> {
 
     }
 
-    //福袋获奖记录
+    //帮抢获奖记录
     public Page winRecord(Pageable pageable) {
         Member member = memberService.getCurrent();
 
@@ -124,7 +124,7 @@ public class SpecialGoodsService extends BaseService<SpecialGoods> {
         String sql = "";
         if (list != null && list.size() > 0) {
             for (Record record : list) {
-                //获取福袋信息
+                //获取帮抢信息
                 SpecialGoods fuDai = fuDaiDao.find(Long.parseLong(record.get("actOrderId")));
                 sql = "SELECT thumbnail,price FROM order_item WHERE order_id=" + record.get("id");
                 List<Record> items = Db.find(sql);

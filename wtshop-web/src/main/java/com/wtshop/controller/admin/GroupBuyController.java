@@ -46,7 +46,7 @@ public class GroupBuyController extends BaseController {
         render("/admin/groupBuy/add.ftl");
     }
 
-    //保存福袋信息
+    //保存帮抢信息
     public void save() {
         List<UploadFile> uploadFiles = getFiles();
         GroupBuy groupBuy = getModel( GroupBuy.class);
@@ -86,7 +86,7 @@ public class GroupBuyController extends BaseController {
         render("/admin/groupBuy/edit.ftl");
     }
 
-    //修改福袋信息
+    //修改帮抢信息
     public void edit() {
         // 图片
         List<UploadFile> uploadFiles = getFiles();
@@ -112,7 +112,7 @@ public class GroupBuyController extends BaseController {
         redirect("/admin/groupBuy/list.jhtml");
     }
 
-    //删除福袋
+    //删除帮抢
     public void delete() {
         Long[] ids = getParaValuesToLong("ids");
         fuDaiService.delete(ids);
@@ -164,7 +164,7 @@ public class GroupBuyController extends BaseController {
     }
 
     /**
-     * 禁用福袋
+     * 禁用帮抢
      */
     public void disabled() {
         Long fudaiId = getParaToLong("id");
@@ -176,7 +176,7 @@ public class GroupBuyController extends BaseController {
 
 
     /**
-     * 启用福袋
+     * 启用帮抢
      */
     public void publish() {
         Long fudaiId = getParaToLong("id");

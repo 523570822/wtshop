@@ -13,7 +13,7 @@ public class ActivityProductDao extends BaseDao<ActivityProduct> {
     public ActivityProductDao(){super(ActivityProduct.class);}
 
     /**
-     *根据福袋查询对应的副产品
+     *根据帮抢查询对应的副产品
      * @param fuDaiId
      * @return
      */
@@ -27,7 +27,7 @@ public class ActivityProductDao extends BaseDao<ActivityProduct> {
     }
 
     /**
-     * 根据福袋id 查询主商品信息
+     * 根据帮抢id 查询主商品信息
      */
     public ActivityProduct findPrimary(Long id){
         if(id == null){
@@ -40,7 +40,7 @@ public class ActivityProductDao extends BaseDao<ActivityProduct> {
     }
 
     /**
-     * 根据福袋id 查询所有商品信息
+     * 根据帮抢id 查询所有商品信息
      */
     public List<ActivityProduct> findMessage(Long id){
         if(id == null){
@@ -53,7 +53,7 @@ public class ActivityProductDao extends BaseDao<ActivityProduct> {
     }
 
     /**
-     * 根据福袋id 查询副商品信息
+     * 根据帮抢id 查询副商品信息
      */
     public List<ActivityProduct> findByPro(Long id , List<Long> productIdList){
         String sql =  "select f.id, f.probability ,f.repeatTime ,f.is_main ,f.product_id ,g.`name` ,g.image FROM fudai_product f LEFT JOIN product p on f.product_id = p.id LEFT JOIN goods g on g.id = p.goods_id  where 1 = 1 and f.is_main = 0";

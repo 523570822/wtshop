@@ -597,10 +597,10 @@ public class MemberAPIController extends BaseAPIController {
 		Member member = memberService.getCurrent();
 		JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
 		Map<String,Object>  map=  new HashMap<>();
-		map.put("FudaiY","100");//福袋赠送钱
+		map.put("FudaiY","100");//帮抢赠送钱
 		map.put("registerSending",redisSetting.getDouble("registerSending"));//注册赠送喵币
 		map.put("vipSending",redisSetting.getDouble("vipSending"));//邀请码赠送喵币
-		map.put("housekeeperSending",redisSetting.getDouble("housekeeperSending"));//福袋赠送喵币
+		map.put("housekeeperSending",redisSetting.getDouble("housekeeperSending"));//帮抢赠送喵币
 		map.put("shareSending",redisSetting.getDouble("shareSending"));//分享赠送喵币
 		map.put("sfirstOrder","300");//首次下单奖励redisSetting.getDouble("sfirstOrder")
 

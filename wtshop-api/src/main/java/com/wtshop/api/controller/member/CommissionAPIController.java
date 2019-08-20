@@ -218,8 +218,8 @@ public class CommissionAPIController extends BaseAPIController {
 						}else if(2 == balanceType){
 							str_no = "Y" + UUIDUtils.getLongUUID();
 						}
-						Map<String, String> map = accountService.CashToWeChat(str_no, weiXinInfo.getAccount(), money, "任性猫提现", ip);
-						logger.info("任性猫提现[微信] {}", map);
+						Map<String, String> map = accountService.CashToWeChat(str_no, weiXinInfo.getAccount(), money, "鲜特提现", ip);
+						logger.info("鲜特提现[微信] {}", map);
 						if (map != null) {
 							if (StringUtils.isNotEmpty(map.get("err_code"))) {
 								renderJson(ApiResult.fail("系统错误,请稍后尝试!"));
@@ -240,7 +240,7 @@ public class CommissionAPIController extends BaseAPIController {
 				}else if(1 == type){
 					if(aLiInfo != null && aLiInfo.getAccount() != null){
 						JSONObject jsonObject = accountService.CashToAliPay(aLiInfo.getAccount(), amount,"Y");
-						logger.info("任性猫提现[支付宝] {}", jsonObject);
+						logger.info("鲜特提现[支付宝] {}", jsonObject);
 						if( jsonObject != null && "10000".equals(jsonObject.get("code"))){
 							String out_biz_no = jsonObject.getString("out_biz_no");
 							//更新信息

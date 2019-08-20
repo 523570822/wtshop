@@ -34,7 +34,7 @@ public class FuDaiProductService extends BaseService<FudaiProduct> {
     private ProductService productService = Enhancer.enhance(ProductService.class);
 
     /**
-     * 修改当前福袋的主产品对应的productId
+     * 修改当前帮抢的主产品对应的productId
      *
      * @param fuDaiId
      * @param productId
@@ -51,33 +51,33 @@ public class FuDaiProductService extends BaseService<FudaiProduct> {
     }
 
     /**
-     * 根据福袋Id 获取主福袋商品信息
+     * 根据帮抢Id 获取主帮抢商品信息
      */
     public FudaiProduct findPrimary(Long id) {
         return fuDaiProductDao.findPrimary(id);
     }
 
     /**
-     * 根据福袋Id 获取所有福袋商品信息
+     * 根据帮抢Id 获取所有帮抢商品信息
      */
     public List<FudaiProduct> findMessage(Long id) {
         return fuDaiProductDao.findMessage(id);
     }
 
     /**
-     * 根据福袋Id 获取副产品
+     * 根据帮抢Id 获取副产品
      */
     public List<FudaiProduct> findByPro(Long id, List<Long> productIdList) {
         return fuDaiProductDao.findByPro(id, productIdList);
     }
 
     /**
-     * 根据福袋Id 抽奖
+     * 根据帮抢Id 抽奖
      */
     public List<Long> lotteryProduct(long fudaiId, long memberId, long orderId) {
-        FuDai fd = fuDaiDao.find(fudaiId);  //  待抽取的福袋
+        FuDai fd = fuDaiDao.find(fudaiId);  //  待抽取的帮抢
         Map<Long, Long> exportCountMap = new HashMap<>();   //  单商品抽取次数
-        List<FudaiProduct> fdSubProductList = fuDaiProductDao.findByFudaiId(fd.getId());    //  福袋副产品列表
+        List<FudaiProduct> fdSubProductList = fuDaiProductDao.findByFudaiId(fd.getId());    //  帮抢副产品列表
         List<FudaiProduct> randomList = new ArrayList<>();
         for (FudaiProduct fudaiProduct : fdSubProductList) {
             if (fudaiProduct.getGrandPrix().intValue() > 0 && Redis.use().exists("FD:MEMBER:" + memberId + ":" + fudaiProduct.getId())) {

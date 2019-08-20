@@ -28,7 +28,7 @@ public class ActivityController extends BaseController {
     private ActivityService activityService=enhance(ActivityService.class);
     private FuDaiService fuDaiService = enhance(FuDaiService.class);
     private FuDaiProductService fuDaiProductService = enhance(FuDaiProductService.class);
-    private FudaiImgService fudaiImgService = enhance(FudaiImgService.class);    //福袋列表
+    private FudaiImgService fudaiImgService = enhance(FudaiImgService.class);    //帮抢列表
     private ProductImageService productImageService = enhance(ProductImageService.class);
 
     public void list() {
@@ -92,7 +92,7 @@ public class ActivityController extends BaseController {
         render("/admin/activity/add.ftl");
     }
 
-    //保存福袋信息
+    //保存帮抢信息
     public void save() {
         List<UploadFile> uploadFiles = getFiles();
 
@@ -159,7 +159,7 @@ public class ActivityController extends BaseController {
         render("/admin/activity/add.ftl");
     }
 
-    //修改福袋信息
+    //修改帮抢信息
     public void edit() {
         // 图片
         List<UploadFile> uploadFiles = getFiles();
@@ -191,7 +191,7 @@ public class ActivityController extends BaseController {
         redirect("list.jhtml");
     }
 
-    //删除福袋
+    //删除帮抢
     public void delete() {
         Long[] ids = getParaValuesToLong("ids");
         fuDaiService.delete(ids);
@@ -251,7 +251,7 @@ public class ActivityController extends BaseController {
     }
 
     /**
-     * 禁用福袋
+     * 禁用帮抢
      */
     public void disabled() {
         Long id = getParaToLong("id");
@@ -263,7 +263,7 @@ public class ActivityController extends BaseController {
 
 
     /**
-     * 启用福袋
+     * 启用帮抢
      */
     public void publish() {
         Long id = getParaToLong("id");

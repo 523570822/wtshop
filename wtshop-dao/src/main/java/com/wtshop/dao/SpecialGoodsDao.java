@@ -16,7 +16,7 @@ public class SpecialGoodsDao extends BaseDao<SpecialGoods>{
     }
 
     /**
-     * 获取当前正在使用的福袋
+     * 获取当前正在使用的帮抢
      */
     public List<SpecialGoods> findLists(){
 

@@ -516,7 +516,7 @@ public class Setting implements Serializable {
 	 */
 	private Double shareSending;
 	/**
-	 * 购买福袋赠送喵币数量
+	 * 购买帮抢赠送喵币数量
 	 */
 	private Double housekeeperSending;
 	/**

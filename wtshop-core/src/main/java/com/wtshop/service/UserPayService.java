@@ -49,7 +49,7 @@ public class UserPayService {
         parameterMap.put("appid", prop.get("AppID")); // 公众账号ID
         parameterMap.put("mch_id", prop.get("MCH_ID")); // 商户号
         parameterMap.put("nonce_str", RandomUtils.randomUpperWords(32)); // 随机字符串
-        parameterMap.put("body", "任性猫微信支付"); // 商品描述
+        parameterMap.put("body", "鲜特微信支付"); // 商品描述
         parameterMap.put("out_trade_no", "RXM" + order.getSn()); // 商户订单号
         parameterMap.put("total_fee", String.format("%.0f", money * 100));// 订单总金额
         parameterMap.put("spbill_create_ip", ip); // 终端IP
@@ -96,7 +96,7 @@ public class UserPayService {
         parameterMap.put("appid", prop.get("AppID")); // 公众账号ID
         parameterMap.put("mch_id", prop.get("MCH_ID")); // 商户号
         parameterMap.put("nonce_str", RandomUtils.randomUpperWords(32)); // 随机字符串
-        parameterMap.put("body", "任性猫微信支付"); // 商品描述
+        parameterMap.put("body", "鲜特微信支付"); // 商品描述
         parameterMap.put("out_trade_no", orderSn ); // 商户订单号
         parameterMap.put("total_fee", String.format("%.0f", money * 100));// 订单总金额
         parameterMap.put("spbill_create_ip", ip); // 终端IP
@@ -206,8 +206,8 @@ public class UserPayService {
 
         // SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
         AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-        model.setBody("任性猫支付宝付款");
-        model.setSubject("任性猫支付宝付款");
+        model.setBody("鲜特支付宝付款");
+        model.setSubject("鲜特支付宝付款");
         model.setOutTradeNo("RXM"+order.getSn());
         model.setTotalAmount(String.format("%.2f", money));
         model.setTimeoutExpress("30m");
@@ -247,8 +247,8 @@ public class UserPayService {
 
         // SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
         AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-        model.setBody("任性猫支付宝付款");
-        model.setSubject("任性猫支付宝付款");
+        model.setBody("鲜特支付宝付款");
+        model.setSubject("鲜特支付宝付款");
         model.setOutTradeNo(orderSn);
         model.setTotalAmount(String.format("%.2f", money));
         model.setTimeoutExpress("30m");
@@ -288,8 +288,8 @@ public class UserPayService {
 
         // SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
         AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-        model.setBody("任性猫支付宝充值");
-        model.setSubject("任性猫支付宝充值");
+        model.setBody("鲜特支付宝充值");
+        model.setSubject("鲜特支付宝充值");
         model.setOutTradeNo(UUIDUtils.getLongUUID());
         model.setTotalAmount(String.format("%.2f", price));
         model.setTimeoutExpress("30m");
@@ -335,7 +335,7 @@ public class UserPayService {
         parameterMap.put("appid", prop.get("AppID")); // 公众账号ID
         parameterMap.put("mch_id", prop.get("MCH_ID")); // 商户号
         parameterMap.put("nonce_str", RandomUtils.randomUpperWords(32)); // 随机字符串
-        parameterMap.put("body", "任性猫余额充值"); // 商品描述
+        parameterMap.put("body", "鲜特余额充值"); // 商品描述
         parameterMap.put("out_trade_no",  UUIDUtils.getLongUUID()); // 商户订单号
         parameterMap.put("total_fee", String.format("%.0f", price * 100));// 订单总金额
         parameterMap.put("spbill_create_ip", ip); // 终端IP

@@ -49,7 +49,7 @@ public class MiaoBiLssueAPIController extends BaseAPIController {
 
 
     /**
-     * 福袋主页
+     * 帮抢主页
      */
     public void list() {
         Integer pageNumber = getParaToInt("pageNumbers");
@@ -66,7 +66,7 @@ public class MiaoBiLssueAPIController extends BaseAPIController {
     }
 
     /**
-     * 福袋主页
+     * 帮抢主页
      */
     public void listRe() {
 

@@ -1086,7 +1086,7 @@ public class GroupRemindDao extends BaseDao<GroupRemind> {
 
     }
     /**
-     * 获取当前正在使用的福袋
+     * 获取当前正在使用的帮抢
      */
     public List<GroupRemind> findListRe(Double hour){
         hour=hour*60;

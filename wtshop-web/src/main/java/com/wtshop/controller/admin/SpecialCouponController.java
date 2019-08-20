@@ -216,7 +216,7 @@ public class SpecialCouponController extends BaseController {
 
 
 	/**
-	 * 禁用福袋
+	 * 禁用帮抢
 	 */
 	public void disabled() {
 		Long id = getParaToLong("id");
@@ -228,7 +228,7 @@ public class SpecialCouponController extends BaseController {
 
 
 	/**
-	 * 启用福袋
+	 * 启用帮抢
 	 */
 	public void publish() {
 		Long id = getParaToLong("id");

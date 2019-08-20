@@ -133,7 +133,7 @@ public class RefundsService extends BaseService<Refunds> {
                 Integer totalMoney = Integer.parseInt(String.format("%.0f", orderPrice * 100));
                 Integer returnMoney = Integer.parseInt(String.format("%.0f", price * 100));
                 try {
-                    Map<String, String> map = accountService.BackToWeChat(orderNo, totalMoney, returnMoney, "任性猫退款");
+                    Map<String, String> map = accountService.BackToWeChat(orderNo, totalMoney, returnMoney, "鲜特退款");
                     if (map != null) {
                         if (StringUtils.isNotEmpty(map.get("err_code"))) {
                             throw new AppRuntimeException("系统错误,请稍后尝试!");
@@ -224,7 +224,7 @@ public class RefundsService extends BaseService<Refunds> {
                         //微信退款
                         Double wechatReturnPrice = order.getWeixinPaid().multiply(new BigDecimal(limit)).setScale(2, ROUND_HALF_DOWN).doubleValue();
                         Integer wechatReturnPriceIntValue = Integer.parseInt(String.format("%.0f", wechatReturnPrice * 100));
-                        Map<String, String> map = accountService.BackToWeChat(orderNo, totalPrice, wechatReturnPriceIntValue, "任性猫退款");
+                        Map<String, String> map = accountService.BackToWeChat(orderNo, totalPrice, wechatReturnPriceIntValue, "鲜特退款");
                         logger.info("微信退款 order:" + order + "map: " + map);
                         if (map == null || !"SUCCESS".equals(map.get("result_code"))) {
                             throw new AppRuntimeException("微信退款失败");
@@ -271,7 +271,7 @@ public class RefundsService extends BaseService<Refunds> {
                         //微信退款
                         Double wechatReturnPrice = order.getWeixinPaid().multiply(new BigDecimal(limit)).setScale(2, ROUND_HALF_DOWN).doubleValue();
                         Integer wechatReturnPriceIntValue = Integer.parseInt(String.format("%.0f", wechatReturnPrice * 100));
-                        Map<String, String> map = accountService.BackToWeChat(orderNo, totalPrice, wechatReturnPriceIntValue, "任性猫退款");
+                        Map<String, String> map = accountService.BackToWeChat(orderNo, totalPrice, wechatReturnPriceIntValue, "鲜特退款");
                         logger.info("微信退款 order:" + order + "map: " + map);
                         if (map == null || !"SUCCESS".equals(map.get("result_code"))) {
                             throw new AppRuntimeException("微信退款失败");

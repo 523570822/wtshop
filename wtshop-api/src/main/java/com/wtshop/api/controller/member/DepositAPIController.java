@@ -210,9 +210,9 @@ public class DepositAPIController extends BaseAPIController {
 						if(1 == balanceType){
 							str_no = "B" + UUIDUtils.getLongUUID();
 						}
-						Map<String, String> map = accountService.CashToWeChat(str_no, weiXinInfo.getAccount(), money, "任性猫提现", ip);
+						Map<String, String> map = accountService.CashToWeChat(str_no, weiXinInfo.getAccount(), money, "鲜特提现", ip);
 						System.out.println(map);
-						logger.info("任性猫提现[微信] {}", map);
+						logger.info("鲜特提现[微信] {}", map);
 						if (map != null) {
 							if (StringUtils.isNotEmpty(map.get("err_code"))) {
 								renderJson(ApiResult.fail("提现失败,请稍后尝试!"));
@@ -233,7 +233,7 @@ public class DepositAPIController extends BaseAPIController {
 				}else if(1 == type){
 					if(aLiInfo != null && aLiInfo.getAccount() != null){
 						JSONObject jsonObject = accountService.CashToAliPay(aLiInfo.getAccount(), amount,"B");
-						logger.info("任性猫提现[支付宝] {}", jsonObject);
+						logger.info("鲜特提现[支付宝] {}", jsonObject);
 						if( jsonObject != null && "10000".equals(jsonObject.get("code"))){
 							String out_biz_no = jsonObject.getString("out_biz_no");
 							//更新信息

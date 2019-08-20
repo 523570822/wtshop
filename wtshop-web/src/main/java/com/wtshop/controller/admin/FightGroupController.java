@@ -93,7 +93,7 @@ public class FightGroupController extends BaseController {
         render("/admin/groupBuy/add.ftl");*/
     }
 
-    //保存福袋信息
+    //保存帮抢信息
     public void save() {
 
         FightGroup fuDai = getModel( FightGroup.class);
@@ -115,7 +115,7 @@ public class FightGroupController extends BaseController {
         render("/admin/groupBuy/edit.ftl");
     }
 
-    //修改福袋信息
+    //修改帮抢信息
     public void edit() {
         // 图片
         List<UploadFile> uploadFiles = getFiles();
@@ -139,7 +139,7 @@ public class FightGroupController extends BaseController {
         redirect("/admin/groupBuy/list.jhtml");
     }
 
-    //删除福袋
+    //删除帮抢
     public void delete() {
         Long[] ids = getParaValuesToLong("ids");
         fuDaiService.delete(ids);
@@ -191,7 +191,7 @@ public class FightGroupController extends BaseController {
     }
 
     /**
-     * 禁用福袋
+     * 禁用帮抢
      */
     public void disabled() {
         Long fudaiId = getParaToLong("id");
@@ -203,14 +203,14 @@ public class FightGroupController extends BaseController {
 
 
     /**
-     * 启用福袋
+     * 启用帮抢
      */
     public void publish() {
         Long fudaiId = getParaToLong("id");
         FightGroup fuDai = fuDaiService.find(fudaiId);
         List<FightGroup> list = fuDaiService.findSubListByFudaiId(fuDai.getId());
 /*        if (CollectionUtils.isEmpty(list) || list.size() <= fuDai.getNum()) {
-            addFlashMessage(Message.errMsg("福袋副产品数量需要大于福袋要抽取的副产品数量"));
+            addFlashMessage(Message.errMsg("帮抢副产品数量需要大于帮抢要抽取的副产品数量"));
             redirect("list.jhtml");
             return;
         }*/
