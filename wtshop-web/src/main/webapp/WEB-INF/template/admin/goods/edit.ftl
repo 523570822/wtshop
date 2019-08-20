@@ -1067,7 +1067,7 @@
                 所属店铺
             </th>
             <td>
-                [#list 0..80 as i]
+                [#list 0..249 as i]
                 <input type="radio" id="adminId${i}" name="adminId" value="${i}"
                         [#if i == goods.adminId]
                                checked[/#if]>
