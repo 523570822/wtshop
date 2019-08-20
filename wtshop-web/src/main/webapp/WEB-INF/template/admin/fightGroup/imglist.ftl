@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>福袋图片管理- Powered By ${setting.siteAuthor}</title>
+    <title>帮抢图片管理- Powered By ${setting.siteAuthor}</title>
     <meta name="author" content="${setting.siteAuthor}" />
     <meta name="copyright" content="${setting.siteCopyright}" />
     <link href="${base}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />

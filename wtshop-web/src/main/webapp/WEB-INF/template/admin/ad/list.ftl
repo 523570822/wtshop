@@ -71,7 +71,10 @@ $().ready(function() {
 				</th>
 				<th>
 					<a href="javascript:;" class="sort" name="type">${message("Ad.type")}</a>
-				</th>
+				</th>.
+                <th>
+                    <span>跳转参数</span>
+                </th>
 				<th>
 					<a href="javascript:;" class="sort" name="begin_date">${message("Ad.beginDate")}</a>
 				</th>
@@ -99,6 +102,9 @@ $().ready(function() {
 					<td>
 						${ad.adPosition.name}
 					</td>
+                    <td>
+						${ad.param}
+                    </td>
 					<td>
 						${message("Ad.Type." + ad.typeName)}
 					</td>

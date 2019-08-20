@@ -130,13 +130,13 @@
                 <td>
                     [#if fuDai.status==0]
                         <a href="toEdit.jhtml?id=${fuDai.id}">[${message("admin.common.edit")}]</a>
-                        <a href="addGoods.jhtml?id=${fuDai.id}">[${message("Fudai.goods.manager")}]</a>
+                    [#--    <a href="addGoods.jhtml?id=${fuDai.id}">[${message("Fudai.goods.manager")}]</a>--]
                         <a class="hidden" href="imgList.jhtml?id=${fuDai.id}">[${message("Fudai.image.manager")}]</a>
                         <a href="disabled.jhtml?id=${fuDai.id}" class="status"
                            data="${fuDai.id}">][${message("admin.member.disabled")}]</a>
                     [#else ]
                         <a href="toEdit.jhtml?id=${fuDai.id}">[${message("admin.common.edit")}]</a>
-                        <a href="addGoods.jhtml?id=${fuDai.id}">[${message("Fudai.goods.manager")}]</a>
+                 [#--       <a href="addGoods.jhtml?id=${fuDai.id}">[${message("Fudai.goods.manager")}]</a>--]
                         <a href="publish.jhtml?id=${fuDai.id}" class="status"
                            data="${fuDai.id}">[${message("LoginPlugin.isEnabled")}]</a>
                     [/#if]

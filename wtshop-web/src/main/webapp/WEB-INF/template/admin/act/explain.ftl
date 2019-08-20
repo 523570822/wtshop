@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>任性猫</title>
+    <title>鲜特</title>
     <style type="text/css">
         img {
             width: 100%;

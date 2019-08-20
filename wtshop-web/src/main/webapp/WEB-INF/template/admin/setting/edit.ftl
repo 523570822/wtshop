@@ -1364,7 +1364,7 @@ $().ready(function() {
             </tr>
             <tr>
                 <th>
-				购买福袋赠送喵币：
+				购买帮抢赠送喵币：
                 </th>
                 <td>
 					[#if redisSetting.registerSending??]

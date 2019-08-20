@@ -63,6 +63,7 @@ $().ready(function() {
 			<th>
 				<span>${message("ProductCategory.name")}</span>
 			</th>
+
             <th>
                 <span>${message("ProductCategory.image")}</span>
             </th>
@@ -79,6 +80,9 @@ $().ready(function() {
 					<span style="margin-left: ${productCategory.grade * 20}px;[#if productCategory.grade == 0] color: #000000;[/#if]">
 						${productCategory.name} (${productCategory.id})
 					</span>
+				</td>
+				<td>
+					${productCategory.param}
 				</td>
                 <td>
 					[#if productCategory.image ??]

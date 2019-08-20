@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>添加福袋 - Powered By ${setting.siteAuthor}</title>
+    <title>添加帮抢 - Powered By ${setting.siteAuthor}</title>
     <meta name="author" content="${setting.siteAuthor}" />
     <meta name="copyright" content="${setting.siteCopyright}" />
     <link href="${base}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />
@@ -160,26 +160,6 @@
                 <input type="button" value="选择产品" class="button" id="addProduct"/>
             </td>
         </tr>
-        <tr>
-            <th><span class="requiredField">*</span>${message("Fudai.other.image")} </th>
-            <td>
-   <span class="fieldSet">
-      <input type="text" name="fuDai.questionImage" class="text" value="${fuDaiQuestionImage}" maxlength="200" />
-      <a  id="filePicker"  href="javascript:;" title="手机端用于展示副产品的图片" class="button filePicker">${message("admin.upload.filePicker")} </a>
-      <a href="${fileServer}${fuDaiQuestionImage}" target="_blank">${message("admin.common.view")}</a>
-   </span>
-            </td>
-
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("Fudai.other.count")}:
-            </th>
-            <td>
-                <input type="text" name="fuDai.num" class="text" maxlength="200" title=${message("fudai.success.title")} />
-            </td>
-        </tr>
-
         <tr>
             <th>
                 <span class="requiredField"></span>${message("Fudai.message")}:

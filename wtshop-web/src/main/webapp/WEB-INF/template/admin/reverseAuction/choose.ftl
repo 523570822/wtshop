@@ -293,7 +293,7 @@
                 [/@compress]
             )
             }
-            if(flag==4){//福袋产品使用
+            if(flag==4){//帮抢产品使用
                 parent.$('#productImageTable').append(
                 [@compress single_line = true]
                         '<tr>

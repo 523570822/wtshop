@@ -349,6 +349,7 @@
 							[#break /]
 						[/@shiro.hasPermission]
 					[/#list]
+					[#--内容管理--]
                     [#list ["admin:adPosition", "admin:ad", "admin:newGoods", "admin:like","admin:character" ] as permission]
 						[@shiro.hasPermission name = permission]
 							<div class="panel panel-default">
@@ -432,6 +433,7 @@
 							[#break /]
 						[/@shiro.hasPermission]
 					[/#list]
+					[#--倒拍管理--]
 					[#list ["admin:reverseAuctionPerm:list"  ] as permission]
 						[@shiro.hasPermission name = permission]
                             <div class="panel panel-default">
@@ -496,7 +498,7 @@
 										[#break /]
 									[/@shiro.hasPermission]
 								[/#list]
-
+[#--管家管理--]
 	[#list ["admin:housekeeper"] as permission]
 		[@shiro.hasPermission name = permission]
                             <div class="panel panel-default">
@@ -575,7 +577,7 @@
 									[#break /]
 								[/@shiro.hasPermission]
 							[/#list]
-					
+					[#--钱包管理--]
 					[#list ["admin:myWallet" ,"admin:myWalletInfo"] as permission]
 						[@shiro.hasPermission name = permission]
                             <div class="panel panel-default">

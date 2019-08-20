@@ -165,25 +165,6 @@
             </td>
         </tr>
         <tr>
-            <th><span class="requiredField">*</span>${message("fudai.goods")}</th>
-            <td>
-   <span class="fieldSet">
-      <input type="text" name="fuDai.questionImage" class="text" value="${fuDai.questionImage}" maxlength="200" />
-      <a  id="filePicker"  href="javascript:;"  title=${message("fudai.phone")} class="button filePicker">${message("admin.upload.filePicker")}</a>
-      <a href="${fileServer}${fuDai.questionImage}" target="_blank">${message("admin.common.view")}</a>
-   </span>
-            </td>
-
-        </tr>
-        <tr>
-            <th>
-                <span class="requiredField">*</span>${message("Fudai.other.count")}:
-            </th>
-            <td>
-                <input type="text" name="fuDai.num" class="text" maxlength="200" value="${fuDai.num}" title=${message("fudai.success.title")}/>
-            </td>
-        </tr>
-        <tr>
             <th>
                 <span class="requiredField"></span>${message("Fudai.message")}:
             </th>
