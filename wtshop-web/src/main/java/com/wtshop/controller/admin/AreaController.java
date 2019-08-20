@@ -149,10 +149,16 @@ public class AreaController extends BaseController {
 		Long id = getParaToLong("id");
 		Area area = areaService.find(id);
 		if (CollectionUtils.isNotEmpty(area.getChildren())) {
-			renderJson(new Message(Message.Type.error, "存在下级地区"));
+			renderJson( "存在下级地区");
 			return;
 		}
-		areaService.delete(id);
+		try{
+			areaService.delete(id);
+		}catch (Exception e){
+			renderJson(new Message(Message.Type.warn,"存在关联地区无法删除"));
+			return;
+		}
+
 		renderJson(SUCCESS_MESSAGE);
 	}
 
