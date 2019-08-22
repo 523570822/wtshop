@@ -2,7 +2,6 @@ package com.wtshop.api.controller;
 
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
-import com.wtshop.api.interceptor.TokenInterceptor;
 import com.wtshop.util.ApiResult;
 import com.wtshop.api.common.result.ProductCategoryModel;
 import com.wtshop.api.common.result.ProductCategoryResult;

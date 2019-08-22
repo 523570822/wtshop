@@ -11,7 +11,6 @@ import com.wtshop.api.common.result.member.ReverseAuctionDetailResult;
 import com.wtshop.api.common.result.member.ReverseAuctionResult;
 import com.wtshop.api.controller.BaseAPIController;
 import com.wtshop.api.interceptor.ErrorInterceptor;
-import com.wtshop.api.interceptor.TokenInterceptor;
 import com.wtshop.constants.Code;
 import com.wtshop.dao.OrderDao;
 import com.wtshop.dao.ReverseAuctionHistroyDao;

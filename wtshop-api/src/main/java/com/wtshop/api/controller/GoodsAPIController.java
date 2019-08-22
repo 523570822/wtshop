@@ -13,8 +13,6 @@ import com.wtshop.api.common.result.GoodsListResult;
 import com.wtshop.api.common.result.GoodsMessageResult;
 import com.wtshop.api.common.result.SearchResult;
 import com.wtshop.api.interceptor.ErrorInterceptor;
-import com.wtshop.api.interceptor.TokenInterceptor;
-import com.wtshop.entity.AreaResult;
 import com.wtshop.entity.SpecificationItem;
 import com.wtshop.exception.ResourceNotFoundException;
 import com.wtshop.interceptor.WapInterceptor;

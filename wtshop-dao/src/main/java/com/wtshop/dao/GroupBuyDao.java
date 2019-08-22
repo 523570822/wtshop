@@ -24,7 +24,7 @@ public class GroupBuyDao extends BaseDao<GroupBuy>{
      */
     public Page<GroupBuy> findPages(Pageable pageable ,boolean status,long id ){
 
-        String select = " SELECT f.*,g.name,g.image,g.market_price,case when  gr.`status` is null then 0 else gr.`status` end  rem_status ";
+        /*String select = " SELECT f.*,g.name,g.image,g.market_price,case when  gr.`status` is null then 0 else gr.`status` end  rem_status ";
         String  sqlExceptSelect="";
         if(status){
               sqlExceptSelect="FROM group_buy f LEFT JOIN product  p ON f.product_id = p.id LEFT JOIN goods g on g.id=p.goods_id LEFT JOIN (select  * from group_remind ss where ss.member_id="+id+") gr on f.id=gr.group_id WHERE 1 = 1 AND unix_timestamp(now()) < unix_timestamp(f.end_date) AND unix_timestamp(now()) > unix_timestamp(f.begin_date) AND f.STATUS = 1 ORDER BY orders DESC";
@@ -34,7 +34,17 @@ public class GroupBuyDao extends BaseDao<GroupBuy>{
         }
 
 
-           return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
+           return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);*/
+        String select = " SELECT f.*, g. NAME, g.image, g.market_price, CASE WHEN g.id IS NULL THEN 0 ELSE 1 END rem_status";
+        String  sqlExceptSelect="";
+        if(status){
+            sqlExceptSelect="FROM group_buy f LEFT JOIN product p ON f.product_id = p.id LEFT JOIN goods g ON g.id = p.goods_id WHERE 1 = 1 AND unix_timestamp(now()) < unix_timestamp(f.end_date) AND unix_timestamp(now()) > unix_timestamp(f.begin_date) AND f. STATUS = 1 ORDER BY orders DESC";
+        }else{
+            sqlExceptSelect="FROM group_buy f LEFT JOIN product  p ON f.product_id = p.id LEFT JOIN goods g on g.id=p.goods_id  WHERE 1 = 1 AND unix_timestamp(now())<unix_timestamp( f.begin_date) AND f.STATUS = 1 ORDER BY orders DESC" ;
+                            }
+
+
+        return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);
     }
 
     /**

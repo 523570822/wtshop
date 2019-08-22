@@ -11,7 +11,6 @@ import com.jfinal.plugin.redis.Redis;
 import com.wtshop.CommonAttributes;
 import com.wtshop.Setting;
 import com.wtshop.api.interceptor.ErrorInterceptor;
-import com.wtshop.api.interceptor.TokenInterceptor;
 import com.wtshop.constants.Code;
 import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.Member;
