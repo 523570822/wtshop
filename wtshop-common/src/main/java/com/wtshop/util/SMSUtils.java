@@ -36,7 +36,7 @@ public class SMSUtils {
      String url = prop.get("sms.url","http://gw.api.taobao.com/router/rest");
         String appkey = prop.get("sms.appkey","23420217");
         String secret = prop.get("sms.secret","3be7ee1de30c2e63ad465317d394fa32");
-        String sign = prop.get("sms.signName","鲜特");
+        String sign = prop.get("sms.signName","登录验证");
      /*   String url = "http://gw.api.taobao.com/router/rest";
         String appkey ="23420217";
         String secret = "3be7ee1de30c2e63ad465317d394fa32";
