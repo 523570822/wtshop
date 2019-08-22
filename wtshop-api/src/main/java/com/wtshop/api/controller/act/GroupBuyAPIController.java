@@ -21,6 +21,8 @@ import com.wtshop.util.RedisUtil;
 import com.wtshop.util.SystemUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
+
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -29,7 +31,7 @@ import java.util.*;
  * Created by sq on 2017/6/8.
  */
 @ControllerBind(controllerKey = "/api/groupbuy")
-@Before({WapInterceptor.class, ErrorInterceptor.class})
+@Before({WapInterceptor.class, ErrorInterceptor.class, TokenInterceptor.class})
 public class GroupBuyAPIController extends BaseAPIController {
     /** 每页记录数 */
     private static final int PAGE_SIZE = 10;
@@ -58,10 +60,10 @@ public class GroupBuyAPIController extends BaseAPIController {
     public void list() {
         Integer pageNumber = getParaToInt("pageNumbers");
         boolean status = getParaToBoolean("status");
-       // Member m=memberService.getCurrent();
+        Member m=memberService.getCurrent();
         Map<String, Object> map = new HashedMap();
         Pageable pageable = new Pageable(pageNumber, PAGE_SIZE);
-        Page<GroupBuy> list = fuDaiService.findPages(pageable,status,0);
+        Page<GroupBuy> list = fuDaiService.findPages(pageable,status,m.getId());
         // map.put("list", list);
         renderJson(ApiResult.success(list));
     }
