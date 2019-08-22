@@ -1067,11 +1067,11 @@
                 所属店铺
             </th>
             <td>
-                [#list 0..249 as i]
+                [#list 0..259 as i]
                 <input type="radio" id="adminId${i}" name="adminId" value="${i}"
                         [#if i == goods.adminId]
                                checked[/#if]>
-                    	[#if i="20"]</br>[/#if]
+                    	[#if i%20==0]</br>[/#if]
                 <label for="adminId${i}">店铺${i}</label>
              [/#list]
 
