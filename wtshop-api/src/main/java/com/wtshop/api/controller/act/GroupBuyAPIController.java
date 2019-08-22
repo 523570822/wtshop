@@ -33,7 +33,7 @@ import java.util.*;
  * Created by sq on 2017/6/8.
  */
 @ControllerBind(controllerKey = "/api/groupbuy")
-@Before({WapInterceptor.class, ErrorInterceptor.class, TokenInterceptor.class})
+@Before({WapInterceptor.class, ErrorInterceptor.class})
 public class GroupBuyAPIController extends BaseAPIController {
     /** 每页记录数 */
     private static final int PAGE_SIZE = 10;
@@ -62,10 +62,10 @@ public class GroupBuyAPIController extends BaseAPIController {
     public void list() {
         Integer pageNumber = getParaToInt("pageNumbers");
         boolean status = getParaToBoolean("status");
-        Member m=memberService.getCurrent();
+
         Map<String, Object> map = new HashedMap();
         Pageable pageable = new Pageable(pageNumber, PAGE_SIZE);
-        Page<GroupBuy> list = fuDaiService.findPages(pageable,status,m.getId());
+        Page<GroupBuy> list = fuDaiService.findPages(pageable,status,0);
         // map.put("list", list);
         renderJson(ApiResult.success(list));
     }

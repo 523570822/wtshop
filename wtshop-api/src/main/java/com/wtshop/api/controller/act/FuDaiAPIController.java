@@ -27,7 +27,7 @@ import java.util.Map;
  * Created by sq on 2017/6/8.
  */
 @ControllerBind(controllerKey = "/api/fudai")
-@Before({WapInterceptor.class, ErrorInterceptor.class, TokenInterceptor.class})
+@Before({WapInterceptor.class, ErrorInterceptor.class})
 public class FuDaiAPIController extends BaseAPIController {
 
     private FuDaiService fuDaiService = enhance(FuDaiService.class);
