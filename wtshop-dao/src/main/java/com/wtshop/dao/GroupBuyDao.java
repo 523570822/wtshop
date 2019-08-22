@@ -35,7 +35,7 @@ public class GroupBuyDao extends BaseDao<GroupBuy>{
 
 
            return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sqlExceptSelect);*/
-        String select = " SELECT f.*, g. NAME, g.image, g.market_price, CASE WHEN g.id IS NULL THEN 0 ELSE 1 END rem_status";
+        String select = " SELECT f.*, g.name, g.image, g.market_price, CASE WHEN g.id IS NULL THEN 0 ELSE 1 END rem_status";
         String  sqlExceptSelect="";
         if(status){
             sqlExceptSelect="FROM group_buy f LEFT JOIN product p ON f.product_id = p.id LEFT JOIN goods g ON g.id = p.goods_id WHERE 1 = 1 AND unix_timestamp(now()) < unix_timestamp(f.end_date) AND unix_timestamp(now()) > unix_timestamp(f.begin_date) AND f. STATUS = 1 ORDER BY orders DESC";
