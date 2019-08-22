@@ -1457,15 +1457,6 @@ if(!isSinglepurchase){
 		Long id = getParaToLong("id");
 		Order order = orderService.find(id);
 		Member member = memberService.getCurrent();
-		if(StringUtils.isEmpty(member.getOnShareCode())){
-			renderJson(ApiResult.fail(7,"请填写邀请码"));
-			return;
-		}
-
-		if(StringUtils.isEmpty(member.getOnShareCode())){
-			renderJson(ApiResult.fail(7,"请填写邀请码"));
-			return;
-		}
 		//支付倒计时 获取到期时间 支付金额 余额
 		Date expire = order.getExpire();
 		Date date = new Date();
