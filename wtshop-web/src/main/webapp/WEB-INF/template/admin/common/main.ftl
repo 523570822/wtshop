@@ -571,6 +571,7 @@
 																		[/@shiro.hasPermission]
 																		[@shiro.hasPermission name="admin:point"]
                                                         <li><a href="../point/log.jhtml" target="iframe">喵币详情</a></li>
+                                                       [#-- <li><a href="../point/adjust.jhtml" target="iframe">积分调整</a></li>--]
 																		[/@shiro.hasPermission]
 																	</ul>
 																</div>

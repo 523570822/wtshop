@@ -46,7 +46,7 @@ public class IntegralController extends BaseController {
 	 * 调整
 	 */
 	public void adjust() {
-		render("/admin/point/adjust.ftl");
+		render("/admin/integral/adjust.ftl");
 	}
 
 
@@ -54,7 +54,7 @@ public class IntegralController extends BaseController {
 	/**
 	 * 记录
 	 */
-	public void log() {
+	public void list() {
 
 		Pageable pageable = getBean(Pageable.class);
 		Integer type = getParaToInt("typeName");
@@ -62,7 +62,7 @@ public class IntegralController extends BaseController {
 
 		setAttr("page", pages);
 		setAttr("pageable", pageable);
-		render("/admin/point/log.ftl");
+		render("/admin/integral/list.ftl");
 	}
 
 }
