@@ -564,9 +564,9 @@
 																	<ul class="nav nav-pills nav-stacked">
 																		[@shiro.hasPermission name="admin:miaobilssue"]
 
-																			<li><a href="../miaobilssue/list.jhtml" target="iframe">积分发放详情</a></li>
-																			<li><a href="../miaobilssue/list.jhtml" target="iframe">积分门店记录</a></li>
-                                                                            <li><a href="../miaobilssue/list.jhtml" target="iframe">积分门店消耗详情</a></li>
+																			<li><a href="../integral/list.jhtml" target="iframe">积分发放详情</a></li>
+																			<li><a href="../integral/list.jhtml" target="iframe">积分门店记录</a></li>
+                                                                            <li><a href="../integral/list.jhtml" target="iframe">积分门店消耗详情</a></li>
 
 																		[/@shiro.hasPermission]
 																		[@shiro.hasPermission name="admin:point"]

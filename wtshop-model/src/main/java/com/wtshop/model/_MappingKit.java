@@ -149,6 +149,9 @@ public class _MappingKit {
 		// Composite Primary Key order: member_ranks,promotions
 		arp.addMapping("promotion_member_rank", "member_ranks,promotions", PromotionMemberRank.class);
 		arp.addMapping("raffle", "id", Raffle.class);
+		arp.addMapping("integral_log", "id", IntegralLog.class);
+		arp.addMapping("integral_store", "id", IntegralStore.class);
+		arp.addMapping("integral_store_log", "id", IntegralStoreLog.class);
 		arp.addMapping("receiver", "id", Receiver.class);
 		arp.addMapping("referrer_config", "id", ReferrerConfig.class);
 		arp.addMapping("referrer_goods", "id", ReferrerGoods.class);

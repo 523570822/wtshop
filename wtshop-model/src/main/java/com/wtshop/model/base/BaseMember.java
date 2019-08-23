@@ -577,4 +577,12 @@ public abstract class BaseMember<M extends BaseMember<M>> extends Model<M> imple
 		return get("is_store");
 	}
 
+	public void setIntegral(java.math.BigDecimal integral) {
+		set("integral", integral);
+	}
+
+	public java.math.BigDecimal getIntegral() {
+		return get("integral");
+	}
+
 }
