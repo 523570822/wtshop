@@ -144,7 +144,7 @@
 							[#break /]
 						[/@shiro.hasPermission]
 					[/#list]
-
+[#--营销辅助--]
 					[#list ["admin:cartMember" ,"admin:follow", "admin:cartGoods", "admin:referrerGoods", "admin:point", "admin:footprint", "admin:interestCategory"] as permission]
 				[@shiro.hasPermission name = permission]
 									<div class="panel panel-default">
@@ -173,9 +173,7 @@
                                                         <li><a href="../referrer_goods/list.jhtml" target="iframe">${message("admin.role.referrerGoods")}</a></li>
 													[/@shiro.hasPermission]
 
-													[@shiro.hasPermission name="admin:point"]
-                                                        <li><a href="../point/log.jhtml" target="iframe">${message("admin.main.point")}</a></li>
-													[/@shiro.hasPermission]
+
 
 													[@shiro.hasPermission name="admin:footprint"]
                                                         <li><a href="../footprint/list.jhtml" target="iframe">${message("admin.footprint")}</a></li>
@@ -245,6 +243,7 @@
 							[#break /]
 						[/@shiro.hasPermission]
 					[/#list]
+					[#--订单管理--]
                     [#list ["admin:order", "admin:print", "admin:payment", "admin:refunds", "admin:shipping", "admin:returns", "admin:vipOrder" ] as permission]
 						[@shiro.hasPermission name = permission]
 							<div class="panel panel-default">
@@ -496,7 +495,7 @@
 										[#break /]
 									[/@shiro.hasPermission]
 								[/#list]
-
+[#--管家管理--]
 	[#list ["admin:housekeeper"] as permission]
 		[@shiro.hasPermission name = permission]
                             <div class="panel panel-default">
@@ -522,7 +521,7 @@
 		[/@shiro.hasPermission]
 	[/#list]
 
-
+[#--团购管理--]
 						[#list ["admin:groupBuy"] as permission]
 							[@shiro.hasPermission name = permission]
 
@@ -552,7 +551,7 @@
 							[/@shiro.hasPermission]
 						[/#list]
 
-							[#list ["admin:miaobilssue"] as permission]
+							[#list ["admin:miaobilssue","admin:point"] as permission]
 								[@shiro.hasPermission name = permission]
 														<div class="panel panel-default">
 															<div class="panel-heading">
@@ -564,8 +563,14 @@
 																<div class="panel-body">
 																	<ul class="nav nav-pills nav-stacked">
 																		[@shiro.hasPermission name="admin:miaobilssue"]
-																			<li><a href="../miaobilssue/list.jhtml" target="iframe">喵币发放详情</a></li>
-																		[#--	<li><a href="../miaobilssue/list.jhtml" target="iframe"></a></li>--]
+
+																			<li><a href="../miaobilssue/list.jhtml" target="iframe">积分发放详情</a></li>
+																			<li><a href="../miaobilssue/list.jhtml" target="iframe">积分门店记录</a></li>
+                                                                            <li><a href="../miaobilssue/list.jhtml" target="iframe">积分门店消耗详情</a></li>
+
+																		[/@shiro.hasPermission]
+																		[@shiro.hasPermission name="admin:point"]
+                                                        <li><a href="../point/log.jhtml" target="iframe">喵币详情</a></li>
 																		[/@shiro.hasPermission]
 																	</ul>
 																</div>

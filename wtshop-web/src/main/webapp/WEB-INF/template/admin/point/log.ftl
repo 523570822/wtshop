@@ -94,7 +94,7 @@ $().ready(function() {
 					<a href="javascript:;" class="sort" name="type">${message("PointLog.type")}</a>
 				</th>
 				<th>
-					${message("admin.wallet.change")}
+					喵币变化
 				</th>
 				<th>
 					<a href="javascript:;" class="sort" name="balance">${message("PointLog.balance")}</a>
