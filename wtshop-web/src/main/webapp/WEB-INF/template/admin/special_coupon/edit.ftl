@@ -78,6 +78,7 @@
                 <input type="text" name="specialPersonnel.phone" value="${specialPersonnel.phone}"  class="text" maxlength="200" />
             </td>
         </tr>
+
         <tr>
             <th>
                 &nbsp;

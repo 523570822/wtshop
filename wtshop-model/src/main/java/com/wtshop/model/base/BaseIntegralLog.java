@@ -89,12 +89,20 @@ public abstract class BaseIntegralLog<M extends BaseIntegralLog<M>> extends Mode
 		return get("member_id");
 	}
 
-	public void setOrderId(Long orderId) {
-		set("order_id", orderId);
+	public void setIdentifierId(Long identifierId) {
+		set("identifier_id", identifierId);
 	}
 
-	public Long getOrderId() {
-		return get("order_id");
+	public Long getIdentifierId() {
+		return get("identifier_id");
+	}
+
+	public void setCode(String code) {
+		set("code", code);
+	}
+
+	public String getCode() {
+		return get("code");
 	}
 
 }

@@ -167,6 +167,9 @@ function disabled(id,status) {
                     <a href="javascript:;" class="sort" name="price">消费金额</a>
                 </th>
                 <th>
+                    <a href="javascript:;" class="sort" name="price">积分</a>
+                </th>
+                <th>
                     <a href="javascript:;" class="sort" name="status">状态</a>
                 </th>
                 <th>
@@ -211,6 +214,9 @@ function disabled(id,status) {
                     <td>
 						${brand.price}
                     </td>
+                    <th>
+                        ${brand.integral}
+                    </th>
                     <td>
 					[#if brand.status==0||brand.status==null]
 

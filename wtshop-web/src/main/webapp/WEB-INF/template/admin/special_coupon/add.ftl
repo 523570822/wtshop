@@ -187,6 +187,15 @@
                 <input type="text" name="money" id="money" class="text"  maxlength="200" />
             </td>
         </tr>
+        <tr>
+
+            <th>
+                积分
+            </th>
+            <td>
+                <input type="text" name="integral" id="integral" class="text"  maxlength="200" />
+            </td>
+        </tr>
     </table>
     <table class="input">
         <tr>

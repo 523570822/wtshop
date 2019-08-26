@@ -93,7 +93,52 @@ public class InformationService extends BaseService<Information> {
     }
 
     /**
-     * 支付成功消息
+     *
+     * 赠送积分成功消息
+     * @param integralLog
+     */
+
+    public void intergraSuccessMessage(IntegralLog integralLog) {
+        final Logger logger = Logger.getLogger("paySuccessMessage");
+        //添加消息记录表
+        Information information = new Information();
+        String typeS="";
+        if(integralLog.getType()==0){
+            typeS="聚惠卡";
+        }else if(integralLog.getType()==1){
+            typeS="代金卡";
+        }
+
+        information.setContent("绑定"+typeS+"成功");
+        information.setIsDelete(false);
+        information.setStatus(false);
+        information.setMemberId(integralLog.getMemberId());
+        information.setTitle("绑定"+typeS+"成功");
+        information.setAction(Information.Action.none.ordinal());
+        information.setLink(integralLog.getId()+"");
+        information.setType(Information.Type.none.ordinal());
+        informationDao.save(information);
+
+        Cache actCache = Redis.use();
+        Boolean isMyMessage = actCache.get("ORDERMMESSAGR_SWITCH:" + information.getMemberId());
+        String sound = "default";
+        Object o = actCache.get("SOUND:" + information.getMemberId());
+        if (o != null) {
+            sound = o.toString();
+        }
+        if (isMyMessage != null && isMyMessage) {
+            String key = "MEMBER:" + information.getMemberId().toString();
+            String appid = RedisUtil.getString(key);
+            if (appid != null) {
+                logger.info("开始调用极光推送方法——————————————————————; appid=" + appid);
+                JPush.sendPushById(appid, "系统消息", typeS+"(" + integralLog.getId() + ")已完成绑定", "系统奖励积分"+integralLog.getCredit(), sound, null);
+
+                logger.info("成功调用极光推送方法——————————————————————");
+            }
+        }
+    }
+    /**
+     *支付成功消息
      *
      * @param order
      */

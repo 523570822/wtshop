@@ -53,6 +53,7 @@ public class SpecialCouponController extends BaseController {
 
 		Integer id = getParaToInt("number");
 		Long money = getParaToLong("money");
+		Long integral = getParaToLong("integral");
 		SpecialCoupon identifier=identifierService.findByLast();
 		Long i=0l;
 		String title="1";
@@ -69,6 +70,8 @@ public class SpecialCouponController extends BaseController {
 			identifier1.setCode(code);
 			identifier1.setStatus(0);
 			identifier1.setMoney(BigDecimal.valueOf(money));
+			BigDecimal bintegral = BigDecimal.valueOf(integral);
+			identifier1.setIntegral(bintegral);
 			identifier1.setTitle(title);
 				System.out.println("开始计数"+i+"验证码"+code);
 			identifierService.save(identifier1);

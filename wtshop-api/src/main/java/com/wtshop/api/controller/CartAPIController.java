@@ -39,6 +39,7 @@ public class CartAPIController extends BaseAPIController {
 	private Res resZh = I18n.use();
 
 	/**
+	 * 加购物车接口
 	 * 添加
 	 * http://localhost/api/cart/add.jhtml?productIds=88&quantitys=1&buy_nows=0
 	 * {"msg":"请求成功","code":1,"data":{}}

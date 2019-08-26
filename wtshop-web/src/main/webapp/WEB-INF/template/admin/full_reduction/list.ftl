@@ -71,11 +71,14 @@ $().ready(function() {
 					<a href="javascript:;" class="sort" name="title">${message("Promotion.title")}</a>
 				</th>
 				<th>
-					<a href="javascript:;" class="sort" name="begin_date">满反条件金额</a>
+					<a href="javascript:;" class="sort" name="total_money">满反条件金额</a>
 				</th>
 				<th>
-					<a href="javascript:;" class="sort" name="end_date">反还商家金额</a>
+					<a href="javascript:;" class="sort" name="money">反还商家金额</a>
 				</th>
+                <th>
+                    <a href="javascript:;" class="sort" name="integral">积分</a>
+                </th>
 				[#--<th>--]
 					[#--<a href="javascript:;" class="sort" name="orders">${message("admin.common.order")}</a>--]
 				[#--</th>--]
@@ -101,6 +104,10 @@ $().ready(function() {
                         <span title="${promotion.title}">${promotion.money}</span>
 
 					</td>
+                    <td>
+                        <span title="${promotion.integral}">${promotion.integral}</span>
+
+                    </td>
 					<td>
 						<a href="edit.jhtml?id=${promotion.id}">[${message("admin.common.edit")}]</a>
 					[#--	<a href="view.jhtml?id=${promotion.id}">[${message("admin.common.view")}]</a>--]

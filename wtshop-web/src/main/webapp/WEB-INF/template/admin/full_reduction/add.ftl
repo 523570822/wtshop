@@ -144,6 +144,15 @@ $().ready(function() {
 				},
 				compare: "#minimumPrice"
 			},
+			"fullReduction.integral": {
+                required:true,
+			    min: 0,
+				decimal: {
+					integer: 12,
+					fraction: ${setting.priceScale}
+				},
+				compare: "#minimumPrice"
+			},
 			"fullReduction.minimum_quantity": "digits",
 			"fullReduction.maximum_quantity": {
 				digits: true,
@@ -211,20 +220,27 @@ $().ready(function() {
                     <input type="text" name="fullReduction.money" class="text" maxlength="200" />
                 </td>
             </tr>
-
+            <tr>
+                <th>
+                    <span class="requiredField">*</span>赠送积分:
+                </th>
+                <td>
+                    <input type="text" name="fullReduction.integral" class="text" maxlength="200" />
+                </td>
+            </tr>
 			<tr>
 				<th>
 					${message("admin.common.order")}:
 				</th>
 				<td>
-					<input type="text" name="promotion.orders" class="text" maxlength="9" />
+					<input type="text" name="fullReduction.orders" class="text" maxlength="9" />
 				</td>
 			</tr>
 		</table>
 		<table class="input tabContent">
 			<tr>
 				<td>
-					<textarea id="introduction" name="promotion.introduction" class="editor" style="width: 100%;"></textarea>
+					<textarea id="introduction" name="fullReduction.introduction" class="editor" style="width: 100%;"></textarea>
 				</td>
 			</tr>
 		</table>

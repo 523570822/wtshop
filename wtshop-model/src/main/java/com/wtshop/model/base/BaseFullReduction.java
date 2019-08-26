@@ -129,4 +129,12 @@ public abstract class BaseFullReduction<M extends BaseFullReduction<M>> extends 
 		return get("title");
 	}
 
+	public void setIntegral(java.math.BigDecimal integral) {
+		set("integral", integral);
+	}
+
+	public java.math.BigDecimal getIntegral() {
+		return get("integral");
+	}
+
 }

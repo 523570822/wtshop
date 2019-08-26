@@ -2,10 +2,10 @@ package com.wtshop.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
+import com.jfinal.aop.Enhancer;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Page;
-import com.taobao.api.internal.toplink.embedded.websocket.util.StringUtil;
 import com.wtshop.Pageable;
 import com.wtshop.RequestContextHolder;
 import com.wtshop.Setting;
@@ -22,6 +22,7 @@ import com.wtshop.util.ApiResult;
 import com.wtshop.util.RedisUtil;
 import com.wtshop.util.ShareCodeUtils;
 import com.wtshop.util.SystemUtils;
+import freemarker.log.Logger;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import java.math.BigDecimal;
@@ -57,7 +58,9 @@ public class GoodsAPIController extends BaseAPIController {
 	private IdentifierService identifierService = enhance(IdentifierService.class);
 	private FullReductionService fullReductionService =enhance(FullReductionService.class);
 	private SpecialCouponService specialCouponService=enhance(SpecialCouponService.class);
-
+	private IntegralLogService integralLogService =enhance(IntegralLogService.class);
+	private InformationService informationService = Enhancer.enhance(InformationService.class);
+	final Logger logger = Logger.getLogger("GoodsAPIController");
 	/**
 	 * 列表
 	 * {"msg":"","code":1,"data":{"orderType":"all","page":{"totalRow":2,"pageNumber":1,"firstPage":true,"lastPage":true,"totalPage":1,"pageSize":20,"list":[{"attribute_value0":null,"attribute_value1":null,"attribute_value10":null,"attribute_value11":null,"attribute_value12":null,"attribute_value13":null,"attribute_value14":null,"attribute_value15":null,"attribute_value16":null,"attribute_value17":null,"attribute_value18":null,"attribute_value19":null,"attribute_value2":null,"attribute_value3":null,"attribute_value4":null,"attribute_value5":null,"attribute_value6":null,"attribute_value7":null,"attribute_value8":null,"attribute_value9":null,"brand_id":null,"caption":"测试三","create_date":"2017-05-26 10:13:21","generate_method":1,"hits":0,"id":69,"image":"/upload/image/201705/3fb120a8-eb91-4662-9df6-ad64ec8f11ba.png","introduction":null,"is_delivery":true,"is_list":true,"is_marketable":true,"is_top":false,"keyword":null,"market_price":99.000000,"memo":null,"modify_date":"2017-05-26 10:13:21","month_hits":0,"month_hits_date":"2017-05-26 10:13:21","month_sales":0,"month_sales_date":"2017-05-26 10:13:21","name":"测试三","parameter_values":null,"price":77.000000,"product_category_id":245,"product_images":null,"sales":0,"score":0.0,"score_count":0,"seo_description":null,"seo_keywords":null,"seo_title":null,"sn":"201705261616","specification_items":null,"total_score":0,"type":0,"unit":"瓶","version":0,"week_hits":0,"week_hits_date":"2017-05-26 10:13:21","week_sales":0,"week_sales_date":"2017-05-26 10:13:21","weight":100},{"attribute_value0":null,"attribute_value1":null,"attribute_value10":null,"attribute_value11":null,"attribute_value12":null,"attribute_value13":null,"attribute_value14":null,"attribute_value15":null,"attribute_value16":null,"attribute_value17":null,"attribute_value18":null,"attribute_value19":null,"attribute_value2":null,"attribute_value3":null,"attribute_value4":null,"attribute_value5":null,"attribute_value6":null,"attribute_value7":null,"attribute_value8":null,"attribute_value9":null,"brand_id":50,"caption":"控油去油 长效保湿 调节水油平衡","create_date":"2017-05-22 14:19:21","generate_method":2,"hits":0,"id":64,"image":"/upload/image/201705/ba801bbb-37be-45e1-a576-e59df54753e5.jpg","introduction":"<p><img src=\"/upload/image/201705/e13f093e-0f6c-4771-88cb-be595666c409.png\"/></p>","is_delivery":true,"is_list":true,"is_marketable":true,"is_top":false,"keyword":null,"market_price":298.800000,"memo":null,"modify_date":"2017-05-22 17:50:27","month_hits":0,"month_hits_date":"2017-05-22 14:19:21","month_sales":0,"month_sales_date":"2017-05-22 14:19:21","name":"新品上市 欧莱雅男士洗面奶矿漠泥长效控油保湿洁面护肤品套装","parameter_values":"[{\"group\":\"产品参数\",\"entries\":[{\"name\":\"化妆品净含量\",\"value\":\"套装容量\"},{\"name\":\"产地\",\"value\":\"中国\"},{\"name\":\"功效\",\"value\":\"补水\"},{\"name\":\"规格类型\",\"value\":\"正常规格\"},{\"name\":\"化妆品保质期\",\"value\":\"3年\"},{\"name\":\"适合肤质\",\"value\":\"油性肤质\"}]}]","price":249.000000,"product_category_id":245,"product_images":"[{\"source\":\"/upload/image/201705/73e96e1e-2a89-46e9-a11b-5f942d0553ff-source.png\",\"large\":\"/upload/image/201705/73e96e1e-2a89-46e9-a11b-5f942d0553ff-large.jpg\",\"medium\":\"/upload/image/201705/73e96e1e-2a89-46e9-a11b-5f942d0553ff-medium.jpg\",\"thumbnail\":\"/upload/image/201705/73e96e1e-2a89-46e9-a11b-5f942d0553ff-thumbnail.jpg\"},{\"source\":\"/upload/image/201705/bb23ff84-b8f9-4258-a7f8-f481057991a3-source.jpg\",\"large\":\"/upload/image/201705/bb23ff84-b8f9-4258-a7f8-f481057991a3-large.jpg\",\"medium\":\"/upload/image/201705/bb23ff84-b8f9-4258-a7f8-f481057991a3-medium.jpg\",\"thumbnail\":\"/upload/image/201705/bb23ff84-b8f9-4258-a7f8-f481057991a3-thumbnail.jpg\"}]","sales":0,"score":0.0,"score_count":0,"seo_description":null,"seo_keywords":null,"seo_title":null,"sn":"201705221111","specification_items":null,"total_score":0,"type":0,"unit":"套","version":8,"week_hits":0,"week_hits_date":"2017-05-22 14:19:21","week_sales":0,"week_sales_date":"2017-05-22 14:19:21","weight":1000}]},"title":"洗面奶","productCategory":{"create_date":"2017-05-18 09:31:58","grade":1,"id":245,"image":"/upload/image/201705/358782ae-05fe-4a0d-96e2-0566e1f295ce.jpg","modify_date":"2017-05-23 13:40:05","name":"洗面奶","orders":1,"parent_id":243,"seo_description":null,"seo_keywords":null,"seo_title":null,"tree_path":",243,","version":2}}}
@@ -634,6 +637,32 @@ public void onShareCode(){
 		Date date1 =new Date();
 		identifier.setEndDate(date);
 		identifier.setStartDate(date1);
+		identifier.setIntegral(ss.getIntegral());
+		IntegralLog integralLog=new IntegralLog();
+		if(ss.getIntegral().compareTo(BigDecimal.ZERO)==1){
+			integralLog.setCredit(ss.getIntegral());
+			integralLog.setMemo("绑定聚会卡反积分");
+			integralLog.setBalance(m.getIntegral());
+			integralLog.setType(0);
+			integralLog.setCredit(identifier.getIntegral());
+			integralLog.setDebit(BigDecimal.ZERO);
+			integralLog.setMemberId(m.getId());
+			integralLog.setIdentifierId(identifier.getId());
+			m.setIntegral(m.getIntegral().add(ss.getIntegral()));
+			integralLogService.save(integralLog);
+
+			logger.info("开始极光推送服务————————————————————————");
+			try {
+				informationService.intergraSuccessMessage(integralLog);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+			logger.info("结束极光推送服务————————————————————————");
+
+
+		}
+
+
 		memberService.update(m);
 		identifierService.update(identifier);
 
@@ -680,6 +709,30 @@ public void onShareCode(){
 		Date date1 =new Date();
 		specialCoupon.setEndDate(date);
 		specialCoupon.setStartDate(date1);
+		IntegralLog integralLog=new IntegralLog();
+		if(specialCoupon.getIntegral().compareTo(BigDecimal.ZERO)==1){
+			integralLog.setCredit(specialCoupon.getIntegral());
+			integralLog.setMemo("绑定代金卡反积分");
+			integralLog.setBalance(m.getIntegral());
+			integralLog.setCredit(specialCoupon.getIntegral());
+			integralLog.setDebit(BigDecimal.ZERO);
+			integralLog.setType(0);
+			integralLog.setCode(specialCoupon.getCode());
+			integralLog.setMemberId(m.getId());
+			integralLog.setIdentifierId(specialCoupon.getId());
+			m.setIntegral(m.getIntegral().add(specialCoupon.getIntegral()));
+			integralLogService.save(integralLog);
+
+
+			logger.info("开始极光推送服务————————————————————————");
+			try {
+				informationService.intergraSuccessMessage(integralLog);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+			logger.info("结束极光推送服务————————————————————————");
+		}
+
 		memberService.update(m);
 		specialCouponService.update(specialCoupon);
 
@@ -688,6 +741,7 @@ public void onShareCode(){
 		renderJson(ApiResult.success(map,"绑定成功"));
 	}
 	/**
+	 * 验证聚会卡
 	 * 绑定门店
 	 * 验证识别码邀请码接口
 	 * 填写onShareCode邀请码和idfCode识别码

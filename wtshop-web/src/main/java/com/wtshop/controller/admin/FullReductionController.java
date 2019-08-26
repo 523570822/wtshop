@@ -146,11 +146,11 @@ public class FullReductionController extends BaseController {
 	 */
 	public void update() {
 		FullReduction promotion = getModel(FullReduction.class);
-		Long[] memberRankIds = getParaValuesToLong("memberRankIds");
-		Long[] couponIds = getParaValuesToLong("couponIds");
+		//Long[] memberRankIds = getParaValuesToLong("memberRankIds");
+	//	Long[] couponIds = getParaValuesToLong("couponIds");
 		Long[] giftIds = getParaValuesToLong("giftIds");
-		Boolean isFreeShipping = getParaToBoolean("isFreeShipping", false);
-		Boolean isCouponAllowed = getParaToBoolean("isCouponAllowed", false);
+	//	Boolean isFreeShipping = getParaToBoolean("isFreeShipping", false);
+	//	Boolean isCouponAllowed = getParaToBoolean("isCouponAllowed", false);
 		
 
 		if (ArrayUtils.isNotEmpty(giftIds)) {

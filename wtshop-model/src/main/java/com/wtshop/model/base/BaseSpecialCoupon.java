@@ -153,4 +153,12 @@ public abstract class BaseSpecialCoupon<M extends BaseSpecialCoupon<M>> extends 
 		return get("complete_date");
 	}
 
+	public void setIntegral(java.math.BigDecimal integral) {
+		set("integral", integral);
+	}
+
+	public java.math.BigDecimal getIntegral() {
+		return get("integral");
+	}
+
 }

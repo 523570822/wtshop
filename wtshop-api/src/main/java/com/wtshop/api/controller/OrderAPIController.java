@@ -73,7 +73,10 @@ public class OrderAPIController extends BaseAPIController {
 		Member member = memberService.getCurrent();
 
 
-
+		if(com.wtshop.util.StringUtils.isEmpty(member.getOnShareCode())){
+			renderJson(ApiResult.fail(7,"请填写邀请码"));
+			return;
+		}
 
 		//获取商品和数量
 		Long productId = getParaToLong("productId");
