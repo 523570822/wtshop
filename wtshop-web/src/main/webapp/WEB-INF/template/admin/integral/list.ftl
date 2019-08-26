@@ -143,7 +143,7 @@ $().ready(function() {
 			[/#list]
 		</table>
 		[@pagination pageNumber = page.pageNumber totalPages = page.totalPage]
-			[#include "/admin/include/pagination.ftl"]
+			[#include " /admin/include/pagination.ftl"]
 		[/@pagination]
 	</form>
 </body>
