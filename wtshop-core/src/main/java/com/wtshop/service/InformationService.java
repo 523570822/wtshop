@@ -12,6 +12,7 @@ import com.wtshop.model.*;
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
 import com.wtshop.util.JPush;
+import com.wtshop.util.MathUtil;
 import com.wtshop.util.RedisUtil;
 import freemarker.log.Logger;
 
@@ -104,7 +105,7 @@ public class InformationService extends BaseService<Information> {
         Information information = new Information();
         String typeS="";
         if(integralLog.getType()==0){
-            typeS="聚惠卡";
+            typeS="钜惠卡";
         }else if(integralLog.getType()==1){
             typeS="代金卡";
         }
@@ -131,7 +132,7 @@ public class InformationService extends BaseService<Information> {
             String appid = RedisUtil.getString(key);
             if (appid != null) {
                 logger.info("开始调用极光推送方法——————————————————————; appid=" + appid);
-                JPush.sendPushById(appid, "系统消息", typeS+"(" + integralLog.getId() + ")已完成绑定", "系统奖励积分"+integralLog.getCredit(), sound, null);
+                JPush.sendPushById(appid, "系统消息", typeS+"绑定成功", "送您的"+ MathUtil.getInt(integralLog.getCredit().toString())+"积分已到账", sound, null);
 
                 logger.info("成功调用极光推送方法——————————————————————");
             }
