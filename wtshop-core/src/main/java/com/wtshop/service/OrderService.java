@@ -999,7 +999,7 @@ public class OrderService extends BaseService<Order> {
                 }
             }
              //开始扣积分
-            if(!order.getSpecialcoupId().equals(0)){
+
                 if(order.getIntegralPaid().compareTo(BigDecimal.ZERO)==1){
 
                     IntegralLog integralLog=new IntegralLog();
@@ -1007,6 +1007,7 @@ public class OrderService extends BaseService<Order> {
                     integralLog.setOrderId(order.getId());
                     integralLog.setCredit(BigDecimal.ZERO);
                     integralLog.setMemberId(order.getMemberId());
+                    integralLog.setMemo("订单支付成功扣除积分");
                     integralLog.setType(2);
                     integralLog.setBalance(member.getIntegral());
                     member.setIntegral(member.getIntegral().subtract(order.getIntegralPaid()));
@@ -1015,7 +1016,26 @@ public class OrderService extends BaseService<Order> {
                     memberService.update(member);
 
                 }
-            }
+
+            //开始加积分
+
+                if(order.getIntegralGift().compareTo(BigDecimal.ZERO)==1){
+
+                    IntegralLog integralLog=new IntegralLog();
+                    integralLog.setDebit(BigDecimal.ZERO);
+                    integralLog.setOrderId(order.getId());
+                    integralLog.setCredit(order.getIntegralGift());
+                    integralLog.setMemberId(order.getMemberId());
+                    integralLog.setType(3);
+                    integralLog.setMemo("订单支付成功增加爱积分");
+                    integralLog.setBalance(member.getIntegral());
+                    member.setIntegral(member.getIntegral().add(order.getIntegralGift()));
+                    integralLogService.save(integralLog);
+
+                    memberService.update(member);
+
+                }
+
             //反佣金和扣除对应的佣金比例还有赠送积分
 
         }

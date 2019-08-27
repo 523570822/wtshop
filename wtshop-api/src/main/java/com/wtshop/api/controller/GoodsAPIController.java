@@ -641,7 +641,7 @@ public void onShareCode(){
 		IntegralLog integralLog=new IntegralLog();
 		if(ss.getIntegral().compareTo(BigDecimal.ZERO)==1){
 			integralLog.setCredit(ss.getIntegral());
-			integralLog.setMemo("绑定聚会卡反积分");
+			integralLog.setMemo("绑定钜惠卡反积分");
 			integralLog.setBalance(m.getIntegral());
 			integralLog.setType(0);
 			integralLog.setCredit(identifier.getIntegral());
