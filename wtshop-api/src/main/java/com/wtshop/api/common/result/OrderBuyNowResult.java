@@ -33,6 +33,16 @@ public class OrderBuyNowResult implements Serializable{
     private Boolean is_freeMoney;
 
     private Boolean is_useMiaobi;
+    private Boolean is_useMiao;
+
+    public Boolean getIs_useMiao() {
+        return is_useMiao;
+    }
+
+    public void setIs_useMiao(Boolean is_useMiao) {
+        this.is_useMiao = is_useMiao;
+    }
+
     private Boolean is_Integral;
     private String integralDesc;
 
@@ -96,7 +106,7 @@ public class OrderBuyNowResult implements Serializable{
         this.specifications = specifications;
     }
 
-    public OrderBuyNowResult(String taxUrl, Double delivery, Member member, Receiver receiver, Goods goods, Integer quantity, String receiveTime, Boolean is_freeMoney, Boolean is_useMiaobi, String miaoBiDesc, List<PriceResult> priceList, String realPrice, String couponPrice, Double[] param, Boolean is_promotion, Double payPrice,List<String> specifications,Identifier identifier
+    public OrderBuyNowResult(String taxUrl, Double delivery, Member member, Receiver receiver, Goods goods, Integer quantity, String receiveTime, Boolean is_freeMoney, Boolean is_useMiaobi,Boolean is_useMiao, String miaoBiDesc, List<PriceResult> priceList, String realPrice, String couponPrice, Double[] param, Boolean is_promotion, Double payPrice,List<String> specifications,Identifier identifier
                    ,Boolean is_Integral,String  integralDesc   ) {
         this.taxUrl = taxUrl;
         this.delivery = delivery;
@@ -107,6 +117,7 @@ public class OrderBuyNowResult implements Serializable{
         this.receiveTime = receiveTime;
         this.is_freeMoney = is_freeMoney;
         this.is_useMiaobi = is_useMiaobi;
+        this.is_useMiao = is_useMiao;
         this.miaoBiDesc = miaoBiDesc;
         this.priceList = priceList;
         this.realPrice = realPrice;

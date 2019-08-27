@@ -41,8 +41,36 @@ public class OrderDetailsResult  implements Serializable {
     private Boolean is_freeMoney;
 
     private Boolean is_useMiaobi;
+    private Boolean is_useMiao;
+
+    public Boolean getIs_useMiao() {
+        return is_useMiao;
+    }
+
+    public void setIs_useMiao(Boolean is_useMiao) {
+        this.is_useMiao = is_useMiao;
+    }
 
     private String miaoBiDesc;
+
+    private Boolean is_Integral;
+    private String integralDesc;
+
+    public Boolean getIs_Integral() {
+        return is_Integral;
+    }
+
+    public void setIs_Integral(Boolean is_Integral) {
+        this.is_Integral = is_Integral;
+    }
+
+    public String getIntegralDesc() {
+        return integralDesc;
+    }
+
+    public void setIntegralDesc(String integralDesc) {
+        this.integralDesc = integralDesc;
+    }
 
     private Boolean isReturnInsurance;
 
@@ -70,7 +98,7 @@ public class OrderDetailsResult  implements Serializable {
 
     private Identifier identifier;
 
-    public OrderDetailsResult(String taxUrl, Double couponYunfei, Long[] cartTokens, Double delivery, Member member, String token, Receiver receiver, List<Coupon> codeList, List<Goods> goodsList, String receiveTime, Boolean is_freeMoney, Boolean is_useMiaobi, String miaoBiDesc, Boolean isReturnInsurance, Double returnMoney, String returnCopy, List<PriceResult> priceList, String realPrice, String couponPrice, Double[] param, Boolean is_promotion,Identifier identifier ) {
+    public OrderDetailsResult(String taxUrl, Double couponYunfei, Long[] cartTokens, Double delivery, Member member, String token, Receiver receiver, List<Coupon> codeList, List<Goods> goodsList, String receiveTime, Boolean is_freeMoney, Boolean is_useMiaobi, Boolean is_useMiao, String miaoBiDesc, Boolean isReturnInsurance, Double returnMoney, String returnCopy, List<PriceResult> priceList, String realPrice, String couponPrice, Double[] param, Boolean is_promotion,Identifier identifier  ,Boolean is_Integral,String  integralDesc  ) {
         this.taxUrl = taxUrl;
         this.couponYunfei = couponYunfei;
         this.cartTokens = cartTokens;
@@ -83,6 +111,7 @@ public class OrderDetailsResult  implements Serializable {
         this.receiveTime = receiveTime;
         this.is_freeMoney = is_freeMoney;
         this.is_useMiaobi = is_useMiaobi;
+        this.is_useMiao = is_useMiao;
         this.miaoBiDesc = miaoBiDesc;
         this.isReturnInsurance = isReturnInsurance;
         this.returnMoney = returnMoney;
@@ -93,6 +122,8 @@ public class OrderDetailsResult  implements Serializable {
         this.param = param;
         this.is_promotion = is_promotion;
         this.identifier = identifier;
+        this.is_Integral = is_Integral;
+        this.integralDesc = integralDesc;
     }
 
     public Boolean getIs_promotion() {

@@ -82,6 +82,7 @@ public class OrderService extends BaseService<Order> {
     private GroupBuyService groupBuyService = Enhancer.enhance(GroupBuyService.class);
     private  IdentifierService identifierService =Enhancer.enhance(IdentifierService.class);
     private  SpecialCouponService specialCouponService =Enhancer.enhance(SpecialCouponService.class);
+    private  IntegralLogService integralLogService =Enhancer.enhance(IntegralLogService.class);
     com.jfinal.log.Logger logger = com.jfinal.log.Logger.getLogger(OrderService.class);
 
     /**
@@ -1001,19 +1002,21 @@ public class OrderService extends BaseService<Order> {
             if(!order.getSpecialcoupId().equals(0)){
                 if(order.getIntegralPaid().compareTo(BigDecimal.ZERO)==1){
 
-                }
-                List<SpecialCoupon> sPecialCouponList = specialCouponService.findBySpecialCids(order.getSpecialcoupId());
-                if(sPecialCouponList!=null){
-                    for (SpecialCoupon sPecialCoupon:sPecialCouponList){
-                        sPecialCoupon.setPrice(order.getAmount());
-                        sPecialCoupon.setStatus(3);
-                        sPecialCoupon.setOrderId(order.getId());
-                        sPecialCoupon.setOrderNo(order.getOrderNo());
-                        sPecialCoupon.setCompleteDate(new Date());
-                        specialCouponService.update(sPecialCoupon);
-                    }
+                    IntegralLog integralLog=new IntegralLog();
+                    integralLog.setDebit(order.getIntegralPaid());
+                    integralLog.setOrderId(order.getId());
+                    integralLog.setCredit(BigDecimal.ZERO);
+                    integralLog.setMemberId(order.getMemberId());
+                    integralLog.setType(2);
+                    integralLog.setBalance(member.getIntegral());
+                    member.setIntegral(member.getIntegral().subtract(order.getIntegralPaid()));
+                    integralLogService.save(integralLog);
+
+                    memberService.update(member);
+
                 }
             }
+            //反佣金和扣除对应的佣金比例还有赠送积分
 
         }
         //倒拍
@@ -1804,7 +1807,8 @@ public class OrderService extends BaseService<Order> {
      * @return 订单
      */
 
-    public Order create(Order.Type type, Cart cart, Double manjianPrice, Receiver receiver, Double amountMoney, Double returnMoney, Double deliveryMoney, Double miaobiMoney, String memo, Double couponYunfei, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName,Long identifierId,String sPecialCoupId,Double specialCouponPrice) {
+    public Order create(Order.Type type, Cart cart, Double manjianPrice, Receiver receiver, Double amountMoney, Double returnMoney, Double deliveryMoney, Double miaobiMoney, String memo, Double couponYunfei,
+                        Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName,Long identifierId,String sPecialCoupId,Double specialCouponPrice,Double integral,Double integralMoney) {
         Assert.notNull(type);
         Assert.notNull(cart);
         Assert.notNull(cart.getMember());
@@ -1831,7 +1835,9 @@ public class OrderService extends BaseService<Order> {
         order.setIsPersonal(isPersonal);
         order.setTaxNumber(taxNumber);
         order.setCompanyName(companyName);
-
+        order.setIntegral(BigDecimal.valueOf(integral));
+        order.setIntegralPaid(BigDecimal.valueOf(integralMoney));
+        order.setIntegralGift(BigDecimal.valueOf(amountMoney) );
         order.setIdentifierId(identifierId);
         order.setSn(snDao.generate(Sn.Type.order));
         order.setType(type.ordinal());
@@ -2000,7 +2006,8 @@ public class OrderService extends BaseService<Order> {
      */
 
     public Order createBuyNow(Order.Type type, Member member, Goods goods, Double price, int quantity, Double manjianPrice, Receiver receiver, Double amountMoney, Double deliveryMoney, Double
-            miaobiMoney, String memo, Double couponYunfei, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName, Boolean isSinglepurchase, long fightGroupId, long tuanGouId, Double rate,Long sPecialIds,Long identifierId,Double specialCouponPrice,String sPecialCoupId,Double integralMoney) {
+            miaobiMoney, String memo, Double couponYunfei, Boolean isInvoice, Boolean isPersonal, String taxNumber
+            , String companyName, Boolean isSinglepurchase, long fightGroupId, long tuanGouId, Double rate,Long sPecialIds,Long identifierId,Double specialCouponPrice,String sPecialCoupId,Double integralMoney,Double integral) {
 
 
         JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
@@ -2029,6 +2036,8 @@ public class OrderService extends BaseService<Order> {
         order.setAmountPaid(BigDecimal.ZERO);
         order.setRefundAmount(BigDecimal.ZERO);
         order.setIntegralPaid(new BigDecimal(integralMoney));
+        order.setIntegral(new BigDecimal(integral));
+        order.setIntegralGift(new BigDecimal(amountMoney));
         order.setCouponDiscount(BigDecimal.ZERO);
         order.setRewardPoint(0L);
         order.setExchangePoint(0L);

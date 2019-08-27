@@ -403,15 +403,15 @@ private  FightGroupService fightGroupService=enhance(FightGroupService.class);
 				}
 			}
 
-
-
 		}
 		PriceResult miaobiPrice = new PriceResult("喵币","-¥ "+ MathUtil.getInt(order.getMiaobiPaid().toString()));
+		List<PriceResult> priceList = new ArrayList<>();
 		if(order.getType() == Order.Type.miaobi.ordinal()){
 			couponMoney = "0";
 			miaobiPrice = new PriceResult("喵币","-¥ " + couponMoney);
 			oldTotalPrice = new PriceResult("商品优惠前总金额","¥ "+ MathUtil.getInt(order.getAmount().toString()));
 			totalPrice = new PriceResult("商品优惠前总金额","¥ "+ MathUtil.getInt(order.getAmount().toString()));
+			priceList.add(miaobiPrice);
 		}
 		PriceResult manjianPrice =null;
 		double v = order.getPromotionDiscount().doubleValue();
@@ -421,7 +421,7 @@ private  FightGroupService fightGroupService=enhance(FightGroupService.class);
 			couponMoney = MathUtil.getInt(new BigDecimal(couponMoney).add(promotion.getMoney()).toString());
 		}
 
-		List<PriceResult> priceList = new ArrayList<>();
+
 		priceList.add(oldTotalPrice);
 		priceList.add(totalPrice);
 		priceList.add(deliveryPrice);
@@ -429,8 +429,8 @@ private  FightGroupService fightGroupService=enhance(FightGroupService.class);
 
 		}else if(order.getType()==9){
 			priceList.addAll(sPecialResultList);
-		}else{
-			priceList.add(miaobiPrice);
+		}else  if(order.getType()==10&&order.getIntegralPaid().compareTo(BigDecimal.ZERO)==1){
+			priceList.add(new PriceResult("积分","-¥ "+MathUtil.getInt(order.getIntegralPaid().toString())));
 		}
 	/*	if(!is_promotion&&(order.getIdentifierId()==null||order.getIdentifierId()==0)&&(order.getSpecialcoupId()==null||order.getSpecialcoupId()==0)){
 			priceList.add(miaobiPrice);

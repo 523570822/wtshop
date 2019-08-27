@@ -569,4 +569,20 @@ public abstract class BaseOrder<M extends BaseOrder<M>> extends Model<M> impleme
 		return get("integral_paid");
 	}
 
+	public void setIntegralGift(java.math.BigDecimal integralGift) {
+		set("integral_gift", integralGift);
+	}
+
+	public java.math.BigDecimal getIntegralGift() {
+		return get("integral_gift");
+	}
+
+	public void setIntegral(java.math.BigDecimal integral) {
+		set("integral", integral);
+	}
+
+	public java.math.BigDecimal getIntegral() {
+		return get("integral");
+	}
+
 }
