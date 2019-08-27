@@ -105,6 +105,14 @@ public abstract class BaseIntegralLog<M extends BaseIntegralLog<M>> extends Mode
 		return get("code");
 	}
 
+	public void setOrderSn(String orderSn) {
+		set("order_sn", orderSn);
+	}
+
+	public String getOrderSn() {
+		return get("order_sn");
+	}
+
 	public void setOrderId(Long orderId) {
 		set("order_id", orderId);
 	}

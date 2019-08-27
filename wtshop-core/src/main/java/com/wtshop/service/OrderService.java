@@ -1005,6 +1005,7 @@ public class OrderService extends BaseService<Order> {
                     IntegralLog integralLog=new IntegralLog();
                     integralLog.setDebit(order.getIntegralPaid());
                     integralLog.setOrderId(order.getId());
+                    integralLog.setOrderSn(order.getSn());
                     integralLog.setCredit(BigDecimal.ZERO);
                     integralLog.setMemberId(order.getMemberId());
                     integralLog.setMemo("订单支付成功扣除积分");
@@ -1023,11 +1024,12 @@ public class OrderService extends BaseService<Order> {
 
                     IntegralLog integralLog=new IntegralLog();
                     integralLog.setDebit(BigDecimal.ZERO);
-                    integralLog.setOrderId(order.getId());
+                   integralLog.setOrderId(order.getId());
+                   integralLog.setOrderSn(order.getSn());
                     integralLog.setCredit(order.getIntegralGift());
                     integralLog.setMemberId(order.getMemberId());
                     integralLog.setType(3);
-                    integralLog.setMemo("订单支付成功增加爱积分");
+                    integralLog.setMemo("订单支付成功增加积分");
                     integralLog.setBalance(member.getIntegral());
                     member.setIntegral(member.getIntegral().add(order.getIntegralGift()));
                     integralLogService.save(integralLog);
