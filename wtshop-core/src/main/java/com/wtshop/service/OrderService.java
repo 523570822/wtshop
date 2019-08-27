@@ -934,11 +934,6 @@ public class OrderService extends BaseService<Order> {
                         } else {
                             Integer stock = product.getStock();
                             Object quantity=  goods.get("quantity");
-                          //  System.out.println("stock=========="+stock);
-                          //  System.out.println("quantity=========="+quantity);
-                          //  int ff = stock - Integer.parseInt(quantity+"");
-                         //   product.setStock(ff);
-                         //   productService.update(product);
                             goods.setSales(goods.getSales() + Long.valueOf(goods.get("quantity") + ""));
                         }
 
@@ -974,6 +969,50 @@ public class OrderService extends BaseService<Order> {
 
 
 
+            }
+
+        }
+        if (order.getType() == Order.Type.particular.ordinal()) {
+            logger.info("特殊商品积分购买————————————————————————");
+            // order.setOnShareCode(member.getOnShareCode());
+            List<Goods> goodList = goodsService.findGoodsByOrderItemId(order.getId());
+            if (goodList != null && goodList.size() > 0) {
+                for (Goods goods : goodList) {
+                    Long  itemid=goods.get("order_itemId");
+                    OrderItem itemids= orderItemDao.find(itemid);
+                    Product product = productService.find(itemids.getProductId());
+                    if (goods.getSales() == null) {
+                        goods.setSales(0L);
+                    } else {
+                        if (goods.get("quantity") == null || goods.get("quantity").equals("null")) {
+
+                        } else {
+                            Integer stock = product.getStock();
+                            Object quantity=  goods.get("quantity");
+                            goods.setSales(goods.getSales() + Long.valueOf(goods.get("quantity") + ""));
+                        }
+
+
+                    }
+                    goodsService.update(goods);
+                }
+            }
+             //开始扣积分
+            if(!order.getSpecialcoupId().equals(0)){
+                if(order.getIntegralPaid().compareTo(BigDecimal.ZERO)==1){
+
+                }
+                List<SpecialCoupon> sPecialCouponList = specialCouponService.findBySpecialCids(order.getSpecialcoupId());
+                if(sPecialCouponList!=null){
+                    for (SpecialCoupon sPecialCoupon:sPecialCouponList){
+                        sPecialCoupon.setPrice(order.getAmount());
+                        sPecialCoupon.setStatus(3);
+                        sPecialCoupon.setOrderId(order.getId());
+                        sPecialCoupon.setOrderNo(order.getOrderNo());
+                        sPecialCoupon.setCompleteDate(new Date());
+                        specialCouponService.update(sPecialCoupon);
+                    }
+                }
             }
 
         }
@@ -1961,7 +2000,7 @@ public class OrderService extends BaseService<Order> {
      */
 
     public Order createBuyNow(Order.Type type, Member member, Goods goods, Double price, int quantity, Double manjianPrice, Receiver receiver, Double amountMoney, Double deliveryMoney, Double
-            miaobiMoney, String memo, Double couponYunfei, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName, Boolean isSinglepurchase, long fightGroupId, long tuanGouId, Double rate,Long sPecialIds,Long identifierId,Double specialCouponPrice,String sPecialCoupId) {
+            miaobiMoney, String memo, Double couponYunfei, Boolean isInvoice, Boolean isPersonal, String taxNumber, String companyName, Boolean isSinglepurchase, long fightGroupId, long tuanGouId, Double rate,Long sPecialIds,Long identifierId,Double specialCouponPrice,String sPecialCoupId,Double integralMoney) {
 
 
         JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
@@ -1989,6 +2028,7 @@ public class OrderService extends BaseService<Order> {
         order.setOffsetAmount(BigDecimal.ZERO);
         order.setAmountPaid(BigDecimal.ZERO);
         order.setRefundAmount(BigDecimal.ZERO);
+        order.setIntegralPaid(new BigDecimal(integralMoney));
         order.setCouponDiscount(BigDecimal.ZERO);
         order.setRewardPoint(0L);
         order.setExchangePoint(0L);

@@ -33,8 +33,26 @@ public class OrderBuyNowResult implements Serializable{
     private Boolean is_freeMoney;
 
     private Boolean is_useMiaobi;
+    private Boolean is_Integral;
+    private String integralDesc;
 
     private String miaoBiDesc;
+
+    public Boolean getIs_Integral() {
+        return is_Integral;
+    }
+
+    public void setIs_Integral(Boolean is_Integral) {
+        this.is_Integral = is_Integral;
+    }
+
+    public String getIntegralDesc() {
+        return integralDesc;
+    }
+
+    public void setIntegralDesc(String integralDesc) {
+        this.integralDesc = integralDesc;
+    }
 
     private List<PriceResult> priceList;
 
@@ -79,11 +97,10 @@ public class OrderBuyNowResult implements Serializable{
     }
 
     public OrderBuyNowResult(String taxUrl, Double delivery, Member member, Receiver receiver, Goods goods, Integer quantity, String receiveTime, Boolean is_freeMoney, Boolean is_useMiaobi, String miaoBiDesc, List<PriceResult> priceList, String realPrice, String couponPrice, Double[] param, Boolean is_promotion, Double payPrice,List<String> specifications,Identifier identifier
-                             ) {
+                   ,Boolean is_Integral,String  integralDesc   ) {
         this.taxUrl = taxUrl;
         this.delivery = delivery;
         this.member = member;
-
         this.receiver = receiver;
         this.goods = goods;
         this.quantity = quantity;
@@ -99,6 +116,8 @@ public class OrderBuyNowResult implements Serializable{
         this.payPrice = payPrice;
         this.specifications = specifications;
         this.identifier = identifier;
+        this.is_Integral = is_Integral;
+        this.integralDesc = integralDesc;
     }
 
     public Integer getQuantity() {

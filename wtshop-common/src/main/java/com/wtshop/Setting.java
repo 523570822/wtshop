@@ -262,8 +262,16 @@ public class Setting implements Serializable {
 	/** 喵币抵扣额度 */
 	private Double miaoBiLimit;
 
+
+
 	/** 喵币抵扣比例 */
+
 	private Double scale;
+	/** 喵币抵扣额度 */
+	private Double integralLimit;
+
+	/** 喵币抵扣比例 */
+	private Double integralScale;
 
 	/** 是否开启赠送喵币 */
 	private Boolean isSendMiaoBi;
@@ -579,7 +587,21 @@ public class Setting implements Serializable {
 		return isRegisterSending ;
 	}
 
+	public Double getIntegralLimit() {
+		return integralLimit;
+	}
 
+	public void setIntegralLimit(Double integralLimit) {
+		this.integralLimit = integralLimit;
+	}
+
+	public Double getIntegralScale() {
+		return integralScale;
+	}
+
+	public void setIntegralScale(Double integralScale) {
+		this.integralScale = integralScale;
+	}
 
 
 	public Double getRegisterSending() {

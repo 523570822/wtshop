@@ -545,6 +545,14 @@ public abstract class BaseOrder<M extends BaseOrder<M>> extends Model<M> impleme
 		return get("identifier_id");
 	}
 
+	public void setSpecialCouponPrice(java.math.BigDecimal specialCouponPrice) {
+		set("specialCouponPrice", specialCouponPrice);
+	}
+
+	public java.math.BigDecimal getSpecialCouponPrice() {
+		return get("specialCouponPrice");
+	}
+
 	public void setSpecialcoupId(String specialcoupId) {
 		set("sPecialCoup_Id", specialcoupId);
 	}
@@ -553,12 +561,12 @@ public abstract class BaseOrder<M extends BaseOrder<M>> extends Model<M> impleme
 		return get("sPecialCoup_Id");
 	}
 
-	public void setSpecialCouponPrice(java.math.BigDecimal specialCouponPrice) {
-		set("specialCouponPrice", specialCouponPrice);
+	public void setIntegralPaid(java.math.BigDecimal integralPaid) {
+		set("integral_paid", integralPaid);
 	}
 
-	public java.math.BigDecimal getSpecialCouponPrice() {
-		return get("specialCouponPrice");
+	public java.math.BigDecimal getIntegralPaid() {
+		return get("integral_paid");
 	}
 
 }

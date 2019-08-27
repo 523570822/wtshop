@@ -187,6 +187,8 @@ public class SettingController extends BaseController {
 		redisSetting.put("shareSending",setting.getShareSending());
 		redisSetting.put("housekeeperSending",setting.getHousekeeperSending());
 		redisSetting.put("hour",setting.getHour());
+		redisSetting.put("integralLimit",setting.getIntegralLimit());
+		redisSetting.put("integralScale",setting.getIntegralScale());
 
 		RedisUtil.setString("freeMoney",setting.getFreeMoney()+"");
 

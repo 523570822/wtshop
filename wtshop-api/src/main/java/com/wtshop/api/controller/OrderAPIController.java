@@ -77,14 +77,15 @@ public class OrderAPIController extends BaseAPIController {
 			renderJson(ApiResult.fail(7,"请填写邀请码"));
 			return;
 		}
-
+		Boolean isUseMiao = getParaToBoolean("isUseMiao",false);
+		Boolean isIntegral = getParaToBoolean("isIntegral",false);
 		//获取商品和数量
 		Long productId = getParaToLong("productId");
 		Long sPecialIds = getParaToLong("sPecialIds",0l);
 		String  sPecialCoupId = getPara("sPecialCoupId","0");
 
 		Identifier identifier=new Identifier();
-	if(sPecialIds!=0){
+		if(sPecialIds!=0){
 			List<Identifier> dddd = identifierService.findByMemberId(member.getId());
 			for (Identifier identifier1:dddd) {
 				if(identifier1.getStatus()==1){
@@ -118,7 +119,7 @@ public class OrderAPIController extends BaseAPIController {
 		}
 
 
-		Boolean isUseMiao = getParaToBoolean("isUseMiao",false);
+
 		if(sPecialIds!=0){
 			isUseMiao=false;
 		}
@@ -183,24 +184,68 @@ public class OrderAPIController extends BaseAPIController {
 		Boolean is_useMiaobi = redisSetting.getBoolean("isUseMiaoBi") ? true : false;
 		//我的喵币个数
 		Double myMiaoBi =  member.getPoint().doubleValue();
+
+		//我的积分个数
+		Double myIntegral =  member.getIntegral().doubleValue();
+		//可用积分
+		Double useIntegral = 0d;
+
 		//可用喵币
 		Double useMiaoBi = 0d;
-		//抵扣金额
+		//喵币抵扣金额
 		Double miaoBiPrice = 0d;
-
+		//积分抵扣金额
+		Double integralPrice = 0d;
 		//代金券抵扣抵扣金额
 		Double specialCouponPrice = 0d;
 		String miaoBiDesc = "";
+		String	integralDesc= "";
 		Double scale =  redisSetting.getDouble("scale");
+		Double integralScale =  redisSetting.getDouble("integralScale");
+		Double miaoBiLimit =  redisSetting.getDouble("miaoBiLimit");
+		Double integralLimit =  redisSetting.getDouble("integralLimit");
+
+		//计算可以积分和喵币
+		Double	useMiaoBi1= myMiaoBi;
+		Double	miaoBiPrice1= new BigDecimal(useMiaoBi1).divide(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double multiply1 = new BigDecimal(price).multiply(new BigDecimal(miaoBiLimit)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		if(miaoBiPrice1 > multiply1){
+			useMiaoBi1 = new BigDecimal(multiply1).multiply(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			miaoBiPrice1= new BigDecimal(useMiaoBi1).divide(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		}
+
 		if(is_useMiaobi &&isUseMiao &&myMiaoBi >= 0){
 			useMiaoBi = myMiaoBi;
-			Double limit =  redisSetting.getDouble("miaoBiLimit");
+
 			miaoBiPrice= new BigDecimal(useMiaoBi).divide(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-			double multiply = new BigDecimal(price).multiply(new BigDecimal(limit)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			double multiply = new BigDecimal(price).multiply(new BigDecimal(miaoBiLimit)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			//重新计算可用喵币
 			if(miaoBiPrice > multiply){
 				useMiaoBi = new BigDecimal(multiply).multiply(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 				miaoBiPrice= new BigDecimal(useMiaoBi).divide(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			}
+
+		}
+
+
+
+
+
+		Double	useIntegral1 = myIntegral;
+		Double	integralPrice1= new BigDecimal(useIntegral1).divide(new BigDecimal(integralScale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double multiply2 = new BigDecimal(price).multiply(new BigDecimal(integralLimit)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		if(integralPrice1 > multiply2){
+			useIntegral1 = new BigDecimal(multiply2).multiply(new BigDecimal(integralScale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			integralPrice1= new BigDecimal(useIntegral1).divide(new BigDecimal(integralScale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		}
+		if(isIntegral&&myIntegral>=0){
+			useIntegral = myIntegral;
+			integralPrice= new BigDecimal(useIntegral).divide(new BigDecimal(integralScale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			double multiply = new BigDecimal(price).multiply(new BigDecimal(integralLimit)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			//重新计算可用喵币
+			if(integralPrice > multiply){
+				useIntegral = new BigDecimal(multiply).multiply(new BigDecimal(integralScale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				integralPrice= new BigDecimal(useIntegral).divide(new BigDecimal(integralScale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			}
 
 		}
@@ -228,11 +273,13 @@ public class OrderAPIController extends BaseAPIController {
 
 		}
 		PriceResult miaobiPrice = null;
+		PriceResult integralPriceP = null;
 		String realPrice = null;
 		String favoritePrice = "0";
 		Double realPriced = MathUtil.subtract(MathUtil.add(price, delivery.getPrice()),couponYunfei);
 		Double favoreatePriced = 0d;
 		Double miaobi = 0d;
+		Double integral = 0d;
 		Double returns = 0d;
 
 		// 代金券提示及优惠增加
@@ -243,15 +290,26 @@ public class OrderAPIController extends BaseAPIController {
 			miaobiPrice = new PriceResult("喵币","-¥ "+MathUtil.getInt(miaoBiPrice.toString()));
 			//优惠钱数
 			favoreatePriced = MathUtil.add(miaoBiPrice,favoreatePriced);
-			favoritePrice = MathUtil.getInt(favoreatePriced.toString());
-
 			miaobi = miaoBiPrice;
 		}else {
 			miaobiPrice = new PriceResult("喵币","-¥ "+0);
 			favoreatePriced = MathUtil.add(miaoBiPrice,favoreatePriced);
-			favoritePrice =  MathUtil.getInt(favoreatePriced.toString());
 			miaobi = 0d;
 		}
+		if(isIntegral){
+			integralPriceP = new PriceResult("积分","-¥ "+MathUtil.getInt(integralPrice.toString()));
+			//优惠钱数
+			favoreatePriced = MathUtil.add(integralPrice,favoreatePriced);
+			favoritePrice = MathUtil.getInt(favoreatePriced.toString());
+
+			integral = integralPrice;
+		}else {
+			integralPriceP = new PriceResult("积分","-¥ "+0);
+			favoreatePriced = MathUtil.add(integralPrice,favoreatePriced);
+			favoritePrice =  MathUtil.getInt(favoreatePriced.toString());
+			integral = 0d;
+		}
+
 		PriceResult manjianPrice = null;
 		Promotion promotion = promotionService.find(5L);
 		Double manJianPrices = 0d;
@@ -275,6 +333,9 @@ public class OrderAPIController extends BaseAPIController {
 		if(!is_promotion&&sPecialIds==0){
 			priceList.add(miaobiPrice);
 		}
+		if(isIntegral){
+			priceList.add(integralPriceP);
+		}
 		//是否显示代金券
 		if(sPecialResultList.size()>0){
 			priceList.addAll(sPecialResultList);
@@ -288,24 +349,25 @@ public class OrderAPIController extends BaseAPIController {
 		Double couponYunfei = MathUtil.subtract(delivery.getPrice() ,deliver);*/
 		//支付金额
 		//Double amountpaid = MathUtil.subtract(MathUtil.subtract(realPriced ,couponYunfei),miaoBiPrice);
-		Double amountpaid = MathUtil.subtract(MathUtil.subtract(realPriced ,miaoBiPrice),specialCouponPrice);
+		Double amountpaid = MathUtil.subtract(MathUtil.subtract(MathUtil.subtract(realPriced ,miaoBiPrice),specialCouponPrice),integralPrice);
 		if(amountpaid<0){
 			amountpaid=0d;
 		}
 		//优惠总额
 		String couponPrice = MathUtil.getInt(new BigDecimal(marketPrice).add(new BigDecimal(delivery.getPrice())).subtract(new BigDecimal(amountpaid)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 
-		if(amountpaid < 0){
+		/*if(amountpaid < 0){
 			miaobi = miaobi + amountpaid;
 			useMiaoBi = new BigDecimal(miaobi).multiply(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			miaoBiPrice= new BigDecimal(useMiaoBi).divide(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			amountpaid = 0d;
-		}
+		}*/
 		//喵币描述
-		miaoBiDesc ="共" + MathUtil.getInt(member.getPoint().toString()) + "喵币,可用" + MathUtil.getInt(useMiaoBi.toString()) + "喵币,抵扣¥" + MathUtil.getInt(miaoBiPrice.toString()) ;
+		miaoBiDesc ="共" + MathUtil.getInt(member.getPoint().toString()) + "喵币,可用" + MathUtil.getInt(useMiaoBi1.toString()) + "喵币,抵扣¥" + MathUtil.getInt(miaoBiPrice1.toString()) ;
+		integralDesc ="共" + MathUtil.getInt(member.getIntegral().toString()) + "积分,可用" + MathUtil.getInt(useIntegral1.toString()) + "积分,抵扣¥" + MathUtil.getInt(integralPrice1.toString()) ;
 
-		Double[] param = {deliver, miaobi, amountpaid ,couponYunfei ,manJianPrices,specialCouponPrice};
-		String params = deliver.toString() + "," + miaobi.toString() + "," +amountpaid.toString() + "," +couponYunfei.toString() + "," +manJianPrices.toString()+","+specialCouponPrice.toString() ;
+		Double[] param = {deliver, miaobi, amountpaid ,couponYunfei ,manJianPrices,specialCouponPrice,integral};
+		String params = deliver.toString() + "," + miaobi.toString() + "," +amountpaid.toString() + "," +couponYunfei.toString() + "," +manJianPrices.toString()+","+specialCouponPrice.toString()+","+integral.toString() ;
 
 			realPrice =  MathUtil.getInt(amountpaid.toString());
 		goods.setPrice(product.getPrice());
@@ -315,7 +377,7 @@ public class OrderAPIController extends BaseAPIController {
 
 
 		OrderBuyNowResult orderBuyNowResult = new OrderBuyNowResult(taxUrl, yunfei, member, defaultReceiver, goods, Integer.valueOf(quantity+""), receiveTime, is_freeMoney, is_useMiaobi, miaoBiDesc, priceList,
-			realPrice, couponPrice, param, is_promotion, amountpaid,specifications,identifier);
+			realPrice, couponPrice, param, is_promotion, amountpaid,specifications,identifier,isIntegral,integralDesc);
 
 		RedisUtil.setString("ORDERPARAM:"+member.getId(), params);
 		renderJson(ApiResult.success(orderBuyNowResult));
@@ -332,7 +394,7 @@ public class OrderAPIController extends BaseAPIController {
 		Member member = memberService.getCurrent();
 		Long receiverId = getParaToLong("receiverId"); //收货人
 		Long quantity  = getParaToLong("quantity",1L); //收货人
-		Boolean isPersonal=getParaToBoolean("isPersonal");
+		Boolean isPersonal=getParaToBoolean("isPersonal");  //
 
 		//特殊商品
 		Long sPecialIds = getParaToLong("sPecialIds",0l);
@@ -351,16 +413,20 @@ public class OrderAPIController extends BaseAPIController {
 
 		Order.Type ss = Order.Type.general;
 
-		if(!"0".equals(sPecialIds)) {
+
+		if(identifierId==0&&"0".equals(sPecialCoupId)&&!"0".equals(sPecialIds)){
 			ss = Order.Type.particular;
+		}else if(identifierId!=0&&"0".equals(sPecialCoupId)&&"0".equals(sPecialIds)){
+			ss = Order.Type.special;
+		}else if(identifierId==0&&!"0".equals(sPecialCoupId)&&"0".equals(sPecialIds)){
+			ss = Order.Type.coupon;
+		}else if(identifierId==0&&"0".equals(sPecialCoupId)&&"0".equals(sPecialIds)){
+			ss = Order.Type.general;
+		}else {
+			renderJson(ApiResult.fail("订单异常"));
 		}
 
-		if(!"0".equals(sPecialCoupId)) {
-				ss = Order.Type.coupon;
-			}
-		if(identifierId!=0){
-				ss = Order.Type.special;
-		}
+
 
 		//1是 ，0否  是否開發票
 		Boolean isInvoice=getParaToBoolean("isInvoice");
@@ -410,10 +476,12 @@ public class OrderAPIController extends BaseAPIController {
 
 		Double specialCouponPrice = skuids[5];
 
+		Double integralMoney= skuids[6];
+
 		//佣金比例
 		Double rate = goods.getCommissionRate();
 
-		Order order = orderService.createBuyNow(ss, member, goods, price, Integer.valueOf(quantity+""), manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,null,0,0,rate,sPecialIds,identifierId,specialCouponPrice,sPecialCoupId);
+		Order order = orderService.createBuyNow(ss, member, goods, price, Integer.valueOf(quantity+""), manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,null,0,0,rate,sPecialIds,identifierId,specialCouponPrice,sPecialCoupId,integralMoney);
 
 
 		renderJson(ApiResult.success(order.getId()));
@@ -612,6 +680,7 @@ public class OrderAPIController extends BaseAPIController {
 		Double amountpaid = MathUtil.subtract(realPriced ,favoritePrice);
 		//优惠总额
 		favoritePrice = MathUtil.getInt(new BigDecimal(favoritePrice).add(new BigDecimal(marketPrice)).subtract(new BigDecimal(price)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		//喵币描述
 
 		if(amountpaid < 0){
 			miaobi = miaobi + amountpaid;
@@ -619,7 +688,7 @@ public class OrderAPIController extends BaseAPIController {
 			miaoBiPrice= new BigDecimal(useMiaoBi).divide(new BigDecimal(scale)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			amountpaid = 0d;
 		}
-		//喵币描述
+
 		miaoBiDesc ="共" + MathUtil.getInt(member.getPoint().toString()) + "喵币,可用" + MathUtil.getInt(useMiaoBi.toString()) + "喵币,抵扣¥" + MathUtil.getInt(miaoBiPrice.toString()) ;
 
 		Double[] param = {deliver, miaobi, amountpaid ,couponYunfei ,manJianPrices};
@@ -715,7 +784,7 @@ if(!isSinglepurchase){
 
 
 		Order order = orderService.createBuyNow(Order.Type.group, member, goods, price, 1, manjianPrice, receiver, amountMoney, deliveryMoney , miaobiMoney
-				, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,isSinglepurchase,fightGroupId,tuanGouId,rate,0l,0l,0d,"");
+				, memo, couponYunfei,isInvoice,isPersonal,taxNumber,companyName,isSinglepurchase,fightGroupId,tuanGouId,rate,0l,0l,0d,"",0d);
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("order",order.getId()+"");

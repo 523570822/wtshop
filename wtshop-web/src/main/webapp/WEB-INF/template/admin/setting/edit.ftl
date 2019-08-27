@@ -1565,6 +1565,31 @@ $().ready(function() {
 					[/#if]
                 </td>
             </tr>
+            <tr>
+                <th>
+                    积分抵扣额度:
+                </th>
+                <td>
+					[#if redisSetting.integralLimit??]
+                        <input id="integralLimit" type="text" name="setting.integralLimit" class="text" value="${redisSetting.integralLimit}" maxlength="200" title="${message("setting.sendmiaobi.info")}"/>
+					[#else ]
+                        <input id="integralLimit" type="text" name="setting.integralLimit" class="text" value="${setting.integralLimit}" maxlength="200" title="${message("setting.sendmiaobi.info")}"/>
+					[/#if]
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    积分抵扣比例:
+                </th>
+                <td>
+					[#if redisSetting.integralScale??]
+                        <input type="text" name="setting.integralScale" class="text" value="${redisSetting.integralScale}" maxlength="200" title="${message("setting.sendmiaobi.desc")}"/>
+					[#else ]
+                        <input type="text" name="setting.integralScale" class="text" value="${setting.integralScale}" maxlength="200" title="${message("setting.sendmiaobi.desc")}"/>
+					[/#if]
+                </td>
+            </tr>
+
 
 
         </table>

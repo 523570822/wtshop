@@ -101,6 +101,8 @@
 	<setting name="scale" value="10" />
 	<setting name="isSendMiaoBi" value="true" />
 	<setting name="sendMiaoBiLimit" value="1" />
+	<setting name="integralLimit" value="0.5" />
+	<setting name="integralScale" value="1" />
 	<setting name="staffCommission" value="0.07" />
 	<setting name="organCommission" value="0.05" />
 	<setting name="taxExplainUrl" value="https://shop.rxmao.cn/rxm/goods/tax.html" />
