@@ -110,19 +110,19 @@ $().ready(function() {
 				<tr>
                     <td>
 						[#if pointLog.type == 0 ]
-                            ${message("admin.point.first")}
+                            绑定钜惠卡赠送
 						[#elseif pointLog.type == 1 ]
-							${message("admin.point.secone")}
+							绑定代金卡赠送
 						[#elseif pointLog.type == 2 ]
-							${message("admin.point.third")}
+							订单消耗
 						[#elseif pointLog.type == 3 ]
-							${message("admin.point.four")}
+						订单赠送积分
 						[/#if]
                     </td>
 					<td>
-						[#if pointLog.type == 2 || pointLog.type == 0 || pointLog.type == 3 ]
+						[#if pointLog.type == 2 || pointLog.type == 0 || pointLog.type ==1 ]
                             + ${currency(pointLog.credit, true)}
-						[#elseif pointLog.type == 1 ]
+						[#elseif pointLog.type == 3 ]
                             - ${currency(pointLog.debit, true)}
 						[/#if]
 					</td>
@@ -143,8 +143,9 @@ $().ready(function() {
 			[/#list]
 		</table>
 		[@pagination pageNumber = page.pageNumber totalPages = page.totalPage]
-			[#include " /admin/include/pagination.ftl"]
+			[#include "/admin/include/pagination.ftl"]
 		[/@pagination]
+
 	</form>
 </body>
 </html>

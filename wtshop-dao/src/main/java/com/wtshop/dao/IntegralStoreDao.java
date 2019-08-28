@@ -7,8 +7,8 @@ import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Order;
 import com.wtshop.Pageable;
 import com.wtshop.model.IntegralLog;
+import com.wtshop.model.IntegralStore;
 import com.wtshop.model.Member;
-import com.wtshop.model.PointLog;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -19,13 +19,13 @@ import java.util.List;
  * 
  * 
  */
-public class IntegralLogDao extends BaseDao<IntegralLog> {
+public class IntegralStoreDao extends BaseDao<IntegralStore> {
 
 	/**
 	 * 构造方法
 	 */
-	public IntegralLogDao() {
-		super(IntegralLog.class);
+	public IntegralStoreDao() {
+		super(IntegralStore.class);
 	}
 	
 	/**
@@ -37,7 +37,7 @@ public class IntegralLogDao extends BaseDao<IntegralLog> {
 	 *            分页信息
 	 * @return 积分记录分页
 	 */
-	public Page<IntegralLog> findPage(Member member, Pageable pageable) {
+	public Page<IntegralStore> findPage(Member member, Pageable pageable) {
 		if (member == null) {
 			return null;
 		}
@@ -85,11 +85,11 @@ public class IntegralLogDao extends BaseDao<IntegralLog> {
 		return Db.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sql);
 
 	}
-	public IntegralLog findLogByMemberId(Long memberId){
+	public IntegralStore findLogByMemberId(Long memberId){
 		if (memberId == null) {
 			return null;
 		}
-		String sql = " select * from integral_log where type = 1 and member_id = " + memberId;
+		String sql = " select * from integral_store where type = 1 and member_id = " + memberId;
         return modelManager.findFirst(sql);
 	}
 	private String getOrders(List<Order> orders) {
@@ -111,5 +111,13 @@ public class IntegralLogDao extends BaseDao<IntegralLog> {
 			orderSql = StringUtils.substring(orderSql, 0, orderSql.length() - 1);
 		}
 		return orderSql;
+	}
+
+	public IntegralStore findStoreByMemberId(Long memberId, Long storeId) {
+		if (memberId == null) {
+			return null;
+		}
+		String sql = " select * from integral_store where store_member_id = "+storeId+" and member_id = " + memberId;
+		return modelManager.findFirst(sql);
 	}
 }

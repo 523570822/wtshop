@@ -174,7 +174,7 @@ if(isCreate==0){
 		if(StringUtils.isNotEmpty(blurry)){
 			blurry=blurry.trim();
 			sql=sql+"and ( ";
-			sql=sql+"  m.phone like '%"+blurry+"%' or m.nickname LIKE '%"+blurry+"%'  or i.`code` like '%"+blurry+"%' or i.title like '%"+blurry+"%' " ;
+			sql=sql+"  m.phone like '%"+blurry+"%' or m.nickname LIKE '%"+blurry+"%'  or i.`code` like '%"+blurry+"%' or i.`share_code` like '%"+blurry+"%' or i.title like '%"+blurry+"%' " ;
 			if("现场兑换".contains(blurry)){
 				sql=sql+"  or  i.`status`=5 " ;
 			}

@@ -7,8 +7,8 @@ import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Order;
 import com.wtshop.Pageable;
 import com.wtshop.model.IntegralLog;
+import com.wtshop.model.IntegralStoreLog;
 import com.wtshop.model.Member;
-import com.wtshop.model.PointLog;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -19,13 +19,13 @@ import java.util.List;
  * 
  * 
  */
-public class IntegralLogDao extends BaseDao<IntegralLog> {
+public class IntegralStoreLogDao extends BaseDao<IntegralStoreLog> {
 
 	/**
 	 * 构造方法
 	 */
-	public IntegralLogDao() {
-		super(IntegralLog.class);
+	public IntegralStoreLogDao() {
+		super(IntegralStoreLog.class);
 	}
 	
 	/**
@@ -37,7 +37,7 @@ public class IntegralLogDao extends BaseDao<IntegralLog> {
 	 *            分页信息
 	 * @return 积分记录分页
 	 */
-	public Page<IntegralLog> findPage(Member member, Pageable pageable) {
+	public Page<IntegralStoreLog> findPage(Member member, Pageable pageable) {
 		if (member == null) {
 			return null;
 		}
@@ -85,7 +85,7 @@ public class IntegralLogDao extends BaseDao<IntegralLog> {
 		return Db.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sql);
 
 	}
-	public IntegralLog findLogByMemberId(Long memberId){
+	public IntegralStoreLog findLogByMemberId(Long memberId){
 		if (memberId == null) {
 			return null;
 		}

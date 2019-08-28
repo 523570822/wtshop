@@ -75,7 +75,7 @@
                 <a href="javascript:;" >邀请码</a>
             </th>
             <th>
-                <a href="javascript:;"  >门店名称</a>
+                <a href="javascript:;"class="sort" name="store"  >门店名称</a>
             </th>
             <th>
                 <a href="javascript:;" class="sort" name="create_date">${message("admin.common.createDate")}</a>

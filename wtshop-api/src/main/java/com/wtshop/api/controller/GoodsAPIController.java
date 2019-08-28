@@ -60,6 +60,8 @@ public class GoodsAPIController extends BaseAPIController {
 	private SpecialCouponService specialCouponService=enhance(SpecialCouponService.class);
 	private IntegralLogService integralLogService =enhance(IntegralLogService.class);
 	private InformationService informationService = Enhancer.enhance(InformationService.class);
+	private  IntegralStoreService integralStoreService=Enhancer.enhance(IntegralStoreService.class);
+	private IntegralStoreLogService integralStoreLogService=Enhancer.enhance(IntegralStoreLogService.class);
 	final Logger logger = Logger.getLogger("GoodsAPIController");
 	/**
 	 * 列表
@@ -639,6 +641,9 @@ public void onShareCode(){
 		identifier.setStartDate(date1);
 		identifier.setIntegral(ss.getIntegral());
 		IntegralLog integralLog=new IntegralLog();
+
+		IntegralStore integralStore=new IntegralStore();
+		IntegralStoreLog integralStoreLog=new IntegralStoreLog();
 		if(ss.getIntegral().compareTo(BigDecimal.ZERO)==1){
 			integralLog.setCredit(ss.getIntegral());
 			integralLog.setMemo("绑定钜惠卡返积分");
@@ -650,6 +655,30 @@ public void onShareCode(){
 			integralLog.setIdentifierId(identifier.getId());
 			m.setIntegral(m.getIntegral().add(ss.getIntegral()));
 			integralLogService.save(integralLog);
+
+
+			//增加门店比例
+			IntegralStore integralStore1=integralStoreService.findStoreByMemberId(m.getId(),me.get(0).getId());
+
+
+
+			integralStore.setBalance(BigDecimal.ZERO);
+			if(integralStore1!=null){
+				integralStore=integralStore1;
+				integralStore.setBalance(integralStore1.getBalance().add(identifier.getIntegral()));
+				integralStoreService.update(integralStore);
+			}else {
+				integralStore.setBalance(identifier.getIntegral());
+				integralStore.setMemberId(m.getId());
+				integralStore.setStoreMemberId(me.get(0).getId());
+				integralStoreService.save(integralStore);
+			}
+			integralStoreLog.setBalance(integralStore.getBalance());
+			integralStoreLog.setCredit(identifier.getIntegral());
+			integralStoreLog.setMemberId(m.getId());
+			integralStoreLog.setStoreMemberId(me.get(0).getId());
+			integralStoreLog.setMemo("绑定钜惠卡获取积分增加相应门店权重");
+			integralStoreLogService.update(integralStoreLog);
 
 			logger.info("开始极光推送服务————————————————————————");
 			try {
@@ -720,7 +749,11 @@ public void onShareCode(){
 		specialCoupon.setStartDate(date1);
 		specialCoupon.setShareCode(onShareCode);
 		IntegralLog integralLog=new IntegralLog();
+		IntegralStore integralStore=new IntegralStore();
+		IntegralStoreLog integralStoreLog=new IntegralStoreLog();
 		if(specialCoupon.getIntegral().compareTo(BigDecimal.ZERO)==1){
+
+			m.setIntegral(m.getIntegral().add(specialCoupon.getIntegral()));
 			integralLog.setCredit(specialCoupon.getIntegral());
 			integralLog.setMemo("绑定代金卡返积分");
 			integralLog.setBalance(m.getIntegral());
@@ -730,10 +763,31 @@ public void onShareCode(){
 			integralLog.setCode(specialCoupon.getCode());
 			integralLog.setMemberId(m.getId());
 			integralLog.setIdentifierId(specialCoupon.getId());
-			m.setIntegral(m.getIntegral().add(specialCoupon.getIntegral()));
 			integralLogService.save(integralLog);
 
 
+			//增加门店比例
+			IntegralStore integralStore1=integralStoreService.findStoreByMemberId(m.getId(),me.get(0).getId());
+
+
+
+			integralStore.setBalance(BigDecimal.ZERO);
+			if(integralStore1!=null){
+				integralStore=integralStore1;
+				integralStore.setBalance(integralStore1.getBalance().add(specialCoupon.getIntegral()));
+				integralStoreService.update(integralStore);
+			}else {
+				integralStore.setBalance(specialCoupon.getIntegral());
+				integralStore.setMemberId(m.getId());
+				integralStore.setStoreMemberId(me.get(0).getId());
+				integralStoreService.save(integralStore);
+			}
+			integralStoreLog.setBalance(integralStore.getBalance());
+			integralStoreLog.setCredit(specialCoupon.getIntegral());
+			integralStoreLog.setMemberId(m.getId());
+			integralStoreLog.setStoreMemberId(me.get(0).getId());
+			integralStoreLog.setMemo("绑定代金卡获取积分增加相应门店权重");
+			integralStoreLogService.update(integralStoreLog);
 			logger.info("开始极光推送服务————————————————————————");
 			try {
 				informationService.intergraSuccessMessage(integralLog);

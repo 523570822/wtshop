@@ -5,26 +5,26 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Pageable;
 import com.wtshop.dao.IntegralLogDao;
-import com.wtshop.dao.PointLogDao;
+import com.wtshop.dao.IntegralStoreDao;
 import com.wtshop.model.IntegralLog;
+import com.wtshop.model.IntegralStore;
 import com.wtshop.model.Member;
-import com.wtshop.model.PointLog;
 
 /**
  * Service - 积分记录
  * 
  * 
  */
-public class IntegralLogService extends BaseService<IntegralLog> {
+public class IntegralStoreService extends BaseService<IntegralStore> {
 
 	/**
 	 * 构造方法
 	 */
-	public IntegralLogService() {
-		super(IntegralLog.class);
+	public IntegralStoreService() {
+		super(IntegralStore.class);
 	}
 	
-	private IntegralLogDao integralLogDao = Enhancer.enhance(IntegralLogDao.class);
+	private IntegralStoreDao integralLogDao = Enhancer.enhance(IntegralStoreDao.class);
 	
 	/**
 	 * 查找积分记录分页
@@ -35,7 +35,7 @@ public class IntegralLogService extends BaseService<IntegralLog> {
 	 *            分页信息
 	 * @return 积分记录分页
 	 */
-	public Page<IntegralLog> findPage(Member member, Pageable pageable) {
+	public Page<IntegralStore> findPage(Member member, Pageable pageable) {
 		return integralLogDao.findPage(member, pageable);
 	}
 
@@ -57,8 +57,13 @@ public class IntegralLogService extends BaseService<IntegralLog> {
 	/**
 	 * 根据会员id 获取首次赠送记录
 	 */
-	public IntegralLog findLogByMemberId(Long memberId){
+	public IntegralStore findLogByMemberId(Long memberId){
 		return  integralLogDao.findLogByMemberId(memberId);
 	}
-
+	/**
+	 * 根据会员id 和门店ID判断是否已经有该门店记录
+	 */
+	public IntegralStore findStoreByMemberId(Long memberId,Long storeId){
+		return  integralLogDao.findStoreByMemberId(memberId,storeId);
+	}
 }

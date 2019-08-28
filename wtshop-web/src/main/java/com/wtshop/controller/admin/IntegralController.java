@@ -6,6 +6,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Message;
 import com.wtshop.Pageable;
 import com.wtshop.model.Member;
+import com.wtshop.service.IntegralLogService;
 import com.wtshop.service.MemberService;
 import com.wtshop.service.MiaobiLogService;
 import com.wtshop.service.PointLogService;
@@ -24,7 +25,7 @@ public class IntegralController extends BaseController {
 	private PointLogService pointLogService = enhance(PointLogService.class);
 	private MemberService memberService = enhance(MemberService.class);
 	private MiaobiLogService miaobiLogService = enhance(MiaobiLogService.class);
-
+	private IntegralLogService integralLogService=enhance(IntegralLogService.class);
 	/**
 	 * 检查会员
 	 */
@@ -58,7 +59,7 @@ public class IntegralController extends BaseController {
 
 		Pageable pageable = getBean(Pageable.class);
 		Integer type = getParaToInt("typeName");
-		Page<Record> pages = miaobiLogService.findPages(pageable, type);
+		Page<Record> pages = integralLogService.findPages(pageable, type);
 
 		setAttr("page", pages);
 		setAttr("pageable", pageable);

@@ -151,9 +151,9 @@ function disabled(id,status) {
 				<th>
 					<a href="javascript:;" class="sort" name="code">识别码</a>
 				</th>
-             [#--   <th>
+               <th>
                     <a href="javascript:;"  name="logo">邀请码</a>
-                </th>--]
+                </th>
                 <th>
                     <a href="javascript:;" class="m.nickname" name="logo">姓名</a>
                 </th>
@@ -198,9 +198,9 @@ function disabled(id,status) {
 					<td>
 						${brand.code}
 					</td>
-                  [#--  <td>
+                   <td>
 						${brand.share_code}
-                    </td>--]
+                    </td>
                     <td>
 						${brand.member.nickname}
                     </td>
