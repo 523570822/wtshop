@@ -676,11 +676,15 @@ public void onShareCode(){
 	 * idfCode
 	 */
 	public void bindingSpecialCoupon(){
-
+		String onShareCode = getPara("onShareCode","").toUpperCase().trim();
 		String idSCCode = getPara("idSCCode","").toUpperCase();
 
 		Member m=memberService.getCurrent();
-
+		List<Member> me = memberService.findByShareCode(onShareCode);
+		if((StringUtils.isNotEmpty(onShareCode)&&(me==null||me.size()==0))&&(!"VA3TYG".equals(onShareCode))){
+			renderJson(ApiResult.fail("邀请码不存在!"));
+			return;
+		}
 
 		List<SpecialCoupon>	specialCouponList=specialCouponService.findByIdfCode(idSCCode);
 		SpecialCoupon specialCoupon=new SpecialCoupon() ;
@@ -696,6 +700,11 @@ public void onShareCode(){
 			renderJson(ApiResult.fail("识别码不存在!"));
 			return;
 		}
+		 //判断邀请码是不是门店
+		if(me.get(0).getStore()==null||"".equals(me.get(0).getStore().trim())){
+			renderJson(ApiResult.fail("邀请码与识别码不匹配!"));
+			return;
+		}
 		Map<String,Object>  map=  new HashMap<>();
 
 
@@ -709,6 +718,7 @@ public void onShareCode(){
 		Date date1 =new Date();
 		specialCoupon.setEndDate(date);
 		specialCoupon.setStartDate(date1);
+		specialCoupon.setShareCode(onShareCode);
 		IntegralLog integralLog=new IntegralLog();
 		if(specialCoupon.getIntegral().compareTo(BigDecimal.ZERO)==1){
 			integralLog.setCredit(specialCoupon.getIntegral());
