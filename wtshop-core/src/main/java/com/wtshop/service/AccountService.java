@@ -182,8 +182,8 @@ public Map<String,Object> getall(Map<String,Object> access_token){
      * 小程序消息推送
      */
     public Map<String, Object> getXCXSend(WxaTemplate template){
-
-        String jsonResult = HttpUtils.post(sendApiUrl + WxaAccessTokenApi.getAccessTokenStr(), template.build());
+        Object token = WxaAccessTokenApi.getAccessTokenStr();
+        String jsonResult = HttpUtils.post(sendApiUrl + token, template.build());
         HashMap resultMap = JSON.parseObject(jsonResult, HashMap.class);
        return resultMap;
        // return null;

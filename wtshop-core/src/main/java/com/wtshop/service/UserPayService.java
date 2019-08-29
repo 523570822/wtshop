@@ -4,6 +4,7 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.domain.AlipayTradeAppPayModel;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
+import com.jfinal.aop.Enhancer;
 import com.jfinal.kit.HashKit;
 import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
@@ -12,6 +13,7 @@ import com.jfinal.weixin.sdk.api.PaymentApi;
 import com.jfinal.weixin.sdk.kit.PaymentKit;
 import com.wtshop.CommonAttributes;
 import com.wtshop.constants.Code;
+import com.wtshop.entity.WxaTemplate;
 import com.wtshop.model.Account;
 import com.wtshop.model.ExchangeLog;
 import com.wtshop.model.Order;
@@ -21,6 +23,8 @@ import com.wtshop.util.RedisUtil;
 import com.wtshop.util.UUIDUtils;
 import org.slf4j.LoggerFactory;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +36,7 @@ import static com.jfinal.aop.Enhancer.enhance;
 public class UserPayService {
     org.slf4j.Logger _logger = LoggerFactory.getLogger(UserPayService.class);
     private ExchangeLogService exchangeLogService = enhance(ExchangeLogService.class);
+    private AccountService accountService= Enhancer.enhance(AccountService.class);
     /**
      * 微信端 获取支付信息
      * @return
@@ -67,6 +72,15 @@ public class UserPayService {
         Map<String, String> result = PaymentKit.xmlToMap(xmlResult);
 
         String prepay_id = result.get("prepay_id");
+
+
+
+
+
+
+
+
+
 
         Map<String, String> packageParams = new HashMap<>();
         packageParams.put("appid", prop.get("AppID"));
@@ -175,6 +189,24 @@ public class UserPayService {
         Map<String, String> result = PaymentKit.xmlToMap(xmlResult);
 
         String prepay_id = result.get("prepay_id");
+
+        //Account account=accountService.findByMemberId(order.getMemberId().toString(),"4");
+
+        WxaTemplate template=new WxaTemplate();
+        template.setTouser(account.getAccount());
+        template.setForm_id(prepay_id);
+        template.setPage("pages/main/main");
+        template.setTemplate_id("BnWs0CJYpp86KnFrhAZTtpXGMKP5HLUeQzcQtms9FNk");
+        template.add("keyword1","代金卡");
+        SimpleDateFormat sdf1 =new SimpleDateFormat("yyyy年MM月dd HH:mm:ss SSS" );
+        Date d= new Date();
+        String str = sdf1.format(d);
+        template.add("keyword2",str);
+        template.add("keyword3","绑卡成功，送您的积分已到账");
+        Map<String, Object> ddd123 = accountService.getXCXSend(template);
+        logger.info("微信推送结束"+ddd123.toString());
+
+
         if("FAIL".equals(result.get("result_code")) ){
             _logger.error("统一下单异常:订单号{}","RXM" + order.getSn()+","+result.get("err_code_des"));
             return null;
