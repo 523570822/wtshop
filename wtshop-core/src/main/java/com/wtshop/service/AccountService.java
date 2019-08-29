@@ -28,6 +28,7 @@ import com.wtshop.CommonAttributes;
 import com.wtshop.dao.AccountDao;
 import com.wtshop.entity.WXPayReqData;
 import com.wtshop.entity.WXPaymentReqData;
+import com.wtshop.entity.WxaTemplate;
 import com.wtshop.exception.AppRuntimeException;
 import com.wtshop.model.Account;
 import com.wtshop.util.AliPayUtil;
@@ -92,7 +93,7 @@ public class AccountService extends BaseService<Account> {
     public Account findByAccount(String openId ,String unionid ,Integer type){
         return accountDao.findByAccount(openId,unionid, type);
     }
-
+    private static String sendApiUrl = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=";
 
 
     /**
@@ -137,7 +138,7 @@ public Map<String,Object> getall(Map<String,Object> access_token){
     return null;
 }
     /**
-     * 微信登录 获取token
+     * 小程序 获取token
      */
     public Map<String, Object> getAccessXCX_token( ){
         Prop prop = PropKit.use(CommonAttributes.wtshop_PROPERTIES_PATH);
@@ -159,7 +160,7 @@ public Map<String,Object> getall(Map<String,Object> access_token){
         return null;
     }
     /**
-     * 小程序登录 获取token
+     * 小程序登录
      */
     public Map<String, Object> getXCXAccess_token(String code){
         Prop prop = PropKit.use(CommonAttributes.wtshop_PROPERTIES_PATH);
@@ -168,19 +169,29 @@ public Map<String,Object> getall(Map<String,Object> access_token){
                 .append(prop.get("XCX_APPID")).append("&secret=").append(prop.get("XCX_SECRET")).append("&js_code=")
                 .append(code).append("&grant_type=authorization_code");
         try {
-            String results = HttpUtils.get(requestUrl.toString());
+          //  String results = HttpUtils.post(requestUrl.toString(),date);
 
-            Map<String, Object> resultMap= JSON.parseObject(results, HashMap.class);
-            if(resultMap!=null){
-                return resultMap;
-            }
+         //   Map<String, Object> resultMap= JSON.parseObject(results, HashMap.class);
+          //  if(resultMap!=null){
+         //       return resultMap;
+         //   }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
 
     }
+    /**
+     * 小程序消息推送
+     */
+    public Map<String, Object> getXCXSend(WxaTemplate template,String accessToken){
+        String jsonResult = HttpUtils.post(sendApiUrl + accessToken, template.build());
+        HashMap resultMap = JSON.parseObject(jsonResult, HashMap.class);
+       return resultMap;
+       // return null;
 
+    }
     /**
      * 刷新用户授权的token
      * @param access_token

@@ -238,7 +238,7 @@ $().ready(function() {
 					${message("admin.common.order")}:
                 </th>
                 <td>
-                    <input type="text" name="fullReduction.orders"value="${fullReduction.orders}  class="text" maxlength="9" />
+                    <input type="text" name="fullReduction.orders"value="${fullReduction.orders}"  class="text" maxlength="9" />
                 </td>
             </tr>
 			[#--<tr>--]

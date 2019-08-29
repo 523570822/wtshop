@@ -645,6 +645,7 @@ public void onShareCode(){
 		IntegralStore integralStore=new IntegralStore();
 		IntegralStoreLog integralStoreLog=new IntegralStoreLog();
 		if(ss.getIntegral().compareTo(BigDecimal.ZERO)==1){
+			m.setIntegral(m.getIntegral().add(ss.getIntegral()));
 			integralLog.setCredit(ss.getIntegral());
 			integralLog.setMemo("绑定钜惠卡返积分");
 			integralLog.setBalance(m.getIntegral());
@@ -653,7 +654,7 @@ public void onShareCode(){
 			integralLog.setDebit(BigDecimal.ZERO);
 			integralLog.setMemberId(m.getId());
 			integralLog.setIdentifierId(identifier.getId());
-			m.setIntegral(m.getIntegral().add(ss.getIntegral()));
+
 			integralLogService.save(integralLog);
 
 
@@ -676,6 +677,8 @@ public void onShareCode(){
 			integralStoreLog.setBalance(integralStore.getBalance());
 			integralStoreLog.setCredit(identifier.getIntegral());
 			integralStoreLog.setMemberId(m.getId());
+			integralStoreLog.setType(0);
+			integralStoreLog.setDebit(BigDecimal.ZERO);
 			integralStoreLog.setStoreMemberId(me.get(0).getId());
 			integralStoreLog.setMemo("绑定钜惠卡获取积分增加相应门店权重");
 			integralStoreLogService.update(integralStoreLog);
@@ -710,7 +713,12 @@ public void onShareCode(){
 
 		Member m=memberService.getCurrent();
 		List<Member> me = memberService.findByShareCode(onShareCode);
-		if((StringUtils.isNotEmpty(onShareCode)&&(me==null||me.size()==0))&&(!"VA3TYG".equals(onShareCode))){
+		if((StringUtils.isEmpty(onShareCode))){
+			renderJson(ApiResult.fail("邀请码不存在!"));
+			return;
+		}
+
+		if((me==null||me.size()==0)&&(!"VA3TYG".equals(onShareCode))){
 			renderJson(ApiResult.fail("邀请码不存在!"));
 			return;
 		}
@@ -759,7 +767,7 @@ public void onShareCode(){
 			integralLog.setBalance(m.getIntegral());
 			integralLog.setCredit(specialCoupon.getIntegral());
 			integralLog.setDebit(BigDecimal.ZERO);
-			integralLog.setType(0);
+			integralLog.setType(1);
 			integralLog.setCode(specialCoupon.getCode());
 			integralLog.setMemberId(m.getId());
 			integralLog.setIdentifierId(specialCoupon.getId());
@@ -784,10 +792,12 @@ public void onShareCode(){
 			}
 			integralStoreLog.setBalance(integralStore.getBalance());
 			integralStoreLog.setCredit(specialCoupon.getIntegral());
+			integralStoreLog.setDebit(BigDecimal.ZERO);
 			integralStoreLog.setMemberId(m.getId());
+			integralStoreLog.setType(1);
 			integralStoreLog.setStoreMemberId(me.get(0).getId());
 			integralStoreLog.setMemo("绑定代金卡获取积分增加相应门店权重");
-			integralStoreLogService.update(integralStoreLog);
+			integralStoreLogService.save(integralStoreLog);
 			logger.info("开始极光推送服务————————————————————————");
 			try {
 				informationService.intergraSuccessMessage(integralLog);

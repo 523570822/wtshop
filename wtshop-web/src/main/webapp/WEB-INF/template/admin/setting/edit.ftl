@@ -1589,7 +1589,18 @@ $().ready(function() {
 					[/#if]
                 </td>
             </tr>
-
+            <tr>
+                <th>
+                    支付金额返现比例:
+                </th>
+                <td>
+					[#if redisSetting.integralScale??]
+                        <input type="text" name="setting.zhiFuFanBi" class="text" value="${redisSetting.zhiFuFanBi}" maxlength="200" title="当输入0.1的时候表示订单通过支付金额10%返现"/>
+					[#else ]
+                        <input type="text" name="setting.zhiFuFanBi" class="text" value="${setting.zhiFuFanBi}" maxlength="200" title="当输入0.1的时候表示订单通过支付金额10%返现"/>
+					[/#if]
+                </td>
+            </tr>
 
 
         </table>

@@ -335,7 +335,8 @@ public class OrderAPIController extends BaseAPIController {
 		priceList.add(oldTotalPrice);
 		priceList.add(totalPrice);
 		priceList.add(deliveryPrice);
-		if(!is_promotion&&sPecialIds==0){
+
+		if(!is_promotion&&sPecialIds==0&&miaobi>0){
 			priceList.add(miaobiPrice);
 		}
 		if(isIntegral){
@@ -1382,7 +1383,7 @@ if(!isSinglepurchase){
 	priceList.add(oldTotalPrice);
 	priceList.add(totalPrice);
 	priceList.add(deliveryPrice);
-	if (!is_promotion) {
+	if (!is_promotion&&miaobi>0) {
 		priceList.add(miaobiPrice);
 	}
 
@@ -1401,7 +1402,7 @@ if(!isSinglepurchase){
 	}
 	miaoBiDesc = "共" + MathUtil.getInt(member.getPoint().toString()) + "喵币,可用" + MathUtil.getInt(useMiaoBi.toString()) + "喵币,抵扣¥" + MathUtil.getInt(miaoBiPrice.toString());
 
-	Double[] param = {deliver, miaobi, returns, amountpaid, couponYunfei, manJianPrices};
+	Double[] param = {deliver, miaobi, returns, amountpaid, couponYunfei, manJianPrices,0d,0d,0d};
 	Double yunfei = delivery.getPrice();
 	favoritePrice = MathUtil.getInt(new BigDecimal(favoritePrice).add(new BigDecimal(oldPrice)).subtract(new BigDecimal(price)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	OrderDetailsResult orderDetailsResult = new OrderDetailsResult(taxUrl, couponYunfei, skuids, yunfei, member, cart.getToken(), defaultReceiver, codeList, goodsList,

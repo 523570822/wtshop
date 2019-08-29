@@ -273,6 +273,16 @@ public class Setting implements Serializable {
 	/** 喵币抵扣比例 */
 	private Double integralScale;
 
+	public Double getZhiFuFanBi() {
+		return zhiFuFanBi;
+	}
+
+	public void setZhiFuFanBi(Double zhiFuFanBi) {
+		this.zhiFuFanBi = zhiFuFanBi;
+	}
+
+	private Double zhiFuFanBi;
+
 	/** 是否开启赠送喵币 */
 	private Boolean isSendMiaoBi;
 
