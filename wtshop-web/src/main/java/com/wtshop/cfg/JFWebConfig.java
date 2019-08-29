@@ -6,7 +6,6 @@ import com.jfinal.config.*;
 import com.jfinal.core.Controller;
 import com.jfinal.core.JFinal;
 import com.jfinal.ext.handler.FakeStaticHandler;
-import com.jfinal.ext.plugin.monogodb.MongodbPlugin;
 import com.jfinal.ext.route.AutoBindRoutes;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.PropKit;
@@ -23,6 +22,8 @@ import com.jfinal.plugin.redis.RedisPlugin;
 import com.jfinal.render.FreeMarkerRender;
 import com.jfinal.render.ViewType;
 import com.jfinal.template.Engine;
+import com.jfinal.wxaapp.WxaConfig;
+import com.jfinal.wxaapp.WxaConfigKit;
 import com.wtshop.FreeMarkerExceptionHandler;
 import com.wtshop.constants.Code;
 import com.wtshop.model._MappingKit;
@@ -44,7 +45,6 @@ import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateModelException;
 import freemarker.template.utility.StandardCompress;
-import org.apache.commons.lang3.StringUtils;
 import redis.clients.jedis.JedisPoolConfig;
 
 import javax.servlet.http.HttpServletRequest;
@@ -184,6 +184,12 @@ public class JFWebConfig extends JFinalConfig {
 
         //  设置倒拍使用的redis
         setupQueueRedis(plugins);
+
+
+        WxaConfig wc = new WxaConfig();
+        wc.setAppId(getProperty("XCX_APPID"));
+        wc.setAppSecret(getProperty("XCX_SECRET"));
+        WxaConfigKit.setWxaConfig(wc);
 
     }
 

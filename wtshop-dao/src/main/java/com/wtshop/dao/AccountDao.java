@@ -98,14 +98,13 @@ public class AccountDao extends BaseDao<Account>{
         return modelManager.findFirst(sql);
     }
 
-    public Account findByMemberId(String memberId) {
+    public Account findByMemberId(String memberId,String type) {
         String sql = " select * from account where 1 = 1 ";
         if (memberId != null) {
-
             sql += " AND member_id = '" + memberId+"'";
-
-
-
+        }
+        if (type != null) {
+            sql += " AND type = '" + type+"'";
         }
         return modelManager.findFirst(sql);
     }

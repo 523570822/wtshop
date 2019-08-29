@@ -4,23 +4,21 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
-import com.alipay.api.domain.AlipayAccount;
 import com.alipay.api.domain.AlipayFundTransOrderQueryModel;
 import com.alipay.api.domain.AlipayFundTransToaccountTransferModel;
-import com.alipay.api.domain.AlipayOpenAppCodetesttestModel;
 import com.alipay.api.domain.AlipayTradeRefundModel;
 import com.alipay.api.internal.util.AlipaySignature;
-import com.alipay.api.request.*;
-import com.alipay.api.response.AlipayFundTransOrderQueryResponse;
-import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
-import com.alipay.api.response.AlipaySystemOauthTokenResponse;
-import com.alipay.api.response.AlipayTradeRefundResponse;
-import com.alipay.api.response.AlipayUserUserinfoShareResponse;
+import com.alipay.api.request.AlipayFundTransOrderQueryRequest;
+import com.alipay.api.request.AlipaySystemOauthTokenRequest;
+import com.alipay.api.request.AlipayTradeRefundRequest;
+import com.alipay.api.request.AlipayUserUserinfoShareRequest;
+import com.alipay.api.response.*;
 import com.jfinal.aop.Enhancer;
 import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
 import com.jfinal.log.Logger;
 import com.jfinal.weixin.sdk.utils.HttpUtils;
+import com.jfinal.wxaapp.api.WxaAccessTokenApi;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
@@ -32,8 +30,6 @@ import com.wtshop.entity.WxaTemplate;
 import com.wtshop.exception.AppRuntimeException;
 import com.wtshop.model.Account;
 import com.wtshop.util.AliPayUtil;
-import com.wtshop.util.AliSignUtils;
-import com.wtshop.util.ApiResult;
 import com.wtshop.util.UUIDUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
@@ -48,16 +44,15 @@ import org.apache.http.util.EntityUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+
 import javax.net.ssl.SSLContext;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.StringReader;
 import java.net.URLEncoder;
 import java.security.KeyStore;
 import java.util.*;
 
-import static com.jfinal.ext.kit.AliPayApi.toMap;
 import static com.jfinal.ext.kit.AliPayApi.transferToResponse;
 
 /**
@@ -165,16 +160,17 @@ public Map<String,Object> getall(Map<String,Object> access_token){
     public Map<String, Object> getXCXAccess_token(String code){
         Prop prop = PropKit.use(CommonAttributes.wtshop_PROPERTIES_PATH);
 
+
         StringBuilder requestUrl = new StringBuilder("https://api.weixin.qq.com/sns/jscode2session?appid=")
                 .append(prop.get("XCX_APPID")).append("&secret=").append(prop.get("XCX_SECRET")).append("&js_code=")
                 .append(code).append("&grant_type=authorization_code");
         try {
-          //  String results = HttpUtils.post(requestUrl.toString(),date);
+           String results = HttpUtils.get(requestUrl.toString());
 
-         //   Map<String, Object> resultMap= JSON.parseObject(results, HashMap.class);
-          //  if(resultMap!=null){
-         //       return resultMap;
-         //   }
+           Map<String, Object> resultMap= JSON.parseObject(results, HashMap.class);
+            if(resultMap!=null){
+                return resultMap;
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -185,8 +181,9 @@ public Map<String,Object> getall(Map<String,Object> access_token){
     /**
      * 小程序消息推送
      */
-    public Map<String, Object> getXCXSend(WxaTemplate template,String accessToken){
-        String jsonResult = HttpUtils.post(sendApiUrl + accessToken, template.build());
+    public Map<String, Object> getXCXSend(WxaTemplate template){
+
+        String jsonResult = HttpUtils.post(sendApiUrl + WxaAccessTokenApi.getAccessTokenStr(), template.build());
         HashMap resultMap = JSON.parseObject(jsonResult, HashMap.class);
        return resultMap;
        // return null;
@@ -771,8 +768,8 @@ public Map<String,Object> getall(Map<String,Object> access_token){
     public Account findByOpenid(String openid) {
         return accountDao.findByOpenid(openid);
     }
-    public
-    Account findByMemberId(String memberId) {
-        return accountDao.findByMemberId(memberId);
+    public Account findByMemberId(String memberId,String type) {
+        return accountDao.findByMemberId(memberId,type);
     }
+
 }

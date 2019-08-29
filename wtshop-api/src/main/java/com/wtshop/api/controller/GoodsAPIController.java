@@ -6,6 +6,7 @@ import com.jfinal.aop.Enhancer;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.wtshop.Pageable;
 import com.wtshop.RequestContextHolder;
 import com.wtshop.Setting;
@@ -14,6 +15,7 @@ import com.wtshop.api.common.result.GoodsMessageResult;
 import com.wtshop.api.common.result.SearchResult;
 import com.wtshop.api.interceptor.ErrorInterceptor;
 import com.wtshop.entity.SpecificationItem;
+import com.wtshop.entity.WxaTemplate;
 import com.wtshop.exception.ResourceNotFoundException;
 import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.*;
@@ -25,6 +27,7 @@ import com.wtshop.util.SystemUtils;
 import freemarker.log.Logger;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -62,6 +65,7 @@ public class GoodsAPIController extends BaseAPIController {
 	private InformationService informationService = Enhancer.enhance(InformationService.class);
 	private  IntegralStoreService integralStoreService=Enhancer.enhance(IntegralStoreService.class);
 	private IntegralStoreLogService integralStoreLogService=Enhancer.enhance(IntegralStoreLogService.class);
+	private AccountService accountService=Enhancer.enhance(AccountService.class);
 	final Logger logger = Logger.getLogger("GoodsAPIController");
 	/**
 	 * 列表
@@ -112,6 +116,7 @@ public class GoodsAPIController extends BaseAPIController {
 	 * score 0 1 2   好评 中评 差评
 	 */
 	public void detail() throws ParseException {
+		Member member = memberService.getCurrent();
 		Long id = getParaToLong("goodIds");
 		Long sPecialId = getParaToLong("sPecialIds",0l);
 		if(sPecialId!=0){
@@ -149,7 +154,6 @@ public class GoodsAPIController extends BaseAPIController {
 			String s = sdf.format(dd);
 			Date date =  sdf.parse(s);
 			review.setModifyDate(date);
-			Member member = memberService.find(review.getMemberId());
 			String nickname = member.getNickname();
 			if(review.getIsAnonymous() != null && review.getIsAnonymous()){
 				if(StringUtils.isNotBlank(nickname)){
@@ -557,6 +561,7 @@ public void onShareCode(){
 	public void bindingStore(){
 		String onShareCode = getPara("onShareCode","").toUpperCase();
 		String idfCode = getPara("idfCode","").toUpperCase();
+		String fromId = getPara("fromId","").toUpperCase();
 		Long fullReId = getParaToLong("fullReId");
 
 		FullReduction ss = fullReductionService.find(fullReId);
@@ -698,6 +703,28 @@ public void onShareCode(){
 		memberService.update(m);
 		identifierService.update(identifier);
 
+		Account account=accountService.findByMemberId(m.getId().toString(),"4");
+		if(StringUtils.isNotEmpty(fromId)&&account!=null){
+			WxaTemplate template=new WxaTemplate();
+			template.setTouser(account.getAccount());
+			//	template.setEmphasis_keyword("给力");
+			template.setForm_id(fromId);
+			template.setPage("pages/main/main");
+			template.setTemplate_id("BnWs0CJYpp86KnFrhAZTtpXGMKP5HLUeQzcQtms9FNk");
+			template.add("keyword1","钜惠卡");
+			SimpleDateFormat sdf =new SimpleDateFormat("yyyy年MM月dd HH:mm:ss SSS" );
+			Date d= new Date();
+			String str = sdf.format(d);
+			template.add("keyword2",str);
+			template.add("keyword3","绑卡成功，送您的"+identifier.getIntegral()+"积分已到账");
+			Map<String, Object> ddd123 = accountService.getXCXSend(template);
+			logger.info("微信推送结束"+ddd123.toString());
+		}
+
+
+
+
+
 		map.put("title","恭喜绑定 成功");
 		map.put("type",1);
 		renderJson(ApiResult.success(map,"绑定成功"));
@@ -707,10 +734,11 @@ public void onShareCode(){
 	 * 绑定代金卡
 	 * idfCode
 	 */
+	@Before(Tx.class)
 	public void bindingSpecialCoupon(){
 		String onShareCode = getPara("onShareCode","").toUpperCase().trim();
 		String idSCCode = getPara("idSCCode","").toUpperCase();
-
+		String fromId = getPara("fromId","").toUpperCase();
 		Member m=memberService.getCurrent();
 		List<Member> me = memberService.findByShareCode(onShareCode);
 		if((StringUtils.isEmpty(onShareCode))){
@@ -809,6 +837,26 @@ public void onShareCode(){
 
 		memberService.update(m);
 		specialCouponService.update(specialCoupon);
+
+		Account account=accountService.findByMemberId(m.getId().toString(),"4");
+		if(StringUtils.isNotEmpty(fromId)&&account!=null){
+			WxaTemplate template=new WxaTemplate();
+			template.setTouser(account.getAccount()+"22");
+			//	template.setEmphasis_keyword("给力");
+			template.setForm_id(fromId);
+			template.setPage("pages/main/main");
+			template.setTemplate_id("BnWs0CJYpp86KnFrhAZTtpXGMKP5HLUeQzcQtms9FNk");
+			template.add("keyword1","代金卡");
+			SimpleDateFormat sdf =new SimpleDateFormat("yyyy年MM月dd HH:mm:ss SSS" );
+			Date d= new Date();
+			String str = sdf.format(d);
+			template.add("keyword2",str);
+			template.add("keyword3","绑卡成功，送您的"+specialCoupon.getIntegral()+"积分已到账");
+			Map<String, Object> ddd123 = accountService.getXCXSend(template);
+			logger.info("微信推送结束"+ddd123.toString());
+		}
+
+
 
 		map.put("title","恭喜绑定 成功");
 		map.put("type",1);

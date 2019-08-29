@@ -8,6 +8,7 @@ import com.jfinal.i18n.I18n;
 import com.jfinal.i18n.Res;
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
+import com.jfinal.wxaapp.api.WxaAccessTokenApi;
 import com.wtshop.Principal;
 import com.wtshop.Setting;
 import com.wtshop.api.common.result.CodeResult;
@@ -23,6 +24,7 @@ import com.wtshop.util.MyRequest;
 import com.wtshop.util.RedisUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.math.BigDecimal;
@@ -106,9 +108,11 @@ public class LoginAPIController extends BaseAPIController {
         String nickname = getPara("name","");
         HttpServletRequest request = getRequest();
         Map<String, Object> access_token = accountService.getXCXAccess_token(code);
+        Object ddd = WxaAccessTokenApi.getAccessTokenStr();
      // accountService.getXCXAccess_token(code);
         Set<String> key = access_token.keySet();
         System.out.println("code：====="+code);
+        System.out.println("token：====="+ddd);
 
         System.out.println("token 打印");
         for (Iterator<String> it = key.iterator(); it.hasNext();) {
