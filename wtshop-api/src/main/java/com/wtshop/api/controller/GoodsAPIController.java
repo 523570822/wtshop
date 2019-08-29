@@ -841,7 +841,7 @@ public void onShareCode(){
 		Account account=accountService.findByMemberId(m.getId().toString(),"4");
 		if(StringUtils.isNotEmpty(fromId)&&account!=null){
 			WxaTemplate template=new WxaTemplate();
-			template.setTouser(account.getAccount()+"22");
+			template.setTouser(account.getAccount());
 			//	template.setEmphasis_keyword("给力");
 			template.setForm_id(fromId);
 			template.setPage("pages/main/main");
