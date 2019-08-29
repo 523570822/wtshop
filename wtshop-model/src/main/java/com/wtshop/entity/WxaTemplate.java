@@ -23,7 +23,7 @@ public class WxaTemplate implements Serializable {
     private String template_id;
     private String page;
     private String form_id;
-    private String emphasis_keyword; 
+ //   private String emphasis_keyword;
     
     private TemplateItem data;
 
@@ -67,14 +67,14 @@ public class WxaTemplate implements Serializable {
         return this;
     }
 
-    public String getEmphasis_keyword() {
+/*    public String getEmphasis_keyword() {
         return emphasis_keyword;
     }
 
     public WxaTemplate setEmphasis_keyword(String emphasis_keyword) {
         this.emphasis_keyword = emphasis_keyword;
         return this;
-    }
+    }*/
 
     public TemplateItem getData() {
         return data;

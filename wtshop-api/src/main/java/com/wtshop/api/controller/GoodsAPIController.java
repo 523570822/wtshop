@@ -149,7 +149,6 @@ public class GoodsAPIController extends BaseAPIController {
 			}
 
 		}
-		String type = getPara("type"); //是否喵币商品
 		Goods goods = goodsService.find(id);
 
 		Pageable pageable = new Pageable(1, 20);
@@ -583,7 +582,7 @@ public void onShareCode(){
 	public void bindingStore(){
 		String onShareCode = getPara("onShareCode","").toUpperCase();
 		String idfCode = getPara("idfCode","").toUpperCase();
-		String fromId = getPara("fromId","").toUpperCase();
+		String fromId = getPara("fromId","");
 		Long fullReId = getParaToLong("fullReId");
 
 		FullReduction ss = fullReductionService.find(fullReId);
@@ -760,7 +759,7 @@ public void onShareCode(){
 	public void bindingSpecialCoupon(){
 		String onShareCode = getPara("onShareCode","").toUpperCase().trim();
 		String idSCCode = getPara("idSCCode","").toUpperCase();
-		String fromId = getPara("fromId","").toUpperCase();
+		String fromId = getPara("fromId","");
 		Member m=memberService.getCurrent();
 		List<Member> me = memberService.findByShareCode(onShareCode);
 		if((StringUtils.isEmpty(onShareCode))){

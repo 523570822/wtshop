@@ -18,6 +18,8 @@ import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
 import com.jfinal.log.Logger;
 import com.jfinal.weixin.sdk.utils.HttpUtils;
+import com.jfinal.wxaapp.WxaConfig;
+import com.jfinal.wxaapp.WxaConfigKit;
 import com.jfinal.wxaapp.api.WxaAccessTokenApi;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -182,9 +184,21 @@ public Map<String,Object> getall(Map<String,Object> access_token){
      * 小程序消息推送
      */
     public Map<String, Object> getXCXSend(WxaTemplate template){
-        Object token = WxaAccessTokenApi.getAccessTokenStr();
-        String jsonResult = HttpUtils.post(sendApiUrl + token, template.build());
+        Object token = WxaAccessTokenApi.getAccessTokenStr()+"1";
+        String  build = template.build().toString();
+        String jsonResult = HttpUtils.post(sendApiUrl + token,build);
         HashMap resultMap = JSON.parseObject(jsonResult, HashMap.class);
+        Object dfsfds = resultMap.get("errcode");
+       if("40001".equals(resultMap.get("errcode").toString())){
+           WxaConfig wc = WxaConfigKit.getWxaConfig();
+           Object   token1= WxaAccessTokenApi.refreshAccessToken();
+            jsonResult = HttpUtils.post(sendApiUrl + token1,build);
+            resultMap = JSON.parseObject(jsonResult, HashMap.class);
+        }
+
+
+
+
        return resultMap;
        // return null;
 

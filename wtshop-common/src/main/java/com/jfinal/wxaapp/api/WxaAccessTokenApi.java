@@ -47,7 +47,16 @@ public class WxaAccessTokenApi {
         }
         return result;
     }
-
+    /**
+     * 从缓存中获取 access token，如果未取到或者 access token 不可用则先更新再获取
+     * @return WxaAccessToken accessToken
+     */
+    public static WxaAccessToken refreshAccessToken() {
+        WxaConfig wc = WxaConfigKit.getWxaConfig();
+        WxaAccessToken result = getAvailableAccessToken(wc);
+        result = refreshAccessToken(wc);
+        return result;
+    }
     private static WxaAccessToken getAvailableAccessToken(WxaConfig wc) {
         // 利用 appId 与 accessToken 建立关联，支持多账户
         IAccessTokenCache accessTokenCache = ApiConfigKit.getAccessTokenCache();
