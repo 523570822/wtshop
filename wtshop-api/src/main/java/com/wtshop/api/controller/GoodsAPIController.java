@@ -114,28 +114,6 @@ public class GoodsAPIController extends BaseAPIController {
 	 */
 	public void detail() throws ParseException {
 		Member member = memberService.getCurrent();
-
-
-
-
-		Account account=accountService.findByMemberId(member.getId().toString(),"4");
-
-		/*	WxaTemplate template=new WxaTemplate();
-			template.setTouser(account.getAccount());
-			//	template.setEmphasis_keyword("给力");
-			template.setForm_id("f199b4d962484598abe26551bd6e2ce4");
-			template.setPage("pages/main/main");
-			template.setTemplate_id("BnWs0CJYpp86KnFrhAZTtpXGMKP5HLUeQzcQtms9FNk");
-			template.add("keyword1","代金卡");
-			SimpleDateFormat sdf1 =new SimpleDateFormat("yyyy年MM月dd HH:mm:ss SSS" );
-			Date d= new Date();
-			String str = sdf1.format(d);
-			template.add("keyword2",str);
-			template.add("keyword3","绑卡成功，送您的积分已到账");
-			Map<String, Object> ddd123 = accountService.getXCXSend(template);
-			logger.info("微信推送结束"+ddd123.toString());*/
-
-
 		Long id = getParaToLong("goodIds");
 		Long sPecialId = getParaToLong("sPecialIds",0l);
 		if(sPecialId!=0){
