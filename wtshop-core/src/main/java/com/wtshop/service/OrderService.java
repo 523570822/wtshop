@@ -1071,7 +1071,9 @@ public class OrderService extends BaseService<Order> {
                     BigDecimal zongIntegral=BigDecimal.ZERO;
                     //反现比例
                     Double zhiFuFanBi =  redisSetting.getDouble("zhiFuFanBi");
-
+                    if(zhiFuFanBi==null){
+                        zhiFuFanBi=0d;
+                    }
                     //返现金额
                     BigDecimal fanXianMoney=order.getAmount().multiply(BigDecimal.valueOf(zhiFuFanBi));
 
