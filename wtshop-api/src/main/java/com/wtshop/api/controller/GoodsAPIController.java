@@ -20,10 +20,7 @@ import com.wtshop.exception.ResourceNotFoundException;
 import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.*;
 import com.wtshop.service.*;
-import com.wtshop.util.ApiResult;
-import com.wtshop.util.RedisUtil;
-import com.wtshop.util.ShareCodeUtils;
-import com.wtshop.util.SystemUtils;
+import com.wtshop.util.*;
 import freemarker.log.Logger;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -123,7 +120,7 @@ public class GoodsAPIController extends BaseAPIController {
 
 		Account account=accountService.findByMemberId(member.getId().toString(),"4");
 
-			WxaTemplate template=new WxaTemplate();
+		/*	WxaTemplate template=new WxaTemplate();
 			template.setTouser(account.getAccount());
 			//	template.setEmphasis_keyword("给力");
 			template.setForm_id("f199b4d962484598abe26551bd6e2ce4");
@@ -136,7 +133,7 @@ public class GoodsAPIController extends BaseAPIController {
 			template.add("keyword2",str);
 			template.add("keyword3","绑卡成功，送您的积分已到账");
 			Map<String, Object> ddd123 = accountService.getXCXSend(template);
-			logger.info("微信推送结束"+ddd123.toString());
+			logger.info("微信推送结束"+ddd123.toString());*/
 
 
 		Long id = getParaToLong("goodIds");
@@ -737,7 +734,7 @@ public void onShareCode(){
 			Date d= new Date();
 			String str = sdf.format(d);
 			template.add("keyword2",str);
-			template.add("keyword3","绑卡成功，送您的"+identifier.getIntegral()+"积分已到账");
+			template.add("keyword3","绑卡成功，送您的"+MathUtil.getInt(identifier.getIntegral().toString())+"积分已到账");
 			Map<String, Object> ddd123 = accountService.getXCXSend(template);
 			logger.info("微信推送结束"+ddd123.toString());
 		}
@@ -872,7 +869,7 @@ public void onShareCode(){
 			Date d= new Date();
 			String str = sdf.format(d);
 			template.add("keyword2",str);
-			template.add("keyword3","绑卡成功，送您的"+specialCoupon.getIntegral()+"积分已到账");
+			template.add("keyword3","绑卡成功，送您的"+ MathUtil.getInt(specialCoupon.getIntegral().toString())+"积分已到账");
 			Map<String, Object> ddd123 = accountService.getXCXSend(template);
 			logger.info("微信推送结束"+ddd123.toString());
 		}

@@ -33,7 +33,7 @@ import static com.jfinal.aop.Enhancer.enhance;
 public class UserPayService {
     org.slf4j.Logger _logger = LoggerFactory.getLogger(UserPayService.class);
     private ExchangeLogService exchangeLogService = enhance(ExchangeLogService.class);
-    private AccountService accountService= Enhancer.enhance(AccountService.class);
+    private OrderService orderService=Enhancer.enhance(OrderService.class);
     /**
      * 微信端 获取支付信息
      * @return
@@ -113,10 +113,8 @@ public class UserPayService {
         parameterMap.put("spbill_create_ip", ip); // 终端IP
         parameterMap.put("notify_url", prop.get("notify_url")); // 通知地址
         parameterMap.put("trade_type", PaymentApi.TradeType.APP.name()); // 交易类型
-
         Map<String, String> params = convertAttributes(parameterMap);
         String sign = PaymentKit.createSign(params, prop.get("API_KEY"));
-
         params.put("sign", sign);
         RedisUtil.setString("SIGN",sign);
         // 统一下单
@@ -125,6 +123,12 @@ public class UserPayService {
         Map<String, String> result = PaymentKit.xmlToMap(xmlResult);
 
         String prepay_id = result.get("prepay_id");
+
+
+
+
+
+
         if("FAIL".equals(result.get("result_code")) ){
             _logger.error("统一下单异常:订单号{}",orderSn+","+result.get("err_code_des"));
             return null;
@@ -191,7 +195,11 @@ public class UserPayService {
             _logger.error("统一下单异常:订单号{}","RXM" + order.getSn()+","+result.get("err_code_des"));
             return null;
         }
-
+        /**
+         *  储存prepay_id
+         */
+        order.setPrepayId(prepay_id);
+        orderService.update(order);
         Map<String, String> packageParams = new HashMap<>();
         packageParams.put("appId", prop.get("XCX_APPID"));
         packageParams.put("timeStamp", System.currentTimeMillis() / 1000 + "");

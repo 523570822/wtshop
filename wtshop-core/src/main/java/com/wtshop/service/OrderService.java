@@ -6,7 +6,6 @@ import com.jfinal.aop.Before;
 import com.jfinal.aop.Enhancer;
 import com.jfinal.kit.LogKit;
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
@@ -17,6 +16,7 @@ import com.wtshop.constants.Code;
 import com.wtshop.dao.*;
 import com.wtshop.entity.Invoice;
 import com.wtshop.entity.OrderGoods;
+import com.wtshop.entity.WxaTemplate;
 import com.wtshop.exception.AppRuntimeException;
 import com.wtshop.model.*;
 import com.wtshop.util.*;
@@ -83,6 +83,7 @@ public class OrderService extends BaseService<Order> {
     private  IdentifierService identifierService =Enhancer.enhance(IdentifierService.class);
     private  SpecialCouponService specialCouponService =Enhancer.enhance(SpecialCouponService.class);
     private  IntegralLogService integralLogService =Enhancer.enhance(IntegralLogService.class);
+    private IntegralStoreService integralStoreService =Enhancer.enhance(IntegralStoreService.class);
     com.jfinal.log.Logger logger = com.jfinal.log.Logger.getLogger(OrderService.class);
 
     /**
@@ -1036,9 +1037,32 @@ public class OrderService extends BaseService<Order> {
 
                     memberService.update(member);
 
-                }
+
 
             //反佣金和扣除对应的佣金比例还有赠送积分
+
+            //1赠送积分推送
+            if(StringUtils.isNotEmpty(order.getPrepayId())){
+
+                    WxaTemplate template=new WxaTemplate();
+                    template.setTouser(order.getAccount().getAccount());
+                    //	template.setEmphasis_keyword("给力");
+                    template.setForm_id(order.getPrepayId());
+                    template.setPage("pages/main/main");
+                    template.setTemplate_id("sK2pxYoo46AY-ijs_f_cfSsMG91Rn-TzHAmeZmcUYFI");
+                    template.add("keyword1",order.getSn());
+                    SimpleDateFormat sdf =new SimpleDateFormat("yyyy年MM月dd HH:mm:ss SSS" );
+                    Date d= new Date();
+                    String str = sdf.format(d);
+                    template.add("keyword2",str);
+                    template.add("keyword3",MathUtil.getInt(order.getAmount().toString())+"元");
+                    template.add("keyword3",MathUtil.getInt(order.getIntegralGift().toString()));
+                    Map<String, Object> ddd123 = accountService.getXCXSend(template);
+                    logger.info("微信推送结束"+ddd123.toString());
+            }
+            //根据部门增加积分
+           // Bi=integralStoreService.
+            }
 
         }
         //倒拍

@@ -585,4 +585,12 @@ public abstract class BaseOrder<M extends BaseOrder<M>> extends Model<M> impleme
 		return get("integral");
 	}
 
+	public void setPrepayId(String prepayId) {
+		set("prepay_id", prepayId);
+	}
+
+	public String getPrepayId() {
+		return get("prepay_id");
+	}
+
 }
