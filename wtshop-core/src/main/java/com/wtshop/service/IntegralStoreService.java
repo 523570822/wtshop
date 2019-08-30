@@ -4,11 +4,11 @@ import com.jfinal.aop.Enhancer;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Pageable;
-import com.wtshop.dao.IntegralLogDao;
 import com.wtshop.dao.IntegralStoreDao;
-import com.wtshop.model.IntegralLog;
 import com.wtshop.model.IntegralStore;
 import com.wtshop.model.Member;
+
+import java.util.List;
 
 /**
  * Service - 积分记录
@@ -57,7 +57,7 @@ public class IntegralStoreService extends BaseService<IntegralStore> {
 	/**
 	 * 根据会员id 获取首次赠送记录
 	 */
-	public IntegralStore findLogByMemberId(Long memberId){
+	public List<IntegralStore> findLogByMemberId(Long memberId){
 		return  integralLogDao.findLogByMemberId(memberId);
 	}
 	/**

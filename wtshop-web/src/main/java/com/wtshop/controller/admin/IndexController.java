@@ -1,18 +1,17 @@
 package com.wtshop.controller.admin;
 
+import com.jfinal.aop.Enhancer;
+import com.jfinal.ext.route.ControllerBind;
+import com.jfinal.kit.StrKit;
+import com.wtshop.model.Article;
+import com.wtshop.model.Goods;
+import com.wtshop.model.IntegralStore;
+import com.wtshop.service.*;
+import com.wtshop.util.ApiResult;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.jfinal.ext.route.ControllerBind;
-import com.jfinal.kit.StrKit;
-import com.jfinal.plugin.activerecord.Page;
-import com.wtshop.Message;
-import com.wtshop.Pageable;
-import com.wtshop.model.*;
-import com.wtshop.service.*;
-import com.wtshop.util.ApiResult;
-import org.apache.commons.collections.CollectionUtils;
 
 /**
  * Controller - 索引
@@ -28,6 +27,7 @@ public class IndexController extends BaseController {
 	private SpecialGoodsService specialGoodsService = enhance(SpecialGoodsService.class);
 	private AdService adService = enhance(AdService.class);
 	private FullReductionService fullReductionService =enhance(FullReductionService.class);
+	private IntegralStoreService integralStoreService =Enhancer.enhance(IntegralStoreService.class);
 	/**
 	 * 生成类型
 	 */
@@ -35,8 +35,10 @@ public class IndexController extends BaseController {
 	 *
 	 */
 	public void ceshi() {
-		List<FullReduction> kkk = fullReductionService.findAll();
-		renderJson(ApiResult.success(kkk));
+
+		List<IntegralStore> integralStoreList=integralStoreService.findLogByMemberId(68l);
+		//List<FullReduction> kkk = fullReductionService.findAll();
+		renderJson(ApiResult.success(integralStoreList));
 	}
 	public enum GenerateType {
 		/**

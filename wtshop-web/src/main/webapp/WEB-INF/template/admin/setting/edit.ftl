@@ -1555,7 +1555,7 @@ $().ready(function() {
             </tr>
             <tr>
                 <th>
-				${message("setting.miaobi.limit")}:
+				积分赠送比例:
                 </th>
                 <td>
 					[#if redisSetting.sendMiaoBiLimit??]

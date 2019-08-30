@@ -27,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -838,6 +839,8 @@ public class OrderService extends BaseService<Order> {
             //满足 返现条件
             if(identifier.getPrice().compareTo(identifier.getTotalMoney())!=-1){
                 identifier.setStatus(3);
+
+
                 Member member2 = memberService.findByShareCode(identifier.getShareCode()).get(0);
                 identifier.setCompleteDate(new Date());
                 DepositLog depositLog1 = new DepositLog();
@@ -853,6 +856,8 @@ public class OrderService extends BaseService<Order> {
                 member2.setBalance(identifier.getMoney().add(member2.getBalance()));
                 depositLogService.save(depositLog1);
                 memberService.update(member2);
+
+
                 Cache sm = Redis.use();
                 String name=identifier.getOnMember().getStore();
                 Map<String, Object> params = new HashMap<String, Object>();
@@ -1060,8 +1065,64 @@ public class OrderService extends BaseService<Order> {
                     Map<String, Object> ddd123 = accountService.getXCXSend(template);
                     logger.info("微信推送结束"+ddd123.toString());
             }
-            //根据部门增加积分
-           // Bi=integralStoreService.
+            //根据部门增加积分.
+
+                    //总积分
+                    BigDecimal zongIntegral=BigDecimal.ZERO;
+                    //反现比例
+                    Double zhiFuFanBi =  redisSetting.getDouble("zhiFuFanBi");
+
+                    //返现金额
+                    BigDecimal fanXianMoney=order.getAmount().multiply(BigDecimal.valueOf(zhiFuFanBi));
+
+                    //待分配的积分
+                    BigDecimal fengPeiIntegral=order.getIntegralGift();
+
+            List<IntegralStore> integralStoreList=integralStoreService.findLogByMemberId(order.getMemberId());
+                    for (IntegralStore integralStore : integralStoreList) {
+                    //返钱
+                        MathContext mc=new MathContext(2);
+                        BigDecimal money111=fanXianMoney.multiply(integralStore.get("scale"),mc);
+
+                        if(money111.compareTo(BigDecimal.ZERO)==1){
+                        Member member2 = memberService.find(integralStore.getStoreMemberId());
+                        DepositLog depositLog1 = new DepositLog();
+                        depositLog1.setBalance(member2.getBalance());
+                        depositLog1.setCredit(money111);
+                        depositLog1.setDebit(BigDecimal.ZERO);
+                        depositLog1.setStatus(1);
+                        depositLog1.setMemo("商品返现,订单"+order.getSn()+",返现总金额"+fanXianMoney+",所占比例"+integralStore.get("scale"));
+                        depositLog1.setType(DepositLog.Type.ident.ordinal());
+                        depositLog1.setOrderId(order.getId());
+                        depositLog1.setOperator(""+member.getNickname()+"  "+member.getPhone());
+                        depositLog1.setMemberId(member2.getId());
+                        member2.setBalance(money111.add(member2.getBalance()));
+                        depositLogService.save(depositLog1);
+                        memberService.update(member2);
+
+                        // 增加积分占比
+
+
+
+
+
+
+
+                            //扣除积分占比
+
+
+
+
+
+
+
+                        }
+
+
+
+                    }
+
+
             }
 
         }

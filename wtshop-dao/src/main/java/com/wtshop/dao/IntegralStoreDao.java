@@ -6,7 +6,6 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Order;
 import com.wtshop.Pageable;
-import com.wtshop.model.IntegralLog;
 import com.wtshop.model.IntegralStore;
 import com.wtshop.model.Member;
 import org.apache.commons.collections.CollectionUtils;
@@ -85,12 +84,13 @@ public class IntegralStoreDao extends BaseDao<IntegralStore> {
 		return Db.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sql);
 
 	}
-	public IntegralStore findLogByMemberId(Long memberId){
+	public List<IntegralStore> findLogByMemberId(Long memberId){
 		if (memberId == null) {
 			return null;
 		}
-		String sql = " select * from integral_store where type = 1 and member_id = " + memberId;
-        return modelManager.findFirst(sql);
+		String sql = " select *,ROUND(balance/(select sum(balance) from integral_store where member_id = "+memberId+"),2) scale from integral_store where member_id = "+memberId+""  ;
+	//	String sql = " select * from integral_store where  member_id = " + memberId;
+        return modelManager.find(sql);
 	}
 	private String getOrders(List<Order> orders) {
 		String orderSql = "";
