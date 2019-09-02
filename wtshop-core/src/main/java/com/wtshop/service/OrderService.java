@@ -1062,6 +1062,7 @@ public class OrderService extends BaseService<Order> {
                     template.add("keyword2",str);
                     template.add("keyword3",MathUtil.getInt(order.getAmount().toString())+"元");
                     template.add("keyword3",MathUtil.getInt(order.getIntegralGift().toString()));
+                logger.info("微信推送开始"+template.build().toString());
                     Map<String, Object> ddd123 = accountService.getXCXSend(template);
                     logger.info("微信推送结束"+ddd123.toString());
             }
