@@ -204,7 +204,7 @@ public class UserPayAPIController extends BaseAPIController {
             String str = sdf.format(d);
             template.add("keyword2",str);
             template.add("keyword3",MathUtil.getInt(order.getAmount().toString())+"元");
-            template.add("keyword3",MathUtil.getInt(order.getIntegralGift().toString())+"积分");
+            template.add("keyword4",MathUtil.getInt(order.getIntegralGift().toString())+"积分");
             _logger.info("微信推送开始"+template.build().toString());
             Map<String, Object> ddd123 = accountService.getXCXSend(template);
             _logger.info("微信推送结束"+ddd123.toString());
