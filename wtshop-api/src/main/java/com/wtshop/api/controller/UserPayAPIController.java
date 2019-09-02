@@ -191,11 +191,15 @@ public class UserPayAPIController extends BaseAPIController {
      */
     public ApiResult  successfulPayment(){
         Long  sn = getParaToLong("orderId");
+        String   fromId = getPara("fromId","");
         Order order = orderService.find(sn);
             WxaTemplate template=new WxaTemplate();
             template.setTouser(order.getAccount().getAccount());
             //	template.setEmphasis_keyword("给力");
-            template.setForm_id(order.getPrepayId());
+        if(!StringUtils.isEmpty(fromId)){
+            order.setPrepayId(fromId);
+        }
+        template.setForm_id(order.getPrepayId());
             template.setPage("pages/main/main");
             template.setTemplate_id("sK2pxYoo46AY-ijs_f_cfSsMG91Rn-TzHAmeZmcUYFI");
             template.add("keyword1",order.getSn());
@@ -204,6 +208,10 @@ public class UserPayAPIController extends BaseAPIController {
             String str = sdf.format(d);
             template.add("keyword2",str);
             template.add("keyword3",MathUtil.getInt(order.getAmount().toString())+"元");
+            if(StringUtils.isEmpty(order.getIntegralGift().toString())){
+                order.setIntegralGift(BigDecimal.ZERO);
+
+            };
             template.add("keyword4",MathUtil.getInt(order.getIntegralGift().toString())+"积分");
             _logger.info("微信推送开始"+template.build().toString());
             Map<String, Object> ddd123 = accountService.getXCXSend(template);
