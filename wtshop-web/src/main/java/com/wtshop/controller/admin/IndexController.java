@@ -41,9 +41,11 @@ public class IndexController extends BaseController {
 	 */
 	public void ceshi() {
 		WxaTemplate template=new WxaTemplate();
-		template.setTouser("o8dwZ42ReHa7nydkDJQMD2qgSCVc");
+		//template.setTouser("o8dwZ49PfD9hP11ey770zf4STzCo");
+		template.setTouser("o8dwZ49PfD9hP11ey770zf4STzCo");
 		//	template.setEmphasis_keyword("给力");
-		template.setForm_id("wx02092134517796c773f846981860567500");
+		//template.setForm_id("wx02094520098596824ccaba5c1382802700");
+		template.setForm_id("wx020956231370586cdaef17241143486600");
 		template.setPage("pages/main/main");
 		template.setTemplate_id("sK2pxYoo46AY-ijs_f_cfSsMG91Rn-TzHAmeZmcUYFI");
 		template.add("keyword1","4200000397201909029891366229");

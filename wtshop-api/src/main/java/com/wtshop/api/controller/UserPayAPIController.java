@@ -4,6 +4,7 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayConstants;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.jfinal.aop.Before;
+import com.jfinal.aop.Enhancer;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.kit.HttpKit;
 import com.jfinal.kit.Prop;
@@ -12,19 +13,18 @@ import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.weixin.sdk.kit.PaymentKit;
 import com.wtshop.CommonAttributes;
-import com.wtshop.api.common.result.PriceResult;
 import com.wtshop.api.interceptor.ErrorInterceptor;
+import com.wtshop.entity.WxaTemplate;
 import com.wtshop.model.Order;
 import com.wtshop.model.SpecialCoupon;
-import com.wtshop.service.OrderService;
-import com.wtshop.service.ReverseAuctionService;
-import com.wtshop.service.SpecialCouponService;
-import com.wtshop.service.UserPayService;
+import com.wtshop.service.*;
 import com.wtshop.util.*;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -40,7 +40,7 @@ public class UserPayAPIController extends BaseAPIController {
     private UserPayService userPayService = enhance(UserPayService.class);
     private ReverseAuctionService reverseAuctionService = enhance(ReverseAuctionService.class);
     private SpecialCouponService specialCouponService = enhance(SpecialCouponService.class);
-
+    private AccountService accountService = Enhancer.enhance(AccountService.class);
     /**
      * 支付商品
      */
@@ -187,7 +187,33 @@ public class UserPayAPIController extends BaseAPIController {
         }
         renderText("");
     }
+    /**
+     *支付成功后推送
+     */
+    public ApiResult  successfulPayment(){
+        String  sn = getPara("sn");
+        Order order = orderService.findBySn(sn);
+        if(StringUtils.isNotEmpty(order.getPrepayId())){
 
+            WxaTemplate template=new WxaTemplate();
+            template.setTouser(order.getAccount().getAccount());
+            //	template.setEmphasis_keyword("给力");
+            template.setForm_id(order.getPrepayId());
+            template.setPage("pages/main/main");
+            template.setTemplate_id("sK2pxYoo46AY-ijs_f_cfSsMG91Rn-TzHAmeZmcUYFI");
+            template.add("keyword1",order.getSn());
+            SimpleDateFormat sdf =new SimpleDateFormat("yyyy年MM月dd HH:mm:ss SSS" );
+            Date d= new Date();
+            String str = sdf.format(d);
+            template.add("keyword2",str);
+            template.add("keyword3",MathUtil.getInt(order.getAmount().toString())+"元");
+            template.add("keyword3",MathUtil.getInt(order.getIntegralGift().toString()));
+            _logger.info("微信推送开始"+template.build().toString());
+            Map<String, Object> ddd123 = accountService.getXCXSend(template);
+            _logger.info("微信推送结束"+ddd123.toString());
+        }
+        return ApiResult.success();
+    }
     /**
      * 支付宝 回调地址
      */

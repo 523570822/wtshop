@@ -16,7 +16,6 @@ import com.wtshop.constants.Code;
 import com.wtshop.dao.*;
 import com.wtshop.entity.Invoice;
 import com.wtshop.entity.OrderGoods;
-import com.wtshop.entity.WxaTemplate;
 import com.wtshop.exception.AppRuntimeException;
 import com.wtshop.model.*;
 import com.wtshop.util.*;
@@ -85,6 +84,7 @@ public class OrderService extends BaseService<Order> {
     private  SpecialCouponService specialCouponService =Enhancer.enhance(SpecialCouponService.class);
     private  IntegralLogService integralLogService =Enhancer.enhance(IntegralLogService.class);
     private IntegralStoreService integralStoreService =Enhancer.enhance(IntegralStoreService.class);
+    private  IntegralStoreLogService integralStoreLogService=Enhancer.enhance(IntegralStoreLogService.class);
     com.jfinal.log.Logger logger = com.jfinal.log.Logger.getLogger(OrderService.class);
 
     /**
@@ -1047,7 +1047,7 @@ public class OrderService extends BaseService<Order> {
             //反佣金和扣除对应的佣金比例还有赠送积分
 
             //1赠送积分推送
-            if(StringUtils.isNotEmpty(order.getPrepayId())){
+     /*     if(StringUtils.isNotEmpty(order.getPrepayId())){
 
                     WxaTemplate template=new WxaTemplate();
                     template.setTouser(order.getAccount().getAccount());
@@ -1065,7 +1065,7 @@ public class OrderService extends BaseService<Order> {
                 logger.info("微信推送开始"+template.build().toString());
                     Map<String, Object> ddd123 = accountService.getXCXSend(template);
                     logger.info("微信推送结束"+ddd123.toString());
-            }
+            }*/
             //根据部门增加积分.
 
                     //总积分
@@ -1103,13 +1103,38 @@ public class OrderService extends BaseService<Order> {
                         depositLogService.save(depositLog1);
                         memberService.update(member2);
 
+                            //增加门店比例
+                            IntegralStoreLog integralStoreLog=new IntegralStoreLog();
+                            BigDecimal meige = fengPeiIntegral.multiply(integralStore.get("scale"), mc);
+                            integralStore.setBalance(integralStore.getBalance().add(meige));
+                            integralStoreService.update(integralStore);
                         // 增加积分占比
-
+                            integralStoreLog.setBalance(integralStore.getBalance());
+                            integralStoreLog.setCredit(meige);
+                            integralStoreLog.setDebit(BigDecimal.ZERO);
+                            integralStoreLog.setMemberId(member.getId());
+                            integralStoreLog.setType(1);
+                            integralStoreLog.setStoreMemberId(integralStore.getStoreMemberId());
+                            integralStoreLog.setMemo("绑定代金卡获取积分增加相应门店权重");
+                            integralStoreLogService.save(integralStoreLog);
 
 
 
                             //扣除积分占比
 
+                            IntegralStoreLog integralStoreLog1=new IntegralStoreLog();
+                            BigDecimal meige1 = order.getIntegralPaid().multiply(integralStore.get("scale"), mc);
+                            integralStore.setBalance(integralStore.getBalance().subtract(meige1));
+                            integralStoreService.update(integralStore);
+                            // 增加积分占比
+                            integralStoreLog.setBalance(integralStore.getBalance());
+                            integralStoreLog.setCredit(BigDecimal.ZERO);
+                            integralStoreLog.setDebit(meige1);
+                            integralStoreLog.setMemberId(member.getId());
+                            integralStoreLog.setType(1);
+                            integralStoreLog.setStoreMemberId(integralStore.getStoreMemberId());
+                            integralStoreLog.setMemo("绑定代金卡获取积分扣除相应门店权重");
+                            integralStoreLogService.save(integralStoreLog);
 
 
 
@@ -1147,6 +1172,7 @@ public class OrderService extends BaseService<Order> {
         returnStatus = ApiResult.success();
         return returnStatus;
     }
+
 
 
     /**
