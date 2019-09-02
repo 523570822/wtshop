@@ -19,7 +19,6 @@ import com.wtshop.model.Order;
 import com.wtshop.model.SpecialCoupon;
 import com.wtshop.service.*;
 import com.wtshop.util.*;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -191,10 +190,8 @@ public class UserPayAPIController extends BaseAPIController {
      *支付成功后推送
      */
     public ApiResult  successfulPayment(){
-        String  sn = getPara("sn");
-        Order order = orderService.findBySn(sn);
-        if(StringUtils.isNotEmpty(order.getPrepayId())){
-
+        Long  sn = getParaToLong("orderId");
+        Order order = orderService.find(sn);
             WxaTemplate template=new WxaTemplate();
             template.setTouser(order.getAccount().getAccount());
             //	template.setEmphasis_keyword("给力");
@@ -207,11 +204,10 @@ public class UserPayAPIController extends BaseAPIController {
             String str = sdf.format(d);
             template.add("keyword2",str);
             template.add("keyword3",MathUtil.getInt(order.getAmount().toString())+"元");
-            template.add("keyword3",MathUtil.getInt(order.getIntegralGift().toString()));
+            template.add("keyword3",MathUtil.getInt(order.getIntegralGift().toString())+"积分");
             _logger.info("微信推送开始"+template.build().toString());
             Map<String, Object> ddd123 = accountService.getXCXSend(template);
             _logger.info("微信推送结束"+ddd123.toString());
-        }
         return ApiResult.success();
     }
     /**
