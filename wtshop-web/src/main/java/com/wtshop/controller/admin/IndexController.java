@@ -3,12 +3,15 @@ package com.wtshop.controller.admin;
 import com.jfinal.aop.Enhancer;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.kit.StrKit;
+import com.wtshop.entity.WxaTemplate;
 import com.wtshop.model.Article;
 import com.wtshop.model.Goods;
-import com.wtshop.model.IntegralStore;
 import com.wtshop.service.*;
 import com.wtshop.util.ApiResult;
+import com.wtshop.util.MathUtil;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +31,8 @@ public class IndexController extends BaseController {
 	private AdService adService = enhance(AdService.class);
 	private FullReductionService fullReductionService =enhance(FullReductionService.class);
 	private IntegralStoreService integralStoreService =Enhancer.enhance(IntegralStoreService.class);
+	private AccountService accountService = Enhancer.enhance(AccountService.class);
+	com.jfinal.log.Logger logger = com.jfinal.log.Logger.getLogger(IndexController.class);
 	/**
 	 * 生成类型
 	 */
@@ -35,10 +40,26 @@ public class IndexController extends BaseController {
 	 *
 	 */
 	public void ceshi() {
+		WxaTemplate template=new WxaTemplate();
+		template.setTouser("o8dwZ42ReHa7nydkDJQMD2qgSCVc");
+		//	template.setEmphasis_keyword("给力");
+		template.setForm_id("wx02092134517796c773f846981860567500");
+		template.setPage("pages/main/main");
+		template.setTemplate_id("sK2pxYoo46AY-ijs_f_cfSsMG91Rn-TzHAmeZmcUYFI");
+		template.add("keyword1","4200000397201909029891366229");
 
-		List<IntegralStore> integralStoreList=integralStoreService.findLogByMemberId(68l);
+		SimpleDateFormat sdf =new SimpleDateFormat("yyyy年MM月dd HH:mm:ss SSS" );
+		Date d= new Date();
+		String str = sdf.format(d);
+		template.add("keyword2",str);
+		template.add("keyword3","12元");
+		template.add("keyword3",MathUtil.getInt("11"));
+		logger.info("微信推送开始"+template.build().toString());
+		Map<String, Object> ddd123 = accountService.getXCXSend(template);
+		logger.info("微信推送结束"+ddd123.toString());
+	//	List<IntegralStore> integralStoreList=integralStoreService.findLogByMemberId(68l);
 		//List<FullReduction> kkk = fullReductionService.findAll();
-		renderJson(ApiResult.success(integralStoreList));
+		renderJson(ApiResult.success(ddd123.toString()));
 	}
 	public enum GenerateType {
 		/**
