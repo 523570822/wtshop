@@ -1082,11 +1082,15 @@ public class OrderService extends BaseService<Order> {
                     BigDecimal fengPeiIntegral=order.getIntegralGift();
 
             List<IntegralStore> integralStoreList=integralStoreService.findLogByMemberId(order.getMemberId());
+                    logger.info("开始计算反现:"+integralStoreList.size());
+
                     for (IntegralStore integralStore : integralStoreList) {
                     //返钱
+                        Double bili=integralStore.get("scale");
                         MathContext mc=new MathContext(2);
-                        BigDecimal money111=fanXianMoney.multiply(integralStore.get("scale"),mc);
-
+                        BigDecimal money111=fanXianMoney.multiply(BigDecimal.valueOf(bili),mc);
+                        logger.info("返现金额:"+money111);
+                        logger.info("返现比例:"+bili);
                         if(money111.compareTo(BigDecimal.ZERO)==1){
                         Member member2 = memberService.find(integralStore.getStoreMemberId());
                         DepositLog depositLog1 = new DepositLog();
@@ -1094,7 +1098,7 @@ public class OrderService extends BaseService<Order> {
                         depositLog1.setCredit(money111);
                         depositLog1.setDebit(BigDecimal.ZERO);
                         depositLog1.setStatus(1);
-                        depositLog1.setMemo("商品返现,订单"+order.getSn()+",返现总金额"+fanXianMoney+",所占比例"+integralStore.get("scale"));
+                        depositLog1.setMemo("商品返现,订单"+order.getSn()+",返现总金额"+fanXianMoney+",所占比例"+bili);
                         depositLog1.setType(DepositLog.Type.ident.ordinal());
                         depositLog1.setOrderId(order.getId());
                         depositLog1.setOperator(""+member.getNickname()+"  "+member.getPhone());
@@ -1110,7 +1114,7 @@ public class OrderService extends BaseService<Order> {
 
                             params.put("name",member2.getNickname());
                             params.put("zmoney",order.getAmount() );
-                            params.put("store",Double.valueOf(integralStore.get("scale"))*100d) ;
+                            params.put("store",bili*100d) ;
                             params.put("money",fanXianMoney );
                             ApiResult result = SMSUtils.send(member2.getPhone(),"SMS_173405304", params);
                             //ApiResult result = SMSUtils.send("", "", params);
@@ -1118,17 +1122,17 @@ public class OrderService extends BaseService<Order> {
                                 // sm.setex("PONHE:"+mobile,120,"1");
                                 Sms sms = new Sms();
                                 sms.setMobile(member2.getPhone());
-                                sms.setSmsCode(member2.getNickname()+"用户完成了一笔"+order.getAmount()+"元的订单，您的门店积分占该用户总积分的"+Double.valueOf(integralStore.get("scale"))*100d+"%，因此获得"+fanXianMoney+"元积分抵扣收益，详情请查看钱包—使用明细。");
+                                sms.setSmsCode(member2.getNickname()+"用户完成了一笔"+order.getAmount()+"元的订单，您的门店积分占该用户总积分的"+bili*100d+"%，因此获得"+fanXianMoney+"元积分抵扣收益，详情请查看钱包—使用明细。");
                                 sms.setSmsType(Setting.SmsType.other.ordinal());
                                 smsService.saveOrUpdate(sms);
-                                logger.info(member2.getNickname()+"用户完成了一笔"+order.getAmount()+"元的订单，您的门店积分占该用户总积分的"+Double.valueOf(integralStore.get("scale"))*100d+"%，因此获得"+fanXianMoney+"元积分抵扣收益，详情请查看钱包—使用明细。");
+                                logger.info(member2.getNickname()+"用户完成了一笔"+order.getAmount()+"元的订单，您的门店积分占该用户总积分的"+bili*100d+"%，因此获得"+fanXianMoney+"元积分抵扣收益，详情请查看钱包—使用明细。");
                             }else {
                                 logger.info("您发送的过于频繁,请稍后再试!");
                             }
 
                             //增加门店比例
                             IntegralStoreLog integralStoreLog=new IntegralStoreLog();
-                            BigDecimal meige = fengPeiIntegral.multiply(integralStore.get("scale"), mc);
+                            BigDecimal meige = fengPeiIntegral.multiply(BigDecimal.valueOf(bili), mc);
                             integralStore.setBalance(integralStore.getBalance().add(meige));
                             integralStoreService.update(integralStore);
                         // 增加积分占比
