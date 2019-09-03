@@ -565,8 +565,8 @@
 																		[@shiro.hasPermission name="admin:miaobilssue"]
 
 																			<li><a href="../integral/list.jhtml" target="iframe">积分发放详情</a></li>
-																			<li><a href="../integral/list.jhtml" target="iframe">积分门店记录</a></li>
-                                                                            <li><a href="../integral/list.jhtml" target="iframe">积分门店消耗详情</a></li>
+																			<li><a href="../integral/integralStoreList.jhtml" target="iframe">积分门店记录</a></li>
+                                                                            <li><a href="../integral/integralStoreLogList.jhtml" target="iframe">积分门店消耗详情</a></li>
 
 																		[/@shiro.hasPermission]
 																		[@shiro.hasPermission name="admin:point"]
@@ -581,7 +581,7 @@
 									[#break /]
 								[/@shiro.hasPermission]
 							[/#list]
-					
+					[#--钱包管理--]
 					[#list ["admin:myWallet" ,"admin:myWalletInfo"] as permission]
 						[@shiro.hasPermission name = permission]
                             <div class="panel panel-default">
@@ -607,6 +607,7 @@
 							[#break /]
 						[/@shiro.hasPermission]
 					[/#list]
+					[#--统计报表--]
                     [#list [ "admin:vip_goods", "admin:orderStatistic", "admin:memberRanking", "admin:goodsRanking" ,"admin:caiwu"] as permission]
 						[@shiro.hasPermission name = permission]
 							 <div class="panel panel-default">
@@ -661,6 +662,7 @@
 							[#break /]
 						[/@shiro.hasPermission]
 					[/#list]
+					[#--系统设置--]
                    [#list ["admin:setting", "admin:targetPath", "admin:area", "admin:shippingMethod", "admin:deliveryCorp", "admin:message"] as permission]
 						[@shiro.hasPermission name = permission]
 							<div class="panel panel-default">
@@ -711,6 +713,7 @@
 							[#break /]
 						[/@shiro.hasPermission]
 					[/#list]
+					[#--权限功能--]
 					[#list ["admin:admin", "admin:permission", "admin:role"] as permission]
 						[@shiro.hasPermission name = permission]
                             <div class="panel panel-default">

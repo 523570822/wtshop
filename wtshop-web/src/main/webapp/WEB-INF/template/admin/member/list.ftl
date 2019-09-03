@@ -78,6 +78,9 @@
                 <a href="javascript:;"class="sort" name="store"  >门店名称</a>
             </th>
             <th>
+                <a href="javascript:;"class="sort" name="integral"  >积分</a>
+            </th>
+            <th>
                 <a href="javascript:;" class="sort" name="create_date">${message("admin.common.createDate")}</a>
             </th>
             <th>
@@ -102,10 +105,13 @@
                         ${member.nickname}
                     </td>
                     <td>
-                        ${member.share_code}
-                    </td>
+                    ${member.share_code}
+                </td>
                     <td>
                         ${member.store}
+                    </td>
+                    <td>
+                        ${member.integral}
                     </td>
                     <td>
                         <span title="${member.createDate?string("yyyy-MM-dd HH:mm:ss")}">${member.createDate}</span>

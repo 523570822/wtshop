@@ -6,10 +6,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Message;
 import com.wtshop.Pageable;
 import com.wtshop.model.Member;
-import com.wtshop.service.IntegralLogService;
-import com.wtshop.service.MemberService;
-import com.wtshop.service.MiaobiLogService;
-import com.wtshop.service.PointLogService;
+import com.wtshop.service.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +23,8 @@ public class IntegralController extends BaseController {
 	private MemberService memberService = enhance(MemberService.class);
 	private MiaobiLogService miaobiLogService = enhance(MiaobiLogService.class);
 	private IntegralLogService integralLogService=enhance(IntegralLogService.class);
+	private IntegralStoreService integralStoreService=enhance(IntegralStoreService.class);
+	private IntegralStoreLogService integralStoreLogService=enhance(IntegralStoreLogService.class);
 	/**
 	 * 检查会员
 	 */
@@ -55,6 +54,33 @@ public class IntegralController extends BaseController {
 	/**
 	 * 记录
 	 */
+	public void integralStoreList() {
+
+		Pageable pageable = getBean(Pageable.class);
+		Integer type = getParaToInt("typeName");
+		Page<Record> pages = integralStoreService.findPages(pageable, type);
+
+		setAttr("page", pages);
+		setAttr("pageable", pageable);
+		render("/admin/integral/list.ftl");
+	}
+
+	/**
+	 * 记录
+	 */
+	public void integralStoreLogList() {
+
+		Pageable pageable = getBean(Pageable.class);
+		Integer type = getParaToInt("typeName");
+		Page<Record> pages = integralStoreLogService.findPages(pageable, type);
+
+		setAttr("page", pages);
+		setAttr("pageable", pageable);
+		render("/admin/integral/list.ftl");
+	}
+	/**
+	 * 记录
+	 */
 	public void list() {
 
 		Pageable pageable = getBean(Pageable.class);
@@ -65,5 +91,4 @@ public class IntegralController extends BaseController {
 		setAttr("pageable", pageable);
 		render("/admin/integral/list.ftl");
 	}
-
 }

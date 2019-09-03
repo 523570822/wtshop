@@ -1103,6 +1103,29 @@ public class OrderService extends BaseService<Order> {
                         depositLogService.save(depositLog1);
                         memberService.update(member2);
 
+                            /**
+                             *反现短信提醒
+                             */
+                            Map<String, Object> params = new HashMap<String, Object>();
+
+                            params.put("name",member2.getNickname());
+                            params.put("zmoney",order.getAmount() );
+                            params.put("store",Double.valueOf(integralStore.get("scale"))*100d) ;
+                            params.put("money",fanXianMoney );
+                            ApiResult result = SMSUtils.send(member2.getPhone(),"SMS_173405304", params);
+                            //ApiResult result = SMSUtils.send("", "", params);
+                            if(result.resultSuccess()) {
+                                // sm.setex("PONHE:"+mobile,120,"1");
+                                Sms sms = new Sms();
+                                sms.setMobile(member2.getPhone());
+                                sms.setSmsCode(member2.getNickname()+"用户完成了一笔"+order.getAmount()+"元的订单，您的门店积分占该用户总积分的"+Double.valueOf(integralStore.get("scale"))*100d+"%，因此获得"+fanXianMoney+"元积分抵扣收益，详情请查看钱包—使用明细。");
+                                sms.setSmsType(Setting.SmsType.other.ordinal());
+                                smsService.saveOrUpdate(sms);
+                                logger.info(member2.getNickname()+"用户完成了一笔"+order.getAmount()+"元的订单，您的门店积分占该用户总积分的"+Double.valueOf(integralStore.get("scale"))*100d+"%，因此获得"+fanXianMoney+"元积分抵扣收益，详情请查看钱包—使用明细。");
+                            }else {
+                                logger.info("您发送的过于频繁,请稍后再试!");
+                            }
+
                             //增加门店比例
                             IntegralStoreLog integralStoreLog=new IntegralStoreLog();
                             BigDecimal meige = fengPeiIntegral.multiply(integralStore.get("scale"), mc);
