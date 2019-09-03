@@ -1086,7 +1086,7 @@ public class OrderService extends BaseService<Order> {
 
                     for (IntegralStore integralStore : integralStoreList) {
                     //返钱
-                        Double bili=integralStore.get("scale");
+                        Double bili=Double.valueOf(integralStore.get("scale").toString());
                         MathContext mc=new MathContext(2);
                         BigDecimal money111=fanXianMoney.multiply(BigDecimal.valueOf(bili),mc);
                         logger.info("返现金额:"+money111);
