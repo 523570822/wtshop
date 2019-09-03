@@ -1,17 +1,19 @@
 package com.wtshop.controller.admin;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Enhancer;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.kit.StrKit;
-import com.wtshop.entity.WxaTemplate;
-import com.wtshop.model.Article;
-import com.wtshop.model.Goods;
+import com.wtshop.Setting;
+import com.wtshop.dao.OrderDao;
+import com.wtshop.model.*;
 import com.wtshop.service.*;
 import com.wtshop.util.ApiResult;
-import com.wtshop.util.MathUtil;
+import com.wtshop.util.RedisUtil;
+import com.wtshop.util.SMSUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +25,7 @@ import java.util.Map;
  */
 @ControllerBind(controllerKey = "/admin/index")
 public class IndexController extends BaseController {
-
+	private MemberService memberService = Enhancer.enhance(MemberService.class);
 	private ArticleService articleService = enhance(ArticleService.class);
 	private GoodsService goodsService = enhance(GoodsService.class);
 	private SearchService searchService = enhance(SearchService.class);
@@ -32,6 +34,8 @@ public class IndexController extends BaseController {
 	private FullReductionService fullReductionService =enhance(FullReductionService.class);
 	private IntegralStoreService integralStoreService =Enhancer.enhance(IntegralStoreService.class);
 	private AccountService accountService = Enhancer.enhance(AccountService.class);
+	private OrderDao orderDao = Enhancer.enhance(OrderDao.class);
+
 	com.jfinal.log.Logger logger = com.jfinal.log.Logger.getLogger(IndexController.class);
 	/**
 	 * 生成类型
@@ -40,28 +44,110 @@ public class IndexController extends BaseController {
 	 *
 	 */
 	public void ceshi() {
-		WxaTemplate template=new WxaTemplate();
-		//template.setTouser("o8dwZ49PfD9hP11ey770zf4STzCo");
-		template.setTouser("o8dwZ49PfD9hP11ey770zf4STzCo");
-		//	template.setEmphasis_keyword("给力");
-		//template.setForm_id("wx02094520098596824ccaba5c1382802700");
-		template.setForm_id("wx020956231370586cdaef17241143486600");
-		template.setPage("pages/main/main");
-		template.setTemplate_id("sK2pxYoo46AY-ijs_f_cfSsMG91Rn-TzHAmeZmcUYFI");
-		template.add("keyword1","4200000397201909029891366229");
+		Order order = orderDao.findBySn("20190903155516492476");
+		JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
+		//总积分
+		BigDecimal zongIntegral=BigDecimal.ZERO;
+		//反现比例
+		Double zhiFuFanBi =  redisSetting.getDouble("zhiFuFanBi");
+		if(zhiFuFanBi==null){
+			zhiFuFanBi=0d;
+		}
+		//返现金额
+		BigDecimal fanXianMoney=order.getAmount().multiply(BigDecimal.valueOf(zhiFuFanBi));
 
-		SimpleDateFormat sdf =new SimpleDateFormat("yyyy年MM月dd HH:mm:ss SSS" );
-		Date d= new Date();
-		String str = sdf.format(d);
-		template.add("keyword2",str);
-		template.add("keyword3","12元");
-		template.add("keyword3",MathUtil.getInt("11"));
-		logger.info("微信推送开始"+template.build().toString());
-		Map<String, Object> ddd123 = accountService.getXCXSend(template);
-		logger.info("微信推送结束"+ddd123.toString());
-	//	List<IntegralStore> integralStoreList=integralStoreService.findLogByMemberId(68l);
-		//List<FullReduction> kkk = fullReductionService.findAll();
-		renderJson(ApiResult.success(ddd123.toString()));
+		//待分配的积分
+		BigDecimal fengPeiIntegral=order.getIntegralGift();
+
+		List<IntegralStore> integralStoreList=integralStoreService.findLogByMemberId(order.getMemberId());
+		for (IntegralStore integralStore : integralStoreList) {
+			//返钱
+			MathContext mc=new MathContext(2);
+			Double linshi = Double.valueOf(integralStore.get("scale").toString());
+			BigDecimal money111=fanXianMoney.multiply(BigDecimal.valueOf(linshi),mc);
+
+			if(money111.compareTo(BigDecimal.ZERO)==1){
+				Member member2 = memberService.find(integralStore.getStoreMemberId());
+				DepositLog depositLog1 = new DepositLog();
+				depositLog1.setBalance(member2.getBalance());
+				depositLog1.setCredit(money111);
+				depositLog1.setDebit(BigDecimal.ZERO);
+				depositLog1.setStatus(1);
+				depositLog1.setMemo("商品返现,订单"+order.getSn()+",返现总金额"+fanXianMoney+",所占比例"+integralStore.get("scale"));
+				depositLog1.setType(DepositLog.Type.ident.ordinal());
+				depositLog1.setOrderId(order.getId());
+				//depositLog1.setOperator(""+member.getNickname()+"  "+member.getPhone());
+				depositLog1.setMemberId(member2.getId());
+				member2.setBalance(money111.add(member2.getBalance()));
+			//	depositLogService.save(depositLog1);
+			//	memberService.update(member2);
+
+				/**
+				 *反现短信提醒
+				 */
+				Map<String, Object> params = new HashMap<String, Object>();
+
+				params.put("name",member2.getNickname());
+				params.put("zmoney",order.getAmount() );
+				params.put("store",linshi*100d) ;
+				params.put("money",fanXianMoney );
+				ApiResult result = SMSUtils.send(member2.getPhone(),"SMS_173405304", params);
+				//ApiResult result = SMSUtils.send("", "", params);
+				if(result.resultSuccess()) {
+					// sm.setex("PONHE:"+mobile,120,"1");
+					Sms sms = new Sms();
+					sms.setMobile(member2.getPhone());
+					sms.setSmsCode(member2.getNickname()+"用户完成了一笔"+order.getAmount()+"元的订单，您的门店积分占该用户总积分的"+linshi*100d+"%，因此获得"+fanXianMoney+"元积分抵扣收益，详情请查看钱包—使用明细。");
+					sms.setSmsType(Setting.SmsType.other.ordinal());
+				//	smsService.saveOrUpdate(sms);
+					logger.info(member2.getNickname()+"用户完成了一笔"+order.getAmount()+"元的订单，您的门店积分占该用户总积分的"+linshi*100d+"%，因此获得"+fanXianMoney+"元积分抵扣收益，详情请查看钱包—使用明细。");
+				}else {
+					logger.info("您发送的过于频繁,请稍后再试!");
+				}
+
+				//增加门店比例
+				IntegralStoreLog integralStoreLog=new IntegralStoreLog();
+				BigDecimal meige = fengPeiIntegral.multiply(BigDecimal.valueOf(linshi), mc);
+				integralStore.setBalance(integralStore.getBalance().add(meige));
+				integralStoreService.update(integralStore);
+				// 增加积分占比
+				integralStoreLog.setBalance(integralStore.getBalance());
+				integralStoreLog.setCredit(meige);
+				integralStoreLog.setDebit(BigDecimal.ZERO);
+				integralStoreLog.setMemberId(1139l);
+				integralStoreLog.setType(1);
+				integralStoreLog.setStoreMemberId(integralStore.getStoreMemberId());
+				integralStoreLog.setMemo("绑定代金卡获取积分增加相应门店权重");
+			//	integralStoreLogService.save(integralStoreLog);
+
+
+
+				//扣除积分占比
+
+				IntegralStoreLog integralStoreLog1=new IntegralStoreLog();
+				BigDecimal meige1 = order.getIntegralPaid().multiply(BigDecimal.valueOf(linshi), mc);
+				integralStore.setBalance(integralStore.getBalance().subtract(meige1));
+				integralStoreService.update(integralStore);
+				// 增加积分占比
+				integralStoreLog.setBalance(integralStore.getBalance());
+				integralStoreLog.setCredit(BigDecimal.ZERO);
+				integralStoreLog.setDebit(meige1);
+				integralStoreLog.setMemberId(1139l);
+				integralStoreLog.setType(1);
+				integralStoreLog.setStoreMemberId(integralStore.getStoreMemberId());
+				integralStoreLog.setMemo("绑定代金卡获取积分扣除相应门店权重");
+			//	integralStoreLogService.save(integralStoreLog);
+
+
+
+
+
+
+			}
+
+
+
+		}
 	}
 	public enum GenerateType {
 		/**
