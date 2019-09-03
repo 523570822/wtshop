@@ -189,7 +189,7 @@ public class UserPayAPIController extends BaseAPIController {
     /**
      *支付成功后推送
      */
-    public ApiResult  successfulPayment(){
+    public void   successfulPayment(){
         Long  sn = getParaToLong("orderId");
         String   fromId = getPara("fromId","");
         Order order = orderService.find(sn);
@@ -216,7 +216,7 @@ public class UserPayAPIController extends BaseAPIController {
             _logger.info("微信推送开始"+template.build().toString());
             Map<String, Object> ddd123 = accountService.getXCXSend(template);
             _logger.info("微信推送结束"+ddd123.toString());
-        return ApiResult.success();
+         renderJson(ApiResult.success());
     }
     /**
      * 支付宝 回调地址
