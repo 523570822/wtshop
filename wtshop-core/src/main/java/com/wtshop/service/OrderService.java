@@ -1150,7 +1150,7 @@ public class OrderService extends BaseService<Order> {
                             //扣除积分占比
 
                             IntegralStoreLog integralStoreLog1=new IntegralStoreLog();
-                            BigDecimal meige1 = order.getIntegralPaid().multiply(integralStore.get("scale"), mc);
+                            BigDecimal meige1 = order.getIntegralPaid().multiply(BigDecimal.valueOf(bili), mc);
                             integralStore.setBalance(integralStore.getBalance().subtract(meige1));
                             integralStoreService.update(integralStore);
                             // 增加积分占比
