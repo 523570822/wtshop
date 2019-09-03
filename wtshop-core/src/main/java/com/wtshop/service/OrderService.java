@@ -1087,7 +1087,7 @@ public class OrderService extends BaseService<Order> {
                     for (IntegralStore integralStore : integralStoreList) {
                     //返钱
                         Double bili=Double.valueOf(integralStore.get("scale").toString());
-                        MathContext mc=new MathContext(2);
+                        MathContext mc=new MathContext(3);
                         BigDecimal money111=fanXianMoney.multiply(BigDecimal.valueOf(bili),mc);
                         logger.info("返现金额:"+money111);
                         logger.info("返现比例:"+bili);
@@ -1154,14 +1154,14 @@ public class OrderService extends BaseService<Order> {
                             integralStore.setBalance(integralStore.getBalance().subtract(meige1));
                             integralStoreService.update(integralStore);
                             // 增加积分占比
-                            integralStoreLog.setBalance(integralStore.getBalance());
-                            integralStoreLog.setCredit(BigDecimal.ZERO);
-                            integralStoreLog.setDebit(meige1);
-                            integralStoreLog.setMemberId(member.getId());
-                            integralStoreLog.setType(1);
-                            integralStoreLog.setStoreMemberId(integralStore.getStoreMemberId());
-                            integralStoreLog.setMemo("绑定代金卡获取积分扣除相应门店权重");
-                            integralStoreLogService.save(integralStoreLog);
+                            integralStoreLog1.setBalance(integralStore.getBalance());
+                            integralStoreLog1.setCredit(BigDecimal.ZERO);
+                            integralStoreLog1.setDebit(meige1);
+                            integralStoreLog1.setMemberId(member.getId());
+                            integralStoreLog1.setType(1);
+                            integralStoreLog1.setStoreMemberId(integralStore.getStoreMemberId());
+                            integralStoreLog1.setMemo("绑定代金卡获取积分扣除相应门店权重");
+                            integralStoreLogService.save(integralStoreLog1);
 
 
 
