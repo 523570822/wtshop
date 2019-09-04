@@ -2205,7 +2205,11 @@ public class OrderService extends BaseService<Order> {
         order.setRefundAmount(BigDecimal.ZERO);
         order.setIntegralPaid(new BigDecimal(integralMoney));
         order.setIntegral(new BigDecimal(integral));
-        order.setIntegralGift(new BigDecimal(amountMoney));
+        if(order.getType()==10){
+            order.setIntegralGift(BigDecimal.valueOf(amountMoney) );
+        }else {
+            order.setIntegralGift(BigDecimal.ZERO );
+        }
         order.setCouponDiscount(BigDecimal.ZERO);
         order.setRewardPoint(0L);
         order.setExchangePoint(0L);
