@@ -2000,15 +2000,17 @@ public class OrderService extends BaseService<Order> {
 
 
 
+
+
+        order.setIdentifierId(identifierId);
+        order.setSn(snDao.generate(Sn.Type.order));
+        order.setType(type.ordinal());
+
         if(order.getType()==10){
             order.setIntegralGift(BigDecimal.valueOf(amountMoney) );
         }else {
             order.setIntegralGift(BigDecimal.ZERO );
         }
-
-        order.setIdentifierId(identifierId);
-        order.setSn(snDao.generate(Sn.Type.order));
-        order.setType(type.ordinal());
         order.setPrice(cart.getPrice());
         order.setFee(new BigDecimal(deliveryMoney));
         order.setFreight(new BigDecimal(couponYunfei));
