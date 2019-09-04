@@ -2006,9 +2006,6 @@ public class OrderService extends BaseService<Order> {
             order.setIntegralGift(BigDecimal.ZERO );
         }
 
-
-
-
         order.setIdentifierId(identifierId);
         order.setSn(snDao.generate(Sn.Type.order));
         order.setType(type.ordinal());
