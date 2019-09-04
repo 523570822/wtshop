@@ -77,7 +77,7 @@ private  FightGroupService fightGroupService=enhance(FightGroupService.class);
 		List<OrderGoods> orderGoodssList = new ArrayList<>();
 		List<Map> cartListMap = new ArrayList<>();
 		for(Order order : orderList){
-
+			order.setFreight(order.getFee().subtract(order.getFreight()));
 			//todo 退款订单显示问题 暂时这样修改
 			if(order.getStatus() == 11){
 				order.setStatus(110);

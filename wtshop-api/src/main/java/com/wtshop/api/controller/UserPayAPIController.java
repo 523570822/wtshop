@@ -193,6 +193,10 @@ public class UserPayAPIController extends BaseAPIController {
         Long  sn = getParaToLong("orderId");
         String   fromId = getPara("fromId","");
         Order order = orderService.find(sn);
+        if(order!=null&&order.getType()==10){
+
+
+
             WxaTemplate template=new WxaTemplate();
             template.setTouser(order.getAccount().getAccount());
             //	template.setEmphasis_keyword("给力");
@@ -216,6 +220,7 @@ public class UserPayAPIController extends BaseAPIController {
             _logger.info("微信推送开始"+template.build().toString());
             Map<String, Object> ddd123 = accountService.getXCXSend(template);
             _logger.info("微信推送结束"+ddd123.toString());
+        }
          renderJson(ApiResult.success());
     }
     /**

@@ -3,7 +3,6 @@ package com.wtshop.dao;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Filter;
 import com.wtshop.Pageable;
 import com.wtshop.model.Goods;
@@ -307,7 +306,7 @@ public class OrderDao extends BaseDao<Order> {
 	 */
 	public Page<Order> findPages(Order.Status status, Member member, Pageable pageable ,Integer type) {
 		String select = " select o.type, o.id ,o.status ,o.quantity quantity,o.amount price ," +
-			"o.sn , o.create_date ,o.freight, o.actOrderId fudaiId";
+			"o.sn ,o.fee, o.create_date ,o.freight, o.actOrderId fudaiId";
 		String sqlExceptSelect = "FROM `order` o WHERE 1 = 1 AND o.is_delete = 0 And o.type<>7 " ;
 
 		if(status != null &&  !status.equals(Order.Status.shipped)){
