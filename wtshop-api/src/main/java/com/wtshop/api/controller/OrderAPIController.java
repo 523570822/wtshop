@@ -163,7 +163,7 @@ public class OrderAPIController extends BaseAPIController {
 
 
 		JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
-
+/*
 		//是否包邮
 		Boolean is_freeMoney = redisSetting.getBoolean("isFreeMoney") || price >= redisSetting.getDouble("freeMoney") ? true : false;
 
@@ -176,7 +176,7 @@ public class OrderAPIController extends BaseAPIController {
 			 //运费
 			couponYunfei = delivery.getPrice();
 			newDeliveryPrice = new PriceResult("运费优惠金额","-¥"+MathUtil.getInt(delivery.getPrice().toString()));
-		}
+		}*/
 		//包税 地址
 		String taxUrl = "http://shop.rxmao.cn/rxm/goods/tax.html";
 
@@ -281,11 +281,35 @@ public class OrderAPIController extends BaseAPIController {
 
 		String realPrice = null;
 		String favoritePrice = "0";
-		Double realPriced = MathUtil.subtract(MathUtil.add(price, delivery.getPrice()),couponYunfei);
+
+		//商品金额
+		Double realPriced =MathUtil.add(price, delivery.getPrice());
 		Double favoreatePriced = 0d;
 		Double miaobi = 0d;
 
 		Double returns = 0d;
+
+
+
+		//计算是否包邮金额
+		Double dashabi = MathUtil.subtract(MathUtil.subtract(realPriced, miaoBiPrice), integralPrice);
+
+		//是否包邮
+		Boolean is_freeMoney = redisSetting.getBoolean("isFreeMoney") || dashabi >= redisSetting.getDouble("freeMoney")|| specialCouponPrice==0? true : false;
+
+		Double deliver = 0d;
+		deliver = delivery.getPrice();
+		//运费优惠金额
+		Double couponYunfei =0d;
+		PriceResult newDeliveryPrice = new PriceResult("运费优惠金额","0" );
+		if(is_freeMoney){
+			//运费
+			couponYunfei = delivery.getPrice();
+			newDeliveryPrice = new PriceResult("运费优惠金额","-¥"+MathUtil.getInt(delivery.getPrice().toString()));
+		}
+
+
+
 
 		// 代金券提示及优惠增加
 	//	specialcouponPrice = new PriceResult("代金卡","-¥ "+MathUtil.getInt(specialCouponPrice.toString()));
@@ -314,6 +338,14 @@ public class OrderAPIController extends BaseAPIController {
 			favoritePrice =  MathUtil.getInt(favoreatePriced.toString());
 			integral = 0d;
 		}
+
+
+
+
+
+
+
+
 
 		PriceResult manjianPrice = null;
 		Promotion promotion = promotionService.find(5L);
@@ -355,6 +387,8 @@ public class OrderAPIController extends BaseAPIController {
 		Double couponYunfei = MathUtil.subtract(delivery.getPrice() ,deliver);*/
 		//支付金额
 		//Double amountpaid = MathUtil.subtract(MathUtil.subtract(realPriced ,couponYunfei),miaoBiPrice);
+
+
 		Double amountpaid = MathUtil.subtract(MathUtil.subtract(MathUtil.subtract(realPriced ,miaoBiPrice),specialCouponPrice),integralPrice);
 		if(amountpaid<0){
 			amountpaid=0d;
