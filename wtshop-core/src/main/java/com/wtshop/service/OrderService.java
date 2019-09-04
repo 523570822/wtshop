@@ -1098,7 +1098,7 @@ public class OrderService extends BaseService<Order> {
                         depositLog1.setCredit(money111);
                         depositLog1.setDebit(BigDecimal.ZERO);
                         depositLog1.setStatus(1);
-                        depositLog1.setMemo("积分抵扣收益");
+                        depositLog1.setMemo("积分抵扣收益 ");
                         depositLog1.setType(DepositLog.Type.ident.ordinal());
                         depositLog1.setOrderId(order.getId());
                         depositLog1.setOperator(""+member.getNickname()+"  "+member.getPhone());
