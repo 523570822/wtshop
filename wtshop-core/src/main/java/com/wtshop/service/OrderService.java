@@ -1997,7 +1997,18 @@ public class OrderService extends BaseService<Order> {
         order.setCompanyName(companyName);
         order.setIntegral(BigDecimal.valueOf(integral));
         order.setIntegralPaid(BigDecimal.valueOf(integralMoney));
-        order.setIntegralGift(BigDecimal.valueOf(amountMoney) );
+
+
+
+        if(order.getType()==10){
+            order.setIntegralGift(BigDecimal.valueOf(amountMoney) );
+        }else {
+            order.setIntegralGift(BigDecimal.ZERO );
+        }
+
+
+
+
         order.setIdentifierId(identifierId);
         order.setSn(snDao.generate(Sn.Type.order));
         order.setType(type.ordinal());

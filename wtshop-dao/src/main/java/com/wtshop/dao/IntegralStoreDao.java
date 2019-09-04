@@ -51,7 +51,7 @@ public class IntegralStoreDao extends BaseDao<IntegralStore> {
 	 */
 	public Page<Record> findPages(Pageable pageable, String name , Integer type){
 
-		String sql = " from  integral_log g LEFT JOIN member m ON g.member_id = m.id WHERE 1 =1  ";
+		String sql = " from  integral_store g LEFT JOIN member m ON g.member_id = m.id WHERE 1 =1  ";
 		if( name != null ){
 			sql += "AND m.nickname LIKE '%" + name +"%' " ;
 		}
