@@ -283,7 +283,7 @@ public class OrderAPIController extends BaseAPIController {
 		String favoritePrice = "0";
 
 		//商品金额
-		Double realPriced =MathUtil.add(price, delivery.getPrice());
+		Double realPriced =price;
 		Double favoreatePriced = 0d;
 		Double miaobi = 0d;
 
@@ -295,7 +295,7 @@ public class OrderAPIController extends BaseAPIController {
 		Double dashabi = MathUtil.subtract(MathUtil.subtract(realPriced, miaoBiPrice), integralPrice);
 
 		//是否包邮
-		Boolean is_freeMoney = redisSetting.getBoolean("isFreeMoney") || dashabi >= redisSetting.getDouble("freeMoney")|| specialCouponPrice==0? true : false;
+		Boolean is_freeMoney = redisSetting.getBoolean("isFreeMoney") || dashabi >= redisSetting.getDouble("freeMoney")|| specialCouponPrice>0? true : false;
 
 		Double deliver = 0d;
 		deliver = delivery.getPrice();
@@ -303,7 +303,7 @@ public class OrderAPIController extends BaseAPIController {
 		Double couponYunfei =0d;
 		PriceResult newDeliveryPrice = new PriceResult("运费优惠金额","0" );
 		if(is_freeMoney){
-			//运费
+			//运费优惠运费
 			couponYunfei = delivery.getPrice();
 			newDeliveryPrice = new PriceResult("运费优惠金额","-¥"+MathUtil.getInt(delivery.getPrice().toString()));
 		}
@@ -389,7 +389,7 @@ public class OrderAPIController extends BaseAPIController {
 		//Double amountpaid = MathUtil.subtract(MathUtil.subtract(realPriced ,couponYunfei),miaoBiPrice);
 
 
-		Double amountpaid = MathUtil.subtract(MathUtil.subtract(MathUtil.subtract(realPriced ,miaoBiPrice),specialCouponPrice),integralPrice);
+		Double amountpaid = MathUtil.add(MathUtil.subtract(MathUtil.subtract(MathUtil.subtract(realPriced ,miaoBiPrice),specialCouponPrice),favoreatePriced),yunfei);
 		if(amountpaid<0){
 			amountpaid=0d;
 		}
@@ -971,18 +971,8 @@ if(!isSinglepurchase){
 			JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
 			//是否包邮
 
-			Boolean is_freeMoney = redisSetting.getBoolean("isFreeMoney") || price >= redisSetting.getDouble("freeMoney") ? true : false;
-			//运费优惠金额
-			Double deliver = 0d;
 
-			Double couponYunfei =0d;
-			PriceResult newDeliveryPrice = new PriceResult("运费优惠金额", "-¥ " + 0);
-			if (is_freeMoney) {
-				deliver = delivery.getPrice();
-					//运费
-				couponYunfei = delivery.getPrice();
-				newDeliveryPrice = new PriceResult("运费优惠金额", "-¥ " + MathUtil.getInt(delivery.getPrice().toString()));
-			}
+
 			//包税 计算税金
 			Double taxRate = redisSetting.getDouble("taxRate");
 			Double tax = 0.0d;
@@ -1071,8 +1061,6 @@ if(!isSinglepurchase){
 			realPriced = MathUtil.add(price, delivery.getPrice());
 			realPrice = MathUtil.getInt(realPriced.toString());
 
-			favoreatePriced =MathUtil.add(favoreatePriced,deliver);
-			favoritePrice = MathUtil.getInt(favoreatePriced.toString());
 			returns = 0d;
 
 			miaobi = 0d;
@@ -1109,7 +1097,23 @@ if(!isSinglepurchase){
 
 
 			}
+			//计算是否包邮金额
+			Double dashabi = MathUtil.subtract(MathUtil.subtract(realPriced, miaoBiPrice), integralPrice);
 
+			//是否包邮
+			Boolean is_freeMoney = redisSetting.getBoolean("isFreeMoney") || dashabi >= redisSetting.getDouble("freeMoney")|| specialCouponPrice>0? true : false;
+
+			Double couponYunfei =0d;
+			PriceResult newDeliveryPrice = new PriceResult("运费优惠金额", "-¥ " + 0);
+			//运费
+			Double deliver = delivery.getPrice();
+
+			if (is_freeMoney) {
+				//deliver = delivery.getPrice();
+				//运费
+				couponYunfei = delivery.getPrice();
+				newDeliveryPrice = new PriceResult("运费优惠金额", "-¥ " + MathUtil.getInt(delivery.getPrice().toString()));
+			}
 			List<PriceResult> priceList = new ArrayList<>();
 
 			//旧购物车金额
@@ -1133,6 +1137,8 @@ if(!isSinglepurchase){
 			//优惠运费金额
 		//	Double couponYunfei = MathUtil.subtract(delivery.getPrice(), deliver);
 
+			favoreatePriced =MathUtil.add(favoreatePriced,couponYunfei);
+			favoritePrice = MathUtil.getInt(favoreatePriced.toString());
 
 			Double amountpaid =  MathUtil.subtract(MathUtil.subtract(realPrice, favoritePrice),specialCouponPrice);
 			if (amountpaid < 0) {
