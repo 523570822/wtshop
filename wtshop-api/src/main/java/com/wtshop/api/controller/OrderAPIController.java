@@ -301,7 +301,7 @@ public class OrderAPIController extends BaseAPIController {
 		deliver = delivery.getPrice();
 		//运费优惠金额
 		Double couponYunfei =0d;
-		PriceResult newDeliveryPrice = new PriceResult("运费优惠金额","0" );
+		PriceResult newDeliveryPrice = new PriceResult("运费优惠金额","-¥ 0" );
 		if(is_freeMoney){
 			//运费优惠运费
 			couponYunfei = delivery.getPrice();
