@@ -2,11 +2,8 @@ package com.wtshop.service;
 
 import com.jfinal.aop.Enhancer;
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Pageable;
-import com.wtshop.dao.IntegralLogDao;
 import com.wtshop.dao.IntegralStoreLogDao;
-import com.wtshop.model.IntegralLog;
 import com.wtshop.model.IntegralStoreLog;
 import com.wtshop.model.Member;
 
@@ -45,7 +42,7 @@ public class IntegralStoreLogService extends BaseService<IntegralStoreLog> {
 	 * @param type
 	 * @return
 	 */
-	public Page<Record> findPages(Pageable pageable , Integer type){
+	public Page<IntegralStoreLog> findPages(Pageable pageable , Integer type){
 		String searchProperty = pageable.getSearchProperty();
 		String searchValue = pageable.getSearchValue();
 		String name = null;

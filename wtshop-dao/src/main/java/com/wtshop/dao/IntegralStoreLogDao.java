@@ -1,12 +1,9 @@
 package com.wtshop.dao;
 
 import com.jfinal.kit.StrKit;
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Order;
 import com.wtshop.Pageable;
-import com.wtshop.model.IntegralLog;
 import com.wtshop.model.IntegralStoreLog;
 import com.wtshop.model.Member;
 import org.apache.commons.collections.CollectionUtils;
@@ -50,9 +47,9 @@ public class IntegralStoreLogDao extends BaseDao<IntegralStoreLog> {
 	 * @param type
 	 * @return
 	 */
-	public Page<Record> findPages(Pageable pageable, String name , Integer type){
+	public Page<IntegralStoreLog> findPages(Pageable pageable, String name , Integer type){
 
-		String sql = " from  integral_log g LEFT JOIN member m ON g.member_id = m.id WHERE 1 =1  ";
+		String sql = " from  integral_store_log g LEFT JOIN member m ON g.member_id = m.id WHERE 1 =1  ";
 		if( name != null ){
 			sql += "AND m.nickname LIKE '%" + name +"%' " ;
 		}
@@ -82,7 +79,7 @@ public class IntegralStoreLogDao extends BaseDao<IntegralStoreLog> {
 		}
 		sql += ordersSQL;
 
-		return Db.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sql);
+		return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sql);
 
 	}
 	public IntegralStoreLog findLogByMemberId(Long memberId){

@@ -38,7 +38,7 @@ $().ready(function() {
 	<div class="breadcrumb">
 		<a href="${base}/admin/common/index.jhtml">${message("admin.breadcrumb.home")}</a> &raquo; ${message("admin.point.log")} <span>(${message("admin.page.total", page.totalRow)})</span>
 	</div>
-	<form id="listForm" action="integralStoreList.jhtml" method="post">
+	<form id="listForm" action="log.jhtml" method="post">
         <input type="hidden" name="typeName" id="typeName" value=""/>
 		[#if member??]
 			<input type="hidden" name="memberId" value="${member.id}" />
@@ -90,32 +90,45 @@ $().ready(function() {
 		</div>
 		<table id="listTable" class="list">
 			<tr>
-				<th >
+				<th>
+					<a href="javascript:;" class="sort" name="type">${message("PointLog.type")}</a>
+				</th>
+                <th >
                     <a href="javascript:;" class="sort" name="nickname">门店</a>
-					</th>
+                </th>
 
                 <th>
-                  <a href="javascript:;" class="sort" name="type">老板昵称</a>
+                    <a href="javascript:;" class="sort" name="type">老板昵称</a>
                 </th>
                 <th>
                     <a href="javascript:;" class="sort" name="type">老板电话</a>
                 </th>
-                <th>
-                    <a href="javascript:;" class="sort" name="nickname">${message("PointLog.member")}</a>
-                </th>
-              [#--  <th>
-                    <a href="javascript:;" class="sort" name="type">${message("PointLog.type")}</a>
-                </th>--]
+				<th>
+					喵币变化
+				</th>
 				<th>
 					<a href="javascript:;" class="sort" name="balance">${message("PointLog.balance")}</a>
 				</th>
-
+				<th>
+					<a href="javascript:;" class="sort" name="nickname">${message("PointLog.member")}</a>
+				</th>
 				<th>
 					<a href="javascript:;" class="sort" name="create_date">${message("admin.common.createDate")}</a>
 				</th>
 			</tr>
 			[#list page.list as pointLog]
 				<tr>
+                    <td>
+						[#if pointLog.type == 0 ]
+                            绑定钜惠卡赠送
+						[#elseif pointLog.type == 1 ]
+							绑定代金卡赠送
+						[#elseif pointLog.type == 2 ]
+							订单消耗
+						[#elseif pointLog.type == 3 ]
+						订单赠送积分
+						[/#if]
+                    </td>
                     <td>
 						[#if pointLog.memberStore.store??]
 							${pointLog.memberStore.store}
@@ -137,24 +150,23 @@ $().ready(function() {
 							-
 						[/#if]
                     </td>
-                    <td>
-						[#if pointLog.nickname??]
-							${pointLog.nickname}
-						[#else]
-							-
-						[/#if]
-                    </td>
-				[#--	<td>
+					<td>
 						[#if pointLog.type == 2 || pointLog.type == 0 || pointLog.type ==1 ]
                             + ${currency(pointLog.credit, true)}
 						[#elseif pointLog.type == 3 ]
                             - ${currency(pointLog.debit, true)}
 						[/#if]
-					</td>--]
+					</td>
 					<td>
 						${pointLog.balance}
 					</td>
-
+					<td>
+						[#if pointLog.nickname??]
+							${pointLog.nickname}
+						[#else]
+							-
+						[/#if]
+					</td>
 					<td>
 						<span title="${pointLog.create_date?string("yyyy-MM-dd HH:mm:ss")}">${pointLog.create_date}</span>
 					</td>

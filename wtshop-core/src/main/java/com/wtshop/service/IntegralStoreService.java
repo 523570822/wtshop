@@ -2,7 +2,6 @@ package com.wtshop.service;
 
 import com.jfinal.aop.Enhancer;
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Pageable;
 import com.wtshop.dao.IntegralStoreDao;
 import com.wtshop.model.IntegralStore;
@@ -46,7 +45,7 @@ public class IntegralStoreService extends BaseService<IntegralStore> {
 	 * @param type
 	 * @return
 	 */
-	public Page<Record> findPages(Pageable pageable , Integer type){
+	public Page<IntegralStore> findPages(Pageable pageable , Integer type){
 		String searchProperty = pageable.getSearchProperty();
 		String searchValue = pageable.getSearchValue();
 		String name = null;

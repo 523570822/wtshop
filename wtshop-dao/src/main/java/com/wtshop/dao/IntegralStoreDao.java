@@ -1,9 +1,7 @@
 package com.wtshop.dao;
 
 import com.jfinal.kit.StrKit;
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Order;
 import com.wtshop.Pageable;
 import com.wtshop.model.IntegralStore;
@@ -49,7 +47,7 @@ public class IntegralStoreDao extends BaseDao<IntegralStore> {
 	 * @param type
 	 * @return
 	 */
-	public Page<Record> findPages(Pageable pageable, String name , Integer type){
+	public Page<IntegralStore> findPages(Pageable pageable, String name , Integer type){
 
 		String sql = " from  integral_store g LEFT JOIN member m ON g.member_id = m.id WHERE 1 =1  ";
 		if( name != null ){
@@ -80,8 +78,8 @@ public class IntegralStoreDao extends BaseDao<IntegralStore> {
 			ordersSQL = " ORDER BY g.create_date DESC";
 		}
 		sql += ordersSQL;
-
-		return Db.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sql);
+		return modelManager.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sql);
+	//	return Db.paginate(pageable.getPageNumber(), pageable.getPageSize(), select, sql);
 
 	}
 	public List<IntegralStore> findLogByMemberId(Long memberId){

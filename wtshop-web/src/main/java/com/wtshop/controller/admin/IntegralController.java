@@ -5,6 +5,8 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Message;
 import com.wtshop.Pageable;
+import com.wtshop.model.IntegralStore;
+import com.wtshop.model.IntegralStoreLog;
 import com.wtshop.model.Member;
 import com.wtshop.service.*;
 
@@ -58,11 +60,11 @@ public class IntegralController extends BaseController {
 
 		Pageable pageable = getBean(Pageable.class);
 		Integer type = getParaToInt("typeName");
-		Page<Record> pages = integralStoreService.findPages(pageable, type);
+		Page<IntegralStore> pages = integralStoreService.findPages(pageable, type);
 
 		setAttr("page", pages);
 		setAttr("pageable", pageable);
-		render("/admin/integral/list.ftl");
+		render("/admin/integral/integralStoreList.ftl");
 	}
 
 	/**
@@ -72,11 +74,11 @@ public class IntegralController extends BaseController {
 
 		Pageable pageable = getBean(Pageable.class);
 		Integer type = getParaToInt("typeName");
-		Page<Record> pages = integralStoreLogService.findPages(pageable, type);
+		Page<IntegralStoreLog> pages = integralStoreLogService.findPages(pageable, type);
 
 		setAttr("page", pages);
 		setAttr("pageable", pageable);
-		render("/admin/integral/list.ftl");
+		render("/admin/integral/integralStoreLogList.ftl");
 	}
 	/**
 	 * 记录
