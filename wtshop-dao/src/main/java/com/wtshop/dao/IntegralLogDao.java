@@ -8,7 +8,6 @@ import com.wtshop.Order;
 import com.wtshop.Pageable;
 import com.wtshop.model.IntegralLog;
 import com.wtshop.model.Member;
-import com.wtshop.model.PointLog;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -52,16 +51,19 @@ public class IntegralLogDao extends BaseDao<IntegralLog> {
 	 */
 	public Page<Record> findPages(Pageable pageable, String name , Integer type){
 
-		String sql = " from  integral_log g LEFT JOIN member m ON g.member_id = m.id WHERE 1 =1  ";
+		String sql = " from  integral_log g  LEFT JOIN member m ON g.member_id = m.id  WHERE 1 =1  ";
 		if( name != null ){
-			sql += "AND m.nickname LIKE '%" + name +"%' " ;
+			sql += "AND m.nickname LIKE '%" + name +"%' " +
+					"or m.phone like '%" + name +"%'" +
+					"or m.order_sn like '%" + name +"%'" +
+					" " ;
 		}
 
 		if( type != null && 4 != type ){
 			sql += "AND g.type = " + type ;
 		}
 
-		String select = "SELECT g.*,m.nickname   ";
+		String select = "SELECT g.*,m.nickname,m.phone   ";
 
 
 		// 排序属性、方向

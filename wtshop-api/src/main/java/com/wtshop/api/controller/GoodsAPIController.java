@@ -678,7 +678,7 @@ public void onShareCode(){
 			integralStoreLog.setBalance(integralStore.getBalance());
 			integralStoreLog.setCredit(identifier.getIntegral());
 			integralStoreLog.setMemberId(m.getId());
-			integralStoreLog.setType(0);
+			integralStoreLog.setType(4);
 			integralStoreLog.setDebit(BigDecimal.ZERO);
 			integralStoreLog.setStoreMemberId(me.get(0).getId());
 			integralStoreLog.setMemo("绑定钜惠卡获取积分增加相应门店权重");
@@ -818,7 +818,7 @@ public void onShareCode(){
 			integralStoreLog.setCredit(specialCoupon.getIntegral());
 			integralStoreLog.setDebit(BigDecimal.ZERO);
 			integralStoreLog.setMemberId(m.getId());
-			integralStoreLog.setType(1);
+			integralStoreLog.setType(3);
 			integralStoreLog.setStoreMemberId(me.get(0).getId());
 			integralStoreLog.setMemo("绑定代金卡获取积分增加相应门店权重");
 			integralStoreLogService.save(integralStoreLog);

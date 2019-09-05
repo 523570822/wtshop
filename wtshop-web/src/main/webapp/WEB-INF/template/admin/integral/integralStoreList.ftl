@@ -103,6 +103,10 @@ $().ready(function() {
                 <th>
                     <a href="javascript:;" class="sort" name="nickname">${message("PointLog.member")}</a>
                 </th>
+                <th>
+                    <a href="javascript:;" class="sort" name="nickname">会员手机号</a>
+                </th>
+
               [#--  <th>
                     <a href="javascript:;" class="sort" name="type">${message("PointLog.type")}</a>
                 </th>--]
@@ -140,6 +144,13 @@ $().ready(function() {
                     <td>
 						[#if pointLog.nickname??]
 							${pointLog.nickname}
+						[#else]
+							-
+						[/#if]
+                    </td>
+                    <td>
+						[#if pointLog.phone??]
+							${pointLog.phone}
 						[#else]
 							-
 						[/#if]

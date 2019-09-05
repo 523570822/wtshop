@@ -38,7 +38,7 @@ $().ready(function() {
 	<div class="breadcrumb">
 		<a href="${base}/admin/common/index.jhtml">${message("admin.breadcrumb.home")}</a> &raquo; ${message("admin.point.log")} <span>(${message("admin.page.total", page.totalRow)})</span>
 	</div>
-	<form id="listForm" action="log.jhtml" method="post">
+	<form id="listForm" action="integralStoreLogList.jhtml" method="post">
         <input type="hidden" name="typeName" id="typeName" value=""/>
 		[#if member??]
 			<input type="hidden" name="memberId" value="${member.id}" />
@@ -91,7 +91,7 @@ $().ready(function() {
 		<table id="listTable" class="list">
 			<tr>
 				<th>
-					<a href="javascript:;" class="sort" name="type">${message("PointLog.type")}</a>
+					<a href="javascript:;" class="sort" name="type">类型</a>
 				</th>
                 <th >
                     <a href="javascript:;" class="sort" name="nickname">门店</a>
@@ -112,22 +112,27 @@ $().ready(function() {
 				<th>
 					<a href="javascript:;" class="sort" name="nickname">${message("PointLog.member")}</a>
 				</th>
+                <th>
+                    <a href="javascript:;" class="sort" name="nickname">会员手机号</a>
+                </th>
 				<th>
 					<a href="javascript:;" class="sort" name="create_date">${message("admin.common.createDate")}</a>
 				</th>
 			</tr>
 			[#list page.list as pointLog]
 				<tr>
+
                     <td>
-						[#if pointLog.type == 0 ]
-                            绑定钜惠卡赠送
-						[#elseif pointLog.type == 1 ]
-							绑定代金卡赠送
+						[#if pointLog.type == 1 ]
+                          	订单积分权重增加
 						[#elseif pointLog.type == 2 ]
-							订单消耗
+							订单积分权重减少
 						[#elseif pointLog.type == 3 ]
-						订单赠送积分
+							代金卡绑定权重增加
+						[#elseif pointLog.type == 4 ]
+							钜惠卡绑定权重增加
 						[/#if]
+
                     </td>
                     <td>
 						[#if pointLog.memberStore.store??]
@@ -151,9 +156,9 @@ $().ready(function() {
 						[/#if]
                     </td>
 					<td>
-						[#if pointLog.type == 2 || pointLog.type == 0 || pointLog.type ==1 ]
+						[#if pointLog.type == 4|| pointLog.type == 3 || pointLog.type ==1 ]
                             + ${currency(pointLog.credit, true)}
-						[#elseif pointLog.type == 3 ]
+						[#elseif pointLog.type == 2 ]
                             - ${currency(pointLog.debit, true)}
 						[/#if]
 					</td>
@@ -167,6 +172,13 @@ $().ready(function() {
 							-
 						[/#if]
 					</td>
+                    <td>
+						[#if pointLog.phone??]
+							${pointLog.phone}
+						[#else]
+							-
+						[/#if]
+                    </td>
 					<td>
 						<span title="${pointLog.create_date?string("yyyy-MM-dd HH:mm:ss")}">${pointLog.create_date}</span>
 					</td>

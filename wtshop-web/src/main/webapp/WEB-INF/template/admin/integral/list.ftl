@@ -38,7 +38,7 @@ $().ready(function() {
 	<div class="breadcrumb">
 		<a href="${base}/admin/common/index.jhtml">${message("admin.breadcrumb.home")}</a> &raquo; ${message("admin.point.log")} <span>(${message("admin.page.total", page.totalRow)})</span>
 	</div>
-	<form id="listForm" action="log.jhtml" method="post">
+	<form id="listForm" action="list.jhtml" method="post">
         <input type="hidden" name="typeName" id="typeName" value=""/>
 		[#if member??]
 			<input type="hidden" name="memberId" value="${member.id}" />
@@ -84,15 +84,18 @@ $().ready(function() {
                     <button type="submit">&nbsp;</button>
                 </div>
                 <ul>
-                    <li[#if page.searchProperty == "name"] class="current"[/#if] val="name">${message("PointLog.member")}</li>
+                    <li[#if page.searchProperty == "name"] class="current"[/#if] val="name">综合搜索</li>
                 </ul>
             </div>
 		</div>
 		<table id="listTable" class="list">
 			<tr>
 				<th>
-					<a href="javascript:;" class="sort" name="type">${message("PointLog.type")}</a>
+					<a href="javascript:;" class="sort" name="type">类型</a>
 				</th>
+                <th>
+                    <a href="javascript:;" class="sort" name="type">订单号</a>
+                </th>
 				<th>
 					喵币变化
 				</th>
@@ -102,6 +105,9 @@ $().ready(function() {
 				<th>
 					<a href="javascript:;" class="sort" name="nickname">${message("PointLog.member")}</a>
 				</th>
+                <th>
+                    <a href="javascript:;" class="sort" name="nickname">会员手机号</a>
+                </th>
 				<th>
 					<a href="javascript:;" class="sort" name="create_date">${message("admin.common.createDate")}</a>
 				</th>
@@ -117,6 +123,13 @@ $().ready(function() {
 							订单消耗
 						[#elseif pointLog.type == 3 ]
 						订单赠送积分
+						[/#if]
+                    </td>
+                    <td>
+						[#if pointLog.order_sn??]
+							${pointLog.order_sn}
+						[#else]
+							-
 						[/#if]
                     </td>
 					<td>
@@ -136,6 +149,13 @@ $().ready(function() {
 							-
 						[/#if]
 					</td>
+                    <td>
+						[#if pointLog.phone??]
+							${pointLog.phone}
+						[#else]
+							-
+						[/#if]
+                    </td>
 					<td>
 						<span title="${pointLog.create_date?string("yyyy-MM-dd HH:mm:ss")}">${pointLog.create_date}</span>
 					</td>

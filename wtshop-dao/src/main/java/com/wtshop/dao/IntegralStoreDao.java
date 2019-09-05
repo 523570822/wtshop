@@ -49,16 +49,20 @@ public class IntegralStoreDao extends BaseDao<IntegralStore> {
 	 */
 	public Page<IntegralStore> findPages(Pageable pageable, String name , Integer type){
 
-		String sql = " from  integral_store g LEFT JOIN member m ON g.member_id = m.id WHERE 1 =1  ";
+		String sql = " from  integral_store g LEFT JOIN member m ON g.member_id = m.id   LEFT JOIN member me ON g.store_member_id = me.id  WHERE 1 =1  ";
 		if( name != null ){
-			sql += "AND m.nickname LIKE '%" + name +"%' " ;
+			sql += "AND m.nickname LIKE '%" + name +"%' " +
+					"or me.nickname like '%" + name +"%'" +
+					"or me.phone like '%" + name +"%'" +
+					"or m.phone like '%" + name +"%'" +
+					" " ;
 		}
 
 		if( type != null && 4 != type ){
 			sql += "AND g.type = " + type ;
 		}
 
-		String select = "SELECT g.*,m.nickname   ";
+		String select = "SELECT g.*,m.nickname,m.phone   ";
 
 
 		// 排序属性、方向

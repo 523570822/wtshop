@@ -1142,7 +1142,7 @@ public class OrderService extends BaseService<Order> {
                             integralStoreLog.setMemberId(member.getId());
                             integralStoreLog.setType(1);
                             integralStoreLog.setStoreMemberId(integralStore.getStoreMemberId());
-                            integralStoreLog.setMemo("绑定代金卡获取积分增加相应门店权重");
+                            integralStoreLog.setMemo("支付成功增加相应门店权重积分");
                             integralStoreLogService.save(integralStoreLog);
 
 
@@ -1158,9 +1158,10 @@ public class OrderService extends BaseService<Order> {
                             integralStoreLog1.setCredit(BigDecimal.ZERO);
                             integralStoreLog1.setDebit(meige1);
                             integralStoreLog1.setMemberId(member.getId());
-                            integralStoreLog1.setType(1);
+                            integralStoreLog1.setType(2);
+                            integralStoreLog1.setOrderSn(order.getSn());
                             integralStoreLog1.setStoreMemberId(integralStore.getStoreMemberId());
-                            integralStoreLog1.setMemo("绑定代金卡获取积分扣除相应门店权重");
+                            integralStoreLog1.setMemo("支付成功扣除相应门店权重积分");
                             integralStoreLogService.save(integralStoreLog1);
 
 

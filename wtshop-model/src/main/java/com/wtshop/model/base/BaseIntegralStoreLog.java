@@ -97,4 +97,12 @@ public abstract class BaseIntegralStoreLog<M extends BaseIntegralStoreLog<M>> ex
 		return get("store_member_id");
 	}
 
+	public void setOrderSn(String orderSn) {
+		set("order_sn", orderSn);
+	}
+
+	public String getOrderSn() {
+		return get("order_sn");
+	}
+
 }
