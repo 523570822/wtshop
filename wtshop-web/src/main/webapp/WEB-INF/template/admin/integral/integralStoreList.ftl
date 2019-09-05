@@ -84,7 +84,7 @@ $().ready(function() {
                     <button type="submit">&nbsp;</button>
                 </div>
                 <ul>
-                    <li[#if page.searchProperty == "name"] class="current"[/#if] val="name">${message("PointLog.member")}</li>
+                    <li[#if page.searchProperty == "name"] class="current"[/#if] val="name">综合查询</li>
                 </ul>
             </div>
 		</div>
