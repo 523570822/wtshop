@@ -84,7 +84,7 @@ $().ready(function() {
                     <button type="submit">&nbsp;</button>
                 </div>
                 <ul>
-                    <li[#if page.searchProperty == "name"] class="current"[/#if] val="name">${message("PointLog.member")}</li>
+                    <li[#if page.searchProperty == "name"] class="current"[/#if] val="name">综合查询</li>
                 </ul>
             </div>
 		</div>
@@ -93,6 +93,9 @@ $().ready(function() {
 				<th>
 					<a href="javascript:;" class="sort" name="type">类型</a>
 				</th>
+                <th>
+                    <a href="javascript:;" class="sort" name="type">订单号</a>
+                </th>
                 <th >
                     <a href="javascript:;" class="sort" name="nickname">门店</a>
                 </th>
@@ -133,6 +136,13 @@ $().ready(function() {
 							钜惠卡绑定权重增加
 						[/#if]
 
+                    </td>
+                    <td>
+						[#if pointLog.order_sn??]
+							${pointLog.order_sn}
+						[#else]
+							-
+						[/#if]
                     </td>
                     <td>
 						[#if pointLog.memberStore.store??]
