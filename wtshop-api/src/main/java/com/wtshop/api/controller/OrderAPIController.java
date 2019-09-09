@@ -413,6 +413,7 @@ public class OrderAPIController extends BaseAPIController {
 			realPrice =  MathUtil.getInt(amountpaid.toString());
 		goods.setPrice(product.getPrice());
 
+
 		goods.put("special_id",sPecialIds);
 		List<String> specifications = product.getSpecifications();
 
