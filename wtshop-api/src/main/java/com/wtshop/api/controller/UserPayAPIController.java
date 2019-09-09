@@ -195,8 +195,6 @@ public class UserPayAPIController extends BaseAPIController {
         Order order = orderService.find(sn);
 
 
-
-
             WxaTemplate template=new WxaTemplate();
             template.setTouser(order.getAccount().getAccount());
             //	template.setEmphasis_keyword("给力");

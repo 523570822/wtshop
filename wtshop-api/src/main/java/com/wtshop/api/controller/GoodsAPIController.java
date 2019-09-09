@@ -783,7 +783,7 @@ public void onShareCode(){
 		IntegralLog integralLog=new IntegralLog();
 		IntegralStore integralStore=new IntegralStore();
 		IntegralStoreLog integralStoreLog=new IntegralStoreLog();
-		if(specialCoupon.getIntegral().compareTo(BigDecimal.ZERO)==1){
+		if(specialCoupon.getIntegral()!=null&&specialCoupon.getIntegral().compareTo(BigDecimal.ZERO)==1){
 
 			m.setIntegral(m.getIntegral().add(specialCoupon.getIntegral()));
 			integralLog.setCredit(specialCoupon.getIntegral());
@@ -835,7 +835,7 @@ public void onShareCode(){
 		specialCouponService.update(specialCoupon);
 
 		Account account=accountService.findByMemberId(m.getId().toString(),"4");
-		if(StringUtils.isNotEmpty(fromId)&&account!=null){
+		if(specialCoupon.getIntegral()!=null&&StringUtils.isNotEmpty(fromId)&&account!=null){
 			WxaTemplate template=new WxaTemplate();
 			template.setTouser(account.getAccount());
 			//	template.setEmphasis_keyword("给力");

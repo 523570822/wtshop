@@ -93,7 +93,6 @@ public class Order extends BaseOrder<Order> {
 
 		/** 已收货 4*/
 		received,
-
 		/** 已完成 5**/
 		completed,
 
