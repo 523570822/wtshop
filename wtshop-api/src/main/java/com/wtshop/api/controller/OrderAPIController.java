@@ -302,7 +302,7 @@ public class OrderAPIController extends BaseAPIController {
 		//运费优惠金额
 		Double couponYunfei =0d;
 		PriceResult newDeliveryPrice = new PriceResult("运费优惠金额","-¥ 0" );
-		if(is_freeMoney){
+		if(is_freeMoney|| specialCouponPrice>0){
 			//运费优惠运费
 			couponYunfei = delivery.getPrice();
 			newDeliveryPrice = new PriceResult("运费优惠金额","-¥"+MathUtil.getInt(delivery.getPrice().toString()));
@@ -389,7 +389,7 @@ public class OrderAPIController extends BaseAPIController {
 		//Double amountpaid = MathUtil.subtract(MathUtil.subtract(realPriced ,couponYunfei),miaoBiPrice);
 
 
-		Double amountpaid = MathUtil.add(MathUtil.subtract(MathUtil.subtract(MathUtil.subtract(realPriced ,miaoBiPrice),specialCouponPrice),favoreatePriced),yunfei);
+		Double amountpaid =MathUtil.add(MathUtil.subtract(MathUtil.subtract(realPriced ,miaoBiPrice),favoreatePriced),yunfei);
 		if(amountpaid<0){
 			amountpaid=0d;
 		}
