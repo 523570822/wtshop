@@ -228,21 +228,22 @@ public class UserPayAPIController extends BaseAPIController {
         Long  integral = getParaToLong("integral");
         String   fromId = getPara("fromId","");
         String   openid = getPara("openid","");
+        String   nickName = getPara("nickName","");
 
         WxaTemplate template=new WxaTemplate();
         template.setTouser(openid);
         //	template.setEmphasis_keyword("给力");
         template.setForm_id(fromId);
         template.setPage("pages/main/main");
-        template.setTemplate_id("sK2pxYoo46AY-ijs_f_cfSsMG91Rn-TzHAmeZmcUYFI");
+        template.setTemplate_id("Bq1pdddkHBRoFvidksZd0Rsmz-yNmQFw4TsRXGeav9U");
         //template.add("keyword1",integral+"");
         SimpleDateFormat sdf =new SimpleDateFormat("yyyy年MM月dd HH:mm:ss SSS" );
         Date d= new Date();
         String str = sdf.format(d);
-        template.add("keyword1",str);
-        template.add("keyword2",integral+"积分");
-        template.add("keyword3",integral+"积分");
-        template.add("keyword4",integral+"积分");
+        template.add("keyword3",nickName);
+        template.add("keyword2",nickName);
+        template.add("keyword1",integral+"积分");
+        template.add("keyword4","注册成功，送您的"+integral+"积分已到账");
         _logger.info("微信推送开始"+template.build().toString());
         Map<String, Object> ddd123 = accountService.getXCXSend(template);
         _logger.info("微信推送结束"+ddd123.toString());
