@@ -138,6 +138,47 @@ public class InformationService extends BaseService<Information> {
             }
         }
     }
+
+    /**
+     *
+     * 赠送积分成功消息
+     * @param integralLog
+     */
+
+    public void intergraRregisterMessage(IntegralLog integralLog) {
+        final Logger logger = Logger.getLogger("paySuccessMessage");
+        //添加消息记录表
+        Information information = new Information();
+
+
+        information.setContent("注册成功");
+        information.setIsDelete(false);
+        information.setStatus(false);
+        information.setMemberId(integralLog.getMemberId());
+        information.setTitle("注册成功");
+        information.setAction(Information.Action.none.ordinal());
+        information.setLink(integralLog.getId()+"");
+        information.setType(Information.Type.none.ordinal());
+        informationDao.save(information);
+
+        Cache actCache = Redis.use();
+        Boolean isMyMessage = actCache.get("ORDERMMESSAGR_SWITCH:" + information.getMemberId());
+        String sound = "default";
+        Object o = actCache.get("SOUND:" + information.getMemberId());
+        if (o != null) {
+            sound = o.toString();
+        }
+        if (isMyMessage != null && isMyMessage) {
+            String key = "MEMBER:" + information.getMemberId().toString();
+            String appid = RedisUtil.getString(key);
+            if (appid != null) {
+                logger.info("开始调用极光推送方法——————————————————————; appid=" + appid);
+                JPush.sendPushById(appid, "系统消息", "注册成功", "送您的"+ MathUtil.getInt(integralLog.getCredit().toString())+"积分已到账", sound, null);
+
+                logger.info("成功调用极光推送方法——————————————————————");
+            }
+        }
+    }
     /**
      *支付成功消息
      *

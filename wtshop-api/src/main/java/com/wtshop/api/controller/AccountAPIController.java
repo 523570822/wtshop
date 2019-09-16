@@ -2,7 +2,7 @@ package com.wtshop.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
-import com.jfinal.ext.kit.AliPayApi;
+import com.jfinal.aop.Enhancer;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
@@ -15,14 +15,8 @@ import com.wtshop.api.common.token.TokenManager;
 import com.wtshop.api.interceptor.ErrorInterceptor;
 import com.wtshop.constants.Code;
 import com.wtshop.interceptor.WapInterceptor;
-import com.wtshop.model.Account;
-import com.wtshop.model.Member;
-import com.wtshop.model.MiaobiLog;
-import com.wtshop.model.Sms;
-import com.wtshop.service.AccountService;
-import com.wtshop.service.MemberService;
-import com.wtshop.service.MiaobiLogService;
-import com.wtshop.service.SmsService;
+import com.wtshop.model.*;
+import com.wtshop.service.*;
 import com.wtshop.util.ApiResult;
 import com.wtshop.util.RedisUtil;
 import com.wtshop.util.SMSUtils;
@@ -43,8 +37,9 @@ public class AccountAPIController extends BaseAPIController {
 	private SmsService smsService = enhance(SmsService.class);
 	private AccountService accountService = enhance(AccountService.class);
 	private MiaobiLogService miaobiLogService = enhance(MiaobiLogService.class);
-	
-	
+	private InformationService informationService = Enhancer.enhance(InformationService.class);
+	private IntegralLogService integralLogService =enhance(IntegralLogService.class);
+	final freemarker.log.Logger logger = freemarker.log.Logger.getLogger("AccountAPIController");
 	/**
 	 * 检查用户名是否被禁用或已存在
 	 * {"msg":"","code":1,"data":false}
@@ -220,12 +215,14 @@ public class AccountAPIController extends BaseAPIController {
 		JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
 		Map<String,Object>  map=  new HashMap<>();
 		double sendMiaoBi=0;
+		double sendIntegra=0;
 		if(StringUtils.isNotEmpty(onShareCode)||(me==null||me.size()==0)){
 			sendMiaoBi = redisSetting.getDouble("registerSending") ;//邀请码赠送喵币
+
 		}else {
 			sendMiaoBi = redisSetting.getDouble("registerSending") + redisSetting.getDouble("vipSending");//邀请码赠送喵币
 		}
-
+		sendIntegra=redisSetting.getDouble("integraRregisterSending") ;
 
 		MiaobiLog miaobiLog = new MiaobiLog();
 		miaobiLog.setMemberId(member.getId());
@@ -234,8 +231,31 @@ public class AccountAPIController extends BaseAPIController {
 		miaobiLog.setType(0);
 		miaobiLog.setMemo("注册成功赠送");
 		miaobiLog.setBalance(member.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
+
+
+
+		IntegralLog integralLog=new IntegralLog();
+		integralLog.setCredit(BigDecimal.valueOf(sendIntegra));
+		integralLog.setMemo("注册成功赠送");
+		integralLog.setBalance(member.getIntegral());
+		integralLog.setCredit(BigDecimal.valueOf(sendIntegra));
+		integralLog.setDebit(BigDecimal.ZERO);
+		integralLog.setType(1);
+
+		integralLog.setMemberId(member.getId());
+
+		integralLogService.save(integralLog);
+		logger.info("开始极光推送服务————————————————————————");
+		try {
+			informationService.intergraRregisterMessage(integralLog);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		logger.info("结束极光推送服务————————————————————————");
+
 		//更新用户喵币
 		member.setPoint(member.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
+		member.setIntegral(member.getIntegral().add(BigDecimal.valueOf(sendIntegra)).setScale(2, BigDecimal.ROUND_HALF_UP));
 		miaobiLogService.save(miaobiLog);
 		memberService.update(member);
 

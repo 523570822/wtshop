@@ -526,7 +526,7 @@ public void onShareCode(){
 	JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
 
 	double sendMiaoBi=0;
-	sendMiaoBi = redisSetting.getDouble("registerSending") ;//邀请码赠送喵币
+	sendMiaoBi = redisSetting.getDouble("vipSending") ;//邀请码赠送喵币
 	String linkShareCode = me.get(0).getLinkShareCode() + "_" + me.get(0).getShareCode();
 	m.setLinkShareCode(linkShareCode);
 	m.setOnShareCode(onShareCode);

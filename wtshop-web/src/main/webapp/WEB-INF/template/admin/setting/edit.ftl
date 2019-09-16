@@ -1393,9 +1393,9 @@ $().ready(function() {
                 </th>
                 <td>
 					[#if redisSetting.registerSending??]
-                        <input id="shareSending" type="text" name="setting.hour" class="text" value="${redisSetting.hour}" title=" 团购开始前多久提醒（h） " maxlength="200" />
+                        <input  type="text" name="setting.hour" class="text" value="${redisSetting.hour}" title=" 团购开始前多久提醒（h） " maxlength="200" />
 					[#else ]
-						<input id="shareSending" type="text" name="setting.hour" class="text" value="${setting.hour}" title=" 团购开始前多久提醒（h）"  maxlength="200" />
+						<input  type="text" name="setting.hour" class="text" value="${setting.hour}" title=" 团购开始前多久提醒（h）"  maxlength="200" />
 					[/#if]
                 </td>
             </tr>
@@ -1539,6 +1539,7 @@ $().ready(function() {
 				<td>
 				</td>
             </tr>
+
             <tr>
                 <th>
                     ${message("setting.miaobi.select")}:
@@ -1555,13 +1556,25 @@ $().ready(function() {
             </tr>
             <tr>
                 <th>
+			注册积分赠送:
+                </th>
+                <td>
+					[#if redisSetting.integraRregisterSending??]
+						<input id="integraRregisterSending" type="text" name="setting.integraRregisterSending" class="text" value="${redisSetting.integraRregisterSending}" maxlength="200" "/>
+					[#else ]
+                        <input id="integraRregisterSending" type="text" name="setting.integraRregisterSending" class="text" value="${redisSetting.integraRregisterSending}" maxlength="200""/>
+					[/#if]
+                </td>
+            </tr>
+			<tr>
+                <th>
 				积分赠送比例:
                 </th>
                 <td>
 					[#if redisSetting.sendMiaoBiLimit??]
 						<input id="sendMiaoBiLimit" type="text" name="setting.sendMiaoBiLimit" class="text" value="${redisSetting.sendMiaoBiLimit}" maxlength="200" title="${message("setting.sendmiaobi.limit")}"/>
 					[#else ]
-                        <input id="sendMiaoBiLimit" type="text" name="setting.sendMiaoBiLimit" class="text" value="${setting.sendMiaoBiLimit}" maxlength="200" title="${message("setting.sendmiaobi.limit")}"/>
+                        <input id="sendMiaoBiLimit" type="text" name="setting.sendMiaoBiLimit" class="text" value="${redisSetting.sendMiaoBiLimit}" maxlength="200" title="${message("setting.sendmiaobi.limit")}"/>
 					[/#if]
                 </td>
             </tr>

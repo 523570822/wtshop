@@ -269,6 +269,15 @@ public class Setting implements Serializable {
 	private Double scale;
 	/** 喵币抵扣额度 */
 	private Double integralLimit;
+	private Double integraRregisterSending;
+
+	public Double getIntegraRregisterSending() {
+		return integraRregisterSending;
+	}
+
+	public void setIntegraRregisterSending(Double integraRregisterSending) {
+		this.integraRregisterSending = integraRregisterSending;
+	}
 
 	/** 喵币抵扣比例 */
 	private Double integralScale;

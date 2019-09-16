@@ -110,6 +110,7 @@
 	<setting name="taxExplain" value="" />
 	<setting name="isRegisterSending" value="true" />
 	<setting name="registerSending" value="200" />
+	<setting name="integraRregisterSending" value="200" />
 	<setting name="vipSending" value="200" />
 	<setting name="shareSending" value="200" />
 	<setting name="housekeeperSending" value="200" />

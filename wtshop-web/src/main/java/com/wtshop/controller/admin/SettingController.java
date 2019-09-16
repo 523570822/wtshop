@@ -190,6 +190,7 @@ public class SettingController extends BaseController {
 		redisSetting.put("integralLimit",setting.getIntegralLimit());
 		redisSetting.put("integralScale",setting.getIntegralScale());
 		redisSetting.put("zhiFuFanBi",setting.getZhiFuFanBi());
+		redisSetting.put("integraRregisterSending",setting.getIntegraRregisterSending());
 
 		RedisUtil.setString("freeMoney",setting.getFreeMoney()+"");
 
@@ -244,7 +245,7 @@ public class SettingController extends BaseController {
 		if (watermarkImageFile != null && watermarkImageFile.getFile().length() <= 0) {
 			if (!fileService.isValid(FileType.image, watermarkImageFile)) {
 				addFlashMessage(Message.error("admin.upload.invalid"));
-				redirect("edit.jhtml");
+				redirect("/admin/setting/edit.jhtml");
 			}
 			String watermarkImage = fileService.uploadLocal(FileType.image, watermarkImageFile);
 			setting.setWatermarkImage(watermarkImage);
@@ -265,7 +266,7 @@ public class SettingController extends BaseController {
 //		staticService.generateOther();
 
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("edit.jhtml");
+		redirect("/admin/setting/edit.jhtml");
 	}
 
 }
