@@ -162,7 +162,8 @@ public class LoginAPIController extends BaseAPIController {
         }
 
         if (member == null) {
-
+            Double sendIntegra=0d;
+            sendIntegra=redisSetting.getDouble("integraRregisterSending") ;
             codes = 9001;
             member = new Member();
             member.setIsDelete(false);
@@ -178,6 +179,7 @@ public class LoginAPIController extends BaseAPIController {
             member.setLoginIp(request.getRemoteAddr());
             member.setMemberRankId(1L);
             member.setIsEnabled(true);
+            member.setIntegral(BigDecimal.valueOf(sendIntegra));
             Member dddd = memberService.save(member);
             Account account1 = new Account();
             account1.setAccount(openid);
@@ -186,8 +188,6 @@ public class LoginAPIController extends BaseAPIController {
             account1.setNickname(nickname);
             account1.setMemberId(dddd.getId());
             Account dd = accountService.save(account1);
-            Double sendIntegra=0d;
-            sendIntegra=redisSetting.getDouble("integraRregisterSending") ;
             CodeResult codeResult = new CodeResult(codes, MathUtil.getInt(sendIntegra.toString()), dd.getId(),"",openid,unionid);
 
             IntegralLog integralLog=new IntegralLog();
@@ -199,7 +199,7 @@ public class LoginAPIController extends BaseAPIController {
             integralLog.setType(1);
 
             integralLog.setMemberId(member.getId());
-
+            integralLogService.save(integralLog);
 
             renderJson(ApiResult.success(codeResult, "登录成功"));
             return;

@@ -240,10 +240,11 @@ public class UserPayAPIController extends BaseAPIController {
         SimpleDateFormat sdf =new SimpleDateFormat("yyyy年MM月dd HH:mm:ss SSS" );
         Date d= new Date();
         String str = sdf.format(d);
-        template.add("keyword3",nickName);
+        template.add("keyword3",str);
         template.add("keyword2",nickName);
-        template.add("keyword1",integral+"积分");
-        template.add("keyword4","注册成功，送您的"+integral+"积分已到账");
+        template.add("keyword1",nickName);
+        template.add("keyword4","注册成功");
+        template.add("keyword5","注册成功，送您的"+integral+"积分已到账");
         _logger.info("微信推送开始"+template.build().toString());
         Map<String, Object> ddd123 = accountService.getXCXSend(template);
         _logger.info("微信推送结束"+ddd123.toString());
