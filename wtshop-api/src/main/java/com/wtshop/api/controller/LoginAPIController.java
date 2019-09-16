@@ -249,6 +249,7 @@ public class LoginAPIController extends BaseAPIController {
 
     //app微信登陆
     public void codeSubmit() {
+        JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
         String code = getPara("code");
         HttpServletRequest request = getRequest();
         Map<String, Object> access_token = accountService.getAccess_token(code);
@@ -283,6 +284,8 @@ public class LoginAPIController extends BaseAPIController {
         }
 
         if (member == null) {
+            Double sendIntegra=0d;
+            sendIntegra=redisSetting.getDouble("integraRregisterSending") ;
             member = new Member();
             member.setIsDelete(false);
             member.setOpenId(openid);
@@ -296,6 +299,7 @@ public class LoginAPIController extends BaseAPIController {
             member.setLoginDate(new Date());
             member.setLoginIp(request.getRemoteAddr());
             member.setMemberRankId(1L);
+            member.setIntegral(BigDecimal.valueOf(sendIntegra));
             member.setIsEnabled(true);
             memberService.save(member);
 
@@ -306,6 +310,17 @@ public class LoginAPIController extends BaseAPIController {
             account1.setNickname(nickname);
             account1.setMemberId(member.getId());
             accountService.save(account1);
+
+            IntegralLog integralLog=new IntegralLog();
+            integralLog.setCredit(BigDecimal.valueOf(sendIntegra));
+            integralLog.setMemo("注册成功赠送");
+            integralLog.setBalance(member.getIntegral());
+            integralLog.setCredit(BigDecimal.valueOf(sendIntegra));
+            integralLog.setDebit(BigDecimal.ZERO);
+            integralLog.setType(1);
+
+            integralLog.setMemberId(member.getId());
+            integralLogService.save(integralLog);
 
             codes = 9001;
             accountId = account1.getId();
@@ -353,6 +368,7 @@ public class LoginAPIController extends BaseAPIController {
 
 
     public void qqcodeSubmit() {
+        JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
         String openId = getPara("openId");
         String unionid = getPara("unionid");
         //验证 先去member表里查
@@ -369,6 +385,8 @@ public class LoginAPIController extends BaseAPIController {
         }
         int codes = 9000; //不需要绑定手机号
         if (member == null) {
+            Double sendIntegra=0d;
+            sendIntegra=redisSetting.getDouble("integraRregisterSending") ;
             member = new Member();
             member.setIsDelete(false);
             member.setOpenId(openId);
@@ -378,9 +396,22 @@ public class LoginAPIController extends BaseAPIController {
             member.setPrestore(BigDecimal.ZERO);
             member.setCommission(BigDecimal.ZERO);
             member.setRecharge(BigDecimal.ZERO);
+            member.setIntegral(BigDecimal.valueOf(sendIntegra));
             member.setIsEnabled(true);
             member.setMemberRankId(1L);
             memberService.save(member);
+
+            IntegralLog integralLog=new IntegralLog();
+            integralLog.setCredit(BigDecimal.valueOf(sendIntegra));
+            integralLog.setMemo("注册成功赠送");
+            integralLog.setBalance(member.getIntegral());
+            integralLog.setCredit(BigDecimal.valueOf(sendIntegra));
+            integralLog.setDebit(BigDecimal.ZERO);
+            integralLog.setType(1);
+
+            integralLog.setMemberId(member.getId());
+            integralLogService.save(integralLog);
+
 
             Account account1 = new Account();
             account1.setAccount(openId);

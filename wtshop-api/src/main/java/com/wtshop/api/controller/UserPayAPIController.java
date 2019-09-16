@@ -237,7 +237,7 @@ public class UserPayAPIController extends BaseAPIController {
         template.setPage("pages/main/main");
         template.setTemplate_id("Bq1pdddkHBRoFvidksZd0Rsmz-yNmQFw4TsRXGeav9U");
         //template.add("keyword1",integral+"");
-        SimpleDateFormat sdf =new SimpleDateFormat("yyyy年MM月dd HH:mm:ss SSS" );
+        SimpleDateFormat sdf =new SimpleDateFormat("yyyy年MM月dd HH:mm:ss" );
         Date d= new Date();
         String str = sdf.format(d);
         template.add("keyword3",str);
