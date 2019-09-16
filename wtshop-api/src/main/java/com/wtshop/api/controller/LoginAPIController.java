@@ -21,6 +21,7 @@ import com.wtshop.model.Member;
 import com.wtshop.model.MiaobiLog;
 import com.wtshop.service.*;
 import com.wtshop.util.ApiResult;
+import com.wtshop.util.MathUtil;
 import com.wtshop.util.MyRequest;
 import com.wtshop.util.RedisUtil;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -185,9 +186,9 @@ public class LoginAPIController extends BaseAPIController {
             account1.setNickname(nickname);
             account1.setMemberId(dddd.getId());
             Account dd = accountService.save(account1);
-            double sendIntegra=0;
+            Double sendIntegra=0d;
             sendIntegra=redisSetting.getDouble("integraRregisterSending") ;
-            CodeResult codeResult = new CodeResult(codes,sendIntegra+"", dd.getId(),"",openid,unionid);
+            CodeResult codeResult = new CodeResult(codes, MathUtil.getInt(sendIntegra.toString()), dd.getId(),"",openid,unionid);
 
             IntegralLog integralLog=new IntegralLog();
             integralLog.setCredit(BigDecimal.valueOf(sendIntegra));
