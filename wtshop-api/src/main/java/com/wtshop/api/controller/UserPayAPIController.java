@@ -222,6 +222,34 @@ public class UserPayAPIController extends BaseAPIController {
          renderJson(ApiResult.success());
     }
     /**
+     *支付成功后推送
+     */
+    public void   successfulRegistered(){
+        Long  integral = getParaToLong("integral");
+        String   fromId = getPara("fromId","");
+        String   openid = getPara("openid","");
+
+        WxaTemplate template=new WxaTemplate();
+        template.setTouser(openid);
+        //	template.setEmphasis_keyword("给力");
+        template.setForm_id(fromId);
+        template.setPage("pages/main/main");
+        template.setTemplate_id("sK2pxYoo46AY-ijs_f_cfSsMG91Rn-TzHAmeZmcUYFI");
+        //template.add("keyword1",integral+"");
+        SimpleDateFormat sdf =new SimpleDateFormat("yyyy年MM月dd HH:mm:ss SSS" );
+        Date d= new Date();
+        String str = sdf.format(d);
+        template.add("keyword1",str);
+        template.add("keyword2",integral+"积分");
+        template.add("keyword3",integral+"积分");
+        template.add("keyword4",integral+"积分");
+        _logger.info("微信推送开始"+template.build().toString());
+        Map<String, Object> ddd123 = accountService.getXCXSend(template);
+        _logger.info("微信推送结束"+ddd123.toString());
+
+        renderJson(ApiResult.success());
+    }
+    /**
      * 支付宝 回调地址
      */
     public void alipaySuccess() {

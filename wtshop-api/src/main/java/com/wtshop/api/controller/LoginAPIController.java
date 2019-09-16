@@ -16,6 +16,7 @@ import com.wtshop.api.common.token.TokenManager;
 import com.wtshop.api.interceptor.ErrorInterceptor;
 import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.Account;
+import com.wtshop.model.IntegralLog;
 import com.wtshop.model.Member;
 import com.wtshop.model.MiaobiLog;
 import com.wtshop.service.*;
@@ -39,6 +40,9 @@ public class LoginAPIController extends BaseAPIController {
     private AccountService accountService = enhance(AccountService.class);
     private SmsService smsService = enhance(SmsService.class);
     private MiaobiLogService miaobiLogService = enhance(MiaobiLogService.class);
+    private IntegralLogService integralLogService =enhance(IntegralLogService.class);
+    private InformationService informationService = enhance(InformationService.class);
+    final freemarker.log.Logger logger = freemarker.log.Logger.getLogger("LoginAPIController");
     public void submit() {
         String username = getPara("username1");
         String password = getPara("password1");
@@ -103,6 +107,7 @@ public class LoginAPIController extends BaseAPIController {
 
     }
     public void codeXCXSubmit() throws UnsupportedEncodingException {
+        JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
         String code = getPara("code");
         String img = getPara("img","");
         String nickname = getPara("name","");
@@ -180,7 +185,21 @@ public class LoginAPIController extends BaseAPIController {
             account1.setNickname(nickname);
             account1.setMemberId(dddd.getId());
             Account dd = accountService.save(account1);
-            CodeResult codeResult = new CodeResult(codes,"", dd.getId(),"",openid,unionid);
+            double sendIntegra=0;
+            sendIntegra=redisSetting.getDouble("integraRregisterSending") ;
+            CodeResult codeResult = new CodeResult(codes,sendIntegra+"", dd.getId(),"",openid,unionid);
+
+            IntegralLog integralLog=new IntegralLog();
+            integralLog.setCredit(BigDecimal.valueOf(sendIntegra));
+            integralLog.setMemo("注册成功赠送");
+            integralLog.setBalance(member.getIntegral());
+            integralLog.setCredit(BigDecimal.valueOf(sendIntegra));
+            integralLog.setDebit(BigDecimal.ZERO);
+            integralLog.setType(1);
+
+            integralLog.setMemberId(member.getId());
+
+
             renderJson(ApiResult.success(codeResult, "登录成功"));
             return;
 
