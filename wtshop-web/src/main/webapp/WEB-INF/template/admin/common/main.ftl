@@ -393,6 +393,7 @@
 							[#break /]
 						[/@shiro.hasPermission]
 					[/#list]
+					[#--活动管理--]
                     [#list ["admin:miaobiGoods", "admin:promotion" ] as permission]
 						[@shiro.hasPermission name = permission]
 							<div class="panel panel-default">
@@ -415,6 +416,7 @@
 											[/@shiro.hasPermission]
 											[@shiro.hasPermission name="admin:fullreduction"]
 												<li><a href="../fullReduction/list.jhtml" target="iframe">${message("admin.main.fullreduction")}</a></li>
+												<li><a href="../fullAnti/list.jhtml" target="iframe">线下满反管理</a></li>
 											[/@shiro.hasPermission]
 
 												[@shiro.hasPermission name="admin:activity"]
@@ -431,6 +433,7 @@
 							[#break /]
 						[/@shiro.hasPermission]
 					[/#list]
+					[#--倒拍管理--]
 					[#list ["admin:reverseAuctionPerm:list"  ] as permission]
 						[@shiro.hasPermission name = permission]
                             <div class="panel panel-default">

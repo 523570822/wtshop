@@ -27,6 +27,7 @@ public class _MappingKit {
 		arp.addMapping("ad", "id", Ad.class);
 		arp.addMapping("ad_position", "id", AdPosition.class);
 		arp.addMapping("admin", "id", Admin.class);
+		arp.addMapping("full_anti", "id", FullAnti.class);
 		// Composite Primary Key order: admins,roles
 		arp.addMapping("admin_role", "admins,roles", AdminRole.class);
 		arp.addMapping("appManage", "id", AppManage.class);

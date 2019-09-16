@@ -171,7 +171,7 @@
         [/#list]
     </table>
     [@pagination pageNumber = page.pageNumber totalPages = page.totalPage]
-        [#include "${base}/admin/include/pagination.ftl"]
+        [#include "/admin/include/pagination.ftl"]
     [/@pagination]
 </form>
 
