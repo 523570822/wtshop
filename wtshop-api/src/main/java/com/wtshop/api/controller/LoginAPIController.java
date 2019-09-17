@@ -159,9 +159,9 @@ public class LoginAPIController extends BaseAPIController {
                 member = memberService.find(account2.getMemberId());
             }
         }
-
+        Double sendIntegra=0d;
         if (member == null) {
-            Double sendIntegra=0d;
+
             sendIntegra=redisSetting.getDouble("integraRregisterSending") ;
             codes = 9001;
             member = new Member();
@@ -238,7 +238,7 @@ public class LoginAPIController extends BaseAPIController {
         actCache.set("ORDERMMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("STAFFMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("SOUND:" + member.getId(),"default");
-        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode(),openid,unionid,0d);
+        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode(),openid,unionid,sendIntegra);
         renderJson(ApiResult.success(codeResult, "登录成功"));
     }
 
@@ -279,9 +279,9 @@ public class LoginAPIController extends BaseAPIController {
                 member = memberService.find(account1.getMemberId());
             }
         }
-
+        Double sendIntegra=0d;
         if (member == null) {
-            Double sendIntegra=0d;
+
             sendIntegra=redisSetting.getDouble("integraRregisterSending") ;
             member = new Member();
             member.setIsDelete(false);
@@ -318,6 +318,15 @@ public class LoginAPIController extends BaseAPIController {
 
             integralLog.setMemberId(member.getId());
             integralLogService.save(integralLog);
+
+            logger.info("开始极光推送服务————————————————————————");
+            try {
+                informationService.intergraRregisterMessage(integralLog);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            logger.info("结束极光推送服务————————————————————————");
+
 
             codes = 9001;
             accountId = account1.getId();
@@ -358,7 +367,7 @@ public class LoginAPIController extends BaseAPIController {
         actCache.set("ORDERMMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("STAFFMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("SOUND:" + member.getId(),"default");
-        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode(),openid,unionid,0d);
+        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode(),openid,unionid,sendIntegra);
         renderJson(ApiResult.success(codeResult, "登录成功"));
     }
 
