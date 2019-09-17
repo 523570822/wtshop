@@ -290,6 +290,7 @@
 							[#break /]
 						[/@shiro.hasPermission]
 					[/#list]
+					[#--会员管理--]
                     [#list ["admin:member", "admin:certificates_shenhe", "admin:review" ,"admin:consultation", "admin:messageConfig", "admin:feedback","admin:identifier"] as permission]
 						[@shiro.hasPermission name = permission]
 							<div class="panel panel-default">
@@ -422,7 +423,7 @@
 												[@shiro.hasPermission name="admin:activity"]
 												<li><a href="../activity/list.jhtml" target="iframe">${message("admin.main.activity")}</a></li>
 												<li><a href="../raffle/list.jhtml" target="iframe">${message("admin.main.raffle")}</a></li>
-
+                                                <li><a href="../activityStore/list.jhtml" target="iframe">门店/非门店审核</a></li>
 												[/@shiro.hasPermission]
 
 
