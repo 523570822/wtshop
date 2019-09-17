@@ -236,7 +236,6 @@ public class AccountAPIController extends BaseAPIController {
 
 
 		IntegralLog integralLog=new IntegralLog();
-		integralLog.setCredit(BigDecimal.valueOf(sendIntegra));
 		integralLog.setMemo("注册成功赠送");
 		integralLog.setBalance(member.getIntegral());
 		integralLog.setCredit(BigDecimal.valueOf(sendIntegra));

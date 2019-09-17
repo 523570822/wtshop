@@ -16,6 +16,15 @@ public class CodeResult implements Serializable{
 
     private Long accountId;
     private String   openid;
+    private Double   sendIntegra;
+
+    public Double getSendIntegra() {
+        return sendIntegra;
+    }
+
+    public void setSendIntegra(Double sendIntegra) {
+        this.sendIntegra = sendIntegra;
+    }
 
     public String getOpenid() {
         return openid;
@@ -35,13 +44,14 @@ public class CodeResult implements Serializable{
 
     private String   unionid;
 
-    public CodeResult(int code, String token, Long accountId,String shareCode,String openid,String unionid) {
+    public CodeResult(int code, String token, Long accountId,String shareCode,String openid,String unionid,Double sendIntegra) {
         this.code = code;
         this.token = token;
         this.accountId = accountId;
         this.shareCode = shareCode;
         this.openid = openid;
         this.unionid = unionid;
+        this.sendIntegra = sendIntegra;
     }
     private String shareCode;
 

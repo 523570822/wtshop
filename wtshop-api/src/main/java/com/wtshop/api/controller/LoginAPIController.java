@@ -21,7 +21,6 @@ import com.wtshop.model.Member;
 import com.wtshop.model.MiaobiLog;
 import com.wtshop.service.*;
 import com.wtshop.util.ApiResult;
-import com.wtshop.util.MathUtil;
 import com.wtshop.util.MyRequest;
 import com.wtshop.util.RedisUtil;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -188,10 +187,9 @@ public class LoginAPIController extends BaseAPIController {
             account1.setNickname(nickname);
             account1.setMemberId(dddd.getId());
             Account dd = accountService.save(account1);
-            CodeResult codeResult = new CodeResult(codes, MathUtil.getInt(sendIntegra.toString()), dd.getId(),"",openid,unionid);
+            CodeResult codeResult = new CodeResult(codes,"" , dd.getId(),"",openid,unionid,sendIntegra);
 
             IntegralLog integralLog=new IntegralLog();
-            integralLog.setCredit(BigDecimal.valueOf(sendIntegra));
             integralLog.setMemo("注册成功赠送");
             integralLog.setBalance(member.getIntegral());
             integralLog.setCredit(BigDecimal.valueOf(sendIntegra));
@@ -240,8 +238,7 @@ public class LoginAPIController extends BaseAPIController {
         actCache.set("ORDERMMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("STAFFMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("SOUND:" + member.getId(),"default");
-        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode(),openid,unionid);
-
+        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode(),openid,unionid,0d);
         renderJson(ApiResult.success(codeResult, "登录成功"));
     }
 
@@ -361,7 +358,7 @@ public class LoginAPIController extends BaseAPIController {
         actCache.set("ORDERMMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("STAFFMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("SOUND:" + member.getId(),"default");
-        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode(),openid,unionid);
+        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode(),openid,unionid,0d);
         renderJson(ApiResult.success(codeResult, "登录成功"));
     }
 
@@ -446,7 +443,7 @@ public class LoginAPIController extends BaseAPIController {
         actCache.set("ORDERMMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("STAFFMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("SOUND:" + member.getId(),"default");
-        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode(),openId,"");
+        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode(),openId,"",0d);
         renderJson(ApiResult.success(codeResult, "登录成功"));
     }
 
@@ -517,7 +514,7 @@ public class LoginAPIController extends BaseAPIController {
         actCache.set("ORDERMMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("STAFFMESSAGR_SWITCH:" + member.getId(),true);
         actCache.set("SOUND:" + member.getId(),"default");
-        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode(),openId,"");
+        CodeResult codeResult = new CodeResult(codes,token, accountId,member.getShareCode(),openId,"",0d);
         renderJson(ApiResult.success(codeResult , "登录成功"));
     }
 
