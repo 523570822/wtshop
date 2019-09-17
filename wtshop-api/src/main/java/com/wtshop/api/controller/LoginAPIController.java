@@ -598,9 +598,11 @@ public class LoginAPIController extends BaseAPIController {
                 map.put("sendMiaobi",sendMiaoBi);
                 map.put("title","注册成功");
                 map.put("type",1);
-
+                Double sendIntegra=0d;
+                sendIntegra=redisSetting.getDouble("integraRregisterSending") ;
                 map.put("miaobilId",0);
                 map.put("token",token);
+                map.put("sendIntegra",sendIntegra);
 
 
                 renderJson(ApiResult.success(map));
