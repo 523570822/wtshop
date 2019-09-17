@@ -178,7 +178,7 @@ public class LoginAPIController extends BaseAPIController {
             member.setLoginIp(request.getRemoteAddr());
             member.setMemberRankId(1L);
             member.setIsEnabled(true);
-            member.setIntegral(BigDecimal.valueOf(sendIntegra));
+
             Member dddd = memberService.save(member);
             Account account1 = new Account();
             account1.setAccount(openid);
@@ -309,7 +309,6 @@ public class LoginAPIController extends BaseAPIController {
             accountService.save(account1);
 
             IntegralLog integralLog=new IntegralLog();
-            integralLog.setCredit(BigDecimal.valueOf(sendIntegra));
             integralLog.setMemo("注册成功赠送");
             integralLog.setBalance(member.getIntegral());
             integralLog.setCredit(BigDecimal.valueOf(sendIntegra));
@@ -319,13 +318,28 @@ public class LoginAPIController extends BaseAPIController {
             integralLog.setMemberId(member.getId());
             integralLogService.save(integralLog);
 
-            logger.info("开始极光推送服务————————————————————————");
-            try {
-                informationService.intergraRregisterMessage(integralLog);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            logger.info("结束极光推送服务————————————————————————");
+
+            /**
+             *反现短信提醒
+             */
+            Map<String, Object> params = new HashMap<String, Object>();
+
+            params.put("sendIntegra",sendIntegra);
+
+  /*          ApiResult result = SMSUtils.send(member2.getPhone(),"SMS_173405304", params);
+            //ApiResult result = SMSUtils.send("", "", params);
+            if(result.resultSuccess()) {
+                // sm.setex("PONHE:"+mobile,120,"1");
+                Sms sms = new Sms();
+                sms.setMobile(member2.getPhone());
+                sms.setSmsCode(member2.getNickname()+"用户完成了一笔"+order.getAmount()+"元的订单，您的门店积分占该用户总积分的"+bili*100d+"%，因此获得"+fanXianMoney+"元积分抵扣收益，详情请查看钱包—使用明细。");
+                sms.setSmsType(Setting.SmsType.other.ordinal());
+                smsService.saveOrUpdate(sms);
+                logger.info(member2.getNickname()+"用户完成了一笔"+order.getAmount()+"元的订单，您的门店积分占该用户总积分的"+bili*100d+"%，因此获得"+fanXianMoney+"元积分抵扣收益，详情请查看钱包—使用明细。");
+            }else {
+                logger.info("您发送的过于频繁,请稍后再试!");
+            }*/
+
 
 
             codes = 9001;
@@ -557,16 +571,19 @@ public class LoginAPIController extends BaseAPIController {
                 return;
             }
      //   }
-
-
+        JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
+        Double sendIntegra=0d;
+        sendIntegra=redisSetting.getDouble("integraRregisterSending") ;
 
 
         Account account = accountService.find(accountId);
         if(account != null){
+
             Member member = memberService.find(account.getMemberId());
             if(member != null){
                 member.setPhone(phone);
                 member.setPassword(passWordMD);
+                member.setIntegral(BigDecimal.valueOf(sendIntegra));
                 memberService.update(member);
 
                 setSessionAttr(Member.PRINCIPAL_ATTRIBUTE_NAME, new Principal(member.getId(), member.getUsername()));
@@ -581,7 +598,7 @@ public class LoginAPIController extends BaseAPIController {
 
 
 
-                JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
+
                 Double sendMiaoBi = redisSetting.getDouble("registerSending");;
                 MiaobiLog miaobiLog = new MiaobiLog();
                 miaobiLog.setMemberId(member.getId());
@@ -598,8 +615,7 @@ public class LoginAPIController extends BaseAPIController {
                 map.put("sendMiaobi",sendMiaoBi);
                 map.put("title","注册成功");
                 map.put("type",1);
-                Double sendIntegra=0d;
-                sendIntegra=redisSetting.getDouble("integraRregisterSending") ;
+
                 map.put("miaobilId",0);
                 map.put("token",token);
                 map.put("sendIntegra",sendIntegra);
@@ -614,7 +630,7 @@ public class LoginAPIController extends BaseAPIController {
         renderJson(ApiResult.fail("系统错误,请稍后尝试"));
     }
     /**
-     * 手机号绑定
+     * 合并手机号手机号绑定
      */
     public void phoneBangXCX(){
 
