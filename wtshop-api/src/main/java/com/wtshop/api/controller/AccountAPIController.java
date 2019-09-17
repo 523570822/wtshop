@@ -233,7 +233,7 @@ public class AccountAPIController extends BaseAPIController {
 
 
 
-	/*
+
 		double sendIntegra=0;
 		sendIntegra=redisSetting.getDouble("integraRregisterSending") ;
 
@@ -247,17 +247,31 @@ public class AccountAPIController extends BaseAPIController {
 		integralLog.setMemberId(member.getId());
 
 		integralLogService.save(integralLog);
-		logger.info("开始极光推送服务————————————————————————");
-		try {
-			informationService.intergraRregisterMessage(integralLog);
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		/**
+		 *反现短信提醒
+		 */
+		Map<String, Object> params = new HashMap<String, Object>();
+
+		params.put("sendIntegra",sendIntegra);
+
+		ApiResult result = SMSUtils.send(username,"SMS_174210178", params);
+		//ApiResult result = SMSUtils.send("", "", params);
+		if(result.resultSuccess()) {
+			// sm.setex("PONHE:"+mobile,120,"1");
+			Sms sms = new Sms();
+			sms.setMobile(username);
+			sms.setSmsCode("注册成功，送您的"+sendIntegra+"积分已到账。");
+			sms.setSmsType(Setting.SmsType.other.ordinal());
+			smsService.saveOrUpdate(sms);
+			logger.info("注册成功，送您的"+sendIntegra+"积分已到账。");
+		}else {
+			logger.info("您发送的过于频繁,请稍后再试!");
 		}
-		logger.info("结束极光推送服务————————————————————————");
-*/
+
+
 		//更新用户喵币
 		member.setPoint(member.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
-	//	member.setIntegral(member.getIntegral().add(BigDecimal.valueOf(sendIntegra)).setScale(2, BigDecimal.ROUND_HALF_UP));
+		member.setIntegral(member.getIntegral().add(BigDecimal.valueOf(sendIntegra)).setScale(2, BigDecimal.ROUND_HALF_UP));
 		miaobiLogService.save(miaobiLog);
 		memberService.update(member);
 
