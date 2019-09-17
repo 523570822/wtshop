@@ -271,6 +271,7 @@ public class AccountAPIController extends BaseAPIController {
 
 
 		//更新用户喵币
+
 		member.setPoint(member.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
 		member.setIntegral(member.getIntegral().add(BigDecimal.valueOf(sendIntegra)).setScale(2, BigDecimal.ROUND_HALF_UP));
 		miaobiLogService.save(miaobiLog);

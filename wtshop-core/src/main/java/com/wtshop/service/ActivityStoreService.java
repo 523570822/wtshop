@@ -7,6 +7,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import com.wtshop.Pageable;
 import com.wtshop.dao.CertificatesDao;
 import com.wtshop.dao.MemberDao;
+import com.wtshop.model.ActivityStore;
 import com.wtshop.model.Certificates;
 import com.wtshop.util.ObjectUtils;
 
@@ -16,13 +17,13 @@ import java.util.Map;
 /**
  * Created by 蔺哲 on 2017/5/25.
  */
-public class ActivityStoreService extends BaseService<Certificates> {
+public class ActivityStoreService extends BaseService<ActivityStore> {
 
     private CertificatesDao certificatesDao = Enhancer.enhance(CertificatesDao.class);
 
     private MemberDao memberDao = Enhancer.enhance(MemberDao.class);
     public ActivityStoreService(){
-        super(Certificates.class);
+        super(ActivityStore.class);
     }
     public Certificates queryByMemberId(Long memberId){
         return certificatesDao.queryByMemberId(memberId);

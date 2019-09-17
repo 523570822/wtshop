@@ -217,6 +217,7 @@ if(StringUtils.isNotEmpty(linkShareCode)){
 		member.setIsDelete(false);
 		member.setIsVip(isVip);
 		member.setAvatar(setting.getAvatar());
+		member.setIntegral(BigDecimal.ZERO);
 		Member me1 = memberDao.saveModel(member);
 
 
