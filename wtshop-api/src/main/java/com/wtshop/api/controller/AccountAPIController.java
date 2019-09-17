@@ -222,8 +222,6 @@ public class AccountAPIController extends BaseAPIController {
 		}else {
 			sendMiaoBi = redisSetting.getDouble("registerSending") + redisSetting.getDouble("vipSending");//邀请码赠送喵币
 		}
-		double sendIntegra=0;
-		sendIntegra=redisSetting.getDouble("integraRregisterSending") ;
 
 		MiaobiLog miaobiLog = new MiaobiLog();
 		miaobiLog.setMemberId(member.getId());
@@ -235,7 +233,11 @@ public class AccountAPIController extends BaseAPIController {
 
 
 
-		IntegralLog integralLog=new IntegralLog();
+	/*
+		double sendIntegra=0;
+		sendIntegra=redisSetting.getDouble("integraRregisterSending") ;
+
+	IntegralLog integralLog=new IntegralLog();
 		integralLog.setMemo("注册成功赠送");
 		integralLog.setBalance(member.getIntegral());
 		integralLog.setCredit(BigDecimal.valueOf(sendIntegra));
@@ -252,10 +254,10 @@ public class AccountAPIController extends BaseAPIController {
 			ex.printStackTrace();
 		}
 		logger.info("结束极光推送服务————————————————————————");
-
+*/
 		//更新用户喵币
 		member.setPoint(member.getPoint().add(BigDecimal.valueOf(sendMiaoBi)).setScale(2, BigDecimal.ROUND_HALF_UP));
-		member.setIntegral(member.getIntegral().add(BigDecimal.valueOf(sendIntegra)).setScale(2, BigDecimal.ROUND_HALF_UP));
+	//	member.setIntegral(member.getIntegral().add(BigDecimal.valueOf(sendIntegra)).setScale(2, BigDecimal.ROUND_HALF_UP));
 		miaobiLogService.save(miaobiLog);
 		memberService.update(member);
 

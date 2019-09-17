@@ -15,14 +15,12 @@ import com.wtshop.api.common.result.CodeResult;
 import com.wtshop.api.common.token.TokenManager;
 import com.wtshop.api.interceptor.ErrorInterceptor;
 import com.wtshop.interceptor.WapInterceptor;
-import com.wtshop.model.Account;
-import com.wtshop.model.IntegralLog;
-import com.wtshop.model.Member;
-import com.wtshop.model.MiaobiLog;
+import com.wtshop.model.*;
 import com.wtshop.service.*;
 import com.wtshop.util.ApiResult;
 import com.wtshop.util.MyRequest;
 import com.wtshop.util.RedisUtil;
+import com.wtshop.util.SMSUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -585,7 +583,6 @@ public class LoginAPIController extends BaseAPIController {
                 member.setPassword(passWordMD);
                 member.setIntegral(BigDecimal.valueOf(sendIntegra));
                 memberService.update(member);
-
                 setSessionAttr(Member.PRINCIPAL_ATTRIBUTE_NAME, new Principal(member.getId(), member.getUsername()));
                 String token = TokenManager.getMe().generateToken(member);
                 RedisUtil.setString(token, 60 * 60 * 24 * 7, String.valueOf(member.getId()));
@@ -596,7 +593,36 @@ public class LoginAPIController extends BaseAPIController {
                 actCache.set("STAFFMESSAGR_SWITCH:" + member.getId(),true);
                 actCache.set("SOUND:" + member.getId(),"default");
 
+                IntegralLog integralLog=new IntegralLog();
+                integralLog.setMemo("注册成功赠送");
+                integralLog.setBalance(member.getIntegral());
+                integralLog.setCredit(BigDecimal.valueOf(sendIntegra));
+                integralLog.setDebit(BigDecimal.ZERO);
+                integralLog.setType(1);
 
+                integralLog.setMemberId(member.getId());
+
+                integralLogService.save(integralLog);
+/**
+ *反现短信提醒
+ */
+                Map<String, Object> params = new HashMap<String, Object>();
+
+                params.put("sendIntegra",sendIntegra);
+
+                ApiResult result = SMSUtils.send(phone,"SMS_174210178", params);
+                //ApiResult result = SMSUtils.send("", "", params);
+                if(result.resultSuccess()) {
+                    // sm.setex("PONHE:"+mobile,120,"1");
+                    Sms sms = new Sms();
+                    sms.setMobile(phone);
+                    sms.setSmsCode("注册成功，送您的"+sendIntegra+"积分已到账。");
+                    sms.setSmsType(Setting.SmsType.other.ordinal());
+                    smsService.saveOrUpdate(sms);
+                    logger.info("注册成功，送您的"+sendIntegra+"积分已到账。");
+                }else {
+                    logger.info("您发送的过于频繁,请稍后再试!");
+                }
 
 
                 Double sendMiaoBi = redisSetting.getDouble("registerSending");;
