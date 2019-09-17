@@ -6,6 +6,7 @@ import com.jfinal.aop.Enhancer;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.plugin.redis.Cache;
 import com.jfinal.plugin.redis.Redis;
 import com.wtshop.CommonAttributes;
@@ -118,6 +119,7 @@ public class AccountAPIController extends BaseAPIController {
 	 * 注册提交
 	 * {"msg":"请求成功","code":1,"data":{}}
 	 */
+	@Before(Tx.class)
 	public void register(){
 		String username = getPara("phone");
         String smsCode = getPara("smsCode");
@@ -236,7 +238,6 @@ public class AccountAPIController extends BaseAPIController {
 
 		double sendIntegra=0;
 		sendIntegra=redisSetting.getDouble("integraRregisterSending") ;
-
 	IntegralLog integralLog=new IntegralLog();
 		integralLog.setMemo("注册成功赠送");
 		integralLog.setBalance(member.getIntegral());
