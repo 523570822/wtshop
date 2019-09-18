@@ -418,12 +418,13 @@
 											[@shiro.hasPermission name="admin:fullreduction"]
 												<li><a href="../fullReduction/list.jhtml" target="iframe">${message("admin.main.fullreduction")}</a></li>
 												<li><a href="../fullAnti/list.jhtml" target="iframe">线下满反管理</a></li>
+											   <li><a href="../activityStore/list.jhtml" target="iframe">门店/非门店审核</a></li>
 											[/@shiro.hasPermission]
 
 												[@shiro.hasPermission name="admin:activity"]
 												<li><a href="../activity/list.jhtml" target="iframe">${message("admin.main.activity")}</a></li>
 												<li><a href="../raffle/list.jhtml" target="iframe">${message("admin.main.raffle")}</a></li>
-                                                <li><a href="../activityStore/list.jhtml" target="iframe">门店/非门店审核</a></li>
+
 												[/@shiro.hasPermission]
 
 

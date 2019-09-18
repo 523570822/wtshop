@@ -2,10 +2,8 @@ package com.wtshop.api.controller.member;
 
 import com.alibaba.common.logging.Logger;
 import com.alibaba.common.logging.LoggerFactory;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
-import com.jfinal.aop.Enhancer;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
@@ -17,18 +15,17 @@ import com.wtshop.Setting;
 import com.wtshop.api.common.result.PointResult;
 import com.wtshop.api.common.result.member.CountResult;
 import com.wtshop.api.common.result.member.MemberMessageResult;
-import com.wtshop.util.*;
 import com.wtshop.api.controller.BaseAPIController;
 import com.wtshop.api.interceptor.ErrorInterceptor;
 import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.*;
 import com.wtshop.service.*;
+import com.wtshop.util.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +46,7 @@ public class MemberAPIController extends BaseAPIController {
 	private InterestCategoryService interestCategoryService = enhance(InterestCategoryService.class);
 	private SkinTypeService skinTypeService = enhance(SkinTypeService.class);
 	private CertificatesService certificatesService = enhance(CertificatesService.class);
+	private ActivityStoreService activityStoreService = enhance(ActivityStoreService.class);
 	private ReceiverService receiverService = enhance(ReceiverService.class);
 	private MemberService memberService = enhance(MemberService.class);
 	private MiaobiLogService miaobiLogService = enhance(MiaobiLogService.class);
@@ -176,7 +174,12 @@ public class MemberAPIController extends BaseAPIController {
 			price = rechange.get("price").toString();
 		}
 
-
+		ActivityStore ac = activityStoreService.queryByMemberId(member.getId());
+		if(ac==null){
+			member.set("storeState",3);
+		}else{
+			member.set("",ac.getState());
+		}
 
 		MemberMessageResult memberMessageResult = null;
 		if(certificates != null){
@@ -382,7 +385,27 @@ public class MemberAPIController extends BaseAPIController {
 		renderJson(ApiResult.successMsg("上传成功,等待后台审核"));
 
 	}
-	
+	/**
+	 * 审核用户名和身份证
+	 */
+
+	public void stroeApplication(){
+		Member member = memberService.getCurrent();
+		ActivityStore activityStore = getModel(ActivityStore.class);
+
+		ActivityStore certificates = activityStoreService.queryByMemberId(member.getId());
+		if( certificates == null){
+
+			activityStoreService.save(activityStore);
+			renderJson(ApiResult.successMsg("上传成功,等待后台审核"));
+			log.info("_______________________________上传成功姓名和身份证号成功：____________________________" );
+		}
+		activityStore.setId(certificates.getId());
+		activityStoreService.update(activityStore);
+		log.info("_______________________________上传成功姓名和身份证号成功：____________________________" );
+		renderJson(ApiResult.successMsg("上传成功,等待后台审核"));
+
+	}
 	/**
 	 * 上传身份证 正面
 	 */

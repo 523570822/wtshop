@@ -2,26 +2,26 @@ package com.wtshop.dao;
 
 import com.jfinal.plugin.activerecord.Page;
 import com.wtshop.Pageable;
-import com.wtshop.model.Certificates;
+import com.wtshop.model.ActivityStore;
 import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by 蔺哲 on 2017/5/25.
  */
-public class ActivityStoreDao extends BaseDao<Certificates> {
-    public ActivityStoreDao(){super(Certificates.class);}
+public class ActivityStoreDao extends BaseDao<ActivityStore> {
+    public ActivityStoreDao(){super(ActivityStore.class);}
 
-    public Certificates queryByMemberId(Long memberId){
-        String sql = "select * from certificates where member_id = " + memberId;
+    public ActivityStore queryByMemberId(Long memberId){
+        String sql = "select * from activity_store where member_id = " + memberId;
         return modelManager.findFirst(sql);
     }
 
     /**
      * 根据状态分页查询
      */
-    public Page<Certificates> findShenHePage(String username, String create_date, Pageable pageable, Integer type){
+    public Page<ActivityStore> findShenHePage(String username, String create_date, Pageable pageable, Integer type){
 
-            String sql = "From certificates where 1 = 1";
+            String sql = "From activity_store where 1 = 1";
             if(type != null && 4 != type){
 
                 sql +=" AND state = " + type;

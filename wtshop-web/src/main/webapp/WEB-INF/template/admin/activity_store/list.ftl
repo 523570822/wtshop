@@ -105,16 +105,10 @@
                 <input type="checkbox" id="selectAll" />
             </th>
             <th>
-                <a href="javascript:;" class="sort" name="nick">${message("admin.referrerGoods.mName")}</a>
-            </th>
-            <th>
                 <a href="javascript:;" class="sort" name="name">${message("Footprint.nickname")}</a>
             </th>
             <th>
                 <a href="javascript:;" class="sort" name="phone">${message("Member.mobile")}</a>
-            </th>
-            <th>
-                <a href="javascript:;" class="sort" name="id_card">${message("shen.idcard")}</a>
             </th>
             <th>
                 <a href="javascript:;" class="sort" name="create_date">${message("shen.create_time")}</a>
@@ -132,16 +126,10 @@
                     <input type="checkbox" name="ids" value="${certificates.id}" />
                 </td>
                 <td>
-                    ${abbreviate(certificates.member.nickname, 50, "...")}
-                </td>
-                <td>
                      ${abbreviate(certificates.name, 50, "...")}
                 </td>
                 <td>
                 ${abbreviate(certificates.phone, 50, "...")}
-                </td>
-                <td>
-                     ${abbreviate(certificates.id_card, 50, "...")}
                 </td>
                 <td>
                     <span title="${certificates.createDate?string("yyyy-MM-dd HH:mm:ss")}">${certificates.createDate}</span>

@@ -2,8 +2,8 @@ package com.wtshop.controller.admin;
 
 import com.jfinal.ext.route.ControllerBind;
 import com.wtshop.Pageable;
-import com.wtshop.model.Certificates;
-import com.wtshop.service.CertificatesService;
+import com.wtshop.model.ActivityStore;
+import com.wtshop.service.ActivityStoreService;
 import com.wtshop.service.MemberService;
 
 import java.util.Map;
@@ -15,7 +15,7 @@ import java.util.Map;
 public class ActivityStoreController extends BaseController{
 
     private MemberService memberService = enhance(MemberService.class);
-    private CertificatesService certificatesService = enhance(CertificatesService.class);
+    private ActivityStoreService certificatesService = enhance(ActivityStoreService.class);
 
 
     public void list(){
@@ -23,7 +23,7 @@ public class ActivityStoreController extends BaseController{
         Pageable pageable = getBean(Pageable.class);
         setAttr("pageable", pageable);
         setAttr("page", certificatesService.findShenHePage( pageable, type));
-        render("/admin/certificates_shenhe/list.ftl");
+        render("/admin/activity_store/list.ftl");
     }
 
 
@@ -37,7 +37,7 @@ public class ActivityStoreController extends BaseController{
     public void shenhe(){
         Long certificatesId = getParaToLong("certificatesId");
         Integer type = getParaToInt("type");
-        Certificates certificates = certificatesService.find(certificatesId);
+        ActivityStore certificates = certificatesService.find(certificatesId);
         Map result = certificatesService.updateCertificates(certificates,type);
         renderJson(result);
     }

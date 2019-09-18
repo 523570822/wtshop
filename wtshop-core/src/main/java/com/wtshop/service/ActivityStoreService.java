@@ -5,10 +5,9 @@ import com.jfinal.aop.Enhancer;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.wtshop.Pageable;
-import com.wtshop.dao.CertificatesDao;
+import com.wtshop.dao.ActivityStoreDao;
 import com.wtshop.dao.MemberDao;
 import com.wtshop.model.ActivityStore;
-import com.wtshop.model.Certificates;
 import com.wtshop.util.ObjectUtils;
 
 import java.util.HashMap;
@@ -19,17 +18,17 @@ import java.util.Map;
  */
 public class ActivityStoreService extends BaseService<ActivityStore> {
 
-    private CertificatesDao certificatesDao = Enhancer.enhance(CertificatesDao.class);
+    private ActivityStoreDao certificatesDao = Enhancer.enhance(ActivityStoreDao.class);
 
     private MemberDao memberDao = Enhancer.enhance(MemberDao.class);
     public ActivityStoreService(){
         super(ActivityStore.class);
     }
-    public Certificates queryByMemberId(Long memberId){
+    public ActivityStore queryByMemberId(Long memberId){
         return certificatesDao.queryByMemberId(memberId);
     }
     @Before(Tx.class)
-    public Map updateCertificates(Certificates certificates,Integer type){
+    public Map updateCertificates(ActivityStore certificates,Integer type){
         Map result = new HashMap();
         if(ObjectUtils.isEmpty(certificates)){
             result.put("result",false);
@@ -48,7 +47,7 @@ public class ActivityStoreService extends BaseService<ActivityStore> {
     /**
      *
      */
-    public Page<Certificates> findShenHePage( Pageable pageable, Integer type){
+    public Page<ActivityStore> findShenHePage( Pageable pageable, Integer type){
         String username = null ;
         String create_date = null;
         String searchProperty = pageable.getSearchProperty();
