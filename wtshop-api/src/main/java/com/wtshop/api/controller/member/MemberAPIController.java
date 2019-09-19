@@ -176,9 +176,11 @@ public class MemberAPIController extends BaseAPIController {
 
 		ActivityStore ac = activityStoreService.queryByMemberId(member.getId());
 		if(ac==null){
-			member.set("storeState",3);
+			member.put("storeState",3);
+			member.put("storeType",0);
 		}else{
-			member.set("",ac.getState());
+			member.put("storeState",ac.getState());
+			member.put("storeType",ac.getType());
 		}
 
 		MemberMessageResult memberMessageResult = null;

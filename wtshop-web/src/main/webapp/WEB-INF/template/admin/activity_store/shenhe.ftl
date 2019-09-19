@@ -79,14 +79,6 @@
     <table class="input">
         <tr>
             <th>
-            ${message("admin.referrerGoods.mName")}:
-            </th>
-            <td>
-               ${certificates.member.nickname}
-            </td>
-        </tr>
-        <tr>
-            <th>
             ${message("Footprint.nickname")}:
             </th>
             <td>
@@ -103,15 +95,47 @@
         </tr>
         <tr>
             <th>
-            ${message("shen.idcard")}:
+                邮箱:
             </th>
             <td>
-            ${certificates.id_card}
+                ${certificates.mailbox}
             </td>
         </tr>
         <tr>
             <th>
-            ${message("shen.create_time")}:
+              现住址：
+            </th>
+            <td>
+                ${certificates.address}
+            </td>
+        </tr>
+        <tr>
+            <th>
+              店铺名称：
+            </th>
+            <td>
+                ${certificates.phone}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                门店名称：
+            </th>
+            <td>
+                ${certificates.storeName}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                门店优惠：
+            </th>
+            <td>
+                ${certificates.storeDiscount}
+            </td>
+        </tr>
+        <tr>
+            <th>
+            身份证正面:
             </th>
             <td>
             ${certificates.create_date}
@@ -119,7 +143,7 @@
         </tr>
         <tr>
             <th>
-            ${message("admin.shenhe.zheng")}:
+                身份证正面:
             </th>
             <td id="positiveImg">
                 <img src="${fileServer}${certificates.positiveImg}" layer-src= "${fileServer}${certificates.positiveImg}" height="100"  width="150">
@@ -127,10 +151,26 @@
         </tr>
         <tr>
             <th>
-            ${message("admin.shenhe.fan")}::
+                身份证反面:
             </th>
             <td id="oppositeImg">
                 <img src="${fileServer}${certificates.oppositeImg}" layer-src= "${fileServer}${certificates.oppositeImg}" height="100" width="150">
+            </td>
+        </tr>
+        <tr>
+            <th>
+              本人近照:
+            </th>
+            <td id="oppositeImg">
+                <img src="${fileServer}${certificates.recent_photo}" layer-src= "${fileServer}${certificates.recent_photo}" height="100" width="150">
+            </td>
+        </tr>
+        <tr>
+            <th>
+               门店营业执照:
+            </th>
+            <td id="oppositeImg">
+                <img src="${fileServer}${certificates.business_license}" layer-src= "${fileServer}${certificates.business_license}" height="100" width="150">
             </td>
         </tr>
         <tr>

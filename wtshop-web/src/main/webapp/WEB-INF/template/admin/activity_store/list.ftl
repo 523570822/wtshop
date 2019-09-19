@@ -43,7 +43,7 @@
                     type: 2,
                     skin: 'layui-layer-rim', //加上边框
                     area: ['870px', '540px'], //宽高
-                    content: "../../admin/certificates_shenhe/toShenHe.jhtml?certificatesId=" + id,
+                    content: "../../admin/activityStore/toShenHe.jhtml?certificatesId=" + id,
                     shadeClose:true,
                 });
             })

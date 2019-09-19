@@ -30,7 +30,7 @@ public class ActivityStoreController extends BaseController{
     public void toShenHe(){
         Long certificatesId = getParaToLong("certificatesId");
         setAttr("certificates",certificatesService.find(certificatesId));
-        render("/admin/certificates_shenhe/shenhe.ftl");
+        render("/admin/activity_store/shenhe.ftl");
     }
 
 
