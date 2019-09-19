@@ -415,6 +415,18 @@ public class MemberAPIController extends BaseAPIController {
 
 	}
 	/**
+	 * 门店申请
+	 * 审核用户名和身份证
+	 */
+
+	public void showStroeApplication(){
+		Member member = memberService.getCurrent();
+
+		ActivityStore certificates = activityStoreService.queryByMemberId(member.getId());
+		renderJson(ApiResult.success(certificates,"上传成功,等待后台审核"));
+
+	}
+	/**
 	 * 上传身份证 正面
 	 */
 	public void IDcardPosUpload() {
