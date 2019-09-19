@@ -37,7 +37,7 @@
                 })
             });
             $fail.click(function () {
-                alert($feedback.length);
+              //  alert($feedback.length);
                 if($feedback.length==0){
                     alert("不通过必须写反馈内容");
                     return;
