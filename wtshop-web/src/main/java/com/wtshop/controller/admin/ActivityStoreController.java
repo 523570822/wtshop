@@ -36,8 +36,10 @@ public class ActivityStoreController extends BaseController{
 
     public void shenhe(){
         Long certificatesId = getParaToLong("certificatesId");
+        String  feedback = getPara("feedback","");
         Integer type = getParaToInt("type");
         ActivityStore certificates = certificatesService.find(certificatesId);
+        certificates.setFeedback(feedback);
         Map result = certificatesService.updateCertificates(certificates,type);
         renderJson(result);
     }

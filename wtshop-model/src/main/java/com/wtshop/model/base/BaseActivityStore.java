@@ -153,4 +153,20 @@ public abstract class BaseActivityStore<M extends BaseActivityStore<M>> extends 
 		return get("business_license");
 	}
 
+	public void setFeedback(String feedback) {
+		set("feedback", feedback);
+	}
+
+	public String getFeedback() {
+		return get("feedback");
+	}
+
+	public void setStoreName(String storeName) {
+		set("store_name", storeName);
+	}
+
+	public String getStoreName() {
+		return get("store_name");
+	}
+
 }

@@ -388,6 +388,7 @@ public class MemberAPIController extends BaseAPIController {
 
 	}
 	/**
+	 * 门店申请
 	 * 审核用户名和身份证
 	 */
 
@@ -395,6 +396,9 @@ public class MemberAPIController extends BaseAPIController {
 		Member member = memberService.getCurrent();
 		ActivityStore activityStore = getModel(ActivityStore.class);
 		activityStore.setMemberId(member.getId());
+
+		String sss = com.wtshop.util.StringUtils.getEncoding(activityStore.getName());
+		activityStore.setState(0);
 		ActivityStore certificates = activityStoreService.queryByMemberId(member.getId());
 		if( certificates == null){
 
@@ -404,6 +408,7 @@ public class MemberAPIController extends BaseAPIController {
 			return;
 		}
 		activityStore.setId(certificates.getId());
+
 		activityStoreService.update(activityStore);
 		log.info("_______________________________上传成功姓名和身份证号成功：____________________________" );
 		renderJson(ApiResult.successMsg("上传成功,等待后台审核"));

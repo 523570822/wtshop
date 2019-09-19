@@ -25,7 +25,6 @@ import javax.servlet.ServletOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -397,6 +396,7 @@ public void findButler(){
         Member member = memberService.getCurrent();
         List<Member> mmss = memberService.findMemberByOnShareJ(member.getShareCode());
         ButlerUpgradeLog butlerUpgradeLog = getModel(ButlerUpgradeLog.class);
+
         String name= URLDecoder.decode(butlerUpgradeLog.getName(),"UTF-8");
         String address= URLDecoder.decode(butlerUpgradeLog.getAddress(),"UTF-8");
         //String bank_name = URLDecoder.decode(butlerUpgradeLog.getBankName(),"UTF-8");

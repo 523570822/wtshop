@@ -22,10 +22,11 @@
             var $inputForm = $("#inputForm");
             var $fail = $("#fail");
             var $success = $("#success");
+            var $feedback = $("#feedback").val();
             var $back = $("#back");
             [@flash_message /]
             $success.click(function () {
-                $.post("../../admin/certificates_shenhe/shenhe.jhtml",{"type":1,"certificatesId":id},function (data) {
+                $.post("../../admin/activityStore/shenhe.jhtml",{"type":1,"certificatesId":id},function (data) {
                     if(data.result){
                         parent.layer.msg(data.msg,{shade: 0,time:1000,icon:1});
                     }else {
@@ -36,7 +37,12 @@
                 })
             });
             $fail.click(function () {
-                $.post("../../admin/certificates_shenhe/shenhe.jhtml",{"type":2,"certificatesId":id},function (data) {
+                alert($feedback.length);
+                if($feedback.length==0){
+                    alert("不通过必须写反馈内容");
+                    return;
+                }
+                $.post("../../admin/activityStore/shenhe.jhtml",{"type":2,"certificatesId":id,"feedback":$feedback},function (data) {
                     if(data.result){
                         parent.layer.msg(data.msg,{shade: 0,time:1000,icon:1});
                     }else {
@@ -199,7 +205,7 @@
                 反馈内容:
             </th>
             <td id="feedback">
-                <textarea name ="feedback" rows="5" cols="60" maxlength="150" title="150" > </textarea>
+                <textarea id="feedback" name ="feedback" rows="5" cols="60" maxlength="150" title="150" > </textarea>
             </td>
         </tr>
         <tr>
