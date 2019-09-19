@@ -401,6 +401,7 @@ public class MemberAPIController extends BaseAPIController {
 			activityStoreService.save(activityStore);
 			renderJson(ApiResult.successMsg("上传成功,等待后台审核"));
 			log.info("_______________________________上传成功姓名和身份证号成功：____________________________" );
+			return;
 		}
 		activityStore.setId(certificates.getId());
 		activityStoreService.update(activityStore);
