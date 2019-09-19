@@ -3,6 +3,7 @@ package com.wtshop.controller.admin;
 import com.jfinal.ext.route.ControllerBind;
 import com.wtshop.Pageable;
 import com.wtshop.model.ActivityStore;
+import com.wtshop.model.Member;
 import com.wtshop.service.ActivityStoreService;
 import com.wtshop.service.MemberService;
 
@@ -39,6 +40,9 @@ public class ActivityStoreController extends BaseController{
         String  feedback = getPara("feedback","");
         Integer type = getParaToInt("type");
         ActivityStore certificates = certificatesService.find(certificatesId);
+        Member member=memberService.find(certificates.getMemberId());
+
+        certificates.getStoreName();
         certificates.setFeedback(feedback);
         Map result = certificatesService.updateCertificates(certificates,type);
         renderJson(result);
