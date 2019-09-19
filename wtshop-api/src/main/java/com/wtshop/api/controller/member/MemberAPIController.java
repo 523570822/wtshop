@@ -394,7 +394,7 @@ public class MemberAPIController extends BaseAPIController {
 	public void stroeApplication(){
 		Member member = memberService.getCurrent();
 		ActivityStore activityStore = getModel(ActivityStore.class);
-
+		activityStore.setMemberId(member.getId());
 		ActivityStore certificates = activityStoreService.queryByMemberId(member.getId());
 		if( certificates == null){
 

@@ -25,7 +25,7 @@
             var $back = $("#back");
             [@flash_message /]
             $success.click(function () {
-                $.post("/admin/certificates_shenhe/shenhe.jhtml",{"type":1,"certificatesId":id},function (data) {
+                $.post("../../admin/certificates_shenhe/shenhe.jhtml",{"type":1,"certificatesId":id},function (data) {
                     if(data.result){
                         parent.layer.msg(data.msg,{shade: 0,time:1000,icon:1});
                     }else {
@@ -36,7 +36,7 @@
                 })
             });
             $fail.click(function () {
-                $.post("/admin/certificates_shenhe/shenhe.jhtml",{"type":2,"certificatesId":id},function (data) {
+                $.post("../../admin/certificates_shenhe/shenhe.jhtml",{"type":2,"certificatesId":id},function (data) {
                     if(data.result){
                         parent.layer.msg(data.msg,{shade: 0,time:1000,icon:1});
                     }else {
@@ -135,7 +135,7 @@
         </tr>
         <tr>
             <th>
-            身份证正面:
+            创建时间:
             </th>
             <td>
             ${certificates.create_date}
@@ -146,7 +146,11 @@
                 身份证正面:
             </th>
             <td id="positiveImg">
-                <img src="${fileServer}${certificates.positiveImg}" layer-src= "${fileServer}${certificates.positiveImg}" height="100"  width="150">
+                 	[#if certificates.positiveImg?default("")?trim?length gt 1]
+                        <img src="${fileServer}${certificates.positiveImg}" layer-src= "${fileServer}${certificates.positiveImg}" height="100" width="150">
+                    [#else ]
+                        照片没有上传
+                    [/#if]
             </td>
         </tr>
         <tr>
@@ -154,7 +158,12 @@
                 身份证反面:
             </th>
             <td id="oppositeImg">
-                <img src="${fileServer}${certificates.oppositeImg}" layer-src= "${fileServer}${certificates.oppositeImg}" height="100" width="150">
+                  	[#if certificates.oppositeImg?default("")?trim?length gt 1]
+                        <img src="${fileServer}${certificates.oppositeImg}" layer-src= "${fileServer}${certificates.oppositeImg}" height="100" width="150">
+                    [#else ]
+   照片没有上传
+                    [/#if]
+
             </td>
         </tr>
         <tr>
@@ -162,7 +171,12 @@
               本人近照:
             </th>
             <td id="oppositeImg">
-                <img src="${fileServer}${certificates.recent_photo}" layer-src= "${fileServer}${certificates.recent_photo}" height="100" width="150">
+                	[#if certificates.recent_photo?default("")?trim?length gt 1]
+                        <img src="${fileServer}${certificates.recent_photo}" layer-src= "${fileServer}${certificates.recent_photo}" height="100" width="150">
+                    [#else ]
+   照片没有上传
+                    [/#if]
+
             </td>
         </tr>
         <tr>
@@ -170,7 +184,22 @@
                门店营业执照:
             </th>
             <td id="oppositeImg">
-                <img src="${fileServer}${certificates.business_license}" layer-src= "${fileServer}${certificates.business_license}" height="100" width="150">
+                 	[#if certificates.business_license?default("")?trim?length gt 1]
+                        <img src="${fileServer}${certificates.business_license}" layer-src= "${fileServer}${certificates.business_license}" height="100" width="150">
+                    [#else ]
+   照片没有上传
+                    [/#if]
+
+
+            </td>
+        </tr>
+        <tr>
+        <tr>
+            <th>
+                反馈内容:
+            </th>
+            <td id="feedback">
+                <textarea name ="feedback" rows="5" cols="60" maxlength="150" title="150" > </textarea>
             </td>
         </tr>
         <tr>
