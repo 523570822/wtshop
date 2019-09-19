@@ -22,7 +22,7 @@
             var $inputForm = $("#inputForm");
             var $fail = $("#fail");
             var $success = $("#success");
-            var $feedback = $("#feedback").val();
+         //   var $feedback = $("#feedback").val();
             var $back = $("#back");
             [@flash_message /]
             $success.click(function () {
@@ -37,7 +37,8 @@
                 })
             });
             $fail.click(function () {
-              //  alert($feedback.length);
+                var $feedback = $("#feedback").val();
+                alert($feedback);
                 if($feedback.length==0){
                     alert("不通过必须写反馈内容");
                     return;
@@ -204,7 +205,7 @@
             <th>
                 反馈内容:
             </th>
-            <td id="feedback">
+            <td >
                 <textarea id="feedback" name ="feedback" rows="5" cols="60" maxlength="150" title="150" > </textarea>
             </td>
         </tr>
