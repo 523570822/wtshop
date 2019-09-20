@@ -113,4 +113,12 @@ public abstract class BaseFullAnti<M extends BaseFullAnti<M>> extends Model<M> i
 		return get("integral");
 	}
 
+	public void setType(byte[] type) {
+		set("type", type);
+	}
+
+	public byte[] getType() {
+		return get("type");
+	}
+
 }

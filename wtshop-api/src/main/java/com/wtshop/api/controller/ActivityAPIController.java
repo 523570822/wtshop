@@ -32,7 +32,7 @@ public class ActivityAPIController extends  BaseAPIController{
     private MiaobiLogService miaobiLogService = enhance(MiaobiLogService.class);
     private ActivityProductService activityProductService = enhance(ActivityProductService.class);
   private FullReductionService fullReductionService =enhance(FullReductionService.class);
-
+    private FullAntiService fullAntiService=enhance(FullAntiService.class);
   public void fullReduction(){
 
       List<FullReduction> kkk = fullReductionService.findAll();
@@ -40,6 +40,15 @@ public class ActivityAPIController extends  BaseAPIController{
 
   }
 
+    /**
+     * 线下满反
+     */
+    public void fullAnti(){
+
+        List<FullAnti> kkk = fullAntiService.findAll();
+        renderJson(ApiResult.success(kkk));
+
+    }
     /**
      * 猜你喜欢
      */

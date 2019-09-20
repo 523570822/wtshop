@@ -41,7 +41,8 @@ public class ActivityStoreController extends BaseController{
         Integer type = getParaToInt("type");
         ActivityStore certificates = certificatesService.find(certificatesId);
         Member member=memberService.find(certificates.getMemberId());
-
+        member.setStore(certificates.getStoreName());
+        memberService.update(member);
         certificates.getStoreName();
         certificates.setFeedback(feedback);
         Map result = certificatesService.updateCertificates(certificates,type);

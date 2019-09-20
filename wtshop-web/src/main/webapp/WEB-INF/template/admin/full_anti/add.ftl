@@ -198,12 +198,26 @@ $().ready(function() {
 			</tr>
 			<tr>
 				<th>
-					<span class="requiredField">*</span>返给用户内容:
+					<span class="requiredField">*</span>返给用户物品:
 				</th>
 				<td>
 					<input type="text" name="fullAnti.title" class="text" maxlength="200" />
 				</td>
 			</tr>
+            <tr>
+                <th>
+                    <span class="requiredField">*</span>请选择:
+                </th>
+                <td>
+					<select  name="fullAnti.type" class="text"  >
+						<option value="0">50元电话卡</option>
+						<option value="1">100元电话卡</option>
+						<option value="3">100元购物卡</option>
+                        <option value="4">200元购物卡</option>
+                        <option value="5">300元购物卡</option>
+					</select>
+                </td>
+            </tr>
             <tr>
                 <th>
                     <span class="requiredField">*</span>${message("Promotion.total_money")}:

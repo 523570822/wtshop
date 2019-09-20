@@ -105,6 +105,9 @@ public class CouponPromptManager implements ITask {
         Prop prop = PropKit.use(CommonAttributes.wtshop_PROPERTIES_PATH);
         List<Identifier> specialCouponList = identifierService.findByDay("1", day+"");
         Cache sm = Redis.use();
+        if(specialCouponList!=null){
+
+
         for (Identifier specialCoupon:specialCouponList) {
            String mobile=specialCoupon.member.getPhone();
             BigDecimal price = specialCoupon.getTotalMoney().multiply(specialCoupon.getPrice());;
@@ -149,6 +152,7 @@ public class CouponPromptManager implements ITask {
                 }
 
             }
+        }
         }
     };
 
