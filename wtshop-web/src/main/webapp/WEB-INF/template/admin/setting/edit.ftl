@@ -1614,7 +1614,18 @@ $().ready(function() {
 					[/#if]
                 </td>
             </tr>
-
+            <tr>
+                <th>
+                   钜惠卡额返现比例:
+                </th>
+                <td>
+					[#if redisSetting.integralScale??]
+                        <input type="text" name="setting.juHuiFanBi" class="text" value="${redisSetting.juHuiFanBi}" maxlength="200" title="当输入0.1的时候表示用户得到10%门店得到90% 的返现"/>
+					[#else ]
+                        <input type="text" name="setting.juHuiFanBi" class="text" value="${setting.juHuiFanBi}" maxlength="200" title="当输入0.1的时候表示用户得到10%门店得到90% 的返现"/>
+					[/#if]
+                </td>
+            </tr>
 
         </table>
 		<table class="input">

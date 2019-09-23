@@ -824,7 +824,7 @@ public class GoodsAPIController extends BaseAPIController {
             identifier.setMoney(ss.getMoney());
             identifier.setTotalMoney(ss.getTotalMoney());
             identifier.setEndDate(date);
-            identifier.setContent(ssss.getStoreDiscount());
+            identifier.setContent((ssss!=null)?ssss.getStoreDiscount():"");
             identifier.setStartDate(date1);
             identifier.setIntegral(ss.getIntegral());
             intee=ss.getIntegral();
@@ -1144,6 +1144,7 @@ public class GoodsAPIController extends BaseAPIController {
     public void storeList() {
         Member m = memberService.getCurrent();
         Member x = new Member();
+        JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
         if (m.getOnShareCode() != null) {
             x = memberService.findByShareCode(m.getOnShareCode()).get(0);
         }
@@ -1173,7 +1174,12 @@ public class GoodsAPIController extends BaseAPIController {
         for (Identifier identifier1 : identifierL) {
             if(identifier1.getType()==2){
                 identifier1.put("store", identifier1.getOnMember().getNickname());
+
+                //反现比例
+                Double zhiFuFanBi =  redisSetting.getDouble("juHuiFanBi");
+                identifier1.setMoney(identifier1.getMoney().multiply(BigDecimal.valueOf(zhiFuFanBi)));
             }else {
+
                 identifier1.put("store", identifier1.getOnMember().getStore());
             }
 

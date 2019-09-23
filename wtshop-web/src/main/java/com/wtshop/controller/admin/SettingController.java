@@ -190,6 +190,7 @@ public class SettingController extends BaseController {
 		redisSetting.put("integralLimit",setting.getIntegralLimit());
 		redisSetting.put("integralScale",setting.getIntegralScale());
 		redisSetting.put("zhiFuFanBi",setting.getZhiFuFanBi());
+		redisSetting.put("juHuiFanBi",setting.getJuHuiFanBi());
 		redisSetting.put("integraRregisterSending",setting.getIntegraRregisterSending());
 
 		RedisUtil.setString("freeMoney",setting.getFreeMoney()+"");

@@ -291,8 +291,18 @@ public class Setting implements Serializable {
 	}
 
 	private Double zhiFuFanBi;
+	private Double juHuiFanBi;
+
+	public Double getJuHuiFanBi() {
+		return juHuiFanBi;
+	}
+
+	public void setJuHuiFanBi(Double juHuiFanBi) {
+		this.juHuiFanBi = juHuiFanBi;
+	}
 
 	/** 是否开启赠送喵币 */
+
 	private Boolean isSendMiaoBi;
 
 	/** 喵币赠送比例 */
