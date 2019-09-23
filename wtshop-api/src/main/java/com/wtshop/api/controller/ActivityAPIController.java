@@ -3,6 +3,7 @@ package com.wtshop.api.controller;
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Pageable;
 import com.wtshop.model.*;
 import com.wtshop.util.ApiResult;
@@ -45,8 +46,19 @@ public class ActivityAPIController extends  BaseAPIController{
      */
     public void fullAnti(){
 
-        List<FullAnti> kkk = fullAntiService.findAll();
-        renderJson(ApiResult.success(kkk));
+     //   List<FullAnti> kkk = fullAntiService.findAll();
+        List<Record> totalMoneyList=fullAntiService.findTotalMoney();
+        List<Map> list=new ArrayList<>();
+
+        for (Record record : totalMoneyList) {
+            Map<Object ,Object> kkk=new HashMap<>();
+            Object  totalMoney= record.get("total_money");
+            List<FullAnti> fullAntisList=fullAntiService.findTotalMoneyList(totalMoney);
+            kkk.put("fullAntisList",fullAntisList);
+            kkk.put("totalMoney","满"+totalMoney+"活动");
+            list.add(kkk);
+        }
+        renderJson(ApiResult.success(list));
 
     }
     /**

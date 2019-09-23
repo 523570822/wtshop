@@ -101,9 +101,9 @@ public class FullAntiController extends BaseController {
 	 */
 	public void edit() {
 		Long id = getParaToLong("id");
-		setAttr("fullReduction", promotionService.find(id));
-		setAttr("memberRanks", memberRankService.findAll());
-		setAttr("coupons", couponService.findAll());
+		setAttr("fullAnti", promotionService.find(id));
+		/*setAttr("memberRanks", memberRankService.findAll());
+		setAttr("coupons", couponService.findAll());*/
 		render("/admin/full_anti/edit.ftl");
 	}
 

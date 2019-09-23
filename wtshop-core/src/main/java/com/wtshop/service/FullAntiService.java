@@ -1,8 +1,10 @@
 package com.wtshop.service;
 
 import com.jfinal.aop.Enhancer;
+import com.jfinal.plugin.activerecord.Record;
 import com.wtshop.Filter;
 import com.wtshop.Order;
+import com.wtshop.dao.FullAntiDao;
 import com.wtshop.dao.MemberRankDao;
 import com.wtshop.dao.ProductCategoryDao;
 import com.wtshop.dao.PromotionDao;
@@ -37,6 +39,8 @@ public class FullAntiService extends BaseService<FullAnti> {
 	private PromotionDao promotionDao = Enhancer.enhance(PromotionDao.class);
 	private MemberRankDao memberRankDao = Enhancer.enhance(MemberRankDao.class);
 	private ProductCategoryDao productCategoryDao = Enhancer.enhance(ProductCategoryDao.class);
+	private FullAntiDao fullAntiDao = Enhancer.enhance(FullAntiDao.class);
+
 
 	static {
 		Map<String, Object> variable0 = new HashMap<String, Object>();
@@ -206,5 +210,11 @@ public class FullAntiService extends BaseService<FullAnti> {
 
 	public void delete(FullAnti promotion) {
 		super.delete(promotion);
+	}
+	public    List<Record> findTotalMoney(){
+	    return  fullAntiDao.findTotalMoney();
+	}
+	public    List<FullAnti> findTotalMoneyList(Object totalMoey){
+		return  fullAntiDao.findTotalMoneyList(totalMoey);
 	}
 }

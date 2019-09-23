@@ -55,6 +55,7 @@ public class GoodsAPIController extends BaseAPIController {
     private SpecialGoodsService specialGoodsService = enhance(SpecialGoodsService.class);
     private IdentifierService identifierService = enhance(IdentifierService.class);
     private FullReductionService fullReductionService = enhance(FullReductionService.class);
+    private FullAntiService fullAntiService = enhance(FullAntiService.class);
     private SpecialCouponService specialCouponService = enhance(SpecialCouponService.class);
     private IntegralLogService integralLogService = enhance(IntegralLogService.class);
     private InformationService informationService = Enhancer.enhance(InformationService.class);
@@ -719,7 +720,210 @@ public class GoodsAPIController extends BaseAPIController {
         map.put("type", 1);
         renderJson(ApiResult.success(map, "绑定成功"));
     }
+    /**
+     * 绑定门店新
+     * 填写onShareCode邀请码和idfCode识别码
+     */
+    public void bindingStoreX  () {
+        String onShareCode = getPara("onShareCode", "").toUpperCase();
+       // String idfCode = getPara("idfCode", "").toUpperCase();
+        String fromId = getPara("fromId", "");
+        Long fullReId = getParaToLong("fullReId");
 
+        Identifier identifier = new Identifier();
+
+
+        Member m = memberService.getCurrent();
+        List<Member> me = memberService.findByShareCode(onShareCode);
+        ActivityStore ssss = activityStoreService.queryByMemberId(me.get(0).getId());
+
+
+        if ((StringUtils.isNotEmpty(onShareCode) && (me == null || me.size() == 0)) && (!"VA3TYG".equals(onShareCode))) {
+            renderJson(ApiResult.fail("邀请码不存在!"));
+            return;
+        }
+
+
+
+
+
+        if (me.get(0).getStore() == null || "".equals(me.get(0).getStore().trim())) {
+            renderJson(ApiResult.fail("门店不存在!"));
+            return;
+        }
+        List<Identifier> ddd = identifierService.findByOnCodeShare(onShareCode, m.getId(), "1");
+        if (ddd != null && ddd.size() > 0) {
+            renderJson(ApiResult.fail("门店使用中"));
+            return;
+        }
+        Map<String, Object> map = new HashMap<>();
+
+        if (m.getOnShareCode() == null || "".equals(m.getOnShareCode().trim())) {
+
+            Boolean bool1 = memberService.findSpByPhone(me.get(0).getPhone());
+            String shareCode = ShareCodeUtils.idToCode(m.getId());
+            if (bool1) {
+                map.put("shareCode", shareCode);
+                m.setShareCode(shareCode);
+                m.setHousekeeperId(2l);
+            } else {
+                List<Member> member2 = memberService.findByShareCode(me.get(0).getOnShareCode());
+                Boolean bool2 = memberService.findSpByPhone(member2.get(0).getPhone());
+                if (bool2) {
+                    map.put("shareCode", shareCode);
+                    m.setShareCode(shareCode);
+                    m.setHousekeeperId(2l);
+                }
+            }
+
+
+            //	String shareCode = ShareCodeUtils.idToCode(m.getId());
+            //	map.put("shareCode",shareCode);
+            //	m.setShareCode(shareCode);
+            //	m.setHousekeeperId(2l);
+            m.setOnShareCode(onShareCode);
+            String linkShareCode = me.get(0).getLinkShareCode() + "_" + me.get(0).getShareCode();
+            m.setLinkShareCode(linkShareCode);
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, 60);
+
+        Date date = cal.getTime();
+
+        Date date1 = new Date();
+        BigDecimal intee= BigDecimal.ZERO;
+        if(ssss!=null&&ssss.getType().equals("3")){
+            FullAnti ss = fullAntiService.find(fullReId);
+            if (ss == null) {
+                renderJson(ApiResult.fail("请选择满返规则"));
+                return;
+            }
+            identifier.setOfflineType(ss.getType());
+            identifier.setStatus(1);
+            identifier.setMemberId(m.getId());
+            identifier.setShareCode(onShareCode);
+            identifier.setTotalMoney(ss.getTotalMoney());
+            identifier.setEndDate(date);
+            identifier.setStartDate(date1);
+            identifier.setIntegral(ss.getIntegral());
+
+            identifier.setTitle(ss.getTitle());
+            identifier.setType(Integer.parseInt(ssss.getType()));
+            intee=ss.getIntegral();
+
+        }else {
+            FullReduction ss = fullReductionService.find(fullReId);
+            if (ss == null) {
+                renderJson(ApiResult.fail("请选择满返规则"));
+                return;
+            }
+
+            identifier.setStatus(1);
+            identifier.setMemberId(m.getId());
+            identifier.setShareCode(onShareCode);
+            identifier.setMoney(ss.getMoney());
+            identifier.setTotalMoney(ss.getTotalMoney());
+            identifier.setEndDate(date);
+            identifier.setStartDate(date1);
+            identifier.setIntegral(ss.getIntegral());
+            intee=ss.getIntegral();
+        }
+
+
+
+
+
+
+        IntegralLog integralLog = new IntegralLog();
+
+        IntegralStore integralStore = new IntegralStore();
+        IntegralStoreLog integralStoreLog = new IntegralStoreLog();
+        if (intee.compareTo(BigDecimal.ZERO) == 1) {
+            m.setIntegral(m.getIntegral().add(intee));
+            integralLog.setCredit(intee);
+            integralLog.setMemo("绑定钜惠卡返积分");
+            integralLog.setBalance(m.getIntegral());
+            integralLog.setType(0);
+            integralLog.setCredit(identifier.getIntegral());
+            integralLog.setDebit(BigDecimal.ZERO);
+            integralLog.setMemberId(m.getId());
+            integralLog.setIdentifierId(identifier.getId());
+
+            integralLogService.save(integralLog);
+
+
+            //增加门店比例
+            IntegralStore integralStore1 = integralStoreService.findStoreByMemberId(m.getId(), me.get(0).getId());
+
+
+            integralStore.setBalance(BigDecimal.ZERO);
+            if (integralStore1 != null) {
+                integralStore = integralStore1;
+                integralStore.setBalance(integralStore1.getBalance().add(identifier.getIntegral()));
+                integralStoreService.update(integralStore);
+            } else {
+                integralStore.setBalance(identifier.getIntegral());
+                integralStore.setMemberId(m.getId());
+                integralStore.setStoreMemberId(me.get(0).getId());
+                integralStoreService.save(integralStore);
+            }
+            integralStoreLog.setBalance(integralStore.getBalance());
+            integralStoreLog.setCredit(identifier.getIntegral());
+            integralStoreLog.setMemberId(m.getId());
+            integralStoreLog.setType(4);
+            integralStoreLog.setDebit(BigDecimal.ZERO);
+            integralStoreLog.setStoreMemberId(me.get(0).getId());
+            integralStoreLog.setMemo("绑定钜惠卡获取积分增加相应门店权重");
+            integralStoreLogService.update(integralStoreLog);
+
+            logger.info("开始极光推送服务————————————————————————");
+            try {
+                informationService.intergraSuccessMessage(integralLog);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            logger.info("结束极光推送服务————————————————————————");
+
+
+        }
+
+
+
+        memberService.update(m);
+            if(ssss==null){
+                identifier.setType(1);
+            }else {
+                identifier.setType(Integer.parseInt(ssss.getType()));
+            }
+
+        Identifier sssssss = identifierService.save(identifier);
+        String code = ShareCodeUtils.idToCode(sssssss.getId());
+        identifier.setCode(code);
+        identifierService.update(identifier);
+
+        Account account = accountService.findByMemberId(m.getId().toString(), "4");
+        if (StringUtils.isNotEmpty(fromId) && account != null) {
+            WxaTemplate template = new WxaTemplate();
+            template.setTouser(account.getAccount());
+            //	template.setEmphasis_keyword("给力");
+            template.setForm_id(fromId);
+            template.setPage("pages/main/main");
+            template.setTemplate_id("BnWs0CJYpp86KnFrhAZTtpXGMKP5HLUeQzcQtms9FNk");
+            template.add("keyword1", "钜惠卡");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd HH:mm:ss SSS");
+            Date d = new Date();
+            String str = sdf.format(d);
+            template.add("keyword2", str);
+            template.add("keyword3", "绑卡成功，送您的" + MathUtil.getInt(identifier.getIntegral().toString()) + "积分已到账");
+            Map<String, Object> ddd123 = accountService.getXCXSend(template);
+            logger.info("微信推送结束" + ddd123.toString());
+        }
+
+
+        map.put("title", "恭喜绑定 成功");
+        map.put("type", 1);
+        renderJson(ApiResult.success(map, "绑定成功"));
+    }
     /**
      * 绑定代金卡
      * idfCode
@@ -911,17 +1115,18 @@ public class GoodsAPIController extends BaseAPIController {
             renderJson(ApiResult.fail("门店使用中"));
             return;
         }
-        if (me.get(0).getStore() == null || "".equals(me.get(0).getStore().trim())) {
-            renderJson(ApiResult.fail("门店不存在!"));
-            return;
-        }
+
         ActivityStore ssss = activityStoreService.queryByMemberId(me.get(0).getId());
         Map<String, Object> map = new HashMap<>();
         String msg = "验证成功";
 
         if (ssss == null) {
+            if (me.get(0).getStore() == null || "".equals(me.get(0).getStore().trim())) {
+                renderJson(ApiResult.fail("门店不存在!"));
+                return;
+            }
             map.put("storeType", 1);
-            map.put("storeState ", 1);
+            map.put("storeState", 1);
         } else {
             if (ssss.getState() == 0) {
                 msg = "该邀请码正在审核中";
@@ -929,7 +1134,7 @@ public class GoodsAPIController extends BaseAPIController {
                 msg = "该邀请码待审核";
             }
             map.put("storeType", ssss.getType());
-            map.put("storeState ", ssss.getState());
+            map.put("storeState", ssss.getState());
         }
 
         renderJson(ApiResult.success(map, "验证成功"));

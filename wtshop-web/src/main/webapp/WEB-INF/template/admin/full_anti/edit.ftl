@@ -182,7 +182,7 @@ $().ready(function() {
 		<a href="${base}/admin/common/index.jhtml">${message("admin.breadcrumb.home")}</a> &raquo; ${message("admin.promotion.edit")}
 	</div>
 	<form id="inputForm" action="update.jhtml" method="post">
-		<input type="hidden" name="fullAnti.id" value="${fullReduction.id}" />
+		<input type="hidden" name="fullAnti.id" value="${fullAnti.id}" />
 		<ul id="tab" class="tab">
 			<li>
 				<input type="button" value="${message("admin.promotion.base")}" />
@@ -197,23 +197,38 @@ $().ready(function() {
 					<span class="requiredField">*</span>${message("Promotion.name")}:
 				</th>
 				<td>
-					<input type="text" name="fullAnti.name" class="text" value="${fullReduction.name}" maxlength="200" />
+					<input type="text" name="fullAnti.name" class="text" value="${fullAnti.name}" maxlength="200" />
 				</td>
 			</tr>
+
 			<tr>
 				<th>
 					<span class="requiredField">*</span>返给用户内容:
 				</th>
 				<td>
-					<input type="text" name="fullAnti.title" class="text" value="${fullReduction.title}" maxlength="200" />
+					<input type="text" name="fullAnti.title" class="text" value="${fullAnti.title}" maxlength="200" />
 				</td>
 			</tr>
+            <tr>
+                <th>
+                    <span class="requiredField">*</span>请选择:${ fullAnti.type}
+                </th>
+                <td>
+                    <select  name="fullAnti.type" class="text"  >
+                        <option value="0"  [#if fullAnti.type==0]selected[/#if]>50元电话卡</option>
+                        <option value="1" [#if fullAnti.type==1]selected[/#if]>100元电话卡</option>
+                        <option value="2"[#if fullAnti.type==2]selected[/#if]>100元购物卡</option>
+                        <option value="3"[#if fullAnti.type==3]selected[/#if]>200元购物卡</option>
+                        <option value="4"[#if fullAnti.type==4]selected[/#if]>300元购物卡</option>
+                    </select>
+                </td>
+            </tr>
             <tr>
                 <th>
                     <span class="requiredField">*</span>${message("Promotion.total_money")}:
                 </th>
                 <td>
-                    <input type="text" name="fullAnti.total_money" class="text" maxlength="200"  value="${fullReduction.total_money}" />
+                    <input type="text" name="fullAnti.total_money" class="text" maxlength="200"  value="${fullAnti.total_money}" />
                 </td>
             </tr>
 
@@ -224,7 +239,7 @@ $().ready(function() {
 					${message("admin.common.order")}:
                 </th>
                 <td>
-                    <input type="text" name="fullAnti.orders"value="${fullReduction.orders}"  class="text" maxlength="9" />
+                    <input type="text" name="fullAnti.orders"value="${fullAnti.orders}"  class="text" maxlength="9" />
                 </td>
             </tr>
 

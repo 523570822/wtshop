@@ -394,6 +394,10 @@ public class MemberAPIController extends BaseAPIController {
 
 	public void stroeApplication(){
 		Member member = memberService.getCurrent();
+		if(StringUtils.isNotEmpty(member.getShareCode())){
+			renderJson(ApiResult.fail("用户不是会员无法申请"));
+			return;
+		}
 		ActivityStore activityStore = getModel(ActivityStore.class);
 		activityStore.setMemberId(member.getId());
 

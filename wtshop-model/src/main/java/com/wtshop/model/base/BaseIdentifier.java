@@ -145,4 +145,28 @@ public abstract class BaseIdentifier<M extends BaseIdentifier<M>> extends Model<
 		return get("integral");
 	}
 
+	public void setType(Integer type) {
+		set("type", type);
+	}
+
+	public Integer getType() {
+		return get("type");
+	}
+
+	public void setContent(String content) {
+		set("content", content);
+	}
+
+	public String getContent() {
+		return get("content");
+	}
+
+	public void setOfflineType(Integer offlineType) {
+		set("offline_type", offlineType);
+	}
+
+	public Integer getOfflineType() {
+		return get("offline_type");
+	}
+
 }

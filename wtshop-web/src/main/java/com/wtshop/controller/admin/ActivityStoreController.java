@@ -6,6 +6,7 @@ import com.wtshop.model.ActivityStore;
 import com.wtshop.model.Member;
 import com.wtshop.service.ActivityStoreService;
 import com.wtshop.service.MemberService;
+import com.wtshop.util.StringUtils;
 
 import java.util.Map;
 
@@ -41,7 +42,14 @@ public class ActivityStoreController extends BaseController{
         Integer type = getParaToInt("type");
         ActivityStore certificates = certificatesService.find(certificatesId);
         Member member=memberService.find(certificates.getMemberId());
-        member.setStore(certificates.getStoreName());
+if(StringUtils.isEmpty(certificates.getMemberId()))
+{
+    member.setStore("非门店");
+}else{
+    member.setStore(certificates.getStoreName());
+}
+
+        member.setIsStore(true);
         memberService.update(member);
         certificates.getStoreName();
         certificates.setFeedback(feedback);

@@ -138,6 +138,9 @@
                 <a href="javascript:;" class="sort" name="m.phone">电话</a>
             </th>
             <th>
+                <a href="javascript:;" class="sort" name="type">所属</a>
+            </th>
+            <th>
                 <a href="javascript:;" class="sort" name="status">状态</a>
             </th>
             <th>
@@ -183,6 +186,25 @@
                     </td>
                     <td>
 						${brand.member.phone}
+                    </td>
+                    <td>
+					[#if brand.type==1||brand.type==null]
+
+                        <span class="red">[门店]</span>
+
+
+
+                    [#elseif brand.type==2]
+
+                        <span class="blue">[非门店]</span>
+
+
+                    [#elseif brand.type==3]
+
+                        <span class="gray">线下</span>
+
+                    [/#if]
+
                     </td>
                     <td>
 					[#if brand.status==0||brand.status==null]

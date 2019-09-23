@@ -136,8 +136,6 @@ public class FullReductionController extends BaseController {
 	public void edit() {
 		Long id = getParaToLong("id");
 		setAttr("fullReduction", promotionService.find(id));
-		setAttr("memberRanks", memberRankService.findAll());
-		setAttr("coupons", couponService.findAll());
 		render("/admin/full_reduction/edit.ftl");
 	}
 
