@@ -807,7 +807,7 @@ public class GoodsAPIController extends BaseAPIController {
             identifier.setStartDate(date1);
             identifier.setIntegral(ss.getIntegral());
 
-            identifier.setTitle(ss.getTitle());
+            identifier.setContent(ss.getTitle());
             identifier.setType(Integer.parseInt(ssss.getType()));
             intee=ss.getIntegral();
 
@@ -824,14 +824,11 @@ public class GoodsAPIController extends BaseAPIController {
             identifier.setMoney(ss.getMoney());
             identifier.setTotalMoney(ss.getTotalMoney());
             identifier.setEndDate(date);
+            identifier.setContent(ssss.getStoreDiscount());
             identifier.setStartDate(date1);
             identifier.setIntegral(ss.getIntegral());
             intee=ss.getIntegral();
         }
-
-
-
-
 
 
         IntegralLog integralLog = new IntegralLog();
@@ -1159,13 +1156,29 @@ public class GoodsAPIController extends BaseAPIController {
             if (identifierList.size() == 0) {
                 Identifier identifier = new Identifier();
                 identifier.setStatus(4);
-                identifier.put("store", x.getStore());
+
+                if(identifier.getType()!=null&&identifier.getType()==2){
+                    identifier.put("store", x.getStore());
+                }else {
+                    identifier.put("store", x.getStore());
+                }
+
+
                 identifier.setShareCode(x.getShareCode());
                 identifierLL.add(identifier);
 
             }
 
         }
+        for (Identifier identifier1 : identifierL) {
+            if(identifier1.getType()==2){
+                identifier1.put("store", identifier1.getOnMember().getNickname());
+            }else {
+                identifier1.put("store", identifier1.getOnMember().getStore());
+            }
+
+        }
+
         identifierLL.addAll(identifierL);
         renderJson(ApiResult.success(identifierLL));
     }
