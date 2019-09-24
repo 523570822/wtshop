@@ -509,6 +509,9 @@ if(!"0".equals(sPecialIds)){
 	if(identifierId==0&&"0".equals(sPecialCoupId)&&integralMoney>0){
 		ss = Order.Type.particular;
 	}else if(identifierId!=0&&"0".equals(sPecialCoupId)&&integralMoney==0){
+
+
+
 		ss = Order.Type.special;
 	}else if(identifierId==0&&!"0".equals(sPecialCoupId)&&integralMoney==0){
 		ss = Order.Type.coupon;

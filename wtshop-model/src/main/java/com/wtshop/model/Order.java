@@ -59,7 +59,7 @@ public class Order extends BaseOrder<Order> {
 		 */
 		group,
 		/**
-		 * 特殊订单钜惠卡 8
+		 * 特殊订单钜惠卡门店 8
 		 */
 		special,
 		/**
@@ -67,9 +67,20 @@ public class Order extends BaseOrder<Order> {
 		 */
 		coupon,
 		/**
-		 * 特殊订单
+		 * 特殊订单(只使用积分和纯金额购买)
 		 */
-		particular
+		particular,
+
+		//specialStore,
+		/**
+		 * 特殊订单非门店
+		 */
+		specialNoStore,
+		/**
+		 * 特殊订单线下
+		 */
+		specialOffline
+
 
 
 	}

@@ -1204,9 +1204,24 @@ public class GoodsAPIController extends BaseAPIController {
      */
 
     public void storeRecordingList() {
+        JSONObject redisSetting = JSONObject.parseObject(RedisUtil.getString("redisSetting"));
         String onShareCode = getPara("onShareCode", "").toUpperCase();
         Member m = memberService.getCurrent();
         List<Identifier> identifierL = identifierService.findByOnCodeShareSB(onShareCode, m.getId());
+        for (Identifier identifier1 : identifierL) {
+            if(identifier1.getType()==2){
+                identifier1.put("store", identifier1.getOnMember().getNickname());
+
+                //反现比例
+                Double zhiFuFanBi =  redisSetting.getDouble("juHuiFanBi");
+                identifier1.setMoney(identifier1.getMoney().multiply(BigDecimal.valueOf(zhiFuFanBi)));
+            }else {
+
+                identifier1.put("store", identifier1.getOnMember().getStore());
+            }
+
+        }
+
         renderJson(ApiResult.success(identifierL));
     }
 

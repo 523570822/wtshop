@@ -838,49 +838,145 @@ public class OrderService extends BaseService<Order> {
 
             //满足 返现条件
             if(identifier.getPrice().compareTo(identifier.getTotalMoney())!=-1){
+
+
                 identifier.setStatus(3);
-
-
                 Member member2 = memberService.findByShareCode(identifier.getShareCode()).get(0);
                 identifier.setCompleteDate(new Date());
-                DepositLog depositLog1 = new DepositLog();
-                depositLog1.setBalance(member2.getBalance());
-                depositLog1.setCredit(identifier.getMoney());
-                depositLog1.setDebit(BigDecimal.ZERO);
-                depositLog1.setStatus(1);
-                depositLog1.setMemo("门店合作收益");
-                depositLog1.setType(DepositLog.Type.ident.ordinal());
-                depositLog1.setOrderId(order.getId());
-                depositLog1.setOperator(""+member.getNickname()+"  "+member.getPhone());
-                depositLog1.setMemberId(member2.getId());
-                member2.setBalance(identifier.getMoney().add(member2.getBalance()));
-                depositLogService.save(depositLog1);
-                memberService.update(member2);
+
+                if(identifier.getType()==2){
+                    //反现比例
+                    Double zhiFuFanBi =  redisSetting.getDouble("juHuiFanBi");
+
+                    BigDecimal benRen = identifier.getMoney().multiply(BigDecimal.valueOf(zhiFuFanBi));
+                    BigDecimal menDiane = identifier.getMoney().multiply(BigDecimal.valueOf(1-zhiFuFanBi));
 
 
-                Cache sm = Redis.use();
-                String name=identifier.getOnMember().getStore();
-                Map<String, Object> params = new HashMap<String, Object>();
-                params.put("name", name );
-                String mobile=member.getPhone();
-                //检查手机号码有效性
-                if (!SMSUtils.isMobileNo(mobile)) {
-                    logger.error("请检查用户"+identifier.getMemberId()+"手机号是否正确!——————————————————————");
-                    //    renderJson(ApiResult.fail("请检查手机号是否正确!"));
+                //非店主返现
+                    DepositLog depositLog1 = new DepositLog();
+                    depositLog1.setBalance(member2.getBalance());
+                    depositLog1.setCredit(menDiane);
+                    depositLog1.setDebit(BigDecimal.ZERO);
+                    depositLog1.setStatus(1);
+                    depositLog1.setMemo("门店合作收益");
+                    depositLog1.setType(DepositLog.Type.ident.ordinal());
+                    depositLog1.setOrderId(order.getId());
+                    depositLog1.setOperator(""+member.getNickname()+"  "+member.getPhone());
+                    depositLog1.setMemberId(member2.getId());
+                    member2.setBalance(menDiane.add(member2.getBalance()));
+                    depositLogService.save(depositLog1);
+                    memberService.update(member2);
+
+
+
+
+
+
+
+                    //用户自己 返现
+                    DepositLog depositLogZ = new DepositLog();
+                    depositLogZ.setBalance(member.getBalance());
+                    depositLogZ.setCredit(benRen);
+                    depositLogZ.setDebit(BigDecimal.ZERO);
+                    depositLogZ.setStatus(1);
+                    depositLogZ.setMemo("门店合作收益");
+                    depositLogZ.setType(DepositLog.Type.ident.ordinal());
+                    depositLogZ.setOrderId(order.getId());
+                    depositLogZ.setOperator(""+member.getNickname()+"  "+member.getPhone());
+                    depositLogZ.setMemberId(member.getId());
+                    member.setBalance(benRen.add(member.getBalance()));
+                    depositLogService.save(depositLogZ);
+                    memberService.update(member2);
+
+
+
+                    String name=identifier.getOnMember().getStore();
+                    Map<String, Object> params = new HashMap<String, Object>();
+                    params.put("name", name );
+                    String mobile=member.getPhone();
+                    //检查手机号码有效性
+                    if (!SMSUtils.isMobileNo(mobile)) {
+                        logger.error("请检查用户"+identifier.getMemberId()+"手机号是否正确!——————————————————————");
+                        //    renderJson(ApiResult.fail("请检查手机号是否正确!"));
+                    }
+                    ApiResult result = SMSUtils.send(mobile,"SMS_171116042", params);
+                    //ApiResult result = SMSUtils.send("", "", params);
+                    if(result.resultSuccess()) {
+                        //  sm.setex("PONHE:"+mobile,120,"1");
+                        Sms sms = new Sms();
+                        sms.setMobile(mobile);
+                        sms.setSmsCode("您的"+name+"钜惠卡已完成消费金额的累计，可以到线下门店兑换优惠啦");
+                        sms.setSmsType(Setting.SmsType.other.ordinal());
+                        smsService.saveOrUpdate(sms);
+                        logger.info("短信发送成功！【您的"+name+"钜惠卡已完成消费金额的累计，可以到线下门店兑换优惠啦】");
+                    }else {
+                        logger.info("您发送的过于频繁,请稍后再试!");
+                    }
+                }else  if(identifier.getType()==3){
+                    String name=identifier.getOnMember().getStore();
+                    Map<String, Object> params = new HashMap<String, Object>();
+                    params.put("name", name );
+                    String mobile=member.getPhone();
+                    //检查手机号码有效性
+                    if (!SMSUtils.isMobileNo(mobile)) {
+                        logger.error("请检查用户"+identifier.getMemberId()+"手机号是否正确!——————————————————————");
+                        //    renderJson(ApiResult.fail("请检查手机号是否正确!"));
+                    }
+                    ApiResult result = SMSUtils.send(mobile,"SMS_171116042", params);
+                    //ApiResult result = SMSUtils.send("", "", params);
+                    if(result.resultSuccess()) {
+                        //  sm.setex("PONHE:"+mobile,120,"1");
+                        Sms sms = new Sms();
+                        sms.setMobile(mobile);
+                        sms.setSmsCode("您的"+name+"钜惠卡已完成消费金额的累计，可以填写地址直接兑换商品了！");
+                        sms.setSmsType(Setting.SmsType.other.ordinal());
+                        smsService.saveOrUpdate(sms);
+                        logger.info("短信发送成功！【您的"+name+"钜惠卡已完成消费金额的累计，可以填写地址直接兑换商品了】");
+                    }else {
+                        logger.info("您发送的过于频繁,请稍后再试!");
+                    }
+                }else{
+                    DepositLog depositLog1 = new DepositLog();
+                    depositLog1.setBalance(member2.getBalance());
+                    depositLog1.setCredit(identifier.getMoney());
+                    depositLog1.setDebit(BigDecimal.ZERO);
+                    depositLog1.setStatus(1);
+                    depositLog1.setMemo("门店合作收益");
+                    depositLog1.setType(DepositLog.Type.ident.ordinal());
+                    depositLog1.setOrderId(order.getId());
+                    depositLog1.setOperator(""+member.getNickname()+"  "+member.getPhone());
+                    depositLog1.setMemberId(member2.getId());
+                    member2.setBalance(identifier.getMoney().add(member2.getBalance()));
+                    depositLogService.save(depositLog1);
+                    memberService.update(member2);
+
+
+                    Cache sm = Redis.use();
+                    String name=identifier.getOnMember().getStore();
+                    Map<String, Object> params = new HashMap<String, Object>();
+                    params.put("name", name );
+                    String mobile=member.getPhone();
+                    //检查手机号码有效性
+                    if (!SMSUtils.isMobileNo(mobile)) {
+                        logger.error("请检查用户"+identifier.getMemberId()+"手机号是否正确!——————————————————————");
+                        //    renderJson(ApiResult.fail("请检查手机号是否正确!"));
+                    }
+                    ApiResult result = SMSUtils.send(mobile,"SMS_171116042", params);
+                    //ApiResult result = SMSUtils.send("", "", params);
+                    if(result.resultSuccess()) {
+                        //  sm.setex("PONHE:"+mobile,120,"1");
+                        Sms sms = new Sms();
+                        sms.setMobile(mobile);
+                        sms.setSmsCode("您的"+name+"钜惠卡已完成消费金额的累计，可以到线下门店兑换优惠啦");
+                        sms.setSmsType(Setting.SmsType.other.ordinal());
+                        smsService.saveOrUpdate(sms);
+                        logger.info("短信发送成功！【您的"+name+"钜惠卡已完成消费金额的累计，可以到线下门店兑换优惠啦】");
+                    }else {
+                        logger.info("您发送的过于频繁,请稍后再试!");
+                    }
                 }
-                ApiResult result = SMSUtils.send(mobile,"SMS_171116042", params);
-                //ApiResult result = SMSUtils.send("", "", params);
-                if(result.resultSuccess()) {
-                  //  sm.setex("PONHE:"+mobile,120,"1");
-                    Sms sms = new Sms();
-                    sms.setMobile(mobile);
-                    sms.setSmsCode("您的"+name+"钜惠卡已完成消费金额的累计，可以到线下门店兑换优惠啦");
-                    sms.setSmsType(Setting.SmsType.other.ordinal());
-                    smsService.saveOrUpdate(sms);
-                    logger.info("短信发送成功！【您的"+name+"钜惠卡已完成消费金额的累计，可以到线下门店兑换优惠啦】");
-                }else {
-                    logger.info("您发送的过于频繁,请稍后再试!");
-                }
+
+
 
 
             }else{

@@ -21,7 +21,6 @@ import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.*;
 import com.wtshop.service.*;
 import com.wtshop.util.*;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -394,8 +393,8 @@ public class MemberAPIController extends BaseAPIController {
 
 	public void stroeApplication(){
 		Member member = memberService.getCurrent();
-		if(StringUtils.isNotEmpty(member.getShareCode())){
-			renderJson(ApiResult.fail("用户不是会员无法申请"));
+		if(StringUtils.isEmpty(member.getShareCode())){
+			renderJson(ApiResult.fail(" 您当前没有邀请码，无法申请代理，请先联系您的邀请人协助您获取邀请码。"));
 			return;
 		}
 		ActivityStore activityStore = getModel(ActivityStore.class);
