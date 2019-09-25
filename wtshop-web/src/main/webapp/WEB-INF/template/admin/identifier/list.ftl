@@ -217,7 +217,7 @@
 
                         <span class="blue">[未邮寄]</span>
 
-					[#elseif brand.status==4]
+					[#elseif brand.status==6]
 
                         <span class="gray">[已邮寄]</span>
 
@@ -268,7 +268,7 @@
 					 <a href="javascript:;" class="status"onclick="disabled(${brand.id},1)"">[${message("LoginPlugin.isEnabled")}]</a>
 
 
-							<a href="javascript:;" class="status" onclick="disabled(${brand.id},4)" class="iconButton disabled">
+							<a href="javascript:;" class="status" onclick="disabled(${brand.id},6)" class="iconButton disabled">
                                 [已邮寄]
                             </a>
 							<a href="javascript:;" class="status" onclick="disabled(${brand.id},5)"  class="iconButton disabled">

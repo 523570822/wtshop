@@ -1172,6 +1172,13 @@ public class GoodsAPIController extends BaseAPIController {
 
         }
         for (Identifier identifier1 : identifierL) {
+            List<Identifier> sss = identifierService.findByOnCodeShare(identifier1.getShareCode(), identifier1.getMemberId(), 3 + "");
+            if (sss.size()>0) {
+                identifier1.put("is_exchange",true);
+            }else {
+                identifier1.put("is_exchange", false);
+            }
+
             if(identifier1.getType()==2){
                 identifier1.put("store", identifier1.getOnMember().getNickname());
 

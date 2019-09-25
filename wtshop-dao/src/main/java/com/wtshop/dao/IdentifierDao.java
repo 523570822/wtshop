@@ -3,13 +3,8 @@ package com.wtshop.dao;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
-import com.wtshop.Filter;
-import com.wtshop.Order;
 import com.wtshop.Pageable;
-import com.wtshop.model.Brand;
 import com.wtshop.model.Identifier;
-import com.wtshop.model.ProductCategory;
-import com.wtshop.model.SpecialPersonnel;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -71,7 +66,7 @@ public class IdentifierDao extends   BaseDao<Identifier> {
 			return null;
 		}
 		try {
-			String sql = "SELECT *, m.store FROM identifier i LEFT JOIN member m ON i.share_code = m.share_code where  i.status<>'1' and  i.share_code= UPPER(?) and i.member_id= '"+memberId+"'";
+			String sql = "SELECT i.*, m.store FROM identifier i LEFT JOIN member m ON i.share_code = m.share_code where  i.status<>'1' and  i.share_code= UPPER(?) and i.member_id= '"+memberId+"'";
 			return modelManager.find(sql, onCodeShare);
 
 		} catch (Exception e) {

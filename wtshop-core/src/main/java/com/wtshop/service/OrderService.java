@@ -884,6 +884,7 @@ public class OrderService extends BaseService<Order> {
                     depositLogZ.setOrderId(order.getId());
                     depositLogZ.setOperator(""+member.getNickname()+"  "+member.getPhone());
                     depositLogZ.setMemberId(member.getId());
+
                     member.setBalance(benRen.add(member.getBalance()));
                     depositLogService.save(depositLogZ);
                     memberService.update(member2);
