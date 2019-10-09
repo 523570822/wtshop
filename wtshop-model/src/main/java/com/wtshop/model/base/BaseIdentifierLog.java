@@ -65,12 +65,12 @@ public abstract class BaseIdentifierLog<M extends BaseIdentifierLog<M>> extends 
 		return get("type");
 	}
 
-	public void setOrderId(Long orderId) {
-		set("order_id", orderId);
+	public void setIdentifierId(Long identifierId) {
+		set("identifier_id", identifierId);
 	}
 
-	public Long getOrderId() {
-		return get("order_id");
+	public Long getIdentifierId() {
+		return get("identifier_id");
 	}
 
 }

@@ -130,10 +130,6 @@ public class IdentifierService extends BaseService<Identifier> {
 		shipping.setIdentifierId(order.getId());
 		shippingDao.save(shipping);
 
-		List<ShippingItem> shippingItems = shipping.getShippingItems();
-
-
-		Setting setting = SystemUtils.getSetting();
 
 		order.setStatus(6);
 
@@ -142,8 +138,9 @@ public class IdentifierService extends BaseService<Identifier> {
 
 		IdentifierLog orderLog = new IdentifierLog();
 		orderLog.setType(OrderLog.Type.shipping.ordinal());
-		orderLog.setOperator(operator);
-		orderLog.setOrderId(order.getId());
+		//orderLog.setOperator(operator);
+	orderLog.setOperator(operator);
+		orderLog.setIdentifierId(order.getId());
         identifierLogDao.save(orderLog);
 
 		try {

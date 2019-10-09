@@ -12,10 +12,8 @@ import com.wtshop.api.interceptor.ErrorInterceptor;
 import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.Identifier;
 import com.wtshop.model.Receiver;
-import com.wtshop.service.GoodsService;
-import com.wtshop.service.IdentifierService;
-import com.wtshop.service.MemberService;
-import com.wtshop.service.ReceiverService;
+import com.wtshop.model.Shipping;
+import com.wtshop.service.*;
 import com.wtshop.util.ApiResult;
 import org.apache.commons.lang3.StringUtils;
 
@@ -34,7 +32,7 @@ public class IdentifierApiController extends BaseAPIController {
 	private GoodsService goodsService = enhance(GoodsService.class);
 	private MemberService memberService = enhance(MemberService.class);
 	private ReceiverService receiverService = enhance(ReceiverService.class);
-
+private ShippingService shippingService=enhance(ShippingService.class);
 	/**
 	 * 线下兑换
 	 */
@@ -83,7 +81,17 @@ public class IdentifierApiController extends BaseAPIController {
 		}
 
 	}
+	/**
+	 * 线下兑换
+	 */
+	public void applicationDetails() {
+		Long id = getParaToLong("id");
+		Identifier activity = identifierService.find(id);
+		Shipping shipping = shippingService.findByIdentifierId(activity.getId());
+		activity.put("shipping",shipping);
+		renderJson(ApiResult.success(activity));
 
+	}
 
 	/**
 	 * 启用福袋

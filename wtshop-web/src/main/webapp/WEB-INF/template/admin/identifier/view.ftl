@@ -495,7 +495,7 @@ $().ready(function() {
                运单号:
             </th>
             <td>
-                <span class="green">${currency(order.tracking_no, true)}</span>
+                <span class="green">${order.tracking_no}</span>
             </td>
 		</tr>
 

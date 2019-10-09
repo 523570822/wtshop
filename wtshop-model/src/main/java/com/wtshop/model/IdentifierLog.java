@@ -49,7 +49,7 @@ public class IdentifierLog extends BaseIdentifierLog<IdentifierLog> {
 	}
 
 	/** 订单 */
-	private Order order;
+	private Identifier identifier;
 
 	/**
 	 * 类型
@@ -98,21 +98,21 @@ public class IdentifierLog extends BaseIdentifierLog<IdentifierLog> {
 	 *
 	 * @return 订单
 	 */
-	public Order getOrder() {
-		if (ObjectUtils.isEmpty(order)) {
-			order = Order.dao.findById(getOrderId());
+	public Identifier getIdentifier() {
+		if (ObjectUtils.isEmpty(identifier)) {
+			identifier = Identifier.dao.findById(getIdentifierId());
 		}
-		return order;
+		return identifier;
 	}
 
 	/**
 	 * 设置订单
 	 *
-	 * @param order
+	 * @param identifier
 	 *            订单
 	 */
-	public void setOrder(Order order) {
-		this.order = order;
+	public void setIdentifier(Identifier identifier) {
+		this.identifier = identifier;
 	}
 
 	/**

@@ -17,6 +17,7 @@ public class _MappingKit {
 
 	public static void mapping(ActiveRecordPlugin arp) {
 		arp.addMapping("activity_store", "id", ActivityStore.class);
+		arp.addMapping("identifier_log", "id", IdentifierLog.class);
 		arp.addMapping("special_coupon", "id", SpecialCoupon.class);
 		arp.addMapping("account", "id", Account.class);
 		arp.addMapping("full_reduction", "id", FullReduction.class);

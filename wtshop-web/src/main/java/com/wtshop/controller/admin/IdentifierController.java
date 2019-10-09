@@ -330,31 +330,17 @@ if(StringUtils.isNotEmpty(titleE)){
 		Identifier order = identifierService.find(orderId);
 
 
-		boolean isDelivery = false; // 是否交货
+
 		order.setTrackingNo(shipping.getTrackingNo());
 		shipping.setOrderId(order.getId());
 		shipping.setShippingMethod(shippingMethodService.find(shippingMethodId));
 		shipping.setDeliveryCorp(deliveryCorpService.find(deliveryCorpId));
 		shipping.setArea(areaService.find(areaId));
-		if (!isDelivery) {
-			shipping.setShippingMethod((String) null);
-			shipping.setDeliveryCorp((String) null);
-			shipping.setDeliveryCorpUrl(null);
-			shipping.setDeliveryCorpCode(null);
-			shipping.setTrackingNo(null);
-			shipping.setFreight(null);
-			shipping.setConsignee(null);
-			shipping.setArea((String) null);
-			shipping.setAddress(null);
-			shipping.setZipCode(null);
-			shipping.setPhone(null);
-		}
-
 		Admin admin = adminService.getCurrent();
 
 		shipping.setOperator(admin);
 		identifierService.shipping(order, shipping, admin);
 		addFlashMessage(SUCCESS_MESSAGE);
-		redirect("/admin/order/list.jhtml");
+		redirect("/admin/identifier/list.jhtml");
 	}
 }

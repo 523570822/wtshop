@@ -33,5 +33,19 @@ public class ShippingDao extends BaseDao<Shipping> {
 		return modelManager.findFirst(sql);
 
 	}
+	/**
+	 * 根据编号查找发货单
+	 *
+	 * @param sn
+	 *            编号(忽略大小写)
+	 * @return 发货单，若不存在则返回null
+	 */
+	public Shipping findByIdentifierId(Long sn) {
+		if (StringUtils.isEmpty(sn+"")) {
+			return null;
+		}
+		String sql = "SELECT * FROM shipping s  WHERE s.identifier_Id =" + sn;
+		return modelManager.findFirst(sql);
 
+	}
 }

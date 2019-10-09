@@ -46,7 +46,16 @@ public class ShippingService extends BaseService<Shipping> {
 	public Shipping findBySn(String sn) {
 		return shippingDao.findBySn(sn);
 	}
-
+	/**
+	 * 根据编号查找发货单
+	 *
+	 * @param sn
+	 *            编号(忽略大小写)
+	 * @return 发货单，若不存在则返回null
+	 */
+	public Shipping findByIdentifierId(Long sn) {
+		return shippingDao.findByIdentifierId(sn);
+	}
 	/**
 	 * 获取物流动态
 	 * 
