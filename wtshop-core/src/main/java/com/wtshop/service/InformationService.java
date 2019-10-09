@@ -327,7 +327,42 @@ public class InformationService extends BaseService<Information> {
 
         }
     }
+    /**
+     * 发货消息
+     *
+     * @param order
+     */
 
+    public void sendPeoductMessage(Identifier order) {
+        Cache actCache = Redis.use();
+        //添加消息记录表
+        Information information = new Information();
+        information.setContent("运单号(" + order.getTrackingNo() + ")已发货");
+        information.setIsDelete(false);
+        information.setStatus(false);
+        information.setMemberId(order.getMemberId());
+        information.setTitle("运单号(" + order.getTrackingNo() + ")已发货");
+        information.setAction(Information.Action.order.ordinal());
+        information.setLink(order.toString());
+        information.setType(Information.Type.order.ordinal());
+        informationDao.save(information);
+
+        Boolean isMyMessage = actCache.get("ORDERMMESSAGR_SWITCH:" + order.getMemberId());
+        String sound = "default";
+        Object o = actCache.get("SOUND:" + order.getMemberId());
+        if (o != null) {
+            sound = o.toString();
+        }
+        if (isMyMessage != null && isMyMessage) {
+            String key = "MEMBER:" + order.getMemberId().toString();
+            String appid = RedisUtil.getString(key);
+            if (appid != null) {
+                JPush.sendPushById(appid, "订单消息", "运单号(" + order.getTrackingNo() + ")已发货", "运单号(" + order.getTrackingNo() + ")已发货", sound, null);
+                return;
+            }
+
+        }
+    }
     /**
      * 关注到货消息
      *

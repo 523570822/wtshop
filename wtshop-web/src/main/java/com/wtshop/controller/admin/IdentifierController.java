@@ -2,11 +2,13 @@ package com.wtshop.controller.admin;
 
 
 
+import com.jfinal.aop.Before;
 import com.jfinal.ext.render.excel.PoiRender;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.kit.LogKit;
 
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.render.Render;
 import com.wtshop.Message;
 import com.wtshop.Pageable;
@@ -20,6 +22,7 @@ import com.wtshop.util.SystemUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.wtshop.api.controller.BaseAPIController.convertToLong;
@@ -35,7 +38,7 @@ public class IdentifierController extends BaseController {
 	private IdentifierService identifierService = enhance(IdentifierService.class);
 	private GoodsService goodsService = enhance(GoodsService.class);
 	private MemberService memberService = enhance(MemberService.class);
-
+	private AdminService adminService = enhance(AdminService.class);
 	private AreaService areaService = enhance(AreaService.class);
 
 	private ShippingMethodService shippingMethodService = enhance(ShippingMethodService.class);
@@ -66,7 +69,22 @@ public class IdentifierController extends BaseController {
 		setAttr("order", order);
 		render("/admin/identifier/view.ftl");
 	}
-
+	/**
+	 * 检查锁定
+	 */
+	public void checkLock() {
+		Long id = getParaToLong("id");
+		Identifier order = identifierService.find(id);
+		if (order == null) {
+			renderJson(ERROR_MESSAGE);
+			return;
+		}
+	//	Admin admin = adminService.getCurrent();
+		/*if (identifierService.isLocked(order, admin, true)) {
+			renderJson(Message.warn("admin.order.locked"));
+		}*/
+		renderJson(SUCCESS_MESSAGE);
+	}
 	/**
 	 * 保存
 	 */
@@ -297,5 +315,46 @@ if(StringUtils.isNotEmpty(titleE)){
 		Render poirender = PoiRender.me(fff).fileName("code"+titleB+"-"+""+titleE+".xls").headers(header).sheetName("识别码").columns(columns);
 		render(poirender);
 
+	}
+	/**
+	 * 发货
+	 */
+	@Before(Tx.class)
+	public void shipping() {
+		Shipping shipping = getModel(Shipping.class);
+		Long orderId = getParaToLong("orderId");
+		Long shippingMethodId = getParaToLong("shippingMethodId");
+		Long deliveryCorpId = getParaToLong("deliveryCorpId");
+		Long areaId = getParaToLong("areaId");
+
+		Identifier order = identifierService.find(orderId);
+
+
+		boolean isDelivery = false; // 是否交货
+		order.setTrackingNo(shipping.getTrackingNo());
+		shipping.setOrderId(order.getId());
+		shipping.setShippingMethod(shippingMethodService.find(shippingMethodId));
+		shipping.setDeliveryCorp(deliveryCorpService.find(deliveryCorpId));
+		shipping.setArea(areaService.find(areaId));
+		if (!isDelivery) {
+			shipping.setShippingMethod((String) null);
+			shipping.setDeliveryCorp((String) null);
+			shipping.setDeliveryCorpUrl(null);
+			shipping.setDeliveryCorpCode(null);
+			shipping.setTrackingNo(null);
+			shipping.setFreight(null);
+			shipping.setConsignee(null);
+			shipping.setArea((String) null);
+			shipping.setAddress(null);
+			shipping.setZipCode(null);
+			shipping.setPhone(null);
+		}
+
+		Admin admin = adminService.getCurrent();
+
+		shipping.setOperator(admin);
+		identifierService.shipping(order, shipping, admin);
+		addFlashMessage(SUCCESS_MESSAGE);
+		redirect("/admin/order/list.jhtml");
 	}
 }

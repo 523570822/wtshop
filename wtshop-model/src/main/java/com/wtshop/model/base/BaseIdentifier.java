@@ -217,4 +217,12 @@ public abstract class BaseIdentifier<M extends BaseIdentifier<M>> extends Model<
 		return get("phone");
 	}
 
+	public void setTrackingNo(String trackingNo) {
+		set("tracking_no", trackingNo);
+	}
+
+	public String getTrackingNo() {
+		return get("tracking_no");
+	}
+
 }

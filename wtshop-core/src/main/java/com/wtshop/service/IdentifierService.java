@@ -1,18 +1,25 @@
 package com.wtshop.service;
 
+import com.jfinal.aop.Before;
 import com.jfinal.aop.Enhancer;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.wtshop.Filter;
 import com.wtshop.Order;
 import com.wtshop.Pageable;
+import com.wtshop.Setting;
 import com.wtshop.dao.IdentifierDao;
+import com.wtshop.dao.ShippingDao;
+import com.wtshop.dao.SnDao;
 import com.wtshop.dao.SpecialPersonnelDao;
-import com.wtshop.model.Identifier;
-import com.wtshop.model.ProductCategory;
-import com.wtshop.model.SpecialPersonnel;
+import com.wtshop.model.*;
+import com.wtshop.util.Assert;
 import com.wtshop.util.PinYinUtil;
 import com.wtshop.util.StringUtils;
+import com.wtshop.util.SystemUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.BooleanUtils;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -31,10 +38,11 @@ public class IdentifierService extends BaseService<Identifier> {
 	}
 	
 	private IdentifierDao brandDao = Enhancer.enhance(IdentifierDao.class);
-
-
-
-
+	private SnDao snDao = Enhancer.enhance(SnDao.class);
+	private MailService mailService = new MailService();
+	private SmsService smsService = new SmsService();
+	private ShippingDao shippingDao = Enhancer.enhance(ShippingDao.class);
+	private InformationService informationService = Enhancer.enhance(InformationService.class);
 	public Map<String,List> findBrandSort(){
 		List<Record> brandSort = brandDao.findBrandSort();
 		Collections.sort(brandSort, new Comparator<Record>() {
@@ -103,4 +111,48 @@ public class IdentifierService extends BaseService<Identifier> {
     public  List<Identifier> findByDay(String s, String s1) {
 		return brandDao.findByDay(s,s1);
     }
+	/**
+	 * 订单发货
+	 *
+	 * @param order    订单
+	 * @param shipping 发货单
+	 * @param operator 操作员
+	 */
+	@Before(Tx.class)
+	public void shipping(Identifier order, Shipping shipping, Admin operator) {
+		Assert.notNull(order);
+
+
+		Assert.notNull(shipping);
+		Assert.isTrue(shipping.isNew());
+		Assert.notEmpty(shipping.getShippingItems());
+
+		shipping.setSn(snDao.generate(Sn.Type.shipping));
+		shipping.setOrderId(order.getId());
+		shippingDao.save(shipping);
+
+		List<ShippingItem> shippingItems = shipping.getShippingItems();
+
+
+		Setting setting = SystemUtils.getSetting();
+
+
+
+
+		super.update(order);
+
+		OrderLog orderLog = new OrderLog();
+		orderLog.setType(OrderLog.Type.shipping.ordinal());
+		orderLog.setOperator(operator);
+		orderLog.setOrderId(order.getId());
+	//orderLogDao.save(orderLog);
+
+		try {
+			informationService.sendPeoductMessage(order);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		//mailService.sendShippingOrderMail(order);
+		//smsService.sendShippingOrderSms(order);
+	}
 }

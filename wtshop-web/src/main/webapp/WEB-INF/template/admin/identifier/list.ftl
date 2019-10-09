@@ -481,6 +481,7 @@
 
                     </td>
                     <td>
+                        ${brand.status}
 					[#if brand.status==0||brand.status==null]
 
                         <span class="red">[未使用]</span>
@@ -489,7 +490,7 @@
 
 					[#elseif brand.status==3]
                         [#if brand.type==3&&brand.status!=null]
-                        <span class="red">[未邮寄]</span>
+                        <span class="blue">[未申请邮寄]</span>
                         [#else]
                         <span class="blue">[已完成]</span>
                         [/#if]
@@ -503,9 +504,12 @@
 
 					[#elseif brand.status==1]
                         <span class="green">[已启用]</span>
+                    [#elseif brand.status==7]
+                        <span class="red">[待邮寄]</span>
 					[#elseif brand.status==2]
                         <span class="green">[已失效]</span>
 					[/#if]
+
 
                     </td>
                     <td>
@@ -529,7 +533,7 @@
 
                     <td>
 					[#if brand.status==2||brand.status==0||brand.status==1]
-					 <a href="javascript:;" class="status" onclick="disabled(${brand.id},3)"">[${message("admin.member.disabled")}]</a>
+					[#-- <a href="javascript:;" class="status" onclick="disabled(${brand.id},3)"">[${message("admin.member.disabled")}]</a>--]
 					[#--  <a href="publish.jhtml?id=${brand.id}" class="status" data="${brand.id}">[${message("LoginPlugin.isEnabled")}]</a>--]
 					[#else ]
 

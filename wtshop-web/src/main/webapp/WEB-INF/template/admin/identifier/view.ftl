@@ -80,8 +80,12 @@ $().ready(function() {
 			});
 		}
 	}
-	
 
+    // 检查锁定
+    checkLock();
+    setInterval(function() {
+        checkLock();
+    }, 50000);
 
 		// 发货
 		$shippingButton.click(function() {
@@ -95,12 +99,12 @@ $().ready(function() {
 							<div class="shipping">
 								<table id="shippingLogistics" class="input">
 									<tr>
-										<th>
-											${message("Order.sn")}:
-										<\/th>
-										<td width="300">
-											${order.sn}
-										<\/td>
+                            <th>
+                            物品:
+            </th>
+                    <td>
+						${order.content}
+                    </td>
 										<th>
 											${message("admin.common.createDate")}:
 										<\/th>
@@ -195,70 +199,7 @@ $().ready(function() {
 										<\/td>
 									<\/tr>
 								<\/table>
-								<table class="item">
-									<tr>
-										<th>
-											${message("ShippingItem.sn")}
-										<\/th>
-										<th>
-											${message("ShippingItem.name")}
-										<\/th>
-										<th>
-											${message("ShippingItem.isDelivery")}
-										<\/th>
-										<th>
-											${message("admin.order.productStock")}
-										<\/th>
-										<th>
-											${message("admin.order.productQuantity")}
-										<\/th>
-										<th>
-											${message("admin.order.shippedQuantity")}
-										<\/th>
-										<th>
-											${message("admin.order.shippingQuantity")}
-										<\/th>
-									<\/tr>
-									[#list order.orderItems as orderItem]
-										<tr>
-											<td>
-												<input type="hidden" name="shippingItems[${orderItem_index}].sn" value="${orderItem.sn}" \/>
-												${orderItem.sn}
-											<\/td>
-											[#noescape]
-												<td width="300">
-													<span title="${orderItem.name?html?js_string}">${abbreviate(orderItem.name, 50, "...")?html?js_string}<\/span>
-													[#if orderItem.specificationsConverter?has_content]
-														<span class="silver">[${orderItem.specificationsConOrder.shippingMethodverter?join(", ")?html?js_string}]<\/span>
-													[/#if]
-													[#if orderItem.typeName != "general"]
-														<span class="red">[${message("Goods.Type." + orderItem.typeName)}]<\/span>
-													[/#if]
-												<\/td>
-											[/#noescape]
-											<td>
-												${message(orderItem.isDelivery?string('admin.common.true', 'admin.common.false'))}
-											<\/td>
-											<td>
-												${(orderItem.product.stock)!"-"}
-											<\/td>
-											<td>
-												${orderItem.quantity}
-											<\/td>
-											<td>
-												${orderItem.shippedQuantity}
-											<\/td>
-											<td>
-												[#if orderItem.product?? && orderItem.product.stock < orderItem.shippableQuantity]
-													[#assign shippingQuantity = orderItem.product.stock /]
-												[#else]
-													[#assign shippingQuantity = orderItem.shippableQuantity /]
-												[/#if]
-												<input type="text" name="shippingItems[${orderItem_index}].quantity" class="text shippingItemsQuantity" value="${shippingQuantity}" style="width: 30px;"[#if shippingQuantity <= 0] disabled="disabled"[/#if]  data-is-delivery="${orderItem.isDelivery?string('true', 'false')}" \/>
-											<\/td>
-										<\/tr>
-									[/#list]
-								<\/table>
+
 							<\/div>
 						<\/form>'
 					[/@compress]
@@ -271,42 +212,24 @@ $().ready(function() {
 					var $shippingForm = $("#shippingForm");
 					var $shippingLogistics = $("#shippingLogistics");
 					var $shippingItemsQuantity = $("#shippingForm input.shippingItemsQuantity");
-					
+
 					$("#shippingForm input[name='areaId']").lSelect({
 						url: "${base}/common/area.jhtml"
 					});
-					
-					function checkDelivery() {
-						var isDelivery = false;
-						$shippingItemsQuantity.each(function() {
-							var $this = $(this);
-							if ($this.data("isDelivery") && $this.val() > 0) {
-								isDelivery = true;
-								return false;
-							}
-						});
-						if (isDelivery) {
-							$shippingLogistics.find(":input:not([name='memo'])").prop("disabled", false);
-						} else {
-							$shippingLogistics.find(":input:not([name='memo'])").prop("disabled", true);
-						}
-					}
-					
-					checkDelivery();
-					
+
 					$shippingItemsQuantity.on("input propertychange change", function(event) {
 						if (event.type != "propertychange" || event.originalEvent.propertyName == "value") {
 							checkDelivery()
 						}
 					});
-					
+
 					$.validator.addClassRules({
 						shippingItemsQuantity: {
 							required: true,
 							digits: true
 						}
 					});
-					
+
 					$shippingForm.validate({
 						rules: {
 							deliveryCorpId: "required",
@@ -342,11 +265,9 @@ $().ready(function() {
 						}
 					});
 					
-					if (total <= 0) {
-						$.message("warn", "${message("admin.order.shippingQuantityPositive")}");
-					} else {
+
 						$("#shippingForm").submit();
-					}
+
 					return false;
 				}
 			});
@@ -441,225 +362,145 @@ $().ready(function() {
 				[#--<input type="button" id="reviewButton" class="button" value="${message("admin.order.review")}"[#if order.hasExpired() || order.statusName != "pendingReview"] disabled="disabled"[/#if] />--]
 				[#--<input type="button" id="paymentButton" class="button" value="${message("admin.order.payment")}" />--]
 				[#--<input type="button" id="refundsButton" class="button" value="${message("admin.order.refunds")}"[#if order.refundableAmount <= 0] disabled="disabled"[/#if] />--]
-				<input type="button" id="shippingButton" class="button" value="${message("admin.order.shipping")}"[#if order.shippableQuantity <= 0] disabled="disabled"[/#if] />
+				<input type="button" id="shippingButton" class="button" value="${message("admin.order.shipping")}"[#if order.status !=7] disabled="disabled"[/#if] />
 				[#--<input type="button" id="returnsButton" class="button" value="${message("admin.order.returns")}"[#if order.returnableQuantity <= 0] disabled="disabled"[/#if] />--]
 				[#--<input type="button" id="receiveButton" class="button" value="${message("admin.order.receive")}"[#if order.hasExpired() || order.statusName != "shipped"] disabled="disabled"[/#if] />--]
 				[#--<input type="button" id="completeButton" class="button" value="${message("admin.order.complete")}"[#if order.hasExpired() || (order.statusName != "received" && order.statusName != "noReview" && order.statusName != "review")] disabled="disabled"[/#if] />--]
 				[#--<input type="button" id="failButton" class="button" value="${message("admin.order.fail")}"[#if order.hasExpired() || (order.statusName != "pendingShipment" && order.statusName != "shipped" && order.statusName != "received")] disabled="disabled"[/#if] />--]
 			</td>
 		</tr>
+        <tr>
+            <th>
+				姓名:
+            </th>
+            <td>
+             ${order.member.nickname}
+            </td>
+            <th>
+				物品:
+            </th>
+            <td>
+				${order.content}
+            </td>
+        </tr>
+        <tr>
+            <th>
+				${message("Order.member")}:
+            </th>
+            <td>
+                <a href="../member/view.jhtml?id=${order.member.id}">${order.member.username}</a>
+            </td>
+            <th>
+				${message("Member.memberRank")}:
+            </th>
+            <td>
+				${order.member.memberRank.name}
+            </td>
+        </tr>
 		<tr>
-			<th>
-				${message("Order.sn")}:
-			</th>
-			<td width="360">
-				${order.sn}
-			</td>
+
 			<th>
 				${message("admin.common.createDate")}:
 			</th>
 			<td>
 				${order.createDate?string("yyyy-MM-dd HH:mm:ss")}
 			</td>
+            <th>
+				完成时间:
+            </th>
+            <td>
+			[#--	${order.completeDate!''}--]
+			${(order.completeDate?string("yyyy-MM-dd HH:mm:ss"))!"未完成"}
+            </td>
 		</tr>
 		<tr>
 			<th>
 				${message("Order.type")}:
 			</th>
 			<td>
-				${message("Order.Type." + order.typeName)}
+				[#if brand.type==1||brand.type==null]
+
+                    <span class="red">[门店]</span>
+
+
+
+				[#elseif brand.type==2]
+
+                        <span class="blue">[非门店]</span>
+
+
+				[#elseif brand.type==3]
+
+                        <span class="gray">线下</span>
+
+				[/#if]
 			</td>
 			<th>
 				${message("Order.status")}:
 			</th>
 			<td>
-				${message("Order.Status." + order.statusName)}
+					[#if brand.status==0||brand.status==null]
+
+                        <span class="red">[未使用]</span>
+
+
+
+					[#elseif brand.status==3]
+						[#if brand.type==3&&brand.status!=null]
+                        <span class="blue">[未申请邮寄]</span>
+						[#else]
+                        <span class="blue">[已完成]</span>
+						[/#if]
+					[#elseif brand.status==6]
+
+                        <span class="gray">[已邮寄]</span>
+
+					[#elseif brand.status==5]
+
+                        <span class="gray">[现场兑换]</span>
+
+					[#elseif brand.status==1]
+                        <span class="green">[已启用]</span>
+					[#elseif brand.status==7]
+                        <span class="red">[待邮寄]</span>
+					[#elseif brand.status==2]
+                        <span class="green">[已失效]</span>
+					[/#if]
 			</td>
 		</tr>
+
 		<tr>
 			<th>
-				${message("Order.member")}:
+                满金额：
 			</th>
 			<td>
-				<a href="../member/view.jhtml?id=${order.member.id}">${order.member.username}</a>
-			</td>
-			<th>
-				${message("Member.memberRank")}:
-			</th>
-			<td>
-				${order.member.memberRank.name}
-			</td>
-		</tr>
-		<tr>
-			<th>
-				${message("Order.price")}:
-			</th>
-			<td>
-				${currency(order.price, true)}
+				${currency(order.total_money, true)}
 			</td>
             <th>
-			${message("Order.ponitPaid")}:
+                反金额:
             </th>
             <td>
-			${order.miaobi_paid}
+				${currency(order.money, true)}
+
             </td>
 		</tr>
 		<tr>
 			<th>
-				${message("Order.amount")}:
+                消费金额:
 			</th>
 			<td>
-				<span class="red">${currency(order.amount, true)}</span>
+				<span class="red">${currency(order.price, true)}</span>
 			</td>
-			<th>
-				<span class="red">*</span>余额支付:
-			</th>
-			<td>
-				${currency(order.amountPaid, true)}
-				[#if order.amountPayable > 0]
-					<span class="silver">(${message("Order.amountPayable")}: ${currency(order.amountPayable, true)})</span>
-				[/#if]
-			</td>
-		</tr>
-		[#if order.refundAmount > 0 || order.refundableAmount > 0]
-			<tr>
-				<th>
-					${message("Order.refundAmount")}:
-				</th>
-				<td>
-					${currency(order.refundAmount, true)}
-				</td>
-				<th>
-					${message("Order.refundableAmount")}:
-				</th>
-				<td>
-					${currency(order.refundableAmount, true)}
-				</td>
-			</tr>
-		[/#if]
-		<tr>
-			<th>
-				${message("Order.weight")}:
-			</th>
-			<td>
-				${order.weight}
-			</td>
-			<th>
-				${message("Order.quantity")}:
-			</th>
-			<td>
-				${order.quantity}
-			</td>
-		</tr>
-		<tr>
-			<th>
-				${message("Order.shippedQuantity")}:
-			</th>
-			<td>
-				${order.shippedQuantity}
-			</td>
-			<th>
-				${message("Order.returnedQuantity")}:
-			</th>
-			<td>
-				${order.returnedQuantity}
-			</td>
-		</tr>
-		<tr>
-			<th>
-				${message("admin.order.promotion")}:
-			</th>
-			<td>
-				[#if order.type == 5 ]
-					${message("shop.common.true")}
-				[#else]
-					-
-				[/#if]
-			</td>
-			<th>
-				${message("Order.promotionDiscount")}:
-			</th>
-			<td>
-				${currency(order.promotionDiscount, true)}
-			</td>
-		</tr>
-		<tr>
-			<th>
-				${message("admin.order.coupon")}:
-			</th>
-			<td>
-				${(order.couponCode.coupon.name)!"-"}
-			</td>
-			<th>
-				${message("Order.couponDiscount")}:
-			</th>
-			<td>
-				${currency(order.couponDiscount, true)}
-			</td>
-		</tr>
-		<tr>
             <th>
-			${message("Order.returnCopy")}:
+               运单号:
             </th>
             <td>
-			${currency(order.return_copy_paid, true)}
+                <span class="green">${currency(order.tracking_no, true)}</span>
             </td>
-			<th>
-				${message("Order.freight")}:
-			</th>
-			<td>
-				${currency(order.fee, true)}
-				[#if order.freight > 0]
-					<span class="silver">优惠: ${currency(order.freight, true)})</span>
-				[/#if]
-			</td>
 		</tr>
-		<tr>
-			<th>
-				${message("Order.offsetAmount")}:
-			</th>
-			<td>
-				${currency(order.offsetAmount, true)}
-			</td>
-			<th>
-				${message("Order.rewardPoint")}:
-			</th>
-			<td>
-				${order.rewardPoint}
-			</td>
-		</tr>
-		<tr>
-			<th>
-				${message("Order.paymentMethod")}:
-			</th>
-			<td>
-				${order.paymentMethodName!"-"}
-			</td>
-			<th>
-				${message("Order.shippingMethod")}:
-			</th>
-			<td>
-				${order.shippingMethodName!"-"}
-				${order.rewardPoint}
-			</td>
-		</tr>
-		[#if order.isInvoice==true]
-			<tr>
-				<th>
-						<span class="blue">${message("Invoice.title")}:</span>
-				</th>
-				<td>
-				${order.companyName}
-				</td>
-				<th>
-					${message("Order.taxNumber")}:
-				</th>
-				<td>
-					${order.taxNumber}
-					[#--${currency(order.tax, true)}--]
-				</td>
-			</tr>
-		[/#if]
+
+
+
 		<tr>
 			<th>
 				${message("Order.consignee")}:
