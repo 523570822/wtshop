@@ -161,4 +161,12 @@ public abstract class BaseShipping<M extends BaseShipping<M>> extends Model<M> i
 		return get("order_id");
 	}
 
+	public void setIdentifierId(Long identifierId) {
+		set("identifier_Id", identifierId);
+	}
+
+	public Long getIdentifierId() {
+		return get("identifier_Id");
+	}
+
 }

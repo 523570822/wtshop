@@ -123,10 +123,11 @@ public class IdentifierService extends BaseService<Identifier> {
 
 		Assert.notNull(shipping);
 		Assert.isTrue(shipping.isNew());
-		Assert.notEmpty(shipping.getShippingItems());
+
 
 		shipping.setSn(snDao.generate(Sn.Type.shipping));
-		shipping.setOrderId(order.getId());
+		//shipping.setOrderId(order.getId());
+		shipping.setIdentifierId(order.getId());
 		shippingDao.save(shipping);
 
 		List<ShippingItem> shippingItems = shipping.getShippingItems();
@@ -134,7 +135,7 @@ public class IdentifierService extends BaseService<Identifier> {
 
 		Setting setting = SystemUtils.getSetting();
 
-
+		order.setStatus(6);
 
 
 		super.update(order);
