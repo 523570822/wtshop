@@ -9,10 +9,7 @@ import com.wtshop.Filter;
 import com.wtshop.Order;
 import com.wtshop.Pageable;
 import com.wtshop.Setting;
-import com.wtshop.dao.IdentifierDao;
-import com.wtshop.dao.ShippingDao;
-import com.wtshop.dao.SnDao;
-import com.wtshop.dao.SpecialPersonnelDao;
+import com.wtshop.dao.*;
 import com.wtshop.model.*;
 import com.wtshop.util.Assert;
 import com.wtshop.util.PinYinUtil;
@@ -43,6 +40,7 @@ public class IdentifierService extends BaseService<Identifier> {
 	private SmsService smsService = new SmsService();
 	private ShippingDao shippingDao = Enhancer.enhance(ShippingDao.class);
 	private InformationService informationService = Enhancer.enhance(InformationService.class);
+	private IdentifierLogDao identifierLogDao=Enhancer.enhance(IdentifierLogDao.class);
 	public Map<String,List> findBrandSort(){
 		List<Record> brandSort = brandDao.findBrandSort();
 		Collections.sort(brandSort, new Comparator<Record>() {
@@ -141,11 +139,11 @@ public class IdentifierService extends BaseService<Identifier> {
 
 		super.update(order);
 
-		OrderLog orderLog = new OrderLog();
+		IdentifierLog orderLog = new IdentifierLog();
 		orderLog.setType(OrderLog.Type.shipping.ordinal());
 		orderLog.setOperator(operator);
 		orderLog.setOrderId(order.getId());
-	//orderLogDao.save(orderLog);
+        identifierLogDao.save(orderLog);
 
 		try {
 			informationService.sendPeoductMessage(order);
