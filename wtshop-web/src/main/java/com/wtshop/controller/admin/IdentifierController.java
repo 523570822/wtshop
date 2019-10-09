@@ -10,13 +10,13 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.render.Render;
 import com.wtshop.Message;
 import com.wtshop.Pageable;
+import com.wtshop.Setting;
 import com.wtshop.model.*;
 import com.wtshop.model.Brand.Type;
-import com.wtshop.service.GoodsService;
-import com.wtshop.service.IdentifierService;
-import com.wtshop.service.MemberService;
+import com.wtshop.service.*;
 
 import com.wtshop.util.ShareCodeUtils;
+import com.wtshop.util.SystemUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import java.util.Date;
@@ -36,12 +36,35 @@ public class IdentifierController extends BaseController {
 	private GoodsService goodsService = enhance(GoodsService.class);
 	private MemberService memberService = enhance(MemberService.class);
 
+	private AreaService areaService = enhance(AreaService.class);
+
+	private ShippingMethodService shippingMethodService = enhance(ShippingMethodService.class);
+	private PaymentMethodService paymentMethodService = enhance(PaymentMethodService.class);
+	private DeliveryCorpService deliveryCorpService = enhance(DeliveryCorpService.class);
+
 	/**
 	 * 添加123123
 	 */
 	public void add() {
 		setAttr("types", Type.values());
 		render("/admin/identifier/add.ftl");
+	}
+	/**
+	 * 查看
+	 */
+	public void view() {
+		Long id = getParaToLong("id");
+		Setting setting = SystemUtils.getSetting();
+		setAttr("methods", Payment.Method.values());
+		setAttr("refundsMethods", Refunds.Method.values());
+		setAttr("paymentMethods", paymentMethodService.findAll());
+		setAttr("shippingMethods", shippingMethodService.findAll());
+		setAttr("deliveryCorps", deliveryCorpService.findAll());
+		setAttr("isKuaidi100Enabled", StringUtils.isNotEmpty(setting.getKuaidi100Key()));
+		setAttr("area", areaService.findAll());
+		Identifier order = identifierService.find(id);
+		setAttr("order", order);
+		render("/admin/identifier/view.ftl");
 	}
 
 	/**

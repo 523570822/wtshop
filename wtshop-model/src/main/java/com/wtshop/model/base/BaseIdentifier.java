@@ -169,4 +169,52 @@ public abstract class BaseIdentifier<M extends BaseIdentifier<M>> extends Model<
 		return get("offline_type");
 	}
 
+	public void setAreaId(Long areaId) {
+		set("area_id", areaId);
+	}
+
+	public Long getAreaId() {
+		return get("area_id");
+	}
+
+	public void setAddress(String address) {
+		set("address", address);
+	}
+
+	public String getAddress() {
+		return get("address");
+	}
+
+	public void setConsignee(String consignee) {
+		set("consignee", consignee);
+	}
+
+	public String getConsignee() {
+		return get("consignee");
+	}
+
+	public void setAreaName(String areaName) {
+		set("area_name", areaName);
+	}
+
+	public String getAreaName() {
+		return get("area_name");
+	}
+
+	public void setZipCode(String zipCode) {
+		set("zip_code", zipCode);
+	}
+
+	public String getZipCode() {
+		return get("zip_code");
+	}
+
+	public void setPhone(String phone) {
+		set("phone", phone);
+	}
+
+	public String getPhone() {
+		return get("phone");
+	}
+
 }

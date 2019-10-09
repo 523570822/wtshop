@@ -11,9 +11,12 @@ import com.wtshop.api.controller.BaseAPIController;
 import com.wtshop.api.interceptor.ErrorInterceptor;
 import com.wtshop.interceptor.WapInterceptor;
 import com.wtshop.model.Identifier;
+import com.wtshop.model.Receiver;
 import com.wtshop.service.GoodsService;
 import com.wtshop.service.IdentifierService;
 import com.wtshop.service.MemberService;
+import com.wtshop.service.ReceiverService;
+import com.wtshop.util.ApiResult;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -30,7 +33,7 @@ public class IdentifierApiController extends BaseAPIController {
 	private IdentifierService identifierService = enhance(IdentifierService.class);
 	private GoodsService goodsService = enhance(GoodsService.class);
 	private MemberService memberService = enhance(MemberService.class);
-
+	private ReceiverService receiverService = enhance(ReceiverService.class);
 
 	/**
 	 * 线下兑换
@@ -39,17 +42,45 @@ public class IdentifierApiController extends BaseAPIController {
 		Long id = getParaToLong("id");
 		Integer status = getParaToInt("status",3);
 		Identifier activity = identifierService.find(id);
-if(status==1){
-		if(activity.getShareCode()==null||"".equals(activity.getShareCode())){
-			activity.setStatus(0);
+		if(status==1){
+			if(activity.getShareCode()==null||"".equals(activity.getShareCode())){
+				activity.setStatus(0);
+			}else {
+				activity.setStatus(status);
+			}
 		}else {
 			activity.setStatus(status);
 		}
-}else {
-	activity.setStatus(status);
-}
 
 		identifierService.update(activity);
+		renderJson(ApiResult.successMsg("成功"));
+	}
+
+	/**
+	 * 线下兑换
+	 */
+	public void addAddress() {
+		Long id = getParaToLong("id");
+		Long receiverId = getParaToLong("receiverId"); //收货人
+		Identifier activity = identifierService.find(id);
+
+		Receiver receiver = receiverService.find(receiverId);
+
+		if(receiver!=null){
+			activity.setConsignee(receiver.getConsignee());
+			activity.setAreaName(receiver.getAreaName());
+			activity.setAddress(receiver.getAddress());
+			activity.setZipCode(receiver.getZipCode());
+			activity.setPhone(receiver.getPhone());
+			activity.setArea(receiver.getArea());
+			activity.setAreaId(receiver.getAreaId());
+			activity.setStatus(7);
+
+			identifierService.update(activity);
+			renderJson(ApiResult.successMsg("成功"));
+		}else{
+			renderJson(ApiResult.fail("地址有误"));
+		}
 
 	}
 

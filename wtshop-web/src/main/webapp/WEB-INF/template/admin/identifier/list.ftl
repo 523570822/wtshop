@@ -23,6 +23,280 @@
                 location.href='getExcel.jhtml?titleB='+titleB+'&titleE='+titleE;
 
             })
+
+
+
+            [#if  brand.type==3&&brand.status!=null]
+		// 发货
+		$shippingButton.click(function() {
+        $.dialog({
+            title: "${message("admin.order.shipping")}",
+        content:
+					[@compress single_line = true]
+						'<form id="shippingForm" action="shipping.jhtml" method="post">
+                        <input type="hidden" name="token" value="${token}" \/>
+                    <input type="hidden" name="orderId" value="${order.id}" \/>
+                    <div class="shipping">
+                            <table id="shippingLogistics" class="input">
+                            <tr>
+                            <th>
+                        ${message("Order.sn")}:
+										<\/th>
+                    <td width="300">
+                        ${order.sn}
+                            <\/td>
+                    <th>
+                        ${message("admin.common.createDate")}:
+										<\/th>
+                    <td>
+                        ${order.createDate?string("yyyy-MM-dd HH:mm:ss")}
+                    <\/td>
+                    <\/tr>
+                    <tr>
+                    <th>
+                        ${message("Shipping.shippingMethod")}:
+										<\/th>
+                    <td>
+                    <select name="shippingMethodId">
+                            <option value="">${message("admin.common.choose")}<\/option>
+                        [#list shippingMethods as shippingMethod]
+                            [#noescape]
+														<option value="${shippingMethod.id}"[#if shippingMethod == order.shippingMethod] selected="selected"[/#if]>${shippingMethod.name?html?js_string}<\/option>
+                            [/#noescape]
+                        [/#list]
+											<\/select>
+                    <\/td>
+                    <th>
+                        ${message("Shipping.deliveryCorp")}:
+										<\/th>
+                    <td>
+                    <select name="deliveryCorpId">
+                            <option value="">${message("admin.common.choose")}<\/option>
+                        [#list deliveryCorps as deliveryCorp]
+                            [#noescape]
+														<option value="${deliveryCorp.id}"[#if order.shippingMethod?? && deliveryCorp == order.shippingMethod.defaultDeliveryCorp] selected="selected"[/#if]>${deliveryCorp.name?html?js_string}<\/option>
+                            [/#noescape]
+                        [/#list]
+											<\/select>
+                    <\/td>
+                    <\/tr>
+                    <tr>
+                    <th>
+                        ${message("Shipping.trackingNo")}:
+										<\/th>
+                    <td>
+                    <input type="text" name="shipping.tracking_no" class="text" maxlength="200" \/>
+                    <\/td>
+                    <th>
+                        ${message("Shipping.freight")}:
+										<\/th>
+                    <td>
+                    <input type="text" name="shipping.freight" class="text" maxlength="16"  value="[#noescape]${order.fee?html?js_string}[/#noescape]" \/>
+                    <\/td>
+                    <\/tr>
+                    <tr>
+                    <th>
+                        ${message("Shipping.consignee")}:
+										<\/th>
+                    <td>
+                    <input type="text" name="shipping.consignee" class="text" value="[#noescape]${order.consignee?html?js_string}[/#noescape]" maxlength="200" \/>
+                    <\/td>
+                    <th>
+                        ${message("Shipping.zipCode")}:
+										<\/th>
+                    <td>
+                    <input type="text" name="shipping.zip_code" class="text" value="[#noescape]${order.zipCode?html?js_string}[/#noescape]" maxlength="200" \/>
+                    <\/td>
+                    <\/tr>
+                    <tr>
+                    <th>
+                        ${message("Shipping.area")}:
+										<\/th>
+                    <td>
+                    <span class="fieldSet">
+                            <input type="hidden" id="areaId" name="areaId" value="[#noescape]${order.area.id?html?js_string}[/#noescape]" treePath="${(order.area.treePath)!}" \/>
+                    <\/span>
+                    <\/td>
+                    <th>
+                        ${message("Shipping.address")}:
+										<\/th>
+                    <td>
+                    <input type="text" name="shipping.address" class="text" value="[#noescape]${order.address?html?js_string}[/#noescape]" maxlength="200" \/>
+                    <\/td>
+                    <\/tr>
+                    <tr>
+                    <th>
+                        ${message("Shipping.phone")}:
+										<\/th>
+                    <td>
+                    <input type="text" name="shipping.phone" class="text" value="[#noescape]${order.phone?html?js_string}[/#noescape]" maxlength="200" \/>
+                    <\/td>
+                    <th>
+                        ${message("Shipping.memo")}:
+										<\/th>
+                    <td>
+                    <input type="text" name="shipping.memo" class="text" maxlength="200" \/>
+                    <\/td>
+                    <\/tr>
+                    <\/table>
+                    <table class="item">
+                            <tr>
+                            <th>
+                        ${message("ShippingItem.sn")}
+                            <\/th>
+                    <th>
+                        ${message("ShippingItem.name")}
+                    <\/th>
+                    <th>
+                        ${message("ShippingItem.isDelivery")}
+                    <\/th>
+                    <th>
+                        ${message("admin.order.productStock")}
+                    <\/th>
+                    <th>
+                        ${message("admin.order.productQuantity")}
+                    <\/th>
+                    <th>
+                        ${message("admin.order.shippedQuantity")}
+                    <\/th>
+                    <th>
+                        ${message("admin.order.shippingQuantity")}
+                    <\/th>
+                    <\/tr>
+                        [#list order.orderItems as orderItem]
+										<tr>
+											<td>
+												<input type="hidden" name="shippingItems[${orderItem_index}].sn" value="${orderItem.sn}" \/>
+                            ${orderItem.sn}
+                        <\/td>
+                            [#noescape]
+												<td width="300">
+                                    <span title="${orderItem.name?html?js_string}">${abbreviate(orderItem.name, 50, "...")?html?js_string}<\/span>
+                                [#if orderItem.specificationsConverter?has_content]
+														<span class="silver">[${orderItem.specificationsConOrder.shippingMethodverter?join(", ")?html?js_string}]<\/span>
+                                [/#if]
+                                [#if orderItem.typeName != "general"]
+														<span class="red">[${message("Goods.Type." + orderItem.typeName)}]<\/span>
+                                [/#if]
+												<\/td>
+                            [/#noescape]
+											<td>
+                            ${message(orderItem.isDelivery?string('admin.common.true', 'admin.common.false'))}
+											<\/td>
+                        <td>
+                            ${(orderItem.product.stock)!"-"}
+                        <\/td>
+                        <td>
+                            ${orderItem.quantity}
+                        <\/td>
+                        <td>
+                            ${orderItem.shippedQuantity}
+                        <\/td>
+                        <td>
+												[#if orderItem.product?? && orderItem.product.stock < orderItem.shippableQuantity]
+                                                    [#assign shippingQuantity = orderItem.product.stock /]
+                                                [#else]
+                                                    [#assign shippingQuantity = orderItem.shippableQuantity /]
+                                                [/#if]
+                        <input type="text" name="shippingItems[${orderItem_index}].quantity" class="text shippingItemsQuantity" value="${shippingQuantity}" style="width: 30px;"[#if shippingQuantity <= 0] disabled="disabled"[/#if]  data-is-delivery="${orderItem.isDelivery?string('true', 'false')}" \/>
+                        <\/td>
+                        <\/tr>
+                        [/#list]
+								<\/table>
+                    <\/div>
+                    <\/form>'
+                    [/@compress]
+                ,
+                width: 900,
+                    modal: true,
+                    ok: "${message("admin.dialog.ok")}",
+                    cancel: "${message("admin.dialog.cancel")}",
+                    onShow: function() {
+                var $shippingForm = $("#shippingForm");
+                var $shippingLogistics = $("#shippingLogistics");
+                var $shippingItemsQuantity = $("#shippingForm input.shippingItemsQuantity");
+
+                $("#shippingForm input[name='areaId']").lSelect({
+                    url: "${base}/common/area.jhtml"
+                });
+
+                function checkDelivery() {
+                    var isDelivery = false;
+                    $shippingItemsQuantity.each(function() {
+                        var $this = $(this);
+                        if ($this.data("isDelivery") && $this.val() > 0) {
+                            isDelivery = true;
+                            return false;
+                        }
+                    });
+                    if (isDelivery) {
+                        $shippingLogistics.find(":input:not([name='memo'])").prop("disabled", false);
+                    } else {
+                        $shippingLogistics.find(":input:not([name='memo'])").prop("disabled", true);
+                    }
+                }
+
+                checkDelivery();
+
+                $shippingItemsQuantity.on("input propertychange change", function(event) {
+                    if (event.type != "propertychange" || event.originalEvent.propertyName == "value") {
+                        checkDelivery()
+                    }
+                });
+
+                $.validator.addClassRules({
+                    shippingItemsQuantity: {
+                        required: true,
+                        digits: true
+                    }
+                });
+
+                $shippingForm.validate({
+                    rules: {
+                        deliveryCorpId: "required",
+                        freight: {
+                            min: 0,
+                            decimal: {
+                                integer: 12,
+                                fraction: ${setting.priceScale}
+                            }
+                        },
+                        consignee: "required",
+                        "shipping.tracking_no": "required",
+                        zipCode: {
+                            required: true,
+                            pattern: /^\d{6}$/
+                        },
+
+                        areaId: "required",
+                        address: "required",
+                        phone: {
+                            required: true,
+                            pattern: /^\d{3,4}-?\d{7,9}$/
+                        }
+                    }
+                });
+            },
+            onOk: function() {
+                var total = 0;
+                $("#shippingForm input.shippingItemsQuantity").each(function() {
+                    var quantity = $(this).val();
+                    if ($.isNumeric(quantity)) {
+                        total += parseInt(quantity);
+                    }
+                });
+
+                if (total <= 0) {
+                    $.message("warn", "${message("admin.order.shippingQuantityPositive")}");
+                } else {
+                    $("#shippingForm").submit();
+                }
+                return false;
+            }
+        });
+        });
+            [/#if]
+
         });
         // 删除
         function disabled(id,status) {
@@ -214,9 +488,11 @@
 
 
 					[#elseif brand.status==3]
-
-                        <span class="blue">[未邮寄]</span>
-
+                        [#if brand.type==3&&brand.status!=null]
+                        <span class="red">[未邮寄]</span>
+                        [#else]
+                        <span class="blue">[已完成]</span>
+                        [/#if]
 					[#elseif brand.status==6]
 
                         <span class="gray">[已邮寄]</span>
@@ -258,18 +534,17 @@
 					[#else ]
 
 					[/#if]
-						[#if brand.status==3]
+                        <a href="view.jhtml?id=${brand.id}">[查看]</a>
+						[#if brand.status==3&&brand.type==3]
 
 						[#--		<a href="javascript:;" id="deleteButton" class="iconButton disabled">
                                     <span class="deleteIcon">&nbsp;</span>${message("admin.common.delete")}
                                 </a>--]
 
 
-					 <a href="javascript:;" class="status"onclick="disabled(${brand.id},1)"">[${message("LoginPlugin.isEnabled")}]</a>
+					[#-- <a href="javascript:;" class="status"onclick="disabled(${brand.id},1)"">[${message("LoginPlugin.isEnabled")}]</a>--]
 
 
-							<a href="javascript:;" class="status" onclick="disabled(${brand.id},6)" class="iconButton disabled">
-                                [已邮寄]
                             </a>
 							<a href="javascript:;" class="status" onclick="disabled(${brand.id},5)"  class="iconButton disabled">
                                 [现场兑换]

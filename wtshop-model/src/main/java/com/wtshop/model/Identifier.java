@@ -10,6 +10,28 @@ import com.wtshop.util.ObjectUtils;
 public class Identifier extends BaseIdentifier<Identifier> {
 	public static final Identifier dao = new Identifier().dao();
 	public Member onMember;
+	/** 地区 */
+	private Area area;
+	/**
+	 * 获取地区
+	 *
+	 * @return 地区
+	 */
+	public Area getArea() {
+		if (ObjectUtils.isEmpty(area)) {
+			area = Area.dao.findById(getAreaId());
+		}
+		return area;
+	}
+	/**
+	 * 设置地区
+	 *
+	 * @param area
+	 *            地区
+	 */
+	public void setArea(Area area) {
+		this.area = area;
+	}
 	/**
 	 * 获取会员
 	 *
